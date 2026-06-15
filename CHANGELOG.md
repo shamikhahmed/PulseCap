@@ -1,5 +1,8 @@
 # Changelog — PulseCap
 
+## 4.7.1 (2026-06-15)
+- Restore pre–Capricorn identity home-screen icons; service worker cache bump.
+
 ## 4.7.0 (2026-06-15)
 - Collapse Explore hub: Home **More** row + Search replaces the 25-row directory; simplified legacy `hub` route.
 - **One-tap start** from Home quick action (calls `startWorkout()` directly).

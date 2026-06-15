@@ -1,5 +1,25 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" fill="none" aria-hidden="true">
-  <circle cx="24" cy="24" r="17" stroke="#00F2FF" stroke-width="2.6" opacity=".45"/>
-  <path d="M9 24 H17 L21 14 L27 34 L31 24 H39" stroke="#00F2FF" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/>
-  <circle cx="39" cy="24" r="1.8" fill="#F4F0E8"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#000000"/>
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00d5ff"/>
+      <stop offset="100%" stop-color="#6b5fff"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00d5ff" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#6b5fff" stop-opacity="0.15"/>
+    </linearGradient>
+  </defs>
+  <!-- Background glow circle -->
+  <circle cx="256" cy="256" r="190" fill="url(#g2)"/>
+  <!-- Barbell -->
+  <rect x="96" y="234" width="320" height="44" rx="22" fill="url(#g1)"/>
+  <!-- Left weight plates -->
+  <rect x="84" y="196" width="52" height="120" rx="16" fill="url(#g1)"/>
+  <rect x="56" y="216" width="36" height="80" rx="12" fill="#00d5ff"/>
+  <!-- Right weight plates -->
+  <rect x="376" y="196" width="52" height="120" rx="16" fill="url(#g1)"/>
+  <rect x="420" y="216" width="36" height="80" rx="12" fill="#6b5fff"/>
+  <!-- Lightning bolt overlay -->
+  <path d="M268 148 L226 268 h32 L222 364 L316 244 h-44 Z" fill="white" opacity="0.9"/>
 </svg>
