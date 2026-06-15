@@ -8,25 +8,25 @@ const INTRO_SLIDES = [
   {
     emoji: '⚡',
     grad: 'linear-gradient(135deg, #00d5ff, #6b5fff)',
-    title: 'PulseCap Pro',
-    sub: 'The most advanced offline fitness operating system ever built for your iPhone.',
+    title: 'PulseCap',
+    sub: 'A full performance system — training, recovery, and coaching — that lives on your phone.',
     bullets: [
-      '🧠 5 AI engines that adapt to your body',
-      '💪 160+ exercises with full coaching cues',
-      '📊 Real-time readiness scoring every day',
+      '💪 300+ exercises with full coaching cues',
+      '📊 Daily readiness score based on your recovery',
+      '🧠 Smart Coach adapts your plan to how you feel',
       '🔒 100% offline — your data never leaves your phone'
     ]
   },
   {
-    emoji: '🤖',
+    emoji: '🏆',
     grad: 'linear-gradient(135deg, #6b5fff, #ff6bff)',
-    title: 'AI That Actually Thinks',
-    sub: 'Not just a tracker. A system that learns and adapts to you.',
+    title: 'Smarter than a tracker',
+    sub: 'PulseCap doesn\'t just log reps — it helps you train better.',
     bullets: [
-      '😴 Adjusts workout intensity based on your sleep',
+      '😴 Adjusts intensity when your sleep or stress is high',
       '🏆 Detects personal records on every single set',
-      '⚠️ Injury guard filters dangerous exercises for you',
-      '📈 Auto-progression tells you when to add weight'
+      '⚠️ Injury guard filters exercises for your weak points',
+      '📈 Auto-progression signals when to add weight'
     ]
   },
   {
@@ -35,7 +35,7 @@ const INTRO_SLIDES = [
     title: 'Elite Workout Logger',
     sub: 'The fastest gym logging experience. Built for one-handed iPhone use.',
     bullets: [
-      '⚡ Today\'s AI-generated workout ready in one tap',
+      '⚡ Today\'s Smart Coach workout ready in one tap',
       '⏱️ Rest timer with haptic vibration when done',
       '🔄 PPL, Upper/Lower, Bro Split and 4 more splits',
       '🎯 5 coach personalities from drill sergeant to zen master'
