@@ -1530,7 +1530,11 @@ window.CORE_NAV_DEFAULT = CORE_NAV_DEFAULT;
 window.NAV_TAB_ORDER = NAV_TAB_ORDER;
 
 function _normalizeNavTabs(ids) {
-  let list = (ids || []).map(function(id) { return id === 'coach' ? 'assistant' : id; });
+  let list = (ids || []).map(function(id) {
+    if (id === 'coach') return 'assistant';
+    if (id === 'hub') return 'search';
+    return id;
+  });
   list = list.filter(function(id, i) {
     return list.indexOf(id) === i && DEFAULT_NAV_TABS.some(function(t) { return t.id === id; });
   });
@@ -1569,9 +1573,9 @@ window._normalizeNavTabs = _normalizeNavTabs;
 function buildNav() {
   const nav = document.getElementById('nav');
   if (!nav) return;
-  if (S.g('settings.navMigration') !== 2) {
+  if (S.g('settings.navMigration') !== 3) {
     S.set('settings.navTabs', _normalizeNavTabs(S.g('settings.navTabs') || CORE_NAV_DEFAULT));
-    S.set('settings.navMigration', 2);
+    S.set('settings.navMigration', 3);
   }
   const ids = _getNavTabIds();
   const tabs = ids.map(function(id) { return DEFAULT_NAV_TABS.find(function(t) { return t.id === id; }); }).filter(Boolean);

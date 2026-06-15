@@ -1,5 +1,11 @@
 # Changelog — PulseCap
 
+## 4.7.0 (2026-06-15)
+- Collapse Explore hub: Home **More** row + Search replaces the 25-row directory; simplified legacy `hub` route.
+- **One-tap start** from Home quick action (calls `startWorkout()` directly).
+- Empty states for zero workout history on Home and Progress.
+- Nav migration v3: saved Explore tab maps to Search; service worker cache `pulsecap-v32`.
+
 ## 4.6.1 (2026-06-12)
 - Phase P4: Playwright test for periodization block on progress screen in demo mode; service worker cache bump.
 

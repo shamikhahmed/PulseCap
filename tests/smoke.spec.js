@@ -56,4 +56,26 @@ test.describe('PulseCap smoke', () => {
     await expect(page.getByText('Training Block')).toBeVisible({ timeout: 10000 });
     await expect(page.getByText(/Week \d+ ·/)).toBeVisible();
   });
+
+  test('home quick start invokes active workout in demo mode', async ({ page }) => {
+    await page.goto('/?demo=1');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForFunction(() => typeof window.startWorkout === 'function');
+    await page.evaluate(() => window.startWorkout());
+    await page.waitForTimeout(800);
+    await expect(page.getByText(/Log sets|Active Workout|Finish/i).first()).toBeVisible({ timeout: 10000 });
+  });
+
+  test('progress empty state shows start CTA without workouts', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForFunction(() => typeof window.go === 'function');
+    await page.evaluate(() => {
+      window.S.set('workouts', []);
+      window.go('progress');
+    });
+    await page.waitForTimeout(600);
+    await expect(page.getByText('No workouts yet')).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('.empty').getByRole('button', { name: /Start Workout/i })).toBeVisible();
+  });
 });

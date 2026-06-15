@@ -274,9 +274,9 @@ function _tabAppearance(u) {
     _sectionTitle('Navigation Tabs') +
     '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.5">Home is always first. Tap to toggle tabs (3–5). Default: Home · Train · Coach · Recover · Me.</div>' +
     (function() {
-      const allTabs = ['dashboard','workout','assistant','recovery','hub','bodymap','progress','rehab','anatomy','calisthenics','search','settings'];
-      const tabIcons = {dashboard:'🏠',workout:'💪',hub:'🔍',bodymap:'🫀',settings:'⚙️',recovery:'😴',coach:'🤖',progress:'📈',rehab:'🩹',anatomy:'🔬',calisthenics:'🤸',search:'🔎',assistant:'💬'};
-      const tabLabels = {dashboard:'Home',workout:'Train',assistant:'Smart Coach',coach:'Smart Coach',recovery:'Recover',hub:'Explore',bodymap:'Body',settings:'Me',progress:'Stats',rehab:'Rehab',anatomy:'Anatomy',calisthenics:'Skills',search:'Search'};
+      const allTabs = ['dashboard','workout','assistant','recovery','bodymap','progress','rehab','anatomy','calisthenics','search','settings'];
+      const tabIcons = {dashboard:'🏠',workout:'💪',bodymap:'🫀',settings:'⚙️',recovery:'😴',coach:'🤖',progress:'📈',rehab:'🩹',anatomy:'🔬',calisthenics:'🤸',search:'🔎',assistant:'💬'};
+      const tabLabels = {dashboard:'Home',workout:'Train',assistant:'Smart Coach',coach:'Smart Coach',recovery:'Recover',bodymap:'Body',settings:'Me',progress:'Stats',rehab:'Rehab',anatomy:'Anatomy',calisthenics:'Skills',search:'Search'};
       const cur = (typeof _getNavTabIds === 'function' ? _getNavTabIds() : (S.g('settings.navTabs') || CORE_NAV_DEFAULT));
       return allTabs.map(function(t) {
         const active = cur.includes(t);

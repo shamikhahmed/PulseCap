@@ -265,7 +265,9 @@ function _workoutCalendar(ws) {
 }
 
 function _workoutHistory(ws) {
-  if (!ws.length) return '';
+  if (!ws.length) {
+    return emptyState('💪', 'No workouts yet', 'Start your first session — your split is ready.', '▶ Start Workout', 'startWorkout&&startWorkout()');
+  }
   const recent = ws.slice().reverse().slice(0, 20);
   return sh('Workout History') +
     '<div style="padding:0 16px">' +

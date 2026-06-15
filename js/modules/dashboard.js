@@ -36,7 +36,7 @@ reg('dashboard', function() {
       '<div style="font-size:11px;color:var(--txt3)">' + esc(todayStr) + '</div></div>' +
       '</div>' +
       '<div class="topbar-right">' +
-      '<button class="topbar-icon press" onclick="go(\'hub\')" aria-label="Explore">🔍</button>' +
+      '<button class="topbar-icon press" onclick="go(\'search\')" aria-label="Search">🔍</button>' +
       '<div onclick="go(\'profiles\')" style="width:32px;height:32px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;flex-shrink:0">' + avatarLetter + '</div>' +
       '</div></div>';
 
@@ -92,7 +92,7 @@ reg('dashboard', function() {
 
     /* ── QUICK ACTIONS ── */
     const quickActions = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px;margin-bottom:20px">' +
-      '<button onclick="go(\'workout\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
+      '<button onclick="startWorkout&&startWorkout()" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
       '<span style="font-size:26px">💪</span>' +
       '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Start</span>' +
       '</button>' +
@@ -231,11 +231,17 @@ reg('dashboard', function() {
         '</div>';
     })();
 
-    const exploreCta = '<div onclick="go(\'hub\')" style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;' +
-      'background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">' +
-      '<div><div style="font-size:14px;font-weight:700;color:var(--txt)">Explore all features</div>' +
-      '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Splits · Rehab · Academy · Quests · Search</div></div>' +
-      '<span style="font-size:18px;color:var(--txt3)">›</span></div>';
+    const firstWorkoutEmpty = !ws.length ?
+      emptyState('💪', 'First workout', 'Your split is ready — one tap to start logging sets.', '▶ Start Workout', 'startWorkout&&startWorkout()') : '';
+
+    const moreRow = '<div style="margin:0 16px 14px">' +
+      '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">More</div>' +
+      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">' +
+      '<button onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🔍 Search</button>' +
+      '<button onclick="go(\'academy\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🎓 Academy</button>' +
+      '<button onclick="go(\'rehab\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🩹 Rehab</button>' +
+      '<button onclick="go(\'anatomy\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🔬 Anatomy</button>' +
+      '</div></div>';
 
     const todayWt = (S.g('bodyStats') || []).find(b => b.date === new Date().toISOString().slice(0, 10));
     const weightPrompt = !todayWt ?
@@ -270,7 +276,7 @@ reg('dashboard', function() {
       '<button class="btn btn-ghost btn-sm" onclick="go(\'settings\',{tab:\'training\'})">Choose another</button></div>' : '';
 
     return demoBanner + topbar + weightPrompt + injuryBanner + setupBanner + splitBanner + briefingCard + heroCard + quickActions + todayWorkout +
-      activeQuestCard + lastWktCard + exploreCta +
+      firstWorkoutEmpty + activeQuestCard + lastWktCard + moreRow +
       '<div style="height:24px"></div>';
 
   } catch(e) {
