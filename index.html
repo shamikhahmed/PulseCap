@@ -147,9 +147,9 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
         <div style="font-size:18px;font-weight:700;color:var(--txt)">Loading PulseCap...</div>
       </div>
     </div>
-    <nav id="nav" style="display:none"></nav>
+    <nav id="nav" aria-label="Main navigation" style="display:none"></nav>
   </div>
-  <div id="toast" style="display:flex;opacity:0">
+  <div id="toast" role="status" aria-live="polite" aria-atomic="true" style="display:flex;opacity:0">
     <span class="toast-icon"></span>
     <span class="toast-msg"></span>
   </div>
