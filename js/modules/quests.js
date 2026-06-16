@@ -700,7 +700,7 @@ reg('academy', function(data) {
   const xpProg = KnowledgeAcademy.xpProgress();
   const modules = [...new Set(KnowledgeAcademy.LESSONS.map(l => l.module))];
 
-  return '<div class="topbar"><div class="topbar-title">🎓 Knowledge Academy</div></div>' +
+  return '<div class="topbar"><button class="topbar-icon press" onclick="go(\'dashboard\')" style="font-size:20px">‹</button><div class="topbar-title">🎓 Knowledge Academy</div></div>' +
 
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:16px;padding:14px">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +

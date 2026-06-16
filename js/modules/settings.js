@@ -35,6 +35,11 @@ reg('settings', function(opts) {
 });
 
 function _tabProfile(u) {
+  const imperial = (u.units || 'metric') === 'imperial';
+  const hLabel = imperial ? 'Height (in)' : 'Height (cm)';
+  const wLabel = imperial ? 'Weight (lb)' : 'Weight (kg)';
+  const gwLabel = imperial ? 'Goal Weight (lb)' : 'Goal Weight (kg)';
+  const wtUnit = imperial ? 'lb' : 'kg';
   const bmi = BodyEngine.bmi(u.weight||75, u.height||175);
   const tdee = BodyEngine.tdee(u);
   const bmr = BodyEngine.bmr(u);
@@ -48,11 +53,11 @@ function _tabProfile(u) {
     _fieldWrap('Gender', '<div class="select-wrap"><select class="field" onchange="_setSetting(\'user.gender\',this.value)"><option value="male"'+(u.gender==='male'?' selected':'')+'>Male</option><option value="female"'+(u.gender==='female'?' selected':'')+'>Female</option></select></div>') +
     '</div>' +
     '<div class="field-row">' +
-    _fieldWrap('Height (cm)', '<input class="field" type="number" value="'+(u.height||175)+'" oninput="_setSetting(\'user.height\',parseFloat(this.value))">') +
-    _fieldWrap('Weight (kg)', '<input class="field" type="number" value="'+(u.weight||75)+'" step="0.1" oninput="_setSetting(\'user.weight\',parseFloat(this.value))">') +
+    _fieldWrap(hLabel, '<input class="field" type="number" value="'+(u.height||175)+'" oninput="_setSetting(\'user.height\',parseFloat(this.value))">') +
+    _fieldWrap(wLabel, '<input class="field" type="number" value="'+(u.weight||75)+'" step="0.1" oninput="_setSetting(\'user.weight\',parseFloat(this.value))">') +
     '</div>' +
     '<div class="field-row">' +
-    _fieldWrap('Goal Weight (kg)', '<input class="field" type="number" value="'+(u.goalWeight||70)+'" step="0.1" oninput="_setSetting(\'user.goalWeight\',parseFloat(this.value))">') +
+    _fieldWrap(gwLabel, '<input class="field" type="number" value="'+(u.goalWeight||70)+'" step="0.1" oninput="_setSetting(\'user.goalWeight\',parseFloat(this.value))">') +
     _fieldWrap('Body Fat %', '<input class="field" type="number" value="'+(u.targetBodyFat||15)+'" oninput="_setSetting(\'user.targetBodyFat\',parseFloat(this.value))">') +
     '</div>' +
 
@@ -93,7 +98,7 @@ function _tabProfile(u) {
     _infoStat('BMI', bmi.bmi+'', bmi.cat) +
     _infoStat('BMR', bmr+' kcal', 'At rest') +
     _infoStat('TDEE', tdee+' kcal', 'Total daily') +
-    _infoStat('Healthy wt', healthyRange.min+'–'+healthyRange.max+'kg', 'For your height') +
+    _infoStat('Healthy wt', healthyRange.min+'–'+healthyRange.max+wtUnit, 'For your height') +
     '</div>' +
     '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">' +
     '<button class="btn btn-secondary btn-sm" onclick="showLogWeight()">📊 Log Weight Today</button>' +
@@ -322,7 +327,7 @@ function _tabData() {
     '<div style="display:flex;flex-wrap:wrap;gap:12px">' +
     _infoStat('Workouts', String(ws.length), 'logged') +
     _infoStat('Member since', joinDate ? new Date(joinDate).toLocaleDateString('en-GB',{month:'short',year:'numeric'}) : '—', '') +
-    _infoStat('Version', 'v4.5.1', 'PulseCap') +
+    _infoStat('Version', 'v4.7.3', 'PulseCap') +
     '</div></div>' +
 
     _sectionTitle('Profiles') +
