@@ -33,13 +33,15 @@ reg('profiles', function() {
 
     '<div style="padding:0 16px 14px">' +
     '<button class="btn btn-secondary" style="margin-bottom:10px" onclick="showCreateProfile()">+ New Profile</button>' +
-    '<button class="btn" style="background:rgba(123,95,255,0.1);border:1px solid rgba(123,95,255,0.25);color:#7b5fff" onclick="loadDemoMode()">🤖 Try Demo Mode</button>' +
+    (activeId === 'demo' ? '' :
+      '<button class="btn" style="background:rgba(123,95,255,0.1);border:1px solid rgba(123,95,255,0.25);color:#7b5fff;margin-bottom:10px" onclick="openDemoProfile()">🤖 Open demo profile</button>' +
+      '<a href="?demo=1" class="btn btn-secondary" style="display:block;text-align:center;text-decoration:none;margin-bottom:0">Fresh demo snapshot ↗</a>') +
     '</div>' +
 
     sh('What is Demo Mode?') +
     '<div class="card card-solid" style="margin:0 16px 20px">' +
     '<div style="font-size:14px;color:var(--txt2);line-height:1.65">' +
-    'Demo Mode loads a complete sample profile with 35 workouts, 4 PRs, realistic body stats, and supplements — so you can explore every feature before setting up your own data. Your real profiles are never affected.' +
+    'Demo is a separate profile with sample workouts, PRs, body stats, and supplements. Switch back anytime from this screen — your real profiles stay on this device.' +
     '</div></div>' +
 
     '<div style="height:20px"></div>';
@@ -68,10 +70,23 @@ window.confirmDeleteProfile = function(id) {
   go('profiles');
 };
 
-window.loadDemoMode = function() {
-  S.createDemo();
+window.openDemoProfile = function() {
+  if (S.hasRealUserData && S.hasRealUserData() && S.activeId() !== 'demo') {
+    modal('Open demo profile?',
+      '<div style="font-size:15px;color:var(--txt2);line-height:1.65">Switch to the sample <strong>Demo Mode</strong> profile? Your real workout data stays saved — switch back here anytime.</div>',
+      '<button class="btn btn-primary" onclick="confirmOpenDemoProfile()" style="margin-top:12px">Open demo profile</button>' +
+      '<button class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Cancel</button>'
+    );
+    return;
+  }
+  confirmOpenDemoProfile();
+};
+
+window.confirmOpenDemoProfile = function() {
+  closeModal();
+  S.openDemoProfile();
   applyTheme(S.g('user.theme') || 'carbon');
-  toast('🤖 Demo mode loaded!', 'ok', 4000);
+  toast('🤖 Demo profile — switch back in Profiles anytime', 'ok', 4000);
   go('dashboard');
 };
 

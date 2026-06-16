@@ -132,14 +132,35 @@ const S = {
     }
   },
 
+  hasRealUserData() {
+    return (this.profiles() || []).some(p => {
+      if (p.id === 'demo' || p.isDemo) return false;
+      try {
+        const raw = localStorage.getItem(this._key + '_' + p.id);
+        if (!raw) return false;
+        const d = JSON.parse(raw);
+        return !!(d.onboarded || (d.workouts || []).length || (d.prs || []).length);
+      } catch (e) { return false; }
+    });
+  },
+
   /* ── Demo profile ── */
-  createDemo() {
+  createDemo(forceReseed) {
     const meta = this.getMeta();
     if (!meta.profiles) meta.profiles = [];
     const existing = meta.profiles.find(p => p.id === 'demo');
     if (!existing) {
       meta.profiles.push({ id:'demo', name:'Demo Mode', avatar:'🤖', created: new Date().toISOString(), isDemo:true });
       this.saveMeta(meta);
+    }
+    const demoKey = this._key + '_demo';
+    const hasDemoData = !!localStorage.getItem(demoKey);
+    if (!forceReseed && hasDemoData) {
+      meta.activeId = 'demo';
+      this.saveMeta(meta);
+      this._pid = 'demo';
+      this._load();
+      return;
     }
     /* Inject rich demo data */
     const demoData = {
@@ -236,11 +257,15 @@ const S = {
         { suppId:'whey', date:new Date().toISOString().slice(0,10), time:new Date().toISOString() }
       ]
     };
-    localStorage.setItem(this._key + '_demo', JSON.stringify(demoData));
+    localStorage.setItem(demoKey, JSON.stringify(demoData));
     meta.activeId = 'demo';
     this.saveMeta(meta);
     this._pid = 'demo';
     this._load();
+  },
+
+  openDemoProfile() {
+    this.createDemo(false);
   },
 
   /* ── Core data ops ── */

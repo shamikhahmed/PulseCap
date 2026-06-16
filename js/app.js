@@ -60,7 +60,7 @@ function bootDemoIfRequested() {
   try {
     var demo = new URLSearchParams(location.search).get('demo') === '1';
     if (demo && typeof S !== 'undefined' && S.createDemo) {
-      S.createDemo();
+      S.createDemo(true);
       return true;
     }
   } catch (e) { /* ignore */ }
