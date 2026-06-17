@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'pulsecap-v35';
+const CACHE = 'pulsecap-v36';
 const ASSETS = [
   './css/capricorn-core.css',
   './',
@@ -53,7 +53,18 @@ const ASSETS = [
   './icon.svg',
   './assets/apple-touch-icon-120.png',
   './assets/apple-touch-icon-152.png',
-  './assets/apple-touch-icon-180.png'
+  './assets/apple-touch-icon-180.png',
+  './js/capricorn-motion.js',
+  './js/capricorn-scene.js',
+  './js/capricorn-premium-nav.js',
+  './js/capricorn-cinematic.js',
+  './js/capricorn-deck.js',
+  './js/capricorn-deck-pro.js',
+  './js/capricorn-pitch.js',
+  './js/vendor/gsap.min.js',
+  './js/vendor/ScrollTrigger.min.js',
+  './privacy.html',
+  './changelog.html',
 ];
 
 self.addEventListener('install', e => {
