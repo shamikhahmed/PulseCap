@@ -131,6 +131,7 @@
   </style>
 </head>
 <body>
+<div class="cap-scroll-progress" aria-hidden="true"></div>
 <div class="cap-ambient" aria-hidden="true"></div>
 <a href="#view" style="position:absolute;top:-999px;left:-999px;z-index:9999;padding:8px 16px;background:var(--c1);color:#fff;border-radius:8px;font-size:14px;font-weight:700" onfocus="this.style.top='8px';this.style.left='8px'" onblur="this.style.top='-999px';this.style.left='-999px'">Skip to content</a>
 <div id="offline-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#ff453a;color:#fff;text-align:center;padding:10px;font-size:13px;font-weight:600">
@@ -247,6 +248,7 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
       navigator.serviceWorker.register('sw.js?v=35').then(function(r){ r.update(); }).catch(function(){});
     }
   </script>
+  <script src="js/capricorn-motion.js"></script>
   <script src="js/capricorn-premium-nav.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
