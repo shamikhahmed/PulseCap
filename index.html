@@ -130,7 +130,7 @@
     .no-scroll { scrollbar-width: none; }
   </style>
 </head>
-<body>
+<body data-cap-app="1">
 <div class="cap-scroll-progress" aria-hidden="true"></div>
 <div class="cap-ambient" aria-hidden="true"></div>
 <a href="#view" style="position:absolute;top:-999px;left:-999px;z-index:9999;padding:8px 16px;background:var(--c1);color:#fff;border-radius:8px;font-size:14px;font-weight:700" onfocus="this.style.top='8px';this.style.left='8px'" onblur="this.style.top='-999px';this.style.left='-999px'">Skip to content</a>
@@ -250,15 +250,11 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
     }
   </script>
   <script src="js/capricorn-motion.js"></script>
-  <script src="js/capricorn-scene.js"></script>
-  <script src="js/capricorn-premium-nav.js"></script>
-  <script src="js/vendor/gsap.min.js"></script>
-  <script src="js/vendor/ScrollTrigger.min.js"></script>
-  <script src="js/capricorn-cinematic.js"></script>
-  <script>
+<script src="js/capricorn-premium-nav.js"></script>
+<script>
     document.addEventListener('DOMContentLoaded', function () {
       if (window.CapPremiumNav) CapPremiumNav.init();
-      if (window.CapCinematic) CapCinematic.init({ canvas: '#cap-scene', sceneOpts: { intensity: 0.4 } });
+      if (window.CapricornMotion) CapricornMotion.init();
     });
   </script>
 </body>
