@@ -1283,7 +1283,7 @@ window.showExercisePicker = function(grp) {
   const curGrp = grp || 'chest';
   const exercises = ExDB.byGroup(curGrp);
   const tabs = groups.map(g =>
-    '<button class="pill'+(g===curGrp?' on':'')+'" onclick="showExercisePicker(\''+g+'\')" style="flex-shrink:0">'+g.charAt(0).toUpperCase()+g.slice(1)+'</button>'
+    '<button type="button" class="cap-tab pill'+(g===curGrp?' on':'')+'" role="tab" aria-selected="'+(g===curGrp)+'" onclick="showExercisePicker(\''+g+'\')">'+g.charAt(0).toUpperCase()+g.slice(1)+'</button>'
   ).join('');
   const list = exercises.map(ex =>
     '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">' +
@@ -1294,7 +1294,7 @@ window.showExercisePicker = function(grp) {
     '</div>'
   ).join('');
   modal('Exercise Library',
-    '<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:12px;margin-bottom:4px">'+tabs+'</div>' + list);
+    '<div class="cap-tab-bar cap-tab-bar--flush" role="tablist" aria-label="Muscle groups" style="margin-bottom:4px">'+tabs+'</div>' + list);
 };
 
 window.addExerciseToWorkout = function(name) {
@@ -1519,11 +1519,10 @@ function showBrowseExercises(filterGrp, filterQuery) {
     exercises = exercises.filter(function(e) { return !InjuriesDB.shouldAvoidExercise(e.n).avoid; });
   }
 
-  const filterTabs = '<div style="display:flex;overflow-x:auto;gap:8px;padding:0 16px 14px;-webkit-overflow-scrolling:touch">' +
+  const filterTabs = '<div class="cap-tab-bar" role="tablist" aria-label="Exercise groups">' +
     groups.map(function(g) {
       const active = (grp||'all') === g;
-      return '<button onclick="showBrowseExercises(\''+g+'\',\''+esc(query)+'\')" style="flex-shrink:0;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;white-space:nowrap;' +
-        (active ? 'background:var(--grad);color:#fff;border:none' : 'background:var(--bg3);border:1px solid var(--border);color:var(--txt3)') + '">' +
+      return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" onclick="showBrowseExercises(\''+g+'\',\''+esc(query)+'\')">' +
         g.charAt(0).toUpperCase()+g.slice(1)+'</button>';
     }).join('') + '</div>';
 

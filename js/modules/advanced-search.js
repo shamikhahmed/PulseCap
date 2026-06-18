@@ -230,14 +230,10 @@ reg('search', function(data) {
     '</div>';
 
   const chips =
-    '<div style="display:flex;gap:7px;padding:10px 16px 8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch">' +
+    '<div class="cap-tab-bar" role="tablist" aria-label="Search filters">' +
     CHIPS.map(function(chip) {
       const active = filter === chip.id;
-      return '<button onclick="go(\'search\',{q:\'' + qEsc + '\',filter:\'' + chip.id + '\'})" ' +
-        'style="flex-shrink:0;padding:7px 13px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;white-space:nowrap;border:1px solid ' +
-        (active ? 'var(--c1)' : 'var(--border)') + ';background:' +
-        (active ? 'var(--c1)' : 'var(--bg3)') + ';color:' +
-        (active ? '#fff' : 'var(--txt3)') + '">' + chip.label + '</button>';
+      return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" onclick="go(\'search\',{q:\'' + qEsc + '\',filter:\'' + chip.id + '\'})">' + chip.label + '</button>';
     }).join('') +
     '</div>';
 

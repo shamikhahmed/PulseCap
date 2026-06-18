@@ -25,8 +25,8 @@ reg('equipment-setup', function() {
   const cats = ['all', 'free_weights', 'racks', 'benches', 'cables', 'machines', 'legs', 'cardio', 'bodyweight', 'accessory'];
   const catLabels = { all: 'All', free_weights: 'Free Weights', racks: 'Racks', benches: 'Benches', cables: 'Cables', machines: 'Machines', legs: 'Legs', cardio: 'Cardio', bodyweight: 'BW', accessory: 'Accessories' };
 
-  const catTabs = '<div style="display:flex;overflow-x:auto;gap:6px;padding:12px 16px;-webkit-overflow-scrolling:touch">' +
-    cats.map(c => '<button onclick="_eqFilter=\'' + c + '\';go(\'equipment-setup\')" style="flex-shrink:0;padding:8px 14px;border-radius:20px;font-size:12px;font-weight:600;border:1px solid ' + (_eqFilter === c ? 'var(--c1)' : 'var(--border)') + ';background:' + (_eqFilter === c ? 'var(--c1)' : 'transparent') + ';color:' + (_eqFilter === c ? '#fff' : 'var(--txt3)') + ';cursor:pointer">' + (catLabels[c] || c) + '</button>').join('') +
+  const catTabs = '<div class="cap-tab-bar" role="tablist" aria-label="Equipment categories">' +
+    cats.map(c => '<button type="button" class="cap-tab' + (_eqFilter === c ? ' on' : '') + '" role="tab" aria-selected="' + (_eqFilter === c) + '" onclick="_eqFilter=\'' + c + '\';go(\'equipment-setup\')">' + (catLabels[c] || c) + '</button>').join('') +
     '</div>';
 
   const brandColors = {

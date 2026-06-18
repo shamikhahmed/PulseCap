@@ -327,7 +327,7 @@ function _tabData() {
     '<div style="display:flex;flex-wrap:wrap;gap:12px">' +
     _infoStat('Workouts', String(ws.length), 'logged') +
     _infoStat('Member since', joinDate ? new Date(joinDate).toLocaleDateString('en-GB',{month:'short',year:'numeric'}) : '—', '') +
-    _infoStat('Version', 'v4.7.3', 'PulseCap') +
+    _infoStat('Version', 'v4.7.4', 'PulseCap') +
     '</div></div>' +
 
     _sectionTitle('Profiles') +

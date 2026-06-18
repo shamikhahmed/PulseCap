@@ -120,10 +120,10 @@ reg('anatomy', function() {
   var filtered = muscles.filter(function(m) { return filter === 'all' || m.region === filter; });
 
   return '<div class="topbar"><div class="topbar-title">Muscle Anatomy</div></div>' +
-    '<div style="padding:12px 16px 4px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch">' +
+    '<div class="cap-tab-bar" role="tablist" aria-label="Muscle regions">' +
     filters.map(function(f) {
       var active = filter === f.id;
-      return '<button onclick="_setSetting(\'settings.anatomyFilter\',\''+f.id+'\');go(\'anatomy\')" style="flex-shrink:0;padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;white-space:nowrap;border:1px solid '+(active?'var(--c1)':'var(--border)')+';background:'+(active?'var(--c1)':'transparent')+';color:'+(active?'#fff':'var(--txt3)')+'">'+f.label+'</button>';
+      return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" onclick="_setSetting(\'settings.anatomyFilter\',\''+f.id+'\');go(\'anatomy\')">'+f.label+'</button>';
     }).join('') +
     '</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px">' +
