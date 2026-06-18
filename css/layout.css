@@ -449,3 +449,10 @@ input[type=range] {
     box-shadow: 0 0 60px rgba(0,0,0,.45);
   }
 }
+
+/* Fast app shell — solid chrome, no blur compositing on mobile */
+body[data-cap-app="1"] #nav,
+body[data-cap-app="1"] .topbar {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}

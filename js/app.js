@@ -23,10 +23,11 @@ function go(id, data) {
     const v = document.getElementById('view');
     if (!v) return;
     const scrollY = preserveScroll ? v.scrollTop : 0;
+    const fastApp = document.body && document.body.getAttribute('data-cap-app') === '1';
     /* Boot splash in index.html has no .screen class — clear it on first navigation */
     if (!v.querySelector('.screen')) v.innerHTML = '';
     const div = document.createElement('div');
-    div.className = sameScreen ? 'screen' : 'screen screen-enter';
+    div.className = (sameScreen || fastApp) ? 'screen' : 'screen screen-enter';
     div.innerHTML = html;
     const prev = v.querySelector('.screen');
     if (prev) prev.remove();
@@ -35,7 +36,9 @@ function go(id, data) {
       v.scrollTop = scrollY;
     } else {
       v.scrollTop = 0;
-      requestAnimationFrame(function() { div.classList.add('screen-enter-active'); });
+      if (!fastApp) {
+        requestAnimationFrame(function() { div.classList.add('screen-enter-active'); });
+      }
     }
     const nav = document.getElementById('nav');
     const noNav = ['onboarding', 'intro', 'briefing'];

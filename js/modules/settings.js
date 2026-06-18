@@ -20,11 +20,11 @@ reg('settings', function(opts) {
 
   const tabList = ['profile','training','supplements','nutrition','appearance','notifications','data'];
 
-  const tabBar = '<div style="display:flex;overflow-x:auto;gap:8px;padding:12px 16px 4px;-webkit-overflow-scrolling:touch;scrollbar-width:none">' +
+  const tabBar = '<div class="cap-tab-bar" role="tablist" aria-label="Settings">' +
     tabList.map(function(t) {
       const active = _settingsTab === t;
       const labels = {profile:'👤 Profile',training:'🏋️ Training',supplements:'💊 Supps',nutrition:'🥗 Nutrition',appearance:'🎨 Style',notifications:'🔔 Alerts',data:'💾 Data'};
-      return '<button onclick="go(\'settings\',{tab:\''+t+'\'})" style="flex-shrink:0;padding:8px 16px;border-radius:20px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;white-space:nowrap;border:1px solid '+(active?'var(--c1)':'var(--border)')+';background:'+(active?'var(--c1)':'transparent')+';color:'+(active?'#fff':'var(--txt3)')+'">'+
+      return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" onclick="go(\'settings\',{tab:\''+t+'\'})">' +
         (labels[t]||t) + '</button>';
     }).join('') + '</div>';
 
