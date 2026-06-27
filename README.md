@@ -71,7 +71,7 @@ Built by Shamikh Ahmed across 14 development sessions as a production-grade pers
 - **Legacy migration** — auto-imports single-profile data
 
 ### ⚙️ Settings
-- **8 themes** — Carbon, Aurora, Sunset, Midnight, Electric, Stealth, Forest, Light
+- **Dark & light modes** — Settings → Appearance
 - **Nav tab customization** — toggle which tabs appear (min 3)
 - **6 training splits** — PPL, Upper/Lower, Full Body, Bro Split, Strength, Home
 - **Equipment selection** — filters exercises by available gear

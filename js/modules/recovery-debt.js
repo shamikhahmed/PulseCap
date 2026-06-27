@@ -152,8 +152,8 @@ const DailyDecision = {
     const plateauRisk = FatigueForecast.plateauRisk();
 
     if (debt >= 80 || readiness < 30) return {
-      decision: 'rest', title: 'Rest Day Required', emoji: '🛌', color: '#ff453a',
-      reason: 'Recovery debt critical (' + debt + '/100). Your body needs full rest to adapt and prevent injury.',
+      decision: 'rest', title: 'Recovery Priority', emoji: '🛌', color: '#ff453a',
+      reason: 'Recovery debt critical (' + debt + '/100). Favor rest or very light movement today — you can still open a session if you choose.',
       actions: ['Sleep 8+ hours tonight','Light walk only (20 min max)','Prioritise nutrition and hydration','Foam roll or gentle stretching'],
       confidence: 95
     };

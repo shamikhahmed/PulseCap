@@ -50,7 +50,7 @@ const INTRO_SLIDES = [
       '📏 Body stats, measurements, and progress tracking',
       '💊 Supplement stack with timing reminders',
       '😴 Recovery hub with personalised readiness score',
-      '6 premium themes — Carbon, Forest, Arctic and more'
+      '🌙 Dark & light modes — switch anytime in Settings'
     ]
   }
 ];

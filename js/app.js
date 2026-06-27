@@ -46,6 +46,9 @@ function go(id, data) {
     document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
     const nb = document.getElementById('nb-' + id);
     if (nb) nb.classList.add('on');
+    document.querySelectorAll('.cap-side-btn').forEach(b => b.classList.remove('on'));
+    const sb = document.getElementById('cap-sb-' + id);
+    if (sb) sb.classList.add('on');
   } catch(e) {
     console.error('go(' + id + ')', e);
     const v = document.getElementById('view');
@@ -64,6 +67,10 @@ function bootDemoIfRequested() {
     var demo = new URLSearchParams(location.search).get('demo') === '1';
     if (demo && typeof S !== 'undefined' && S.createDemo) {
       S.createDemo(true);
+      if (typeof CapDemo !== 'undefined') {
+        CapDemo.markActive();
+        CapDemo.showBanner('pulsecap', '<strong>Demo mode</strong> — Alex Khan sample athlete. Data stays on this device.');
+      }
       return true;
     }
   } catch (e) { /* ignore */ }
@@ -128,10 +135,10 @@ function sh(title, action, onclick) {
     (action?'<div class="sh-s tappable" onclick="'+onclick+'">'+esc(action)+'</div>':'') + '</div>';
 }
 function emptyState(icon, title, sub, btnLabel, btnCb) {
-  return '<div class="empty"><div class="empty-icon">'+icon+'</div>' +
-    '<div class="empty-title">'+esc(title)+'</div>' +
-    '<div class="empty-sub">'+esc(sub)+'</div>' +
-    (btnLabel?'<button class="btn btn-secondary btn-sm" onclick="'+btnCb+'">'+esc(btnLabel)+'</button>':'') + '</div>';
+  return '<div class="cap-empty"><div class="cap-empty__icon">'+icon+'</div>' +
+    '<div class="cap-empty__title">'+esc(title)+'</div>' +
+    '<div class="cap-empty__body">'+esc(sub)+'</div>' +
+    (btnLabel?'<div class="cap-empty__cta"><button class="btn btn-secondary btn-sm" onclick="'+btnCb+'">'+esc(btnLabel)+'</button></div>':'') + '</div>';
 }
 function modal(title, bodyHtml, footerHtml) {
   closeModal();
@@ -276,22 +283,21 @@ function initCanvas() {
 /* ══════════════════════════════════════════════════════
    THEME MANAGER
 ══════════════════════════════════════════════════════ */
+function normalizePulseTheme(id) {
+  return id === 'light' ? 'light' : 'dark';
+}
+
 function applyTheme(t) {
-  document.documentElement.setAttribute('data-theme', t||'carbon');
-  S.set('user.theme', t||'carbon');
+  const theme = normalizePulseTheme(t);
+  document.documentElement.setAttribute('data-theme', theme);
+  S.set('user.theme', theme);
+  S.set('user.mode', theme);
   if (window._fitnessCanvas && window._fitnessCanvas.refresh) window._fitnessCanvas.refresh();
 }
 window.applyTheme = applyTheme;
 
 function applyMode(mode) {
-  if (mode === 'light') {
-    document.documentElement.setAttribute('data-theme', 'light');
-    S.set('user.mode', 'light');
-  } else {
-    const savedTheme = S.g('user.theme') || 'carbon';
-    document.documentElement.setAttribute('data-theme', savedTheme === 'light' ? 'carbon' : savedTheme);
-    S.set('user.mode', 'dark');
-  }
+  applyTheme(mode === 'light' ? 'light' : 'dark');
   toast((mode === 'light' ? '☀️ Light mode' : '🌙 Dark mode'), 'info');
 }
 window.applyMode = applyMode;
@@ -739,6 +745,23 @@ const SplitEngine = {
     const resolved = this.resolveExercises(day.exercises || []);
     return Object.assign({}, day, { exercises: resolved.exercises, _swaps: resolved.swaps });
   },
+  listSplitDays(split) {
+    const user = S.g('user') || {};
+    return this._getSplitDays(split || user.split || 'ppl');
+  },
+  setSplitDay(dayNum) {
+    const days = this.listSplitDays();
+    const n = Math.max(1, Math.min(days.length, parseInt(dayNum, 10) || 1));
+    S.set('user.splitDay', n);
+    return n;
+  },
+  isScheduledRestDay() {
+    const user = S.g('user') || {};
+    const gymDays = user.gymDays;
+    if (!gymDays || !gymDays.length) return false;
+    const dayNames = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
+    return !gymDays.includes(dayNames[new Date().getDay()]);
+  },
   getSplitDay() {
     try {
       const user = S.g('user') || {};
@@ -795,6 +818,46 @@ const SplitEngine = {
   }
 };
 window.SplitEngine = SplitEngine;
+
+window.pickSplitDay = function(dayNum) {
+  SplitEngine.setSplitDay(dayNum);
+  if (typeof toast === 'function') toast('Session updated', 'ok');
+  const page = (typeof S !== 'undefined' && S.currentPage) ? S.currentPage : 'workout';
+  if (typeof go === 'function') go(page === 'dashboard' ? 'dashboard' : 'workout');
+};
+
+window.toggleGymDay = function(day) {
+  const user = S.g('user') || {};
+  const gymDays = (user.gymDays || []).slice();
+  const idx = gymDays.indexOf(day);
+  if (idx >= 0) gymDays.splice(idx, 1);
+  else gymDays.push(day);
+  S.set('user.gymDays', gymDays);
+  if (typeof toast === 'function') toast('Training days updated', 'ok');
+  if (typeof go === 'function') go('settings', { tab: 'training' });
+};
+
+window.renderSplitDayPicker = function(opts) {
+  opts = opts || {};
+  const user = S.g('user') || {};
+  const days = SplitEngine.listSplitDays();
+  const active = user.splitDay || 1;
+  const compact = !!opts.compact;
+  const chips = days.map(function(d, i) {
+    const num = i + 1;
+    const on = num === active;
+    const label = compact ? String(num) : (d.n.split('—')[0].split(' - ')[0].trim().slice(0, 14));
+    return '<button type="button" onclick="pickSplitDay(' + num + ')" style="flex-shrink:0;padding:' + (compact ? '8px 12px' : '10px 14px') + ';border-radius:12px;border:1.5px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'rgba(0,213,255,0.12)' : 'var(--bg3)') + ';color:' + (on ? 'var(--c1)' : 'var(--txt2)') + ';font-size:' + (compact ? '12px' : '11px') + ';font-weight:700;cursor:pointer;touch-action:manipulation;white-space:nowrap">' + esc(label) + '</button>';
+  }).join('');
+  const restNote = SplitEngine.isScheduledRestDay()
+    ? '<div style="font-size:12px;color:var(--c5);margin-bottom:10px;line-height:1.45">📅 Not a scheduled gym day — pick any session below or train anyway.</div>'
+    : '';
+  return '<div style="margin-bottom:14px">' +
+    '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Choose today\'s session</div>' +
+    restNote +
+    '<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;-webkit-overflow-scrolling:touch">' + chips + '</div>' +
+    '</div>';
+};
 
 /* ══════════════════════════════════════════════════════
    ENGINE — WEIGHT SUGGESTIONS
@@ -1586,6 +1649,13 @@ function buildNav() {
     return '<button class="nb press" id="nb-'+t.id+'" onclick="go(\''+t.id+'\');haptic(12)">' +
       t.icon + '<span>'+t.label+'</span></button>';
   }).join('');
+  const sidebar = document.getElementById('cap-nav-sidebar');
+  if (sidebar) {
+    sidebar.innerHTML = '<div class="cap-sidebar-brand">PulseCap</div>' + tabs.map(function(t) {
+      return '<button type="button" class="cap-side-btn" id="cap-sb-'+t.id+'" onclick="go(\''+t.id+'\');haptic(12)">' +
+        '<span>'+t.icon+'</span><span>'+t.label+'</span></button>';
+    }).join('');
+  }
 }
 window.buildNav = buildNav;
 

@@ -76,6 +76,6 @@ test.describe('PulseCap smoke', () => {
     });
     await page.waitForTimeout(600);
     await expect(page.getByText('No workouts yet')).toBeVisible({ timeout: 10000 });
-    await expect(page.locator('.empty').getByRole('button', { name: /Start Workout/i })).toBeVisible();
+    await expect(page.locator('.cap-empty').getByRole('button', { name: /Start Workout/i })).toBeVisible();
   });
 });

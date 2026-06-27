@@ -170,7 +170,7 @@ const S = {
         gender: 'male', age: 26, units: 'metric', height: 180, weight: 82,
         goalWeight: 78, split: 'ppl', weeklyGoal: 4,
         equipment: ['barbell','dumbbell','cables','machine','bar'],
-        coachPersonality: 'maya', theme: 'carbon', mode: 'dark',
+        coachPersonality: 'maya', theme: 'dark', mode: 'dark',
         splitDay: 2, joinDate: new Date(Date.now()-60*864e5).toISOString(),
         calorieTarget: 2400, proteinTarget: 165, waterTarget: 8
       },

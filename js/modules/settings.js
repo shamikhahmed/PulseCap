@@ -154,6 +154,18 @@ function _tabTraining(u) {
     _sectionTitle('Training Split') +
     _selectWrap('Active Split', 'user.split', u.split||'ppl', splitOpts) +
 
+    _sectionTitle('Today\'s Session') +
+    (typeof renderSplitDayPicker === 'function' ? renderSplitDayPicker() : '') +
+
+    _sectionTitle('Gym Days') +
+    '<div style="font-size:12px;color:var(--txt3);margin-bottom:10px;line-height:1.45">Pick the days you usually train. Other days show as optional rest — you can still choose any workout.</div>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">' +
+    [{id:'mon',l:'Mon'},{id:'tue',l:'Tue'},{id:'wed',l:'Wed'},{id:'thu',l:'Thu'},{id:'fri',l:'Fri'},{id:'sat',l:'Sat'},{id:'sun',l:'Sun'}].map(function(d) {
+      const on = (u.gymDays || []).includes(d.id);
+      return '<button type="button" onclick="toggleGymDay(\''+d.id+'\')" style="min-width:44px;padding:10px 12px;border-radius:12px;border:1.5px solid '+(on?'var(--c1)':'var(--border)')+';background:'+(on?'rgba(0,213,255,0.12)':'var(--bg3)')+';color:'+(on?'var(--c1)':'var(--txt3)')+';font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">'+d.l+'</button>';
+    }).join('') +
+    '</div>' +
+
     _sectionTitle('My Equipment') +
     '<button class="btn btn-primary" onclick="go(\'equipment-setup\')" style="width:100%;margin-bottom:8px">🏋️ Configure Equipment</button>' +
     '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-bottom:14px">'+esc(eqLabel)+' — Life Fitness, Technogym, home, bodyweight & more</div>' +
@@ -209,16 +221,9 @@ function _tabNutrition(u) {
 }
 
 function _tabAppearance(u) {
-  const themes = [
-    {id:'carbon',label:'Carbon',grad:'linear-gradient(135deg,#00d5ff,#6b5fff)'},
-    {id:'stealth',label:'Stealth',grad:'linear-gradient(135deg,#f5c842,#e8a020)'},
-    {id:'forest',label:'Forest',grad:'linear-gradient(135deg,#10B981,#059669)'},
-    {id:'arctic',label:'Arctic',grad:'linear-gradient(135deg,#007AFF,#5856D6)'},
-    {id:'electric',label:'Electric',grad:'linear-gradient(135deg,#00f0ff,#0080ff)'},
-    {id:'sunset',label:'Sunset',grad:'linear-gradient(135deg,#ff6b35,#f7931e)'},
-    {id:'aurora',label:'Aurora',grad:'linear-gradient(135deg,#a855f7,#22d3ee)'},
-    {id:'midnight',label:'Midnight',grad:'linear-gradient(135deg,#1e3a5f,#0f172a)'},
-    {id:'light',label:'Light',grad:'linear-gradient(135deg,#f2f2f7,#e5e5ea)'}
+  const modes = [
+    {id:'dark', label:'Dark', grad:'linear-gradient(135deg,#0a0a0f,#18181f)'},
+    {id:'light', label:'Light', grad:'linear-gradient(135deg,#f2f2f7,#ffffff)'}
   ];
   const coaches = [
     {id:'alex',e:'🔥',n:'Alex — Drill Sergeant'},
@@ -227,13 +232,13 @@ function _tabAppearance(u) {
     {id:'zen',e:'🧘',n:'Zen — Mindful Coach'},
     {id:'rex',e:'💪',n:'Rex — The Powerlifter'}
   ];
-  const cur = u.theme || 'carbon';
+  const cur = (u.theme === 'light' || u.mode === 'light') ? 'light' : 'dark';
   const curCoach = u.coachPersonality || 'maya';
 
   return '<div style="padding:16px">' +
-    _sectionTitle('Theme') +
+    _sectionTitle('Appearance') +
     '<div class="theme-swatches">' +
-    themes.map(t =>
+    modes.map(t =>
       '<div class="theme-item" onclick="applyTheme(\''+t.id+'\');_setSetting(\'user.theme\',\''+t.id+'\');go(\'settings\',{tab:\'appearance\'})">' +
       '<div class="theme-swatch'+(cur===t.id?' on':'')+'" style="background:'+t.grad+'"></div>' +
       '<div class="theme-label">'+esc(t.label)+'</div>' +

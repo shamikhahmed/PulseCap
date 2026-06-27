@@ -85,7 +85,7 @@ window.openDemoProfile = function() {
 window.confirmOpenDemoProfile = function() {
   closeModal();
   S.openDemoProfile();
-  applyTheme(S.g('user.theme') || 'carbon');
+  applyTheme(S.g('user.theme') || S.g('user.mode') || 'dark');
   toast('🤖 Demo profile — switch back in Profiles anytime', 'ok', 4000);
   go('dashboard');
 };
