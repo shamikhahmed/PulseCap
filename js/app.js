@@ -18,7 +18,9 @@ const SCREEN_ALIASES = {
   'physique-archetype': { id: 'physique', data: { tab: 'archetype' } },
   'physique-timeline': { id: 'physique', data: { tab: 'timeline' } },
   'recovery-debt': { id: 'recovery', data: { tab: 'debt' } },
-  'training-style': { id: 'training-intel', data: { tab: 'style' } }
+  'training-style': { id: 'training-intel', data: { tab: 'style' } },
+  coach: 'assistant',
+  intro: { id: 'onboarding', data: { showIntro: true } }
 };
 window.SCREEN_ALIASES = SCREEN_ALIASES;
 

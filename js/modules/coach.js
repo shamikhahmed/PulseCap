@@ -110,37 +110,10 @@ reg('briefing', function() {
 });
 
 reg('coach', function() {
-  const user = S.g('user') || {};
-  const personality = user.coachPersonality || 'maya';
-  const cm = COACH_META[personality] || COACH_META.maya;
-  const score = ReadinessEngine.score();
-  const rl = ReadinessEngine.label(score);
-  const insights = CoachEngine.insights();
-  const weekReport = CoachEngine.weeklyReport();
-  const splitDay = SplitEngine.getSplitDay();
-  const cardioRec = CoachEngine.cardioRec(splitDay, score);
-  const userSupps = S.g('supplements') || [];
-  const rec = ReadinessEngine.recommendation(score);
-  const coachQuote = ReadinessEngine.coachQuote(score, personality);
-
-  const quote = CoachEngine.motivationalQuote();
-  return '<div class="coach-hero">' +
-    '<div class="coach-avatar">'+cm.emoji+'</div>' +
-    '<div class="coach-name-text">'+esc(cm.name)+' — '+esc(cm.title)+'</div>' +
-    '<div class="coach-quote">"'+esc(coachQuote)+'"</div>' +
-    '</div>' +
-    _readinessBlock(score, rl, rec) +
-    _splitSuggestionBlock(splitDay, cardioRec, score, user) +
-    _progressionAnalysisBlock() +
-    _weeklySummaryBlock(weekReport) +
-    _weeklyInsightsBlock(insights) +
-    (quote ? sh('Daily Inspiration') + '<div style="margin:0 16px 14px;padding:16px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;border-left:3px solid var(--c1)">' +
-      '<div style="font-size:14px;color:var(--txt2);line-height:1.65;font-style:italic">'+esc(quote)+'</div></div>' : '') +
-    _suppTimingBlock(userSupps, user) +
-    _deloadBlock(user) +
-    '<div style="padding:0 16px 16px"><button type="button" class="btn btn-secondary" onclick="go(\'training-intel\')" style="width:100%">🧠 Training Intelligence →</button><button type="button" class="btn btn-secondary" onclick="go(\'injury-risk\')" style="margin-top:8px;width:100%">🦴 Joint Health Monitor →</button><button type="button" class="btn btn-secondary" onclick="go(\'visualizations\')" style="margin-top:8px;width:100%">📡 Analytics & Visualizations →</button></div>' +
-    '<div style="padding:0 16px 16px"><button type="button" class="btn btn-secondary" onclick="go(\'encyclopedia\')" style="width:100%">📖 Fitness Encyclopedia →</button></div>' +
-    '<div style="height:20px"></div>';
+  /* Deprecated — SCREEN_ALIASES maps coach → assistant before this runs via go(). */
+  return '<div class="topbar"><div class="topbar-title">Smart Coach</div></div>' +
+    '<div style="padding:24px;color:var(--txt3);line-height:1.5">Coach moved to Learn → Smart Coach.</div>' +
+    '<div style="padding:0 16px 24px"><button type="button" class="btn btn-primary" onclick="go(\'assistant\')">Open Smart Coach</button></div>';
 });
 
 function _readinessBlock(score, rl, rec) {

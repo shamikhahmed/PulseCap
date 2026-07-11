@@ -134,6 +134,7 @@ window._introNext = function() {
 };
 
 reg('intro', function() {
+  /* Deprecated — aliased to onboarding with showIntro (P3). */
   return _renderIntro(_introSlide);
 });
 
@@ -414,6 +415,15 @@ function _summaryRow(icon, label, val) {
     '</div>';
 }
 
-reg('onboarding', function() {
+reg('onboarding', function(data) {
+  if (data && data.showIntro) {
+    return _renderIntro(_introSlide);
+  }
   return OB_STEPS[_obStep] ? OB_STEPS[_obStep]() : OB_STEPS[1]();
 });
+
+window.migrateCoachIntroMerge = function() {
+  if (S.g('settings.migrations.coachIntroMerge') === 1) return false;
+  S.set('settings.migrations.coachIntroMerge', 1);
+  return true;
+};
