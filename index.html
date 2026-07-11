@@ -203,6 +203,7 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
   <script>
     S.init();
     if (typeof migratePhysiqueMerge === "function") migratePhysiqueMerge();
+    if (typeof migrateRecoveryMerge === "function") migrateRecoveryMerge();
     const _isDemo = bootDemoIfRequested();
     const _savedTheme = S.g('user.theme') || S.g('user.mode') || 'dark';
     applyTheme(_savedTheme);

@@ -215,7 +215,7 @@ window.DailyDecision = DailyDecision;
 /* ══════════════════════════════════════════════════════
    RECOVERY DEBT SCREEN
 ══════════════════════════════════════════════════════ */
-reg('recovery-debt', function() {
+window.renderRecoveryDebtBody = function() {
   const debt = RecoveryDebtEngine.calculate();
   const label = RecoveryDebtEngine.label(debt);
   const decision = DailyDecision.decide();
@@ -258,10 +258,7 @@ reg('recovery-debt', function() {
 
   const riskColor = (v) => v >= 70 ? '#ff453a' : v >= 40 ? '#f5c842' : '#30d158';
 
-  return '<div class="topbar">' +
-    '<button type="button" class="topbar-icon press" onclick="go(\'dashboard\')" style="font-size:20px">‹</button>' +
-    '<div class="topbar-title">Recovery Debt</div>' +
-    '</div>' +
+  return '' +
 
     // Hero
     '<div style="padding:20px 16px;text-align:center">' +
@@ -330,4 +327,9 @@ reg('recovery-debt', function() {
     '</div>' +
 
     '<div style="height:20px"></div>';
+
+};
+
+reg('recovery-debt', function() {
+  return window.renderRecoveryUnified({ tab: 'debt' });
 });

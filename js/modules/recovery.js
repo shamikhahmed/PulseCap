@@ -1,25 +1,46 @@
 'use strict';
 /* ── PulseCap v4 — Recovery Screen ── */
 
-reg('recovery', function() {
+function _recoveryTabBar(tab) {
+  const tabs = [{ id: 'checkin', label: 'Check-in' }, { id: 'debt', label: 'Debt' }];
+  return '<div style="display:flex;gap:6px;padding:8px 16px 12px">' +
+    tabs.map(function(t) {
+      const on = t.id === tab;
+      return '<button type="button" onclick="go(\'recovery\',{tab:\'' + t.id + '\'})" class="press" style="flex-shrink:0;padding:8px 14px;border-radius:999px;border:1px solid ' +
+        (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'rgba(var(--c1-rgb),0.15)' : 'var(--bg3)') +
+        ';color:' + (on ? 'var(--c1)' : 'var(--txt2)') + ';font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">' + esc(t.label) + '</button>';
+    }).join('') + '</div>';
+}
+
+window.renderRecoveryUnified = function(data) {
+  const tab = (data && data.tab) || 'checkin';
+  const shell = '<div class="topbar"><button type="button" onclick="go(\'bodymap\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Recovery</div></div>' + _recoveryTabBar(tab);
+  if (tab === 'debt') {
+    return shell + (typeof window.renderRecoveryDebtBody === 'function' ? window.renderRecoveryDebtBody() : '');
+  }
   const rec = S.g('recovery') || {};
-  const user = S.g('user') || {};
   const loggedToday = rec.date === today();
   const score = ReadinessEngine.score();
   const rl = ReadinessEngine.label(score);
-
-  return '<div class="topbar"><div class="topbar-title">Recovery</div></div>' +
+  return shell +
     _readinessSummary(score, rl) +
     (loggedToday ? _loggedView(rec) : _checkInForm(rec)) +
     _recoveryHistoryChart() +
     _sleepInsights() +
     _recoveryRecs(score) +
-    '<div style="padding:0 16px 16px;display:flex;flex-direction:column;gap:8px">' +
-    '<button type="button" class="btn btn-secondary" onclick="go(\'body-intelligence\')" style="width:100%">🧬 Body Intelligence →</button>' +
-    '<button type="button" class="btn btn-secondary" onclick="go(\'recovery-debt\')" style="width:100%">📊 Recovery Debt &amp; Forecast →</button>' +
-    '</div>' +
+    '<div style="padding:0 16px 16px"><button type="button" class="btn btn-secondary" onclick="go(\'body-intelligence\')" style="width:100%">🧬 Body Intelligence →</button></div>' +
     '<div style="height:20px"></div>';
+};
+
+reg('recovery', function(data) {
+  return window.renderRecoveryUnified(data);
 });
+
+window.migrateRecoveryMerge = function() {
+  if (S.g('settings.migrations.recoveryMerge') === 1) return false;
+  S.set('settings.migrations.recoveryMerge', 1);
+  return true;
+};
 
 function _readinessSummary(score, rl) {
   return '<div class="readiness-card">' +
