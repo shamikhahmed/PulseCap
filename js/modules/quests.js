@@ -734,9 +734,9 @@ reg('academy', function(data) {
 });
 
 /* ══════════════════════════════════════════════════════
-   PHYSIQUE TIMELINE SCREEN
+   PHYSIQUE TIMELINE SCREEN (body for Physique sub-tab)
 ══════════════════════════════════════════════════════ */
-reg('physique-timeline', function() {
+window.renderPhysiqueTimelineBody = function() {
   const points = PhysiqueTimeline.getPoints();
   const changes = PhysiqueTimeline.changes();
 
@@ -792,4 +792,10 @@ reg('physique-timeline', function() {
     ) +
 
     '<div style="height:20px"></div>';
+};
+
+reg('physique-timeline', function() {
+  /* Deprecated route — alias + unified Physique tabs (P3). */
+  return window.renderPhysiqueUnified({ tab: 'timeline' });
 });
+

@@ -6,7 +6,7 @@
 const _screens = {};
 let _currentScreen = null;
 
-/** Old go() ids → canonical screen. Keep registered screens until P3 deletes them. */
+/** Old go() ids → canonical screen. Keep registered screens until later delete phase. */
 const SCREEN_ALIASES = {
   today: 'dashboard',
   home: 'dashboard',
@@ -14,9 +14,22 @@ const SCREEN_ALIASES = {
   learn: 'hub',
   me: 'settings',
   train: 'workout',
-  body: 'bodymap'
+  body: 'bodymap',
+  'physique-archetype': { id: 'physique', data: { tab: 'archetype' } },
+  'physique-timeline': { id: 'physique', data: { tab: 'timeline' } }
 };
 window.SCREEN_ALIASES = SCREEN_ALIASES;
+
+function resolveScreenAlias(id, data) {
+  const a = SCREEN_ALIASES[id];
+  if (!a) return { id: id, data: data };
+  if (typeof a === 'string') return { id: a, data: data };
+  return {
+    id: a.id,
+    data: Object.assign({}, data || {}, a.data || {})
+  };
+}
+window.resolveScreenAlias = resolveScreenAlias;
 
 /** Which bottom-nav tab stays lit for nested screens (P2 IA). */
 const NAV_PARENT = {
@@ -39,7 +52,9 @@ window.listScreens = function() { return Object.keys(_screens).sort(); };
 
 function go(id, data) {
   try {
-    if (SCREEN_ALIASES[id]) id = SCREEN_ALIASES[id];
+    const resolved = resolveScreenAlias(id, data);
+    id = resolved.id;
+    data = resolved.data;
     if (!_screens[id]) throw new Error('Screen "' + id + '" not registered');
     const sameScreen = id === _currentScreen;
     const SCROLL_PRESERVE_SCREENS = { bodymap: 1, recovery: 1 };

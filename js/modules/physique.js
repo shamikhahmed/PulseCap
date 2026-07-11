@@ -278,9 +278,26 @@ const GrowthSimulator = {
 window.GrowthSimulator = GrowthSimulator;
 
 /* ══════════════════════════════════════════════════════
-   PHYSIQUE SCREEN
+   PHYSIQUE SCREEN (Score | Archetype | Timeline)
 ══════════════════════════════════════════════════════ */
-reg('physique', function() {
+function _physiqueTabBar(tab) {
+  const tabs = [
+    { id: 'score', label: 'Score' },
+    { id: 'archetype', label: 'Archetype' },
+    { id: 'timeline', label: 'Timeline' }
+  ];
+  return '<div style="display:flex;gap:6px;padding:8px 16px 12px;overflow-x:auto">' +
+    tabs.map(function(t) {
+      const on = t.id === tab;
+      return '<button type="button" onclick="go(\'physique\',{tab:\'' + t.id + '\'})" class="press" style="flex-shrink:0;padding:8px 14px;border-radius:999px;border:1px solid ' +
+        (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'rgba(var(--c1-rgb),0.15)' : 'var(--bg3)') +
+        ';color:' + (on ? 'var(--c1)' : 'var(--txt2)') + ';font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">' +
+        esc(t.label) + '</button>';
+    }).join('') +
+    '</div>';
+}
+
+function _physiqueScoreBody() {
   const report = PhysiqueEngine.report();
   const { m, vTaper, symmetry, muscularity, conditioning, athleticism, aesthetic } = report;
   const projections = GrowthSimulator.projections();
@@ -338,9 +355,7 @@ reg('physique', function() {
 
   const noDataMsg = !m ? '<div style="margin:0 16px 14px;background:rgba(255,159,10,0.08);border:1px solid rgba(255,159,10,0.2);border-radius:14px;padding:14px;font-size:13px;color:var(--txt2);line-height:1.6">📊 Add body measurements in <button type="button" onclick="go(\'bodymap\')" style="background:none;border:none;color:var(--c1);font-weight:700;cursor:pointer;font-size:13px;padding:0">Body tab</button> to unlock physique scoring.</div>' : '';
 
-  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Physique Analysis</div></div>' +
-
-    noDataMsg +
+  return noDataMsg +
 
     (aesthetic ? '<div style="padding:20px 16px 14px;text-align:center">' +
       '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Aesthetic Score</div>' +
@@ -396,4 +411,29 @@ reg('physique', function() {
     '</div>' +
 
     '<div style="height:20px"></div>';
+}
+
+window.renderPhysiqueUnified = function(data) {
+  const tab = (data && data.tab) || 'score';
+  const shell = '<div class="topbar"><button type="button" onclick="go(\'bodymap\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Physique</div></div>' +
+    _physiqueTabBar(tab);
+  if (tab === 'archetype') {
+    return shell + (typeof window.renderPhysiqueArchetypeBody === 'function' ? window.renderPhysiqueArchetypeBody(data) : '<div style="padding:24px;color:var(--txt3)">Archetype loading…</div>');
+  }
+  if (tab === 'timeline') {
+    return shell + (typeof window.renderPhysiqueTimelineBody === 'function' ? window.renderPhysiqueTimelineBody() : '<div style="padding:24px;color:var(--txt3)">Timeline loading…</div>');
+  }
+  return shell + _physiqueScoreBody();
+};
+
+reg('physique', function(data) {
+  return window.renderPhysiqueUnified(data);
 });
+
+/** One-time UI migration flag (no store key renames — measurements already shared). */
+window.migratePhysiqueMerge = function() {
+  if (typeof S === 'undefined') return false;
+  if (S.g('settings.migrations.physiqueMerge') === 1) return false;
+  S.set('settings.migrations.physiqueMerge', 1);
+  return true;
+};

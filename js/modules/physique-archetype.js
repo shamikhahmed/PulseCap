@@ -400,7 +400,7 @@ const PhysiquePreview = {
           S.set('physiqueProgressPhoto', reader.result);
           haptic(30);
           toast('Progress photo saved — offline on your device', 'ok');
-          go('physique-archetype', { id: PhysiqueArchetypes.getUserArchetype() });
+          go('physique',Object.assign({tab:'archetype'},{ id: PhysiqueArchetypes.getUserArchetype() }));
         } catch (e) { toast('Photo too large — try a smaller image', 'err'); }
       };
       reader.readAsDataURL(file);
@@ -411,9 +411,9 @@ const PhysiquePreview = {
 window.PhysiquePreview = PhysiquePreview;
 
 /* ══════════════════════════════════════════════════════
-   PHYSIQUE ARCHETYPE SCREEN
+   PHYSIQUE ARCHETYPE SCREEN (body for Physique sub-tab)
 ══════════════════════════════════════════════════════ */
-reg('physique-archetype', function(data) {
+window.renderPhysiqueArchetypeBody = function(data) {
   var selected = (data && data.id) || PhysiqueArchetypes.getUserArchetype();
   var archetypes = PhysiqueArchetypes.ARCHETYPES;
   var proportion = ProportionAnalyzer.analyze();
@@ -511,4 +511,9 @@ reg('physique-archetype', function(data) {
         '</div>';
     }).join('') +
     '<div style="height:20px"></div>';
+};
+
+reg('physique-archetype', function(data) {
+  /* Deprecated route — alias + unified Physique tabs (P3). */
+  return window.renderPhysiqueUnified(Object.assign({}, data || {}, { tab: 'archetype' }));
 });

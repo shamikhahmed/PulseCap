@@ -69,4 +69,28 @@ test.describe('PulseCap per-module smoke', () => {
     const labels = await page.locator('#nav .nb span').allTextContents();
     expect(labels).toEqual(['Today', 'Train', 'Body', 'Learn', 'Me']);
   });
+
+  test('physique merge aliases + migration idempotent', async ({ page }) => {
+    await page.goto('/?demo=1');
+    await page.waitForLoadState('domcontentloaded');
+    await page.waitForFunction(() => typeof window.go === 'function' && typeof window.migratePhysiqueMerge === 'function');
+
+    const titles = await page.evaluate(() => {
+      window.go('physique-archetype');
+      const a = document.title;
+      window.go('physique-timeline');
+      const b = document.title;
+      window.go('physique', { tab: 'score' });
+      const c = document.querySelector('.topbar-title') && document.querySelector('.topbar-title').textContent;
+      const first = window.migratePhysiqueMerge();
+      const second = window.migratePhysiqueMerge();
+      return { a, b, c, first, second, flag: window.S.g('settings.migrations.physiqueMerge') };
+    });
+
+    expect(titles.a).toMatch(/Physique/i);
+    expect(titles.b).toMatch(/Physique/i);
+    expect(titles.c).toMatch(/Physique/i);
+    expect(titles.flag).toBe(1);
+    expect(titles.second).toBe(false);
+  });
 });

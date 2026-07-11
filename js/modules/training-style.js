@@ -319,7 +319,7 @@ reg('training-style', function() {
       '<div style="margin:0 16px 14px;background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.2);border-radius:16px;padding:14px">' +
       '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#ff9f0a;margin-bottom:8px">📐 Proportion Weak Points</div>' +
       proportion.weakPoints.map(function(w) { return '<div style="font-size:12px;color:var(--txt2);padding:4px 0">⚠️ ' + esc(w) + '</div>'; }).join('') +
-      '<button type="button" onclick="go(\'physique-archetype\')" style="margin-top:10px;width:100%;padding:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:10px;color:var(--c1);font-size:13px;font-weight:600;cursor:pointer">View Physique Archetype →</button>' +
+      '<button type="button" onclick="go(\'physique\',{tab:\'archetype\'})" style="margin-top:10px;width:100%;padding:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:10px;color:var(--c1);font-size:13px;font-weight:600;cursor:pointer">View Physique Archetype →</button>' +
       '</div>' : '') +
 
     '<div style="height:20px"></div>';
