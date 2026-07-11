@@ -125,7 +125,7 @@ reg('injury-risk', function() {
   var critical = InjuryRiskEngine.criticalWarnings();
   var overallColor = overall.score >= 80 ? '#30d158' : overall.score >= 60 ? '#f5c842' : overall.score >= 40 ? '#ff9f0a' : '#ff453a';
 
-  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Injury Risk Monitor</div></div>' +
+  return moduleTopbar('Injury Risk', { backScreen: 'bodymap' }) +
 
     '<div style="padding:20px 16px 14px;text-align:center">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Overall Joint Health</div>' +

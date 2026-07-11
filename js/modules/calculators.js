@@ -9,10 +9,10 @@ const _CAL_STATUS_COLORS = {
 
 function _calMetric(label, value, sub, status) {
   const col = _CAL_STATUS_COLORS[status] || 'var(--txt)';
-  return '<div style="background:var(--bg4);border-radius:14px;padding:14px;border:1px solid var(--border)">' +
-    '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:6px">' + esc(label) + '</div>' +
-    '<div style="font-size:22px;font-weight:800;color:' + col + ';line-height:1.1">' + value + '</div>' +
-    (sub ? '<div style="font-size:11px;color:var(--txt3);margin-top:4px">' + esc(sub) + '</div>' : '') +
+  return '<div class="mod-metric">' +
+    '<div class="mod-metric__label">' + esc(label) + '</div>' +
+    '<div class="mod-metric__value" style="color:' + col + '">' + value + '</div>' +
+    (sub ? '<div class="mod-metric__sub">' + esc(sub) + '</div>' : '') +
     '</div>';
 }
 
@@ -50,12 +50,10 @@ reg('calculators', function() {
     _calMetric('Top 1RM', '—', 'Log workouts to see estimates', 'needs_data') +
     _calMetric('Epley', BodyEngine.oneRm(100, 5) + ' kg', 'Example: 100kg × 5 reps', 'average');
 
-  return '<div class="topbar">' +
-    '<div><div class="topbar-title">Calculators</div>' +
-    '<div class="topbar-date">Personalized body metrics</div></div>' +
-    '<div class="topbar-right">' +
-    '<button type="button" class="topbar-icon press" onclick="go(\'bodymap\')">🫀</button>' +
-    '</div></div>' +
+  return moduleTopbar('Calculators', {
+    backScreen: 'hub',
+    right: '<button type="button" class="topbar-icon press" onclick="go(\'bodymap\')" aria-label="Body">🫀</button>'
+  }) +
 
     '<div style="padding:0 16px 14px">' +
     '<div style="background:linear-gradient(135deg,rgba(0,213,255,0.1),rgba(123,95,255,0.08));border:1px solid rgba(0,213,255,0.2);border-radius:18px;padding:16px;margin-bottom:14px">' +

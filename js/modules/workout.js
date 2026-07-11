@@ -767,11 +767,11 @@ reg('workout', function() {
   return '<div class="topbar">' +
     '<div><div class="topbar-title">Train</div><div class="topbar-date">'+esc(new Date().toLocaleDateString('en-GB',{weekday:'long',month:'short',day:'numeric'}))+'</div></div>' +
     '<div class="topbar-right"><button type="button" class="topbar-icon" onclick="go(\'workout\',{search:true})" aria-label="Exercise search">🔍</button></div></div>' +
-    '<div style="padding:0 16px 12px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px">' +
-    '<button type="button" onclick="go(\'progress\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 4px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">📈 Progress</button>' +
-    '<button type="button" onclick="go(\'cardio\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 4px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">❤️ Cardio</button>' +
-    '<button type="button" onclick="go(\'calisthenics\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 4px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🤸 Skills</button>' +
-    '<button type="button" onclick="go(\'training-intel\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 4px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🧠 Intel</button>' +
+    '<div class="mod-chip-row">' +
+    '<button type="button" onclick="go(\'progress\')" class="press mod-chip">📈 Progress</button>' +
+    '<button type="button" onclick="go(\'cardio\')" class="press mod-chip">❤️ Cardio</button>' +
+    '<button type="button" onclick="go(\'calisthenics\')" class="press mod-chip">🤸 Skills</button>' +
+    '<button type="button" onclick="go(\'training-intel\')" class="press mod-chip">🧠 Intel</button>' +
     '</div>' +
 
     '<div style="padding:0 16px 14px">' +

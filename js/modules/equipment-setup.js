@@ -49,11 +49,12 @@ reg('equipment-setup', function() {
       '</div></div>';
   }).join('');
 
-  return '<div class="topbar"><button type="button" onclick="go(\'settings\',{tab:\'training\'})" style="background:none;border:none;color:var(--c1);font-size:15px;cursor:pointer;padding:0 16px">← Back</button>' +
-    '<div class="topbar-title">My Equipment</div></div>' +
+  return moduleTopbar('My Equipment', {
+    left: '<button type="button" class="topbar-icon press" onclick="go(\'settings\',{tab:\'training\'})" aria-label="Back">←</button>'
+  }) +
 
     '<div style="padding:16px">' +
-    '<div style="font-size:13px;color:var(--txt2);line-height:1.55;margin-bottom:12px">Select everything you have access to. Workouts will only suggest exercises you can actually do.</div>' +
+    '<p class="mod-lede" style="padding:0;margin-bottom:12px">Select everything you have access to. Workouts will only suggest exercises you can actually do.</p>' +
     '<div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">' + envBtns + '</div>' +
     '<div class="field-wrap"><label class="field-label">Filter by brand</label>' +
     '<select class="field" onchange="_eqBrand=this.value;go(\'equipment-setup\')">' + brandOpts + '</select></div>' +

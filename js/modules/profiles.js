@@ -25,8 +25,9 @@ reg('profiles', function() {
       '</div></div>';
   }).join('');
 
-  return '<div class="topbar"><div class="topbar-title">Profiles</div>' +
-    '<div class="topbar-right"><button type="button" class="topbar-icon press" onclick="go(\'settings\')">✕</button></div></div>' +
+  return moduleTopbar('Profiles', {
+    right: '<button type="button" class="topbar-icon press" onclick="go(\'settings\')" aria-label="Close">✕</button>'
+  }) +
 
     sh('Your Profiles') +
     profileCards +

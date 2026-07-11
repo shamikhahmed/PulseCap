@@ -190,6 +190,28 @@ function emptyState(icon, title, sub, btnLabel, btnCb) {
     '<div class="cap-empty__body">'+esc(sub)+'</div>' +
     (btnLabel?'<div class="cap-empty__cta"><button type="button" class="btn btn-secondary btn-sm" onclick="'+btnCb+'">'+esc(btnLabel)+'</button></div>':'') + '</div>';
 }
+
+/** P4 module contract — shared topbar / spacing helpers (prefer classes over inline). */
+function moduleTopbar(title, opts) {
+  opts = opts || {};
+  const back = opts.backScreen
+    ? '<button type="button" class="topbar-icon press" onclick="go(\'' + opts.backScreen + '\')" aria-label="Back">←</button>'
+    : (opts.left || '');
+  const right = opts.right || '';
+  return '<div class="topbar">' + back +
+    '<div class="topbar-title">' + esc(title) + '</div>' +
+    (right ? '<div class="topbar-right">' + right + '</div>' : '') +
+    '</div>';
+}
+function moduleLede(text) {
+  return '<p class="mod-lede">' + esc(text) + '</p>';
+}
+function moduleChip(label, screen, on) {
+  return '<button type="button" onclick="go(\'' + screen + '\')" class="press mod-chip' + (on ? ' on' : '') + '">' + esc(label) + '</button>';
+}
+window.moduleTopbar = moduleTopbar;
+window.moduleLede = moduleLede;
+window.moduleChip = moduleChip;
 function modal(title, bodyHtml, footerHtml) {
   closeModal();
   const d = document.createElement('div');
