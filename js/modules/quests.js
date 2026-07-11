@@ -587,7 +587,7 @@ reg('quests', function() {
 
   AchievementEngine2.checkAll();
 
-  return '<div class="topbar"><button onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">⚔️ Quests & Missions</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">⚔️ Quests & Missions</div></div>' +
 
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(245,200,66,0.1),rgba(175,82,222,0.08));border:1px solid rgba(245,200,66,0.2);border-radius:16px;padding:14px">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
@@ -629,7 +629,7 @@ reg('quests', function() {
         '<div style="font-size:14px;font-weight:800;color:var(--txt);margin-bottom:3px">' + esc(t.title) + '</div>' +
         '<div style="font-size:12px;color:var(--txt2);margin-bottom:8px">' + esc(t.description) + '</div>' +
         '<div style="font-size:11px;color:var(--txt3);margin-bottom:8px">Reward: ' + esc(t.reward.badge) + ' · ' + t.reward.xp + ' XP · ' + t.duration_weeks + ' weeks</div>' +
-        '<button onclick="QuestEngine.startQuest(\'' + t.id + '\');go(\'quests\')" style="padding:8px 16px;background:var(--c1);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">⚔️ Start Quest</button>' +
+        '<button type="button" onclick="QuestEngine.startQuest(\'' + t.id + '\');go(\'quests\')" style="padding:8px 16px;background:var(--c1);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">⚔️ Start Quest</button>' +
         '</div></div>').join('') + '</div>' : '') +
 
     (!active.length && !recommended.length ?
@@ -650,7 +650,7 @@ reg('quests', function() {
       '<div style="font-size:14px;font-weight:800;color:#ff9f0a;margin-bottom:6px">🛡️ Protect Your Streak</div>' +
       '<div style="font-size:12px;color:var(--txt2);margin-bottom:12px">No workout logged today. Complete a quick recovery session to save your streak.</div>' +
       '<div style="display:flex;flex-direction:column;gap:8px">' +
-      StreakProtection.PROTECTION_EXERCISES.map(s => '<button onclick="StreakProtection.saveStreak(\'' + s.id + '\');go(\'quests\')" style="padding:10px 14px;background:rgba(255,159,10,0.1);border:1px solid rgba(255,159,10,0.3);border-radius:12px;color:#ff9f0a;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;text-align:left">' + esc(s.name) + ' <span style="font-size:11px;opacity:0.7">(' + s.duration + ')</span></button>').join('') +
+      StreakProtection.PROTECTION_EXERCISES.map(s => '<button type="button" onclick="StreakProtection.saveStreak(\'' + s.id + '\');go(\'quests\')" style="padding:10px 14px;background:rgba(255,159,10,0.1);border:1px solid rgba(255,159,10,0.3);border-radius:12px;color:#ff9f0a;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;text-align:left">' + esc(s.name) + ' <span style="font-size:11px;opacity:0.7">(' + s.duration + ')</span></button>').join('') +
       '</div></div>' : '') +
 
     '<div style="height:20px"></div>';
@@ -668,7 +668,7 @@ reg('academy', function(data) {
     const isCompleted = KnowledgeAcademy.isCompleted(lessonId);
 
     return '<div class="topbar">' +
-      '<button onclick="go(\'academy\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button>' +
+      '<button type="button" onclick="go(\'academy\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button>' +
       '<div class="topbar-title">' + lesson.icon + ' ' + esc(lesson.title) + '</div>' +
       '</div>' +
 
@@ -685,11 +685,11 @@ reg('academy', function(data) {
         '<div style="font-size:12px;font-weight:700;color:var(--c1);margin-bottom:10px">📝 Quick Quiz</div>' +
         '<div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:12px">' + esc(lesson.quiz.question) + '</div>' +
         lesson.quiz.options.map((opt, i) =>
-          '<button onclick="var r=KnowledgeAcademy.completeLesson(\'' + lessonId + '\',' + i + ');if(r.success){go(\'academy\',{lesson:\'' + lessonId + '\'})}else{this.style.background=\'rgba(255,69,58,0.15)\';this.style.borderColor=\'rgba(255,69,58,0.4)\'}" ' +
+          '<button type="button" onclick="var r=KnowledgeAcademy.completeLesson(\'' + lessonId + '\',' + i + ');if(r.success){go(\'academy\',{lesson:\'' + lessonId + '\'})}else{this.style.background=\'rgba(255,69,58,0.15)\';this.style.borderColor=\'rgba(255,69,58,0.4)\'}" ' +
           'style="width:100%;margin-bottom:8px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--txt);font-size:13px;text-align:left;cursor:pointer;touch-action:manipulation">' +
           esc(opt) + '</button>'
         ).join('') +
-        '</div>' : '<button onclick="var r=KnowledgeAcademy.completeLesson(\'' + lessonId + '\',0);go(\'academy\',{lesson:\'' + lessonId + '\'})" class="btn btn-primary" style="width:100%">Mark Complete · +' + lesson.xp + ' XP</button>'
+        '</div>' : '<button type="button" onclick="var r=KnowledgeAcademy.completeLesson(\'' + lessonId + '\',0);go(\'academy\',{lesson:\'' + lessonId + '\'})" class="btn btn-primary" style="width:100%">Mark Complete · +' + lesson.xp + ' XP</button>'
       ) +
       '</div></div>' +
       '<div style="height:20px"></div>';
@@ -700,7 +700,7 @@ reg('academy', function(data) {
   const xpProg = KnowledgeAcademy.xpProgress();
   const modules = [...new Set(KnowledgeAcademy.LESSONS.map(l => l.module))];
 
-  return '<div class="topbar"><button class="topbar-icon press" onclick="go(\'dashboard\')" style="font-size:20px">‹</button><div class="topbar-title">🎓 Knowledge Academy</div></div>' +
+  return '<div class="topbar"><button type="button" class="topbar-icon press" onclick="go(\'dashboard\')" style="font-size:20px">‹</button><div class="topbar-title">🎓 Knowledge Academy</div></div>' +
 
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:16px;padding:14px">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
@@ -740,13 +740,13 @@ reg('physique-timeline', function() {
   const points = PhysiqueTimeline.getPoints();
   const changes = PhysiqueTimeline.changes();
 
-  return '<div class="topbar"><button onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">📸 Physique Timeline</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">📸 Physique Timeline</div></div>' +
 
     (points.length === 0 ?
       '<div style="padding:60px 20px;text-align:center"><div style="font-size:56px;margin-bottom:14px">📸</div>' +
       '<div style="font-size:16px;font-weight:800;color:var(--txt);margin-bottom:8px">No Measurements Yet</div>' +
       '<div style="font-size:13px;color:var(--txt2);line-height:1.6;max-width:260px;margin:0 auto">Add body measurements in Body tab to track your physique transformation over time.</div>' +
-      '<button onclick="go(\'bodymap\')" class="btn btn-primary" style="margin-top:20px">Add First Measurement ›</button>' +
+      '<button type="button" onclick="go(\'bodymap\')" class="btn btn-primary" style="margin-top:20px">Add First Measurement ›</button>' +
       '</div>' :
 
       (changes ?

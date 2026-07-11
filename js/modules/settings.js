@@ -88,7 +88,7 @@ function _tabProfile(u) {
         _infoStat('Protein', plan.protein + '', 'g/day') +
         _infoStat('Readiness', plan.readiness + '', '/100') +
         '</div>' +
-        '<button class="btn btn-secondary btn-sm" onclick="go(\'calculators\')" style="width:100%;margin-top:10px">📊 Full Calculators</button>' +
+        '<button type="button" class="btn btn-secondary btn-sm" onclick="go(\'calculators\')" style="width:100%;margin-top:10px">📊 Full Calculators</button>' +
         '</div>';
     })() +
 
@@ -101,7 +101,7 @@ function _tabProfile(u) {
     _infoStat('Healthy wt', healthyRange.min+'–'+healthyRange.max+wtUnit, 'For your height') +
     '</div>' +
     '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">' +
-    '<button class="btn btn-secondary btn-sm" onclick="showLogWeight()">📊 Log Weight Today</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm" onclick="showLogWeight()">📊 Log Weight Today</button>' +
     '</div></div>' +
 
     _sectionTitle('Injuries & Pain') +
@@ -124,11 +124,11 @@ function _tabProfile(u) {
           '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
           '<div><div style="font-size:14px;font-weight:600;color:var(--txt)">'+esc(name)+(recovered?' ✓':'')+'</div>' +
           '<div style="font-size:12px;color:var(--txt3)">'+(recovered?'Recovered':sevLabel+' — '+(db?db.modify:''))+'</div></div>' +
-          '<button onclick="toggleInjuryRecovered('+i+')" style="padding:6px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--bg4);color:var(--txt3)">'+(recovered?'Re-activate':'Recovered')+'</button></div>' +
-          (recovered ? '' : '<div style="display:flex;gap:6px">'+[1,2,3].map(s=>'<button onclick="setInjurySeverity('+i+','+s+')" style="flex:1;padding:6px;border-radius:8px;font-size:11px;font-weight:600;border:1px solid '+(sev===s?'var(--c1)':'var(--border)')+';background:'+(sev===s?'rgba(var(--c1-rgb),0.15)':'transparent')+';color:var(--txt);cursor:pointer">'+(typeof InjuriesDB!=='undefined'?InjuriesDB.severities.find(x=>x.id===s).label:s)+'</button>').join('')+'</div>') +
+          '<button type="button" onclick="toggleInjuryRecovered('+i+')" style="padding:6px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--bg4);color:var(--txt3)">'+(recovered?'Re-activate':'Recovered')+'</button></div>' +
+          (recovered ? '' : '<div style="display:flex;gap:6px">'+[1,2,3].map(s=>'<button type="button" onclick="setInjurySeverity('+i+','+s+')" style="flex:1;padding:6px;border-radius:8px;font-size:11px;font-weight:600;border:1px solid '+(sev===s?'var(--c1)':'var(--border)')+';background:'+(sev===s?'rgba(var(--c1-rgb),0.15)':'transparent')+';color:var(--txt);cursor:pointer">'+(typeof InjuriesDB!=='undefined'?InjuriesDB.severities.find(x=>x.id===s).label:s)+'</button>').join('')+'</div>') +
           '</div>';
       }).join('');
-      html += '<button class="btn btn-secondary btn-sm" onclick="showAddInjury()" style="width:100%;margin-top:10px">+ Add Injury</button>';
+      html += '<button type="button" class="btn btn-secondary btn-sm" onclick="showAddInjury()" style="width:100%;margin-top:10px">+ Add Injury</button>';
       return html;
     })() +
     '</div>' +
@@ -149,7 +149,7 @@ function _tabTraining(u) {
       '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--c1);margin-bottom:6px">✨ Recommended for you</div>' +
       '<div style="font-size:15px;font-weight:700;color:var(--txt)">'+esc(rec.name)+'</div>' +
       '<div style="font-size:12px;color:var(--txt3);margin-top:4px;line-height:1.45">'+esc(rec.reason)+'</div>' +
-      '<button class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="_setSetting(\'user.split\',\''+rec.id+'\');toast(\'Split updated\',\'ok\');go(\'settings\',{tab:\'training\'})">Apply suggestion</button></div>' : '') +
+      '<button type="button" class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="_setSetting(\'user.split\',\''+rec.id+'\');toast(\'Split updated\',\'ok\');go(\'settings\',{tab:\'training\'})">Apply suggestion</button></div>' : '') +
 
     _sectionTitle('Training Split') +
     _selectWrap('Active Split', 'user.split', u.split||'ppl', splitOpts) +
@@ -167,7 +167,7 @@ function _tabTraining(u) {
     '</div>' +
 
     _sectionTitle('My Equipment') +
-    '<button class="btn btn-primary" onclick="go(\'equipment-setup\')" style="width:100%;margin-bottom:8px">🏋️ Configure Equipment</button>' +
+    '<button type="button" class="btn btn-primary" onclick="go(\'equipment-setup\')" style="width:100%;margin-bottom:8px">🏋️ Configure Equipment</button>' +
     '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-bottom:14px">'+esc(eqLabel)+' — Life Fitness, Technogym, home, bodyweight & more</div>' +
 
     _sectionTitle('Rest Timer') +
@@ -189,11 +189,11 @@ function _tabSupplements() {
       '<div class="toggle-row">' +
       '<div class="toggle-info"><div class="toggle-label">'+esc(s.name)+'</div>' +
       '<div class="toggle-sub">'+esc(s.timing)+' · '+esc(s.dose||'')+'</div></div>' +
-      '<button onclick="removeSupp(\''+esc(s.id)+'\')" style="color:#ff4444;background:none;border:none;cursor:pointer;padding:8px;font-size:13px;font-weight:600;min-height:44px">Remove</button>' +
+      '<button type="button" onclick="removeSupp(\''+esc(s.id)+'\')" style="color:#ff4444;background:none;border:none;cursor:pointer;padding:8px;font-size:13px;font-weight:600;min-height:44px">Remove</button>' +
       '</div>'
     ).join('') : '<div style="color:var(--txt3);padding:12px 0;font-size:14px">No supplements in stack. Add them via Nutrition.</div>') +
     '<div class="spacer-sm"></div>' +
-    '<button class="btn btn-secondary btn-sm" onclick="go(\'nutrition\')" style="width:100%">Manage in Nutrition →</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm" onclick="go(\'nutrition\')" style="width:100%">Manage in Nutrition →</button>' +
     '</div>';
 }
 
@@ -214,7 +214,7 @@ function _tabNutrition(u) {
     _sectionTitle('Macro Presets') +
     '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">' +
     ['hypertrophy','fat_loss','strength','maintenance','athletic'].map(g =>
-      '<button class="btn btn-secondary btn-sm" onclick="applyMacroPreset(\''+g+'\')" style="flex:1;min-width:100px">'+esc(g.replace('_',' '))+'</button>'
+      '<button type="button" class="btn btn-secondary btn-sm" onclick="applyMacroPreset(\''+g+'\')" style="flex:1;min-width:100px">'+esc(g.replace('_',' '))+'</button>'
     ).join('') + '</div>' +
     '<div style="padding:12px 0;font-size:13px;color:var(--txt3)">Calculated TDEE: '+tdee+' kcal/day</div>' +
     '</div>';
@@ -266,7 +266,7 @@ function _tabAppearance(u) {
         hardcore:'"Shoulders are ready. No excuses. Get in there."'
       };
       return '<div style="display:flex;gap:8px;margin-bottom:8px">' +
-        tones.map(t=>'<button class="btn btn-'+(curTone===t.v?'primary':'secondary')+' btn-sm" style="flex:1" onclick="_setSetting(\'settings.coachTone\',\''+t.v+'\');go(\'settings\',{tab:\'appearance\'})">'+esc(t.l)+'</button>').join('') +
+        tones.map(t=>'<button type="button" class="btn btn-'+(curTone===t.v?'primary':'secondary')+' btn-sm" style="flex:1" onclick="_setSetting(\'settings.coachTone\',\''+t.v+'\');go(\'settings\',{tab:\'appearance\'})">'+esc(t.l)+'</button>').join('') +
         '</div>' +
         '<div style="font-size:13px;color:var(--txt3);font-style:italic;padding:8px 12px;background:var(--bg3);border-radius:8px;margin-bottom:4px">'+esc(examples[curTone]||examples.motivational)+'</div>';
     })() +
@@ -274,7 +274,7 @@ function _tabAppearance(u) {
     _sectionTitle('Units') +
     '<div style="display:flex;gap:8px;margin-bottom:14px">' +
     ['metric','imperial'].map(unit =>
-      '<button class="btn btn-'+(u.units===unit?'primary':'secondary')+' btn-sm" style="flex:1" onclick="_setSetting(\'user.units\',\''+unit+'\');go(\'settings\',{tab:\'appearance\'})">'+unit.charAt(0).toUpperCase()+unit.slice(1)+'</button>'
+      '<button type="button" class="btn btn-'+(u.units===unit?'primary':'secondary')+' btn-sm" style="flex:1" onclick="_setSetting(\'user.units\',\''+unit+'\');go(\'settings\',{tab:\'appearance\'})">'+unit.charAt(0).toUpperCase()+unit.slice(1)+'</button>'
     ).join('') + '</div>' +
 
     _sectionTitle('Performance') +
@@ -316,7 +316,7 @@ function _tabNotifications(u) {
     ['daily','weekly'].map(function(freq) {
       const cur = S.g('settings.coachFrequency') || 'daily';
       const active = cur === freq;
-      return '<button onclick="_setSetting(\'settings.coachFrequency\',\''+freq+'\');go(\'settings\',{tab:\'notifications\'})" style="flex:1;padding:10px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(active?'var(--grad)':'var(--bg3)')+';color:'+(active?'#fff':'var(--txt3)')+'">'+freq.charAt(0).toUpperCase()+freq.slice(1)+'</button>';
+      return '<button type="button" onclick="_setSetting(\'settings.coachFrequency\',\''+freq+'\');go(\'settings\',{tab:\'notifications\'})" style="flex:1;padding:10px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(active?'var(--grad)':'var(--bg3)')+';color:'+(active?'#fff':'var(--txt3)')+'">'+freq.charAt(0).toUpperCase()+freq.slice(1)+'</button>';
     }).join('') +
     '</div>' +
     '<div style="font-size:12px;color:var(--txt3);margin-top:4px;padding:0 2px">Daily shows briefing every morning. Weekly shows full review on Mondays.</div>' +
@@ -336,8 +336,8 @@ function _tabData() {
     '</div></div>' +
 
     _sectionTitle('Profiles') +
-    '<button class="btn btn-secondary" onclick="go(\'profiles\')" style="margin-bottom:10px">👤 Manage Profiles</button>' +
-    '<button class="btn btn-danger" onclick="confirmClearData()" style="margin-bottom:10px">🗑️ Reset This Profile</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="go(\'profiles\')" style="margin-bottom:10px">👤 Manage Profiles</button>' +
+    '<button type="button" class="btn btn-danger" onclick="confirmClearData()" style="margin-bottom:10px">🗑️ Reset This Profile</button>' +
 
     _sectionTitle('Exercise Library') +
     (function() {
@@ -348,20 +348,20 @@ function _tabData() {
         'Built-in: <strong style="color:var(--txt)">' + exCount + '</strong> exercises. ' +
         (st.cached ? 'wger cache: <strong style="color:var(--txt)">' + st.count + '</strong>' + (st.mediaCount ? ' · ' + st.mediaCount + ' with images/videos' : '') + ' (offline).' : 'Download wger.de library once while online — exercises, thumbnails & form videos stay on your phone.') +
         '</div>' +
-        '<button id="ex-lib-sync-btn" class="btn btn-secondary" onclick="syncExerciseLibrary(' + (st.cached ? 'true' : 'false') + ')" style="width:100%">' +
+        '<button type="button" id="ex-lib-sync-btn" class="btn btn-secondary" onclick="syncExerciseLibrary(' + (st.cached ? 'true' : 'false') + ')" style="width:100%">' +
         (st.cached ? '↻ Re-sync Exercise Library' : '↓ Download Exercise Library (wger)') +
         '</button></div>';
     })() +
 
     _sectionTitle('Export & Import') +
-    '<button class="btn btn-secondary" onclick="exportData()" style="margin-bottom:10px">📤 Export Backup (JSON)</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="exportData()" style="margin-bottom:10px">📤 Export Backup (JSON)</button>' +
     '<div class="field-wrap">' +
     '<label class="field-label">Import Backup</label>' +
     '<input class="field" type="file" accept=".json" onchange="importData(this)" style="font-size:14px">' +
     '</div>' +
 
     _sectionTitle('Danger Zone') +
-    '<button class="btn btn-danger" onclick="confirmClearData()">🗑️ Clear All Data</button>' +
+    '<button type="button" class="btn btn-danger" onclick="confirmClearData()">🗑️ Clear All Data</button>' +
 
     '<div style="margin-top:32px;text-align:center;color:var(--txt3);font-size:13px">PulseCap v4 · by <strong>Shamikh Ahmed</strong></div>' +
     '</div>';
@@ -384,7 +384,7 @@ function _selectWrap(label, key, current, opts) {
 function _toggle(label, key, current) {
   return '<div class="toggle-row">' +
     '<div class="toggle-info"><div class="toggle-label">'+esc(label)+'</div></div>' +
-    '<button class="toggle'+(current?' on':'')+'" onclick="toggleSetting(\''+key+'\')"></button>' +
+    '<button type="button" class="toggle'+(current?' on':'')+'" onclick="toggleSetting(\''+key+'\')"></button>' +
     '</div>';
 }
 function _infoStat(label, val, sub) {
@@ -433,7 +433,7 @@ window.setInjurySeverity = function(idx, severity) {
 window.showAddInjury = function() {
   if (typeof InjuriesDB === 'undefined') return;
   const opts = InjuriesDB.injuries.map(i =>
-    '<button class="btn btn-secondary btn-sm" style="width:100%;margin-bottom:6px;text-align:left" onclick="addInjury(\''+i.id+'\')">'+esc(i.name)+'</button>'
+    '<button type="button" class="btn btn-secondary btn-sm" style="width:100%;margin-bottom:6px;text-align:left" onclick="addInjury(\''+i.id+'\')">'+esc(i.name)+'</button>'
   ).join('');
   modal('Add Injury', '<div style="max-height:50vh;overflow-y:auto">'+opts+'</div>', '');
 };
@@ -477,7 +477,7 @@ window.showLogWeight = function() {
   modal('Log Weight',
     '<div class="field-wrap"><label class="field-label">Weight (kg)</label>' +
     '<input id="wt-inp" class="field" type="number" step="0.1" placeholder="'+(S.g('user.weight')||75)+'" style="font-size:22px;font-weight:700"></div>',
-    '<button class="btn btn-primary" onclick="saveWeight()" style="margin-top:12px">Save</button>'
+    '<button type="button" class="btn btn-primary" onclick="saveWeight()" style="margin-top:12px">Save</button>'
   );
 };
 
@@ -523,8 +523,8 @@ window.confirmClearData = function() {
     '<div style="font-size:16px;font-weight:700;color:var(--txt);margin-bottom:8px">This will delete all your data</div>' +
     '<div style="font-size:14px;color:var(--txt3);line-height:1.6">Workouts, PRs, measurements, supplements and settings for this profile will be permanently deleted.</div>' +
     '</div>',
-    '<button class="btn btn-danger" onclick="S.reset()" style="margin-top:8px">Yes, Reset Everything</button>' +
-    '<button class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Cancel</button>'
+    '<button type="button" class="btn btn-danger" onclick="S.reset()" style="margin-top:8px">Yes, Reset Everything</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Cancel</button>'
   );
 };
 

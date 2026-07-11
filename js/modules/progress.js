@@ -22,7 +22,7 @@ reg('progress', function() {
     _strengthCharts(ws, prs) +
     _bodyStatsChart(bodyStats, S.g('user')) +
     _achievementWall(earned) +
-    '<div style="padding:0 16px 16px"><button class="btn btn-secondary" onclick="go(\'physique\')" style="width:100%">📊 Physique Analysis & Growth Simulator →</button></div>' +
+    '<div style="padding:0 16px 16px"><button type="button" class="btn btn-secondary" onclick="go(\'physique\')" style="width:100%">📊 Physique Analysis & Growth Simulator →</button></div>' +
     '<div style="height:20px"></div>';
 });
 
@@ -324,7 +324,7 @@ function _prBoard(prs) {
     '<div style="font-size:56px;margin-bottom:12px;animation:fadeUp 0.4s both">🏆</div>' +
     '<div style="font-size:19px;font-weight:900;color:var(--txt);margin-bottom:6px;animation:fadeUp 0.4s 0.08s both">No PRs yet</div>' +
     '<div style="font-size:13px;color:var(--txt3);line-height:1.6;max-width:220px;margin:0 auto 20px;animation:fadeUp 0.4s 0.16s both">Hit a heavy set in your next workout to set your first personal record.</div>' +
-    '<button onclick="go(\'workout\')" class="btn btn-primary" style="animation:fadeUp 0.4s 0.24s both;animation-fill-mode:both">▶ Start Workout</button>' +
+    '<button type="button" onclick="go(\'workout\')" class="btn btn-primary" style="animation:fadeUp 0.4s 0.24s both;animation-fill-mode:both">▶ Start Workout</button>' +
     '</div>';
   const sorted = [...prs].sort((a,b) => new Date(b.date)-new Date(a.date));
   return sh('Personal Records') +
@@ -372,7 +372,7 @@ function _bodyStatsChart(bodyStats, user) {
     '<div style="font-size:56px;margin-bottom:12px;animation:fadeUp 0.4s both">⚖️</div>' +
     '<div style="font-size:19px;font-weight:900;color:var(--txt);margin-bottom:6px;animation:fadeUp 0.4s 0.08s both">No weight data</div>' +
     '<div style="font-size:13px;color:var(--txt3);line-height:1.6;max-width:220px;margin:0 auto 20px;animation:fadeUp 0.4s 0.16s both">Track your body weight to see trends and physique progress.</div>' +
-    '<button onclick="go(\'bodymap\')" class="btn btn-secondary" style="animation:fadeUp 0.4s 0.24s both;animation-fill-mode:both">📍 Open Body Map</button>' +
+    '<button type="button" onclick="go(\'bodymap\')" class="btn btn-secondary" style="animation:fadeUp 0.4s 0.24s both;animation-fill-mode:both">📍 Open Body Map</button>' +
     '</div>';
   var isImperial = (user||{}).units === 'imperial';
   var pts = bodyStats.slice(-12);
@@ -461,5 +461,5 @@ window.showDayWorkouts = function(dateStr) {
       }).join('') +
       '</div>';
   }).join('');
-  modal(fmtDate(dateStr), body, '<button class="btn btn-ghost" onclick="closeModal()" style="margin-top:12px">Close</button>');
+  modal(fmtDate(dateStr), body, '<button type="button" class="btn btn-ghost" onclick="closeModal()" style="margin-top:12px">Close</button>');
 };

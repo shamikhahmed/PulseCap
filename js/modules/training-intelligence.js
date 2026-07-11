@@ -370,7 +370,7 @@ reg('training-intel', function() {
     return f ? Object.assign({ name: ex }, f) : null;
   }).filter(Boolean);
 
-  return '<div class="topbar"><button onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Training Intelligence</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Training Intelligence</div></div>' +
 
     '<div style="padding:20px 16px 14px">' +
     '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:18px">' +
@@ -435,7 +435,7 @@ reg('training-intel', function() {
         return '<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)">' +
           '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(ex.name) + '</div>' +
           '<div style="font-size:11px;color:#ff9f0a">Effectiveness: ' + ex.score + '/100 · ' + esc(ex.trend) + '</div></div>' +
-          '<button onclick="go(\'workout\')" style="font-size:11px;color:var(--c1);background:none;border:none;cursor:pointer;font-weight:600">Swap →</button>' +
+          '<button type="button" onclick="go(\'workout\')" style="font-size:11px;color:var(--c1);background:none;border:none;cursor:pointer;font-weight:600">Swap →</button>' +
           '</div>';
       }).join('') +
       '</div>' : '') +

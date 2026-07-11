@@ -758,7 +758,7 @@ reg('workout', function() {
       (ex?'<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+esc(ex.pri)+(ex.sec?', '+ex.sec:'')+'</div>':'') +
       (prev?'<div style="font-size:12px;color:var(--c1);margin-top:2px">'+esc(prev)+'</div>':'') +
       '</div>' +
-      '<button onclick="showExerciseDetail(\''+esc(name)+'\')" ' +
+      '<button type="button" onclick="showExerciseDetail(\''+esc(name)+'\')" ' +
       'style="width:32px;height:32px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);' +
       'font-size:14px;cursor:pointer;touch-action:manipulation;flex-shrink:0">ℹ️</button>' +
       '</div>';
@@ -766,7 +766,7 @@ reg('workout', function() {
 
   return '<div class="topbar">' +
     '<div><div class="topbar-title">Workout</div><div class="topbar-date">'+esc(new Date().toLocaleDateString('en-GB',{weekday:'long',month:'short',day:'numeric'}))+'</div></div>' +
-    '<div class="topbar-right"><button class="topbar-icon" onclick="go(\'workout\',{search:true})">🔍</button></div></div>' +
+    '<div class="topbar-right"><button type="button" class="topbar-icon" onclick="go(\'workout\',{search:true})">🔍</button></div></div>' +
 
     '<div style="padding:0 16px 14px">' +
     '<div class="readiness-label '+readiness.cls+'" style="margin-bottom:12px">Readiness: '+score+' — '+readiness.l+'</div>' +
@@ -792,11 +792,11 @@ reg('workout', function() {
     (suggestion?'<div class="ai-msg"><div class="ai-msg-header"><span>⚡</span><span class="ai-msg-label">Coach Insight</span></div><div class="ai-msg-text">'+esc(suggestion.m)+'</div></div>':'') +
 
     '<div style="padding:16px 16px 0">' +
-    '<button class="btn btn-primary" onclick="startWorkout()">Start Workout 💪</button>' +
-    '<button class="btn btn-secondary" style="margin-top:10px" onclick="startQuickWorkout()">⚡ Quick Workout (20 min)</button>' +
-    '<button class="btn btn-secondary" style="margin-top:10px" onclick="showBrowseExercises()">🔍 Browse All Exercises</button>' +
-    '<button class="btn" style="margin-top:10px;background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);color:#ff453a;font-weight:700" onclick="go(\'cardio\')">❤️ Cardio Protocols</button>' +
-    '<button class="btn" style="margin-top:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);color:var(--c1)" onclick="showAddCustomExercise()">+ Add Custom Exercise</button>' +
+    '<button type="button" class="btn btn-primary" onclick="startWorkout()">Start Workout 💪</button>' +
+    '<button type="button" class="btn btn-secondary" style="margin-top:10px" onclick="startQuickWorkout()">⚡ Quick Workout (20 min)</button>' +
+    '<button type="button" class="btn btn-secondary" style="margin-top:10px" onclick="showBrowseExercises()">🔍 Browse All Exercises</button>' +
+    '<button type="button" class="btn" style="margin-top:10px;background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);color:#ff453a;font-weight:700" onclick="go(\'cardio\')">❤️ Cardio Protocols</button>' +
+    '<button type="button" class="btn" style="margin-top:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);color:var(--c1)" onclick="showAddCustomExercise()">+ Add Custom Exercise</button>' +
     '</div>' +
     '<div style="height:20px"></div>';
 });
@@ -838,7 +838,7 @@ reg('cardio', function() {
   }).join('');
 
   return '<div class="topbar">' +
-    '<button class="topbar-icon press" onclick="go(\'workout\')" style="margin-right:8px">←</button>' +
+    '<button type="button" class="topbar-icon press" onclick="go(\'workout\')" style="margin-right:8px">←</button>' +
     '<div><div class="topbar-title">Cardio</div>' +
     '<div class="topbar-date">Choose your protocol</div></div></div>' +
 
@@ -874,9 +874,9 @@ reg('active', function() {
     '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em">Sets Done</div>' +
     '</div>' +
     '<div style="display:flex;gap:8px">' +
-    '<button onclick="toggleSupersetMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_supersetMode?'var(--grad)':'var(--bg3)')+';color:'+(_supersetMode?'#fff':'var(--txt3)')+'">SS</button>' +
-    '<button onclick="toggleFocusMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_focusMode?'var(--c1)':'var(--bg3)')+';color:'+(_focusMode?'#fff':'var(--txt3)')+'">'+(_focusMode?'← Exit':'🎯')+'</button>' +
-    '<button onclick="confirmFinishWorkout()" style="padding:8px 16px;border-radius:20px;background:var(--grad);color:#fff;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;border:none">Finish</button>' +
+    '<button type="button" onclick="toggleSupersetMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_supersetMode?'var(--grad)':'var(--bg3)')+';color:'+(_supersetMode?'#fff':'var(--txt3)')+'">SS</button>' +
+    '<button type="button" onclick="toggleFocusMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_focusMode?'var(--c1)':'var(--bg3)')+';color:'+(_focusMode?'#fff':'var(--txt3)')+'">'+(_focusMode?'← Exit':'🎯')+'</button>' +
+    '<button type="button" onclick="confirmFinishWorkout()" style="padding:8px 16px;border-radius:20px;background:var(--grad);color:#fff;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;border:none">Finish</button>' +
     '</div></div></div>';
 
   const cards = _wkt.exercises.map(function(ex, exIdx) {
@@ -908,7 +908,7 @@ reg('active', function() {
         'inputmode="numeric" style="width:56px">' +
         '</div>' +
         '</div>' +
-        '<button class="set-check'+(isDone?' done':'')+'" onclick="_doneSet('+exIdx+','+sIdx+')">' +
+        '<button type="button" class="set-check'+(isDone?' done':'')+'" onclick="_doneSet('+exIdx+','+sIdx+')">' +
         (isPR ? '🏆' : isDone ? '✓' : '') +
         '</button>' +
         (isPR ? '<div style="position:absolute;top:-8px;right:40px;background:linear-gradient(135deg,#ffd60a,#ff9f0a);color:#000;font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;letter-spacing:0.06em;animation:prBounce 0.4s var(--spring) both">PR!</div>' : '') +
@@ -934,8 +934,8 @@ reg('active', function() {
       (exData && !_focusMode ? '<div style="font-size:11px;color:var(--txt3);margin-top:1px">'+esc(exData.cues.slice(0,60))+'...</div>' : '') +
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;align-items:flex-end">' +
-      '<button onclick="showExerciseDetail(\''+esc(ex.name)+'\')" style="width:30px;height:30px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);font-size:12px;cursor:pointer;touch-action:manipulation">ℹ️</button>' +
-      (!_focusMode ? '<button onclick="swapExercise('+exIdx+')" style="padding:4px 7px;border-radius:8px;background:var(--bg4);border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--txt3);cursor:pointer;touch-action:manipulation;white-space:nowrap">⇄ Swap</button>' : '') +
+      '<button type="button" onclick="showExerciseDetail(\''+esc(ex.name)+'\')" style="width:30px;height:30px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);font-size:12px;cursor:pointer;touch-action:manipulation">ℹ️</button>' +
+      (!_focusMode ? '<button type="button" onclick="swapExercise('+exIdx+')" style="padding:4px 7px;border-radius:8px;background:var(--bg4);border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--txt3);cursor:pointer;touch-action:manipulation;white-space:nowrap">⇄ Swap</button>' : '') +
       '</div>' +
       '</div>' +
       (suggest && !_focusMode ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(48,209,88,0.12);color:#30d158;padding:4px 10px;border-radius:10px">Try '+suggest+'kg ↑</span></div>' : '') +
@@ -946,8 +946,8 @@ reg('active', function() {
       '</div>' +
       '<div class="sets-list">'+setsHTML+'</div>' +
       '<div style="padding:10px 16px;display:flex;gap:8px;border-top:1px solid var(--border)">' +
-      '<button onclick="_addSet('+exIdx+')" style="flex:1;padding:10px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">+ Set</button>' +
-      (!_focusMode ? '<button onclick="_toggleNote('+exIdx+')" style="padding:10px 14px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);font-size:13px;cursor:pointer;touch-action:manipulation">📝</button>' : '') +
+      '<button type="button" onclick="_addSet('+exIdx+')" style="flex:1;padding:10px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">+ Set</button>' +
+      (!_focusMode ? '<button type="button" onclick="_toggleNote('+exIdx+')" style="padding:10px 14px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);font-size:13px;cursor:pointer;touch-action:manipulation">📝</button>' : '') +
       '</div>' +
       '<div id="note-'+exIdx+'" style="display:'+(_focusMode?'none':(noteVal?'block':'none'))+';padding:0 16px 12px">' +
       '<textarea class="field" placeholder="How did this feel? Form notes, energy level..." ' +
@@ -976,8 +976,8 @@ reg('active', function() {
     '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em">seconds</div>' +
     '</div></div></div>' +
     '<div style="display:flex;gap:10px">' +
-    '<button onclick="skipRest()" style="flex:1;padding:14px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);font-size:15px;font-weight:600;cursor:pointer;touch-action:manipulation">Skip</button>' +
-    '<button onclick="addRestTime(30)" style="flex:1;padding:14px;border-radius:14px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);color:var(--c1);font-size:15px;font-weight:600;cursor:pointer;touch-action:manipulation">+30s</button>' +
+    '<button type="button" onclick="skipRest()" style="flex:1;padding:14px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);font-size:15px;font-weight:600;cursor:pointer;touch-action:manipulation">Skip</button>' +
+    '<button type="button" onclick="addRestTime(30)" style="flex:1;padding:14px;border-radius:14px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);color:var(--c1);font-size:15px;font-weight:600;cursor:pointer;touch-action:manipulation">+30s</button>' +
     '</div></div>';
 
   return header + '<div style="padding:12px 16px 4px">' + cards + '</div>' + restBar + '<div style="height:32px"></div>';
@@ -1098,9 +1098,9 @@ window.swapExercise = function(exIdx) {
   const subs = SplitEngine.getSubstitutes(name, '');
   if (!subs.length) { toast('No substitutes available', 'warn'); return; }
   const body = subs.map(function(s, i) {
-    return '<button class="btn btn-secondary" style="margin-bottom:10px;text-align:left" onclick="_wkt.exercises['+exIdx+'].name=\''+esc(s)+'\';closeModal();go(\'active\')">'+esc(s)+'</button>';
+    return '<button type="button" class="btn btn-secondary" style="margin-bottom:10px;text-align:left" onclick="_wkt.exercises['+exIdx+'].name=\''+esc(s)+'\';closeModal();go(\'active\')">'+esc(s)+'</button>';
   }).join('');
-  modal('Swap: ' + name, body, '<button class="btn btn-ghost" onclick="closeModal()" style="margin-top:8px">Keep original</button>');
+  modal('Swap: ' + name, body, '<button type="button" class="btn btn-ghost" onclick="closeModal()" style="margin-top:8px">Keep original</button>');
 };
 
 window.confirmFinishWorkout = function() {
@@ -1133,8 +1133,8 @@ window.confirmFinishWorkout = function() {
     '<label class="field-label">Workout Notes</label>' +
     '<textarea id="wkt-final-note" class="field" placeholder="Overall feeling, energy, anything to remember..." style="height:80px;resize:none;font-size:14px"></textarea>' +
     '</div>',
-    '<button class="btn btn-primary" onclick="saveWorkout()" style="margin-top:4px">💾 Save Workout</button>' +
-    '<button class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Keep Training</button>'
+    '<button type="button" class="btn btn-primary" onclick="saveWorkout()" style="margin-top:4px">💾 Save Workout</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Keep Training</button>'
   );
 };
 
@@ -1291,7 +1291,7 @@ window.showExercisePicker = function(grp) {
     '<div style="font-size:24px">'+esc(ex.em||'💪')+'</div>' +
     '<div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--txt)">'+esc(ex.n)+'</div>' +
     '<div style="font-size:12px;color:var(--txt3)">'+esc(ex.pri)+(ex.sec?', '+ex.sec:'')+'</div></div>' +
-    '<button style="font-size:12px;color:var(--c1);background:none;border:none;cursor:pointer;padding:8px;font-weight:700" onclick="addExerciseToWorkout(\''+esc(ex.n)+'\')">+ Add</button>' +
+    '<button type="button" style="font-size:12px;color:var(--c1);background:none;border:none;cursor:pointer;padding:8px;font-weight:700" onclick="addExerciseToWorkout(\''+esc(ex.n)+'\')">+ Add</button>' +
     '</div>'
   ).join('');
   modal('Exercise Library',
@@ -1413,7 +1413,7 @@ function showExerciseDetail(name) {
 
   modal(ex.n, html,
     '<div style="display:flex;gap:10px;margin-top:16px">' +
-    '<button class="btn btn-primary" onclick="closeModal()" style="flex:1">Got it</button>' +
+    '<button type="button" class="btn btn-primary" onclick="closeModal()" style="flex:1">Got it</button>' +
     '</div>'
   );
 }
@@ -1454,12 +1454,12 @@ function showAddCustomExercise() {
 
     '<div class="field-wrap"><label class="field-label">Difficulty</label>' +
     '<div style="display:flex;gap:8px">' +
-    '<button class="btn btn-secondary btn-sm cx-diff-btn" onclick="setCxDiff(1,this)">Beginner</button>' +
-    '<button class="btn btn-secondary btn-sm cx-diff-btn" onclick="setCxDiff(2,this)">Intermediate</button>' +
-    '<button class="btn btn-secondary btn-sm cx-diff-btn" onclick="setCxDiff(3,this)">Advanced</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm cx-diff-btn" onclick="setCxDiff(1,this)">Beginner</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm cx-diff-btn" onclick="setCxDiff(2,this)">Intermediate</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm cx-diff-btn" onclick="setCxDiff(3,this)">Advanced</button>' +
     '</div></div>',
 
-    '<button class="btn btn-primary" onclick="saveCustomExercise()" style="margin-top:14px">Add Exercise</button>'
+    '<button type="button" class="btn btn-primary" onclick="saveCustomExercise()" style="margin-top:14px">Add Exercise</button>'
   );
   window._cxDiff = 1;
 }
@@ -1558,11 +1558,11 @@ function showBrowseExercises(filterGrp, filterQuery) {
   div.className = 'screen';
   div.innerHTML =
     '<div class="topbar"><div class="topbar-title">Exercise Library</div>' +
-    '<div class="topbar-right"><button class="topbar-icon press" onclick="go(\'workout\')">✕</button></div></div>' +
+    '<div class="topbar-right"><button type="button" class="topbar-icon press" onclick="go(\'workout\')">✕</button></div></div>' +
     filterTabs + searchBar +
     '<div style="font-size:12px;color:var(--txt3);padding:0 16px 8px">'+exercises.length+' exercises</div>' +
     exList +
-    '<div style="padding:16px"><button class="btn btn-secondary" onclick="showAddCustomExercise()">+ Add Custom Exercise</button></div>' +
+    '<div style="padding:16px"><button type="button" class="btn btn-secondary" onclick="showAddCustomExercise()">+ Add Custom Exercise</button></div>' +
     '<div style="height:20px"></div>';
   v.innerHTML = '';
   v.appendChild(div);
@@ -1609,7 +1609,7 @@ window.showCardioProtocol = function(key) {
       '<div style="background:rgba(var(--c1-rgb),0.06);border-radius:10px;padding:10px">' +
       '<div style="font-size:12px;color:var(--txt2);line-height:1.6">💡 '+esc(pr.notes)+'</div>' +
       '</div>' +
-      '<button onclick="startCardioSession(\''+key+'\','+i+')" style="width:100%;margin-top:12px;padding:12px;border-radius:12px;background:'+p.color+';color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;touch-action:manipulation">▶ Start This Protocol</button>' +
+      '<button type="button" onclick="startCardioSession(\''+key+'\','+i+')" style="width:100%;margin-top:12px;padding:12px;border-radius:12px;background:'+p.color+';color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;touch-action:manipulation">▶ Start This Protocol</button>' +
       '</div>';
   }).join('');
 
@@ -1620,7 +1620,7 @@ window.showCardioProtocol = function(key) {
   div.className = 'screen';
   div.innerHTML =
     '<div class="topbar">' +
-    '<button class="topbar-icon press" onclick="go(\'cardio\')" style="margin-right:8px">←</button>' +
+    '<button type="button" class="topbar-icon press" onclick="go(\'cardio\')" style="margin-right:8px">←</button>' +
     '<div><div class="topbar-title">'+esc(p.name)+'</div>' +
     '<div class="topbar-date">'+esc(p.full)+'</div></div></div>' +
 
@@ -1701,8 +1701,8 @@ window.startCardioSession = function(key, protocolIdx) {
     '<div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center">' +
     pr.exercises.map(function(e){return '<span style="font-size:12px;background:rgba(var(--c1-rgb),0.1);color:var(--c1);border-radius:20px;padding:4px 12px;font-weight:600">'+esc(e)+'</span>';}).join('') +
     '</div></div>',
-    '<button class="btn btn-primary" onclick="closeModal();go(\'cardio\')">Done ✓</button>' +
-    '<button class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Keep Viewing</button>'
+    '<button type="button" class="btn btn-primary" onclick="closeModal();go(\'cardio\')">Done ✓</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Keep Viewing</button>'
   );
   toast('💪 '+p.name+' session logged!', 'ok', 4000);
 };

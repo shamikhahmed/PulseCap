@@ -272,7 +272,7 @@ reg('training-style', function() {
   var rotation = SmartRotation.globalSuggestions();
   var proportion = (typeof ProportionAnalyzer !== 'undefined') ? ProportionAnalyzer.analyze() : null;
 
-  return '<div class="topbar"><button onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Training Style & Rotation</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Training Style & Rotation</div></div>' +
 
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:20px;padding:18px">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">Detected Training Style</div>' +
@@ -308,8 +308,8 @@ reg('training-style', function() {
           '<div style="font-size:12px;color:var(--txt2);margin-bottom:8px">📋 ' + esc(s.altReason) + '</div>' +
           s.triggerReasons.map(function(r) { return '<div style="font-size:11px;color:#ff9f0a;margin-bottom:3px">⚠️ ' + esc(r) + '</div>'; }).join('') +
           '<div style="display:flex;gap:8px;margin-top:10px">' +
-          '<button onclick="this.parentElement.parentElement.style.display=\'none\'" style="flex:1;padding:10px;background:rgba(48,209,88,0.15);border:1px solid rgba(48,209,88,0.3);border-radius:10px;color:#30d158;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">✓ Accept</button>' +
-          '<button onclick="this.parentElement.parentElement.style.opacity=\'0.4\'" style="flex:1;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:var(--txt3);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">✗ Ignore</button>' +
+          '<button type="button" onclick="this.parentElement.parentElement.style.display=\'none\'" style="flex:1;padding:10px;background:rgba(48,209,88,0.15);border:1px solid rgba(48,209,88,0.3);border-radius:10px;color:#30d158;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">✓ Accept</button>' +
+          '<button type="button" onclick="this.parentElement.parentElement.style.opacity=\'0.4\'" style="flex:1;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:var(--txt3);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">✗ Ignore</button>' +
           '</div></div>';
       }).join('')
     ) +
@@ -319,7 +319,7 @@ reg('training-style', function() {
       '<div style="margin:0 16px 14px;background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.2);border-radius:16px;padding:14px">' +
       '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#ff9f0a;margin-bottom:8px">📐 Proportion Weak Points</div>' +
       proportion.weakPoints.map(function(w) { return '<div style="font-size:12px;color:var(--txt2);padding:4px 0">⚠️ ' + esc(w) + '</div>'; }).join('') +
-      '<button onclick="go(\'physique-archetype\')" style="margin-top:10px;width:100%;padding:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:10px;color:var(--c1);font-size:13px;font-weight:600;cursor:pointer">View Physique Archetype →</button>' +
+      '<button type="button" onclick="go(\'physique-archetype\')" style="margin-top:10px;width:100%;padding:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:10px;color:var(--c1);font-size:13px;font-weight:600;cursor:pointer">View Physique Archetype →</button>' +
       '</div>' : '') +
 
     '<div style="height:20px"></div>';

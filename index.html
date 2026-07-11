@@ -16,7 +16,7 @@
   <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
   <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
   <meta name="description" content="Performance OS — 300+ exercises, Smart Coach, and a full body map. Offline-first training, by Capricorn Systems.">
-<title>PulseCap</title>
+<title>PulseCap — Train with intention. · Capricorn Systems</title>
 <link rel="canonical" href="https://shamikhahmed.github.io/PulseCap/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Capricorn Systems">
@@ -30,6 +30,8 @@
 <meta name="twitter:image" content="https://shamikhahmed.github.io/assets/screenshots/pulsecap.png">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <link rel="preload" href="css/base.css" as="style">
+  <link rel="preload" href="css/components.css" as="style">
   <link rel="stylesheet" href="css/capricorn-core.css">
 <style>:root{--cap-accent:#00f2ff}</style>
 <link rel="stylesheet" href="css/base.css">
@@ -225,7 +227,7 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
           var banner = document.createElement('div');
           banner.id = 'install-banner';
           banner.style.cssText = 'position:fixed;bottom:calc(var(--nav-h,64px) + var(--safe,0px) + 8px);left:16px;right:16px;background:var(--bg3);border:1px solid var(--border2);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;z-index:888;box-shadow:0 8px 32px rgba(0,0,0,0.3);animation:entryIn 0.3s ease';
-          banner.innerHTML = '<div style="font-size:28px">📱</div><div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">Add to Home Screen</div><div style="font-size:11px;color:var(--txt3)">Install PulseCap for the best experience</div></div><button onclick="_installPWA()" style="background:var(--grad);color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">Install</button><button onclick="document.getElementById(\'install-banner\').remove();localStorage.setItem(\'fos_installed\',\'dismissed\')" style="background:none;border:none;color:var(--txt3);font-size:18px;cursor:pointer;padding:4px;touch-action:manipulation">×</button>';
+          banner.innerHTML = '<div style="font-size:28px" aria-hidden="true">📱</div><div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">Add to Home Screen</div><div style="font-size:11px;color:var(--txt3)">Install PulseCap for the best experience</div></div><button type="button" onclick="_installPWA()" style="background:var(--grad);color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">Install</button><button type="button" aria-label="Dismiss" onclick="document.getElementById(\'install-banner\').remove();localStorage.setItem(\'fos_installed\',\'dismissed\')" style="background:none;border:none;color:var(--txt3);font-size:18px;cursor:pointer;padding:4px;touch-action:manipulation">×</button>';
           document.body.appendChild(banner);
         }, 2000);
       }
@@ -258,5 +260,53 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
       if (window.CapricornMotion) CapricornMotion.init();
     });
   </script>
+
+<!-- PRO UPGRADE MODAL -->
+<div id="proUpgradeModal" style="display:none;position:fixed;inset:0;z-index:9800;background:rgba(0,0,0,0.80);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:24px" role="dialog" aria-modal="true" aria-label="PulseCap Pro">
+  <div style="background:rgba(10,10,15,0.98);border:1px solid rgba(0,242,255,0.35);border-radius:24px;max-width:400px;width:100%;padding:36px 32px;box-shadow:0 40px 80px rgba(0,0,0,0.7)">
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:#00f2ff;margin-bottom:8px">PULSECAP PRO</p>
+    <h2 style="font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.02em">Unlock your full training OS.</h2>
+    <p style="font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:28px">Your logs stay on your device either way. Pro unlocks the full 300+ library, body intelligence, and Smart Coach.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:14px;padding:20px">
+        <p style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);margin-bottom:12px">FREE</p>
+        <p style="font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:16px">$0</p>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:13px;color:rgba(255,255,255,0.5)">
+          <li>✓ 50 exercises</li>
+          <li>✓ Workout logging</li>
+          <li>✓ PR tracking</li>
+          <li>✓ Offline PWA</li>
+        </ul>
+      </div>
+      <div style="background:rgba(0,242,255,0.07);border:2px solid rgba(0,242,255,0.4);border-radius:14px;padding:20px;position:relative">
+        <span style="position:absolute;top:-10px;left:16px;background:#00f2ff;color:#000;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:0.06em">PRO</span>
+        <p style="font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:2px">$4.99<span style="font-size:13px;font-weight:400;color:rgba(255,255,255,0.5)">/mo</span></p>
+        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px">or $39.99/yr</p>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:13px;color:rgba(255,255,255,0.5)">
+          <li>✓ 300+ exercise library</li>
+          <li>✓ Body map & measurements</li>
+          <li>✓ Smart Coach (adaptive)</li>
+          <li>✓ Recovery readiness</li>
+          <li>✓ Nutrition tracking</li>
+          <li>✓ Unlimited history</li>
+        </ul>
+      </div>
+    </div>
+    <button type="button" onclick="document.getElementById('proUpgradeModal').style.display='none'" style="width:100%;padding:14px;background:rgba(0,242,255,0.12);border:1px solid rgba(0,242,255,0.3);color:#00f2ff;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px">Join Pro waitlist — coming soon →</button>
+    <button type="button" onclick="document.getElementById('proUpgradeModal').style.display='none'" style="width:100%;padding:10px;background:none;border:none;color:rgba(255,255,255,0.4);font-size:13px;cursor:pointer">Continue with Free</button>
+  </div>
+</div>
+<script>
+(function () {
+  window.openProUpgrade = function () {
+    var m = document.getElementById('proUpgradeModal');
+    if (m) m.style.display = 'flex';
+  };
+  var modal = document.getElementById('proUpgradeModal');
+  if (modal) modal.addEventListener('click', function (e) {
+    if (e.target === modal) modal.style.display = 'none';
+  });
+})();
+</script>
 </body>
 </html>

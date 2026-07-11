@@ -19,6 +19,7 @@ function go(id, data) {
     );
     if (!sameScreen && typeof haptic === 'function') haptic(10);
     _currentScreen = id;
+    document.title = (id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ')) + ' — PulseCap';
     const html = _screens[id](data) || '';
     const v = document.getElementById('view');
     if (!v) return;
@@ -55,7 +56,7 @@ function go(id, data) {
     if (v) v.innerHTML = '<div style="padding:28px 20px;color:#ff4444;font-size:14px;line-height:1.6">' +
       '<div style="font-size:32px;margin-bottom:12px">⚠️</div>' +
       '<strong>Screen error: ' + id + '</strong><br>' + e.message +
-      '<br><br><button onclick="go(\'dashboard\')" style="background:var(--bg3);border:1px solid var(--border);color:var(--txt);padding:10px 20px;border-radius:12px;font-size:14px;cursor:pointer">← Back to Home</button>' +
+      '<br><br><button type="button" onclick="go(\'dashboard\')" style="background:var(--bg3);border:1px solid var(--border);color:var(--txt);padding:10px 20px;border-radius:12px;font-size:14px;cursor:pointer">← Back to Home</button>' +
       '</div>';
   }
 }
@@ -138,7 +139,7 @@ function emptyState(icon, title, sub, btnLabel, btnCb) {
   return '<div class="cap-empty"><div class="cap-empty__icon">'+icon+'</div>' +
     '<div class="cap-empty__title">'+esc(title)+'</div>' +
     '<div class="cap-empty__body">'+esc(sub)+'</div>' +
-    (btnLabel?'<div class="cap-empty__cta"><button class="btn btn-secondary btn-sm" onclick="'+btnCb+'">'+esc(btnLabel)+'</button></div>':'') + '</div>';
+    (btnLabel?'<div class="cap-empty__cta"><button type="button" class="btn btn-secondary btn-sm" onclick="'+btnCb+'">'+esc(btnLabel)+'</button></div>':'') + '</div>';
 }
 function modal(title, bodyHtml, footerHtml) {
   closeModal();
@@ -1646,7 +1647,7 @@ function buildNav() {
   const ids = _getNavTabIds();
   const tabs = ids.map(function(id) { return DEFAULT_NAV_TABS.find(function(t) { return t.id === id; }); }).filter(Boolean);
   nav.innerHTML = tabs.map(function(t) {
-    return '<button class="nb press" id="nb-'+t.id+'" onclick="go(\''+t.id+'\');haptic(12)">' +
+    return '<button type="button" class="nb press" id="nb-'+t.id+'" onclick="go(\''+t.id+'\');haptic(12)">' +
       t.icon + '<span>'+t.label+'</span></button>';
   }).join('');
   const sidebar = document.getElementById('cap-nav-sidebar');

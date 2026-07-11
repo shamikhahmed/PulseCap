@@ -195,9 +195,9 @@ window.showSkillDetail = function(skillId) {
     '<div style="margin-top:14px;font-size:10px;color:var(--txt3);font-style:italic">Training tip: ' + skill.tip + '</div>',
     '<div style="display:flex;gap:8px">' +
     (userLevel < skill.levels.length - 1 ?
-      '<button class="btn btn-primary" style="flex:1" onclick="levelUpSkill(\'' + skillId + '\');closeModal()">✅ Level ' + userLevel + ' Complete</button>' :
-      '<button class="btn btn-primary" style="flex:1" disabled>🏆 Mastered!</button>') +
-    '<button class="btn btn-ghost" onclick="closeModal()">Close</button>' +
+      '<button type="button" class="btn btn-primary" style="flex:1" onclick="levelUpSkill(\'' + skillId + '\');closeModal()">✅ Level ' + userLevel + ' Complete</button>' :
+      '<button type="button" class="btn btn-primary" style="flex:1" disabled>🏆 Mastered!</button>') +
+    '<button type="button" class="btn btn-ghost" onclick="closeModal()">Close</button>' +
     '</div>'
   );
 };

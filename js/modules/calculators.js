@@ -54,13 +54,13 @@ reg('calculators', function() {
     '<div><div class="topbar-title">Calculators</div>' +
     '<div class="topbar-date">Personalized body metrics</div></div>' +
     '<div class="topbar-right">' +
-    '<button class="topbar-icon press" onclick="go(\'bodymap\')">🫀</button>' +
+    '<button type="button" class="topbar-icon press" onclick="go(\'bodymap\')">🫀</button>' +
     '</div></div>' +
 
     '<div style="padding:0 16px 14px">' +
     '<div style="background:linear-gradient(135deg,rgba(0,213,255,0.1),rgba(123,95,255,0.08));border:1px solid rgba(0,213,255,0.2);border-radius:18px;padding:16px;margin-bottom:14px">' +
     '<div style="font-size:13px;color:var(--txt2);line-height:1.55;margin-bottom:12px">Metrics use your profile, latest measurements, and training goal. Tap recalculate after logging new data.</div>' +
-    '<button class="btn btn-primary btn-sm" onclick="recalcCalculators()" style="width:100%">↻ Recalculate</button>' +
+    '<button type="button" class="btn btn-primary btn-sm" onclick="recalcCalculators()" style="width:100%">↻ Recalculate</button>' +
     '</div></div>' +
 
     sh('Body Composition') +
@@ -96,7 +96,7 @@ reg('calculators', function() {
     '</div>' +
 
     '<div style="padding:0 16px 14px">' +
-    '<button class="btn btn-secondary" onclick="go(\'bodymap\')" style="width:100%">📏 Log Measurements in Body Tab</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="go(\'bodymap\')" style="width:100%">📏 Log Measurements in Body Tab</button>' +
     '</div>' +
     '<div style="height:20px"></div>';
 });

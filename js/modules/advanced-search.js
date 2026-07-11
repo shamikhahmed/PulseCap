@@ -222,7 +222,7 @@ reg('search', function(data) {
 
   const topbar =
     '<div style="display:flex;align-items:center;gap:10px;padding:10px 16px 0;background:var(--bg);position:sticky;top:0;z-index:20">' +
-    '<button onclick="history.length>1?history.back():go(\'dashboard\')" style="width:34px;height:34px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--txt);font-size:18px;cursor:pointer;touch-action:manipulation;flex-shrink:0">←</button>' +
+    '<button type="button" onclick="history.length>1?history.back():go(\'dashboard\')" style="width:34px;height:34px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--txt);font-size:18px;cursor:pointer;touch-action:manipulation;flex-shrink:0">←</button>' +
     '<input id="fit-search" type="search" placeholder="Exercises, muscles, injuries, sports..." ' +
     'value="' + qEsc + '" ' +
     'oninput="clearTimeout(window._st);window._st=setTimeout(function(){go(\'search\',{q:document.getElementById(\'fit-search\').value,filter:\'' + fEsc + '\'})},280)" ' +
@@ -245,7 +245,7 @@ reg('search', function(data) {
       content =
         '<div style="padding:12px 16px 6px;display:flex;align-items:center;justify-content:space-between">' +
         '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3)">Recent</div>' +
-        '<button onclick="S.s(\'recentSearches\',[]);go(\'search\')" style="font-size:12px;color:var(--txt3);background:none;border:none;cursor:pointer;touch-action:manipulation;padding:4px 8px">Clear</button>' +
+        '<button type="button" onclick="S.s(\'recentSearches\',[]);go(\'search\')" style="font-size:12px;color:var(--txt3);background:none;border:none;cursor:pointer;touch-action:manipulation;padding:4px 8px">Clear</button>' +
         '</div>' +
         recents.slice(0, 5).map(function(r, i) {
           return '<div onclick="_searchRun(_srRecents[' + i + '])" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
@@ -262,7 +262,7 @@ reg('search', function(data) {
         '<div style="font-size:13px;color:var(--txt3);line-height:1.8;margin-bottom:24px">Exercises · Muscles · Injuries<br>Mobility · Sports · Your History</div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">' +
         ['Bench Press', 'Shoulder', 'Hamstring', 'Cricket', 'Lower Back', 'Hip Flexor', 'Squat', 'Push-Ups'].map(function(s) {
-          return '<button onclick="_searchRun(\'' + s + '\')" style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:var(--bg3);color:var(--txt2)">' + s + '</button>';
+          return '<button type="button" onclick="_searchRun(\'' + s + '\')" style="padding:7px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:var(--bg3);color:var(--txt2)">' + s + '</button>';
         }).join('') +
         '</div></div>';
     }
@@ -274,7 +274,7 @@ reg('search', function(data) {
       '<div style="font-size:13px;color:var(--txt3);margin-bottom:20px">Try a different word or filter</div>' +
       '<div style="display:flex;flex-direction:column;gap:8px;max-width:280px;margin:0 auto">' +
       ['Bench Press', 'Shoulder pain', 'Hamstring stretch', 'Cricket training', 'Lower back'].map(function(s) {
-        return '<button onclick="_searchRun(\'' + s + '\')" style="padding:11px 16px;border-radius:14px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:var(--bg3);color:var(--txt2);text-align:left">🔍 ' + s + '</button>';
+        return '<button type="button" onclick="_searchRun(\'' + s + '\')" style="padding:11px 16px;border-radius:14px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:var(--bg3);color:var(--txt2);text-align:left">🔍 ' + s + '</button>';
       }).join('') +
       '</div></div>';
   } else {

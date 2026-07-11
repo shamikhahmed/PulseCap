@@ -201,7 +201,7 @@ function _weaknessMap() {
    VISUALIZATIONS SCREEN
 ══════════════════════════════════════════════════════ */
 reg('visualizations', function() {
-  return '<div class="topbar"><button onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Analytics & Visualizations</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Analytics & Visualizations</div></div>' +
 
     '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
     '<div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:14px">🌡️ Muscle Recovery Heatmap</div>' +

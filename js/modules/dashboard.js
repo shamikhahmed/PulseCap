@@ -25,7 +25,7 @@ reg('dashboard', function() {
     const demoBanner = isDemoMode ?
       '<div style="background:linear-gradient(135deg,rgba(123,95,255,0.15),rgba(0,213,255,0.08));border-bottom:1px solid rgba(123,95,255,0.2);padding:10px 16px;display:flex;align-items:center;justify-content:space-between">' +
       '<div style="font-size:13px;color:var(--c2);font-weight:600">🤖 Demo Mode</div>' +
-      '<button onclick="go(\'profiles\')" style="font-size:12px;color:var(--c1);font-weight:600;background:none;border:none;cursor:pointer;touch-action:manipulation">Switch →</button>' +
+      '<button type="button" onclick="go(\'profiles\')" style="font-size:12px;color:var(--c1);font-weight:600;background:none;border:none;cursor:pointer;touch-action:manipulation">Switch →</button>' +
       '</div>' : '';
 
     /* ── TOPBAR ── */
@@ -36,7 +36,7 @@ reg('dashboard', function() {
       '<div style="font-size:11px;color:var(--txt3)">' + esc(todayStr) + '</div></div>' +
       '</div>' +
       '<div class="topbar-right">' +
-      '<button class="topbar-icon press" onclick="go(\'search\')" aria-label="Search">🔍</button>' +
+      '<button type="button" class="topbar-icon press" onclick="go(\'search\')" aria-label="Search">🔍</button>' +
       '<div onclick="go(\'profiles\')" style="width:32px;height:32px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;flex-shrink:0">' + avatarLetter + '</div>' +
       '</div></div>';
 
@@ -79,16 +79,16 @@ reg('dashboard', function() {
         : esc((splitDay.muscles || []).slice(0, 3).join(' · ')) +
           (splitDay.exercises && splitDay.exercises.length ? ' · ' + splitDay.exercises.length + ' exercises' : '');
     const sessionBtn = isRestDay
-      ? '<button onclick="go(\'recovery-debt\')" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:8px">View Recovery Plan</button>'
+      ? '<button type="button" onclick="go(\'recovery-debt\')" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:8px">View Recovery Plan</button>'
       : isLightDay
-        ? '<button onclick="startWorkout&&startWorkout()" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:8px">▶ Light Session</button>'
-        : '<button onclick="startWorkout&&startWorkout()" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:8px">▶ Start Workout</button>';
+        ? '<button type="button" onclick="startWorkout&&startWorkout()" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:8px">▶ Light Session</button>'
+        : '<button type="button" onclick="startWorkout&&startWorkout()" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:8px">▶ Start Workout</button>';
     const startQuickAction = isRestDay
-      ? '<button onclick="go(\'recovery-debt\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
+      ? '<button type="button" onclick="go(\'recovery-debt\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
         '<span style="font-size:26px">🛌</span>' +
         '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Recovery</span>' +
         '</button>'
-      : '<button onclick="startWorkout&&startWorkout()" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
+      : '<button type="button" onclick="startWorkout&&startWorkout()" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
         '<span style="font-size:26px">💪</span>' +
         '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Start</span>' +
         '</button>';
@@ -120,15 +120,15 @@ reg('dashboard', function() {
     /* ── QUICK ACTIONS ── */
     const quickActions = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px;margin-bottom:20px">' +
       startQuickAction +
-      '<button onclick="go(\'recovery\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
+      '<button type="button" onclick="go(\'recovery\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
       '<span style="font-size:26px">📊</span>' +
       '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Check In</span>' +
       '</button>' +
-      '<button onclick="go(\'assistant\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
+      '<button type="button" onclick="go(\'assistant\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
       '<span style="font-size:26px">🤖</span>' +
       '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Smart Coach</span>' +
       '</button>' +
-      '<button onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
+      '<button type="button" onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
       '<span style="font-size:26px">🔍</span>' +
       '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Search</span>' +
       '</button>' +
@@ -248,7 +248,7 @@ reg('dashboard', function() {
         '<div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:3px">Morning Briefing</div>' +
         '<div style="font-size:11px;color:var(--txt3);line-height:1.45;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">' + esc(coachMsg) + '</div>' +
         '</div>' +
-        '<button onclick="openMorningBriefing()" style="flex-shrink:0;padding:8px 12px;border-radius:10px;' +
+        '<button type="button" onclick="openMorningBriefing()" style="flex-shrink:0;padding:8px 12px;border-radius:10px;' +
         'background:var(--grad);border:none;color:#fff;font-size:11px;font-weight:700;cursor:pointer;touch-action:manipulation">Open</button>' +
         '</div>';
     })();
@@ -259,10 +259,10 @@ reg('dashboard', function() {
     const moreRow = '<div style="margin:0 16px 14px">' +
       '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">More</div>' +
       '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">' +
-      '<button onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🔍 Search</button>' +
-      '<button onclick="go(\'academy\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🎓 Academy</button>' +
-      '<button onclick="go(\'rehab\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🩹 Rehab</button>' +
-      '<button onclick="go(\'anatomy\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🔬 Anatomy</button>' +
+      '<button type="button" onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🔍 Search</button>' +
+      '<button type="button" onclick="go(\'academy\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🎓 Academy</button>' +
+      '<button type="button" onclick="go(\'rehab\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🩹 Rehab</button>' +
+      '<button type="button" onclick="go(\'anatomy\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🔬 Anatomy</button>' +
       '</div></div>';
 
     const todayWt = (S.g('bodyStats') || []).find(b => b.date === new Date().toISOString().slice(0, 10));
@@ -270,7 +270,7 @@ reg('dashboard', function() {
       '<div style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px">' +
       '<div><div style="font-size:13px;font-weight:700;color:var(--txt)">⚖️ Weigh in today?</div>' +
       '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Fasted morning weight tracks best</div></div>' +
-      '<button class="btn btn-primary btn-sm" style="width:auto;padding:10px 16px;min-height:auto" onclick="showLogWeight()">Log</button></div>' : '';
+      '<button type="button" class="btn btn-primary btn-sm" style="width:auto;padding:10px 16px;min-height:auto" onclick="showLogWeight()">Log</button></div>' : '';
 
     const setupBanner = (S.g('settings.equipmentSetupPending') || !S.g('user.equipmentConfigured')) ?
       '<div onclick="go(\'equipment-setup\')" style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:rgba(0,213,255,0.08);border:1px solid rgba(0,213,255,0.2);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">' +
@@ -294,8 +294,8 @@ reg('dashboard', function() {
       '<div style="font-size:12px;font-weight:700;color:var(--txt3);margin-bottom:4px">SUGGESTED SPLIT</div>' +
       '<div style="font-size:15px;font-weight:800;color:var(--txt)">'+esc(splitRec.name)+'</div>' +
       '<div style="font-size:11px;color:var(--txt3);margin:6px 0 10px">'+esc(splitRec.reason)+'</div>' +
-      '<button class="btn btn-primary btn-sm" onclick="applySuggestedSplit()">Use this split</button> ' +
-      '<button class="btn btn-ghost btn-sm" onclick="go(\'settings\',{tab:\'training\'})">Choose another</button></div>' : '';
+      '<button type="button" class="btn btn-primary btn-sm" onclick="applySuggestedSplit()">Use this split</button> ' +
+      '<button type="button" class="btn btn-ghost btn-sm" onclick="go(\'settings\',{tab:\'training\'})">Choose another</button></div>' : '';
 
     return demoBanner + topbar + weightPrompt + injuryBanner + setupBanner + splitBanner + briefingCard + heroCard + quickActions + todayWorkout +
       firstWorkoutEmpty + activeQuestCard + lastWktCard + moreRow +
@@ -306,7 +306,7 @@ reg('dashboard', function() {
     return '<div style="padding:28px 20px;color:var(--txt);line-height:1.6">' +
       '<div style="font-size:32px;margin-bottom:12px">⚠️</div>' +
       '<strong>Dashboard error</strong><br><span style="color:var(--txt3);font-size:13px">' + esc(e.message) + '</span>' +
-      '<br><br><button class="btn btn-secondary" onclick="go(\'dashboard\')">Retry</button></div>';
+      '<br><br><button type="button" class="btn btn-secondary" onclick="go(\'dashboard\')">Retry</button></div>';
   }
 });
 

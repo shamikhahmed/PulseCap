@@ -22,8 +22,8 @@ reg('hub', function() {
       '</div>';
   }
 
-  return '<div class="topbar"><button onclick="go(\'dashboard\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Explore</div>' +
-    '<button onclick="go(\'search\')" style="background:none;border:none;color:var(--txt3);font-size:20px;cursor:pointer;padding:0 16px;touch-action:manipulation">🔍</button>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'dashboard\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Explore</div>' +
+    '<button type="button" onclick="go(\'search\')" style="background:none;border:none;color:var(--txt3);font-size:20px;cursor:pointer;padding:0 16px;touch-action:manipulation">🔍</button>' +
     '</div>' +
     '<p style="padding:12px 16px 0;font-size:12px;color:var(--txt3);line-height:1.45">Quick links to advanced tools. Use <strong>Search</strong> on Home for everything else.</p>' +
 

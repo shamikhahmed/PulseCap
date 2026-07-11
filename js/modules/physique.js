@@ -336,9 +336,9 @@ reg('physique', function() {
     return '<svg width="240" height="240" viewBox="0 0 240 240" style="display:block;margin:0 auto">' + gridSVG + scorePolygon + labels + dots + '</svg>';
   }
 
-  const noDataMsg = !m ? '<div style="margin:0 16px 14px;background:rgba(255,159,10,0.08);border:1px solid rgba(255,159,10,0.2);border-radius:14px;padding:14px;font-size:13px;color:var(--txt2);line-height:1.6">📊 Add body measurements in <button onclick="go(\'bodymap\')" style="background:none;border:none;color:var(--c1);font-weight:700;cursor:pointer;font-size:13px;padding:0">Body tab</button> to unlock physique scoring.</div>' : '';
+  const noDataMsg = !m ? '<div style="margin:0 16px 14px;background:rgba(255,159,10,0.08);border:1px solid rgba(255,159,10,0.2);border-radius:14px;padding:14px;font-size:13px;color:var(--txt2);line-height:1.6">📊 Add body measurements in <button type="button" onclick="go(\'bodymap\')" style="background:none;border:none;color:var(--c1);font-weight:700;cursor:pointer;font-size:13px;padding:0">Body tab</button> to unlock physique scoring.</div>' : '';
 
-  return '<div class="topbar"><button onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Physique Analysis</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Physique Analysis</div></div>' +
 
     noDataMsg +
 

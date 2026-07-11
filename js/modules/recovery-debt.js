@@ -259,7 +259,7 @@ reg('recovery-debt', function() {
   const riskColor = (v) => v >= 70 ? '#ff453a' : v >= 40 ? '#f5c842' : '#30d158';
 
   return '<div class="topbar">' +
-    '<button class="topbar-icon press" onclick="go(\'dashboard\')" style="font-size:20px">‹</button>' +
+    '<button type="button" class="topbar-icon press" onclick="go(\'dashboard\')" style="font-size:20px">‹</button>' +
     '<div class="topbar-title">Recovery Debt</div>' +
     '</div>' +
 

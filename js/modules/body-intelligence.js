@@ -520,7 +520,7 @@ reg('body-intelligence', function() {
     return '<div style="width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + score + '%;height:6px;border-radius:3px;background:' + color + '"></div></div>';
   }
 
-  return '<div class="topbar"><button onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Body Intelligence</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Body Intelligence</div></div>' +
 
     '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">🎯 Today\'s Recovery Plan</div>' +
@@ -573,7 +573,7 @@ reg('body-intelligence', function() {
       '</div>'
     ).join('') +
     '</div>' +
-    '<button onclick="go(\'injury-risk\')" style="width:100%;margin-top:12px;padding:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:12px;color:var(--c1);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">Full Joint Report →</button>' +
+    '<button type="button" onclick="go(\'injury-risk\')" style="width:100%;margin-top:12px;padding:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:12px;color:var(--c1);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">Full Joint Report →</button>' +
     '</div>' +
 
     '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
@@ -607,7 +607,7 @@ reg('body-intelligence', function() {
           '</div>').join('') +
         '</div>'
       ).join('') +
-      '<button onclick="go(\'training-intel\')" style="width:100%;padding:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:12px;color:var(--c1);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">Full DNA Profile →</button>' +
+      '<button type="button" onclick="go(\'training-intel\')" style="width:100%;padding:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:12px;color:var(--c1);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">Full DNA Profile →</button>' +
       '</div>' : '') +
 
     '<div style="height:20px"></div>';

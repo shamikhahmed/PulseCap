@@ -15,8 +15,8 @@ reg('recovery', function() {
     _sleepInsights() +
     _recoveryRecs(score) +
     '<div style="padding:0 16px 16px;display:flex;flex-direction:column;gap:8px">' +
-    '<button class="btn btn-secondary" onclick="go(\'body-intelligence\')" style="width:100%">🧬 Body Intelligence →</button>' +
-    '<button class="btn btn-secondary" onclick="go(\'recovery-debt\')" style="width:100%">📊 Recovery Debt &amp; Forecast →</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="go(\'body-intelligence\')" style="width:100%">🧬 Body Intelligence →</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="go(\'recovery-debt\')" style="width:100%">📊 Recovery Debt &amp; Forecast →</button>' +
     '</div>' +
     '<div style="height:20px"></div>';
 });
@@ -74,7 +74,7 @@ function _checkInForm(rec) {
   return sh('Daily Check-In') +
     '<div style="padding:0 16px">' +
     slidersHTML +
-    '<button class="btn btn-primary" onclick="saveRecovery()">Log Recovery</button>' +
+    '<button type="button" class="btn btn-primary" onclick="saveRecovery()">Log Recovery</button>' +
     '</div>';
 }
 

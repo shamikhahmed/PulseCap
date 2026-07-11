@@ -156,6 +156,6 @@ window.showMuscleDetail = function(id) {
     '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">'+m.common_injuries.map(function(i){return '<div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);border-radius:8px;padding:4px 10px;font-size:11px;color:#ff453a">'+i+'</div>';}).join('')+'</div>' +
     '<div style="display:flex;gap:8px"><div style="flex:1;background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:800;color:var(--txt)">'+m.recovery_hrs+'h</div><div style="font-size:10px;color:var(--txt3)">Recovery</div></div>' +
     '<div style="flex:1;background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:12px;font-weight:700;color:var(--txt)">'+m.fiber_type+'</div><div style="font-size:10px;color:var(--txt3)">Fiber Type</div></div></div>',
-    '<button class="btn btn-ghost" onclick="closeModal()">Close</button>'
+    '<button type="button" class="btn btn-ghost" onclick="closeModal()">Close</button>'
   );
 };

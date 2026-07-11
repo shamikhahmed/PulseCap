@@ -71,7 +71,7 @@ function _macroBar(name, current, target, color, cls) {
 
 function _waterSection(current, target) {
   const drops = Array.from({length: target}, (_, i) =>
-    '<button class="water-drop'+(i<current?' filled':'')+'" onclick="logWater('+(i+1)+')">💧</button>'
+    '<button type="button" class="water-drop'+(i<current?' filled':'')+'" onclick="logWater('+(i+1)+')">💧</button>'
   ).join('');
   return sh('Water Intake', current+'/'+target+' glasses') +
     '<div class="water-grid">'+drops+'</div>' +
@@ -88,7 +88,7 @@ function _dueSuppsSection(due) {
       '<div class="supp-name">'+esc(s.name)+'</div>' +
       '<div class="supp-timing">'+esc(s.timing)+' · '+esc(s.dose||'')+'</div>' +
       '</div>' +
-      '<button class="supp-mark" onclick="SupplementEngine.markTaken(\''+esc(s.id)+'\');go(\'nutrition\')">Done ✓</button>' +
+      '<button type="button" class="supp-mark" onclick="SupplementEngine.markTaken(\''+esc(s.id)+'\');go(\'nutrition\')">Done ✓</button>' +
       '</div>'
     ).join('');
 }
@@ -112,7 +112,7 @@ function _mySuppsSection(userSupps, logs) {
         (taken&&lastTime?'<div class="supp-taken">Taken at '+lastTime+'</div>':'') +
         (cafWarn?'<div class="supp-warn">⚠️ '+esc(cafWarn)+'</div>':'') +
         '</div>' +
-        (!taken?'<button class="supp-mark" onclick="SupplementEngine.markTaken(\''+esc(s.id)+'\');go(\'nutrition\')">Done</button>':'') +
+        (!taken?'<button type="button" class="supp-mark" onclick="SupplementEngine.markTaken(\''+esc(s.id)+'\');go(\'nutrition\')">Done</button>':'') +
         '</div>';
     }).join('');
 }
@@ -132,7 +132,7 @@ function _stackSuggestions(user) {
       '<div class="supp-timing">'+esc(s.dose)+' · '+esc(s.timing)+'</div>' +
       '<div style="font-size:12px;color:var(--txt3)">'+esc(s.notes)+'</div>' +
       '</div>' +
-      '<button class="supp-mark" onclick="addSuppToStack(\''+s.id+'\')">+ Add</button>' +
+      '<button type="button" class="supp-mark" onclick="addSuppToStack(\''+s.id+'\')">+ Add</button>' +
       '</div>'
     ).join('');
 }
@@ -171,7 +171,7 @@ function _mealPresets() {
     '<div style="padding:0 16px 14px">' +
     '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">' +
     chips.map(function(c) {
-      return '<button onclick="showMealPresets(\'' + c.key + '\')" style="flex:1;min-width:72px;padding:10px 8px;background:var(--bg4);border:1px solid var(--border);border-radius:12px;color:var(--txt);font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">' +
+      return '<button type="button" onclick="showMealPresets(\'' + c.key + '\')" style="flex:1;min-width:72px;padding:10px 8px;background:var(--bg4);border:1px solid var(--border);border-radius:12px;color:var(--txt);font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">' +
         c.icon + ' ' + esc(c.label) + '</button>';
     }).join('') +
     '</div>' +
@@ -248,7 +248,7 @@ window.showAddSuppModal = function() {
     '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">' +
     '<div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--txt)">'+esc(s.name)+'</div>' +
     '<div style="font-size:12px;color:var(--txt3)">'+esc(s.dose)+' · '+esc(s.timing)+'</div></div>' +
-    '<button onclick="addSuppToStack(\''+s.id+'\');closeModal()" style="color:var(--c1);background:none;border:none;font-size:13px;font-weight:700;cursor:pointer;padding:8px;min-height:44px">+ Add</button>' +
+    '<button type="button" onclick="addSuppToStack(\''+s.id+'\');closeModal()" style="color:var(--c1);background:none;border:none;font-size:13px;font-weight:700;cursor:pointer;padding:8px;min-height:44px">+ Add</button>' +
     '</div>'
   ).join('');
   modal('Add Supplement', list||'<div style="color:var(--txt3);padding:16px">All supplements already in stack</div>');
@@ -263,7 +263,7 @@ window.showMealPresets = function(slot) {
       return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">' +
         '<div><div style="font-size:14px;font-weight:600;color:var(--txt)">' + esc(p.name) + '</div>' +
         '<div style="font-size:11px;color:var(--txt3)">P:' + p.protein + 'g · C:' + p.carbs + 'g · F:' + p.fat + 'g</div></div>' +
-        '<button onclick="quickAddMeal(' + i + ',\'' + slot + '\')" style="color:var(--c1);background:none;border:none;font-size:13px;font-weight:700;cursor:pointer;padding:8px;min-height:44px">+' + p.calories + '</button>' +
+        '<button type="button" onclick="quickAddMeal(' + i + ',\'' + slot + '\')" style="color:var(--c1);background:none;border:none;font-size:13px;font-weight:700;cursor:pointer;padding:8px;min-height:44px">+' + p.calories + '</button>' +
         '</div>';
     }).join('')
   );
@@ -290,7 +290,7 @@ window.showLogMeal = function() {
     '<div class="field-wrap"><label class="field-label">Carbs (g)</label><input id="meal-c" class="field" type="number" placeholder="60"></div>' +
     '<div class="field-wrap"><label class="field-label">Fat (g)</label><input id="meal-f" class="field" type="number" placeholder="15"></div>' +
     '</div>',
-    '<button class="btn btn-primary" onclick="saveMeal()" style="margin-top:12px">Save Meal</button>'
+    '<button type="button" class="btn btn-primary" onclick="saveMeal()" style="margin-top:12px">Save Meal</button>'
   );
 };
 

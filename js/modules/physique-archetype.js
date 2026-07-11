@@ -354,7 +354,7 @@ const PhysiquePreview = {
     var photo = S.g('physiqueProgressPhoto');
     var photoHtml = photo ?
       '<div style="width:72px;height:96px;border-radius:12px;overflow:hidden;border:1px solid var(--border);flex-shrink:0"><img src="' + photo + '" alt="Progress" style="width:100%;height:100%;object-fit:cover"/></div>' :
-      '<button onclick="PhysiquePreview.uploadPhoto()" style="width:72px;height:96px;border-radius:12px;border:1px dashed var(--border2);background:var(--bg4);color:var(--txt3);font-size:10px;font-weight:600;cursor:pointer;touch-action:manipulation">📷 Add photo</button>';
+      '<button type="button" onclick="PhysiquePreview.uploadPhoto()" style="width:72px;height:96px;border-radius:12px;border:1px dashed var(--border2);background:var(--bg4);color:var(--txt3);font-size:10px;font-weight:600;cursor:pointer;touch-action:manipulation">📷 Add photo</button>';
 
     return '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--ds1)">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
@@ -363,7 +363,7 @@ const PhysiquePreview = {
       '<div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">' + photoHtml +
       '<div style="flex:1;font-size:12px;color:var(--txt2);line-height:1.55">' +
       (m ? 'Proportions derived from your latest measurements. Drag the slider to morph toward your <strong style="color:' + archetype.color + '">' + esc(archetype.name) + '</strong> target.' :
-        'Log neck, chest, waist, arms & legs in the <button onclick="go(\'bodymap\')" style="background:none;border:none;color:var(--c1);font-weight:700;cursor:pointer;font-size:12px;padding:0">Body tab</button> for a personalised preview.') +
+        'Log neck, chest, waist, arms & legs in the <button type="button" onclick="go(\'bodymap\')" style="background:none;border:none;color:var(--c1);font-weight:700;cursor:pointer;font-size:12px;padding:0">Body tab</button> for a personalised preview.') +
       '</div></div>' +
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">' +
       '<div style="background:rgba(0,0,0,0.2);border-radius:14px;padding:8px;border:1px solid var(--border)">' +
@@ -423,7 +423,7 @@ reg('physique-archetype', function(data) {
     var comp = PhysiqueArchetypes.comparison(selected);
 
     return '<div class="topbar">' +
-      '<button onclick="PhysiqueArchetypes.setUserArchetype(null);go(\'physique-archetype\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button>' +
+      '<button type="button" onclick="PhysiqueArchetypes.setUserArchetype(null);go(\'physique-archetype\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button>' +
       '<div class="topbar-title">' + arch.icon + ' ' + esc(arch.name) + '</div>' +
       '</div>' +
 
@@ -477,11 +477,11 @@ reg('physique-archetype', function(data) {
       }).join('') +
       '</div>' +
 
-      '<div style="padding:0 16px 16px"><button onclick="PhysiqueArchetypes.setUserArchetype(null);go(\'physique-archetype\')" style="width:100%;padding:12px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:14px;color:var(--txt3);font-size:13px;cursor:pointer">← Choose Different Archetype</button></div>' +
+      '<div style="padding:0 16px 16px"><button type="button" onclick="PhysiqueArchetypes.setUserArchetype(null);go(\'physique-archetype\')" style="width:100%;padding:12px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:14px;color:var(--txt3);font-size:13px;cursor:pointer">← Choose Different Archetype</button></div>' +
       '<div style="height:20px"></div>';
   }
 
-  return '<div class="topbar"><button onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Physique Archetype</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Physique Archetype</div></div>' +
 
     '<div style="padding:16px 16px 8px">' +
     '<div style="font-size:14px;color:var(--txt2);line-height:1.6;margin-bottom:4px">Choose your physique goal. PulseCap will show your current measurements vs target proportions and guide your training.</div>' +

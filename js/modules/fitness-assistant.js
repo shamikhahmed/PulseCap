@@ -375,7 +375,7 @@ reg('assistant', function() {
       (h.actions && h.actions.length ?
         '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:10px">' +
         h.actions.map(function(a, i) {
-          return '<button onclick="go(\'' + (h.actionTargets[i] || 'dashboard') + '\')" style="font-size:11px;font-weight:600;color:var(--c1);background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.25);padding:5px 10px;border-radius:8px;cursor:pointer;touch-action:manipulation">' + esc(a) + '</button>';
+          return '<button type="button" onclick="go(\'' + (h.actionTargets[i] || 'dashboard') + '\')" style="font-size:11px;font-weight:600;color:var(--c1);background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.25);padding:5px 10px;border-radius:8px;cursor:pointer;touch-action:manipulation">' + esc(a) + '</button>';
         }).join('') +
         '</div>' : '') +
       '</div></div>';
@@ -383,7 +383,7 @@ reg('assistant', function() {
 
   return '<div class="topbar">' +
     '<div class="topbar-title">🤖 Fitness Assistant</div>' +
-    '<button onclick="S.set(\'assistantHistory\',[]);go(\'assistant\')" style="background:none;border:none;color:var(--txt3);font-size:12px;cursor:pointer;padding:0 16px">Clear</button>' +
+    '<button type="button" onclick="S.set(\'assistantHistory\',[]);go(\'assistant\')" style="background:none;border:none;color:var(--txt3);font-size:12px;cursor:pointer;padding:0 16px">Clear</button>' +
     '</div>' +
 
     '<div id="chat-history" style="min-height:300px;padding-bottom:20px">' +
@@ -399,7 +399,7 @@ reg('assistant', function() {
       '<div style="font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px">Suggested Questions</div>' +
       '<div style="display:flex;flex-direction:column;gap:6px">' +
       SUGGESTIONS.map(function(s) {
-        return '<button onclick="window.askAssistant(\'' + s.replace(/'/g, "\\'") + '\')" style="text-align:left;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:var(--txt2);font-size:13px;cursor:pointer;touch-action:manipulation">' + esc(s) + '</button>';
+        return '<button type="button" onclick="window.askAssistant(\'' + s.replace(/'/g, "\\'") + '\')" style="text-align:left;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:var(--txt2);font-size:13px;cursor:pointer;touch-action:manipulation">' + esc(s) + '</button>';
       }).join('') +
       '</div></div>' : '') +
     '</div>' +
@@ -407,7 +407,7 @@ reg('assistant', function() {
     '<div style="position:sticky;bottom:var(--safe);background:var(--bg);border-top:1px solid var(--border);padding:12px 16px;display:flex;gap:10px">' +
     '<input id="assistant-input" class="field" placeholder="Ask your fitness coach..." style="flex:1;font-size:14px" ' +
     'onkeydown="if(event.key===\'Enter\'&&this.value.trim())window.askAssistant(this.value)" />' +
-    '<button onclick="var i=document.getElementById(\'assistant-input\');if(i&&i.value.trim())window.askAssistant(i.value)" ' +
+    '<button type="button" onclick="var i=document.getElementById(\'assistant-input\');if(i&&i.value.trim())window.askAssistant(i.value)" ' +
     'style="padding:12px 16px;background:var(--c1);border:none;border-radius:12px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation">→</button>' +
     '</div>';
 });

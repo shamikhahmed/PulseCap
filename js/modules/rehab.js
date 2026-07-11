@@ -281,8 +281,8 @@ reg('rehab', function() {
           (phaseData ? '<div style="font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:6px">' + phaseData.do.slice(0, 2).map(function(d) { return '✅ ' + d; }).join('<br>') + '</div>' +
             '<div style="font-size:12px;color:#ff453a;line-height:1.6;margin-bottom:10px">' + phaseData.avoid.slice(0, 2).map(function(d) { return '❌ ' + d; }).join('<br>') + '</div>' : '') +
           '<div style="display:flex;gap:8px">' +
-          '<button onclick="showInjuryProtocol(\'' + injId + '\')" style="flex:1;padding:10px;border-radius:12px;background:var(--bg4);border:1px solid var(--border);color:var(--txt);font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation">📋 Full Protocol</button>' +
-          '<button onclick="markInjuryRecovered(\'' + esc(inj.bodyPart || '') + '\')" style="padding:10px 14px;border-radius:12px;background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.3);color:#30d158;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation">✅ Recovered</button>' +
+          '<button type="button" onclick="showInjuryProtocol(\'' + injId + '\')" style="flex:1;padding:10px;border-radius:12px;background:var(--bg4);border:1px solid var(--border);color:var(--txt);font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation">📋 Full Protocol</button>' +
+          '<button type="button" onclick="markInjuryRecovered(\'' + esc(inj.bodyPart || '') + '\')" style="padding:10px 14px;border-radius:12px;background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.3);color:#30d158;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation">✅ Recovered</button>' +
           '</div></div>';
       }).join('') + '</div>';
   } else {
@@ -342,8 +342,8 @@ window.showInjuryProtocol = function(id) {
     '</div>' +
     '<div style="font-size:10px;color:var(--txt3);font-style:italic">' + inj.evidence_source + '</div>',
     '<div style="display:flex;gap:8px">' +
-    '<button class="btn btn-primary" style="flex:1" onclick="logThisInjury(\'' + id + '\');closeModal()">Log This Injury</button>' +
-    '<button class="btn btn-ghost" onclick="closeModal()">Close</button>' +
+    '<button type="button" class="btn btn-primary" style="flex:1" onclick="logThisInjury(\'' + id + '\');closeModal()">Log This Injury</button>' +
+    '<button type="button" class="btn btn-ghost" onclick="closeModal()">Close</button>' +
     '</div>'
   );
 };
@@ -372,7 +372,7 @@ window.showLogInjuryModal = function() {
         '<div style="font-size:11px;color:var(--txt3)">Typical return: ' + inj.return_to_gym_weeks.typical + ' weeks</div></div>' +
         '</div>';
     }).join('') + '</div>',
-    '<button class="btn btn-ghost" onclick="closeModal()">Cancel</button>'
+    '<button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>'
   );
 };
 

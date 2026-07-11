@@ -36,7 +36,7 @@ reg('briefing', function() {
     '<span style="font-size:20px;flex-shrink:0">⚠️</span>' +
     '<div><div style="font-size:13px;font-weight:700;color:#ff453a;margin-bottom:4px">'+injuries.length+' Active Injur'+(injuries.length>1?'ies':'y')+'</div>' +
     '<div style="font-size:12px;color:var(--txt2);line-height:1.5">Some exercises have been flagged. Check coach screen for modifications.</div>' +
-    '<button onclick="go(\'settings\',{tab:\'profile\'})" style="margin-top:8px;font-size:12px;color:var(--c1);font-weight:600;background:none;border:none;cursor:pointer;touch-action:manipulation">Manage injuries →</button>' +
+    '<button type="button" onclick="go(\'settings\',{tab:\'profile\'})" style="margin-top:8px;font-size:12px;color:var(--c1);font-weight:600;background:none;border:none;cursor:pointer;touch-action:manipulation">Manage injuries →</button>' +
     '</div></div>' : '';
 
   return '<div style="min-height:100vh;min-height:100dvh;background:var(--bg)">' +
@@ -60,8 +60,8 @@ reg('briefing', function() {
     '<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+esc((splitDay.muscles||[]).join(', '))+'</div></div>' +
     '</div>' +
     '<div style="display:flex;gap:10px">' +
-    '<button class="btn btn-primary" style="flex:1" onclick="startWorkout&&startWorkout()">▶ Start Workout</button>' +
-    '<button class="btn btn-secondary" style="flex:1" onclick="go(\'coach\')">📋 Full Plan</button>' +
+    '<button type="button" class="btn btn-primary" style="flex:1" onclick="startWorkout&&startWorkout()">▶ Start Workout</button>' +
+    '<button type="button" class="btn btn-secondary" style="flex:1" onclick="go(\'coach\')">📋 Full Plan</button>' +
     '</div></div>' +
 
     injuryAlert +
@@ -101,11 +101,11 @@ reg('briefing', function() {
       dueSupps.slice(0,2).map(function(s) {
         return '<div class="supp-card due"><div class="supp-icon">💊</div>' +
           '<div class="supp-info"><div class="supp-name">'+esc(s.name)+'</div><div class="supp-timing">'+esc(s.timing)+'</div></div>' +
-          '<button class="supp-mark" onclick="SupplementEngine.markTaken(\''+s.id+'\');go(\'briefing\')">Done</button></div>';
+          '<button type="button" class="supp-mark" onclick="SupplementEngine.markTaken(\''+s.id+'\');go(\'briefing\')">Done</button></div>';
       }).join('') : '') +
 
     '<div style="padding:16px 16px calc(16px + var(--safe))">' +
-    '<button class="btn btn-secondary" onclick="go(\'dashboard\')">← Back to Home</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="go(\'dashboard\')">← Back to Home</button>' +
     '</div></div>';
 });
 
@@ -138,8 +138,8 @@ reg('coach', function() {
       '<div style="font-size:14px;color:var(--txt2);line-height:1.65;font-style:italic">'+esc(quote)+'</div></div>' : '') +
     _suppTimingBlock(userSupps, user) +
     _deloadBlock(user) +
-    '<div style="padding:0 16px 16px"><button class="btn btn-secondary" onclick="go(\'training-intel\')" style="width:100%">🧠 Training Intelligence →</button><button class="btn btn-secondary" onclick="go(\'injury-risk\')" style="margin-top:8px;width:100%">🦴 Joint Health Monitor →</button><button class="btn btn-secondary" onclick="go(\'visualizations\')" style="margin-top:8px;width:100%">📡 Analytics & Visualizations →</button></div>' +
-    '<div style="padding:0 16px 16px"><button class="btn btn-secondary" onclick="go(\'encyclopedia\')" style="width:100%">📖 Fitness Encyclopedia →</button></div>' +
+    '<div style="padding:0 16px 16px"><button type="button" class="btn btn-secondary" onclick="go(\'training-intel\')" style="width:100%">🧠 Training Intelligence →</button><button type="button" class="btn btn-secondary" onclick="go(\'injury-risk\')" style="margin-top:8px;width:100%">🦴 Joint Health Monitor →</button><button type="button" class="btn btn-secondary" onclick="go(\'visualizations\')" style="margin-top:8px;width:100%">📡 Analytics & Visualizations →</button></div>' +
+    '<div style="padding:0 16px 16px"><button type="button" class="btn btn-secondary" onclick="go(\'encyclopedia\')" style="width:100%">📖 Fitness Encyclopedia →</button></div>' +
     '<div style="height:20px"></div>';
 });
 
@@ -195,7 +195,7 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
       '<div style="font-size:13px;color:var(--txt2)">Readiness '+score+'/100 — body needs recovery</div></div></div>' +
       lightOpts.map(r=>'<div style="padding:6px 0;font-size:13px;color:var(--txt2);border-bottom:1px solid var(--border)">🧘 '+esc(r)+'</div>').join('') +
       '</div>' +
-      '<div style="padding:0 16px 14px"><button class="btn btn-secondary" onclick="go(\'workout\')">Log Light Session 🚶</button></div>';
+      '<div style="padding:0 16px 14px"><button type="button" class="btn btn-secondary" onclick="go(\'workout\')">Log Light Session 🚶</button></div>';
   }
 
   const warmupItems = (splitDay.warmup||[]).map(w =>
@@ -247,10 +247,10 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
     '<div style="font-size:16px;font-weight:700;color:var(--c1);margin-bottom:4px">'+esc(cardioRec.machine)+'</div>' +
     '<div style="font-size:13px;color:var(--txt2);margin-bottom:4px">'+esc(cardioRec.duration)+'</div>' +
     '<div style="font-size:13px;color:var(--txt3);margin-bottom:12px">'+esc(cardioRec.details)+'</div>' +
-    '<button class="btn btn-secondary" onclick="showLogCardio()" style="width:100%">🏃 Log Cardio</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="showLogCardio()" style="width:100%">🏃 Log Cardio</button>' +
     '</div>' +
     '<div class="warmup-card"><div class="warmup-title">Cooldown Stretches</div>'+cooldownItems+'</div>' +
-    '<div style="padding:0 16px 14px"><button class="btn btn-primary" onclick="go(\'workout\')">Start Workout 💪</button></div>';
+    '<div style="padding:0 16px 14px"><button type="button" class="btn btn-primary" onclick="go(\'workout\')">Start Workout 💪</button></div>';
 }
 
 /* ── IMPROVEMENT 2: Progression Analysis per Exercise ── */
@@ -417,7 +417,7 @@ window.showLogCardio = function() {
     '<div class="field-wrap"><label class="field-label">Calories</label><input id="cardio-cal" class="field" type="number" placeholder="200"></div>' +
     '</div>' +
     '<div class="field-wrap"><label class="field-label">Notes</label><input id="cardio-notes" class="field" type="text" placeholder="e.g. Zone 2, felt good"></div>',
-    '<button class="btn btn-primary" onclick="saveCardioLog()">Save</button>'
+    '<button type="button" class="btn btn-primary" onclick="saveCardioLog()">Save</button>'
   );
 };
 

@@ -21,20 +21,20 @@ reg('profiles', function() {
       (isDemo ? '🤖 Demo data' : isActive ? '✅ Active profile' : 'Tap to switch') +
       '</div></div>' +
       (isActive ? '<div style="color:var(--c1);font-size:20px">●</div>' :
-        (!isDemo ? '<button onclick="event.stopPropagation();deleteProfile(\''+p.id+'\')" style="color:var(--c4);font-size:13px;font-weight:600;padding:8px;background:none;border:none;cursor:pointer;touch-action:manipulation">Delete</button>' : '')) +
+        (!isDemo ? '<button type="button" onclick="event.stopPropagation();deleteProfile(\''+p.id+'\')" style="color:var(--c4);font-size:13px;font-weight:600;padding:8px;background:none;border:none;cursor:pointer;touch-action:manipulation">Delete</button>' : '')) +
       '</div></div>';
   }).join('');
 
   return '<div class="topbar"><div class="topbar-title">Profiles</div>' +
-    '<div class="topbar-right"><button class="topbar-icon press" onclick="go(\'settings\')">✕</button></div></div>' +
+    '<div class="topbar-right"><button type="button" class="topbar-icon press" onclick="go(\'settings\')">✕</button></div></div>' +
 
     sh('Your Profiles') +
     profileCards +
 
     '<div style="padding:0 16px 14px">' +
-    '<button class="btn btn-secondary" style="margin-bottom:10px" onclick="showCreateProfile()">+ New Profile</button>' +
+    '<button type="button" class="btn btn-secondary" style="margin-bottom:10px" onclick="showCreateProfile()">+ New Profile</button>' +
     (activeId === 'demo' ? '' :
-      '<button class="btn" style="background:rgba(123,95,255,0.1);border:1px solid rgba(123,95,255,0.25);color:#7b5fff;margin-bottom:10px" onclick="openDemoProfile()">🤖 Open demo profile</button>' +
+      '<button type="button" class="btn" style="background:rgba(123,95,255,0.1);border:1px solid rgba(123,95,255,0.25);color:#7b5fff;margin-bottom:10px" onclick="openDemoProfile()">🤖 Open demo profile</button>' +
       '<a href="?demo=1" class="btn btn-secondary" style="display:block;text-align:center;text-decoration:none;margin-bottom:0">Fresh demo snapshot ↗</a>') +
     '</div>' +
 
@@ -58,8 +58,8 @@ window.deleteProfile = function(id) {
   if (!prof) return;
   modal('Delete Profile?',
     '<div style="font-size:15px;color:var(--txt2);line-height:1.6">Delete <strong>'+esc(prof.name)+'</strong>? All workouts, PRs, and data for this profile will be permanently removed.</div>',
-    '<button class="btn btn-danger" onclick="confirmDeleteProfile(\''+id+'\')" style="margin-top:12px">Delete Profile</button>' +
-    '<button class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Cancel</button>'
+    '<button type="button" class="btn btn-danger" onclick="confirmDeleteProfile(\''+id+'\')" style="margin-top:12px">Delete Profile</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Cancel</button>'
   );
 };
 
@@ -74,8 +74,8 @@ window.openDemoProfile = function() {
   if (S.hasRealUserData && S.hasRealUserData() && S.activeId() !== 'demo') {
     modal('Open demo profile?',
       '<div style="font-size:15px;color:var(--txt2);line-height:1.65">Switch to the sample <strong>Demo Mode</strong> profile? Your real workout data stays saved — switch back here anytime.</div>',
-      '<button class="btn btn-primary" onclick="confirmOpenDemoProfile()" style="margin-top:12px">Open demo profile</button>' +
-      '<button class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Cancel</button>'
+      '<button type="button" class="btn btn-primary" onclick="confirmOpenDemoProfile()" style="margin-top:12px">Open demo profile</button>' +
+      '<button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Cancel</button>'
     );
     return;
   }
@@ -93,7 +93,7 @@ window.confirmOpenDemoProfile = function() {
 window.showCreateProfile = function() {
   const avatars = ['💪','🏋️','🔥','⚡','🎯','🧠','🏆','🤖','👑','🦁','🐺','🚀'];
   const avatarBtns = avatars.map(function(a) {
-    return '<button onclick="selectAvatar(\''+a+'\')" id="av-btn-'+a.codePointAt(0)+'" '+
+    return '<button type="button" onclick="selectAvatar(\''+a+'\')" id="av-btn-'+a.codePointAt(0)+'" '+
       'style="font-size:28px;padding:8px;background:var(--bg3);border:2px solid var(--border);border-radius:12px;cursor:pointer;touch-action:manipulation;transition:border-color 0.15s" class="av-btn">'+a+'</button>';
   }).join('');
 
@@ -105,7 +105,7 @@ window.showCreateProfile = function() {
     '<label class="field-label">Avatar</label>' +
     '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px">' + avatarBtns + '</div>' +
     '<div id="av-preview" style="margin-top:12px;font-size:13px;color:var(--txt3)">Selected: 💪</div>',
-    '<button class="btn btn-primary" onclick="createNewProfile()" style="margin-top:16px">Create Profile</button>'
+    '<button type="button" class="btn btn-primary" onclick="createNewProfile()" style="margin-top:16px">Create Profile</button>'
   );
   window._selectedAvatar = '💪';
 };

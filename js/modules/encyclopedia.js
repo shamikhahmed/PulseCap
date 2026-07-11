@@ -432,7 +432,7 @@ reg('encyclopedia', function(data) {
   if (section === 'search') return _encyclopediaSearch(data && data.query);
 
   return '<div class="topbar"><div class="topbar-title">Encyclopedia</div>' +
-    '<button onclick="go(\'encyclopedia\',{section:\'search\'})" style="background:none;border:none;color:var(--txt3);font-size:14px;cursor:pointer;padding:0 16px">🔍</button>' +
+    '<button type="button" onclick="go(\'encyclopedia\',{section:\'search\'})" style="background:none;border:none;color:var(--txt3);font-size:14px;cursor:pointer;padding:0 16px">🔍</button>' +
     '</div>' +
 
     '<div style="padding:16px">' +
@@ -458,7 +458,7 @@ reg('encyclopedia', function(data) {
 });
 
 function _mobilityScreen() {
-  return '<div class="topbar"><button onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Mobility Encyclopedia</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Mobility Encyclopedia</div></div>' +
     Object.values(MobilityDB).map(joint =>
       '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
       '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">' +
@@ -478,7 +478,7 @@ function _mobilityScreen() {
 }
 
 function _stretchingScreen() {
-  return '<div class="topbar"><button onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Stretching Encyclopedia</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Stretching Encyclopedia</div></div>' +
     Object.values(StretchDB).map(group =>
       '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
       '<div style="font-size:16px;font-weight:800;color:var(--txt);margin-bottom:12px">' + group.icon + ' ' + esc(group.name) + '</div>' +
@@ -497,7 +497,7 @@ function _stretchingScreen() {
 }
 
 function _warmupScreen() {
-  return '<div class="topbar"><button onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Warmup Protocols</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Warmup Protocols</div></div>' +
     Object.values(WarmupDB).map(w =>
       '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
@@ -514,7 +514,7 @@ function _warmupScreen() {
 }
 
 function _cooldownScreen() {
-  return '<div class="topbar"><button onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Cooldown Protocols</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Cooldown Protocols</div></div>' +
     Object.values(CooldownDB).map(c =>
       '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
@@ -531,7 +531,7 @@ function _cooldownScreen() {
 }
 
 function _sportsScreen() {
-  return '<div class="topbar"><button onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Sports Performance</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Sports Performance</div></div>' +
     Object.values(SportsDB).map(sport =>
       '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
       '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">' +
@@ -557,7 +557,7 @@ function _encyclopediaSearch(query) {
   const results = [];
 
   if (q.length < 2) {
-    return '<div class="topbar"><button onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Search Encyclopedia</div></div>' +
+    return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Search Encyclopedia</div></div>' +
       '<div style="padding:16px"><input class="field" placeholder="Type to search..." oninput="if(this.value.length>1)go(\'encyclopedia\',{section:\'search\',query:this.value})" autofocus style="width:100%;box-sizing:border-box"></div>';
   }
 
@@ -585,7 +585,7 @@ function _encyclopediaSearch(query) {
     }
   });
 
-  return '<div class="topbar"><button onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Search Results</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Search Results</div></div>' +
     '<div style="padding:16px 16px 8px"><input class="field" value="' + esc(query) + '" placeholder="Search..." oninput="if(this.value.length>1)go(\'encyclopedia\',{section:\'search\',query:this.value})" style="width:100%;box-sizing:border-box"></div>' +
     (!results.length ? '<div style="padding:40px 20px;text-align:center;color:var(--txt3)">No results for "' + esc(query) + '"<br><span style="font-size:12px">Try: shoulder, cricket, hamstring, warmup</span></div>' :
       '<div style="font-size:12px;color:var(--txt3);padding:0 16px 10px">' + results.length + ' results</div>' +

@@ -69,7 +69,7 @@ function _renderIntro(idx) {
 
     '<div style="display:flex;justify-content:flex-end;padding:8px 20px">' +
     (idx < INTRO_SLIDES.length - 1 ?
-      '<button onclick="introQuickStart()" style="background:none;border:none;' +
+      '<button type="button" onclick="introQuickStart()" style="background:none;border:none;' +
       'color:rgba(255,255,255,0.4);font-size:14px;font-weight:600;cursor:pointer;' +
       'touch-action:manipulation;padding:8px 4px;min-height:44px">Skip setup</button>'
       : '<div style="height:44px"></div>') +
@@ -105,7 +105,7 @@ function _renderIntro(idx) {
 
     '<div style="display:flex;gap:8px;align-items:center">' + dots + '</div>' +
 
-    '<button onclick="' + (isLast ? 'go(\'onboarding\')' : '_introNext()') + '" ' +
+    '<button type="button" onclick="' + (isLast ? 'go(\'onboarding\')' : '_introNext()') + '" ' +
     'style="width:100%;max-width:320px;padding:18px;border-radius:16px;' +
     'background:' + (isLast ? 'var(--grad)' : 'var(--bg3)') + ';' +
     'color:' + (isLast ? '#fff' : 'var(--c1)') + ';' +
@@ -237,16 +237,16 @@ function _dots(step) {
 
 function _footer(step) {
   return '<div class="ob-footer">' +
-    '<button class="btn btn-primary" onclick="obContinue()">' +
+    '<button type="button" class="btn btn-primary" onclick="obContinue()">' +
     (step < OB_TOTAL ? 'Continue →' : 'Start Training 💪') +
     '</button>' +
-    (step > 1 ? '<button class="btn btn-ghost" onclick="obBack()">← Back</button>' : '') +
+    (step > 1 ? '<button type="button" class="btn btn-ghost" onclick="obBack()">← Back</button>' : '') +
     '</div>';
 }
 
 function _gridCard(field, val, icon, title, sub) {
   const isOn = _obData[field] === val;
-  return '<button class="ob-opt'+(isOn?' sel':'')+'" data-field="'+field+'" data-val="'+val+'" onclick="obSelect(\''+field+'\',\''+val+'\')" style="flex-direction:column;align-items:center;text-align:center;padding:18px 10px;gap:8px;min-height:100px">' +
+  return '<button type="button" class="ob-opt'+(isOn?' sel':'')+'" data-field="'+field+'" data-val="'+val+'" onclick="obSelect(\''+field+'\',\''+val+'\')" style="flex-direction:column;align-items:center;text-align:center;padding:18px 10px;gap:8px;min-height:100px">' +
     '<div style="font-size:28px;line-height:1">'+icon+'</div>' +
     '<div class="ob-opt-title" style="font-size:13px;font-weight:700">'+esc(title)+'</div>' +
     '<div class="ob-opt-sub" style="font-size:11px;line-height:1.3">'+esc(sub)+'</div>' +
@@ -258,7 +258,7 @@ function _opt(field, val, icon, title, sub, multi) {
   const isOn = multi
     ? (_obData[field]||[]).includes(val)
     : _obData[field]===val;
-  return '<button class="ob-opt'+(isOn?' sel':'')+'" data-field="'+field+'" data-val="'+val+'" onclick="'+fn+'(\''+field+'\',\''+val+'\')">' +
+  return '<button type="button" class="ob-opt'+(isOn?' sel':'')+'" data-field="'+field+'" data-val="'+val+'" onclick="'+fn+'(\''+field+'\',\''+val+'\')">' +
     (icon?'<div class="ob-opt-icon">'+icon+'</div>':'') +
     '<div class="ob-opt-info">' +
     '<div class="ob-opt-title">'+esc(title)+'</div>' +
@@ -317,8 +317,8 @@ const OB_STEPS = {
       '<div class="field-wrap">' +
       '<label class="field-label">Gender</label>' +
       '<div style="display:flex;gap:8px">' +
-      '<button class="ob-opt'+((_obData.gender||'male')==='male'?' sel':'')+'" data-field="gender" data-val="male" onclick="obSelect(\'gender\',\'male\')" style="flex:1;padding:12px 8px;justify-content:center"><div class="ob-opt-title">♂ Male</div></button>' +
-      '<button class="ob-opt'+((_obData.gender||'')==='female'?' sel':'')+'" data-field="gender" data-val="female" onclick="obSelect(\'gender\',\'female\')" style="flex:1;padding:12px 8px;justify-content:center"><div class="ob-opt-title">♀ Female</div></button>' +
+      '<button type="button" class="ob-opt'+((_obData.gender||'male')==='male'?' sel':'')+'" data-field="gender" data-val="male" onclick="obSelect(\'gender\',\'male\')" style="flex:1;padding:12px 8px;justify-content:center"><div class="ob-opt-title">♂ Male</div></button>' +
+      '<button type="button" class="ob-opt'+((_obData.gender||'')==='female'?' sel':'')+'" data-field="gender" data-val="female" onclick="obSelect(\'gender\',\'female\')" style="flex:1;padding:12px 8px;justify-content:center"><div class="ob-opt-title">♀ Female</div></button>' +
       '</div></div>' +
       '<div class="field-wrap">' +
       '<label class="field-label">Age</label>' +
@@ -327,8 +327,8 @@ const OB_STEPS = {
       '<div style="margin-bottom:14px">' +
       '<label class="field-label">Units</label>' +
       '<div style="display:flex;gap:8px">' +
-      '<button class="ob-opt'+(units==='metric'?' sel':'')+'" data-field="units" data-val="metric" onclick="obSelect(\'units\',\'metric\');obSelect(\'heightUnit\',\'cm\');obSelect(\'weightUnit\',\'kg\');go(\'onboarding\')" style="flex:1;padding:12px;justify-content:center"><div class="ob-opt-title">Metric (kg/cm)</div></button>' +
-      '<button class="ob-opt'+(units==='imperial'?' sel':'')+'" data-field="units" data-val="imperial" onclick="obSelect(\'units\',\'imperial\');obSelect(\'heightUnit\',\'in\');obSelect(\'weightUnit\',\'lb\');go(\'onboarding\')" style="flex:1;padding:12px;justify-content:center"><div class="ob-opt-title">Imperial (lb/in)</div></button>' +
+      '<button type="button" class="ob-opt'+(units==='metric'?' sel':'')+'" data-field="units" data-val="metric" onclick="obSelect(\'units\',\'metric\');obSelect(\'heightUnit\',\'cm\');obSelect(\'weightUnit\',\'kg\');go(\'onboarding\')" style="flex:1;padding:12px;justify-content:center"><div class="ob-opt-title">Metric (kg/cm)</div></button>' +
+      '<button type="button" class="ob-opt'+(units==='imperial'?' sel':'')+'" data-field="units" data-val="imperial" onclick="obSelect(\'units\',\'imperial\');obSelect(\'heightUnit\',\'in\');obSelect(\'weightUnit\',\'lb\');go(\'onboarding\')" style="flex:1;padding:12px;justify-content:center"><div class="ob-opt-title">Imperial (lb/in)</div></button>' +
       '</div></div>' +
       '</div>' + _footer(4) + '</div>';
   },

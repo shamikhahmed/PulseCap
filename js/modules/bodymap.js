@@ -17,12 +17,12 @@ reg('bodymap', function() {
     '<div><div class="topbar-title">Body Map</div>' +
     '<div class="topbar-date">Recovery & measurements</div></div>' +
     '<div class="topbar-right">' +
-    '<button class="topbar-icon press" onclick="go(\'calculators\')">📊</button>' +
-    '<button class="topbar-icon press" onclick="go(\'progress\')">📈</button>' +
+    '<button type="button" class="topbar-icon press" onclick="go(\'calculators\')">📊</button>' +
+    '<button type="button" class="topbar-icon press" onclick="go(\'progress\')">📈</button>' +
     '</div></div>' +
 
     '<div style="padding:0 16px 14px">' +
-    '<button onclick="go(\'calculators\')" class="press" style="width:100%;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:18px;border:1px solid rgba(0,213,255,0.25);background:linear-gradient(135deg,rgba(0,213,255,0.12),rgba(123,95,255,0.08));cursor:pointer;touch-action:manipulation;text-align:left">' +
+    '<button type="button" onclick="go(\'calculators\')" class="press" style="width:100%;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:18px;border:1px solid rgba(0,213,255,0.25);background:linear-gradient(135deg,rgba(0,213,255,0.12),rgba(123,95,255,0.08));cursor:pointer;touch-action:manipulation;text-align:left">' +
     '<div style="font-size:32px;line-height:1">📊</div>' +
     '<div style="flex:1;min-width:0">' +
     '<div style="font-size:15px;font-weight:800;color:var(--txt)">Calculators</div>' +
@@ -131,8 +131,8 @@ function _bodyMapSection(colors) {
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3)">Body Map</div>' +
     '<div style="display:flex;gap:6px">' +
-    '<button onclick="_bodyView=\'front\';go(\'bodymap\')" style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid '+(!isBack?'var(--c1)':'var(--border)')+';background:'+(!isBack?'var(--c1)':'transparent')+';color:'+(!isBack?'#fff':'var(--txt3)')+'">Front</button>' +
-    '<button onclick="_bodyView=\'back\';go(\'bodymap\')" style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid '+(isBack?'var(--c1)':'var(--border)')+';background:'+(isBack?'var(--c1)':'transparent')+';color:'+(isBack?'#fff':'var(--txt3)')+'">Back</button>' +
+    '<button type="button" onclick="_bodyView=\'front\';go(\'bodymap\')" style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid '+(!isBack?'var(--c1)':'var(--border)')+';background:'+(!isBack?'var(--c1)':'transparent')+';color:'+(!isBack?'#fff':'var(--txt3)')+'">Front</button>' +
+    '<button type="button" onclick="_bodyView=\'back\';go(\'bodymap\')" style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid '+(isBack?'var(--c1)':'var(--border)')+';background:'+(isBack?'var(--c1)':'transparent')+';color:'+(isBack?'#fff':'var(--txt3)')+'">Back</button>' +
     '</div></div></div>' +
     '<div style="background:var(--bg3);border-radius:20px;margin:0 16px 14px;padding:16px;border:1px solid var(--border)">' +
     '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
@@ -177,7 +177,7 @@ window.showMuscleInfo = function(groupName) {
     '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--txt3)">' +
     '<span>0% Depleted</span><span>100% Ready</span></div>' +
     '</div>',
-    '<button class="btn btn-secondary" onclick="closeModal()" style="margin-top:14px">Close</button>'
+    '<button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-top:14px">Close</button>'
   );
 };
 
@@ -247,7 +247,7 @@ function _measurementsSection(latest, prev, user) {
   }).join('');
 
   var unitBtns = ['cm','in'].map(function(u) {
-    return '<button onclick="setMeasUnit(\''+u+'\')" style="flex:1;padding:8px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(unit===u?'var(--grad)':'var(--bg4)')+';color:'+(unit===u?'#fff':'var(--txt3)')+'">'+u+'</button>';
+    return '<button type="button" onclick="setMeasUnit(\''+u+'\')" style="flex:1;padding:8px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(unit===u?'var(--grad)':'var(--bg4)')+';color:'+(unit===u?'#fff':'var(--txt3)')+'">'+u+'</button>';
   }).join('');
 
   var allMeas = S.g('measurements') || [];
@@ -318,7 +318,7 @@ window.showLogMeasurements = function() {
   modal('Log Measurements',
     '<div style="font-size:13px;color:var(--txt3);margin-bottom:14px">All measurements in '+unitLabel+'. Enter only what you have.</div>' +
     formFields,
-    '<button class="btn btn-primary" onclick="saveMeasurements()" style="margin-top:14px">Save Measurements</button>'
+    '<button type="button" class="btn btn-primary" onclick="saveMeasurements()" style="margin-top:14px">Save Measurements</button>'
   );
 };
 
@@ -379,7 +379,7 @@ function _bodyStatsSection(user) {
   var bmiColor = bmiData.bmi < 18.5 ? '#ff9f0a' : bmiData.bmi < 25 ? '#30d158' : bmiData.bmi < 30 ? '#ff9f0a' : '#ff453a';
 
   var heightBtns = ['cm','in','ft'].map(function(u) {
-    return '<button onclick="setHeightDisplay(\''+u+'\')" style="flex:1;padding:8px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(curHeightMode===u?'var(--grad)':'var(--bg4)')+';color:'+(curHeightMode===u?'#fff':'var(--txt3)')+'">'+u+'</button>';
+    return '<button type="button" onclick="setHeightDisplay(\''+u+'\')" style="flex:1;padding:8px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(curHeightMode===u?'var(--grad)':'var(--bg4)')+';color:'+(curHeightMode===u?'#fff':'var(--txt3)')+'">'+u+'</button>';
   }).join('');
 
   return sh('Body Stats', '+ Log Weight', 'showLogWeight()') +
@@ -426,13 +426,13 @@ window.showLogWeight = function() {
     '<div style="margin-top:14px">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:8px">Measured</div>' +
     '<div style="display:flex;gap:8px">' +
-    '<button id="wt-fasted" class="btn btn-primary btn-sm" style="flex:1" onclick="setWeightFasted(true)">🌅 Fasted</button>' +
-    '<button id="wt-fed" class="btn btn-secondary btn-sm" style="flex:1" onclick="setWeightFasted(false)">🍽 After eating</button>' +
+    '<button type="button" id="wt-fasted" class="btn btn-primary btn-sm" style="flex:1" onclick="setWeightFasted(true)">🌅 Fasted</button>' +
+    '<button type="button" id="wt-fed" class="btn btn-secondary btn-sm" style="flex:1" onclick="setWeightFasted(false)">🍽 After eating</button>' +
     '</div></div>' +
     '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-top:12px;line-height:1.45">' +
     'Fasted morning weight is most consistent for tracking.<br>Goal: '+(isImperial ? Math.round(goalKg*2.205)+' lb' : goalKg+' kg') +
     '</div>',
-    '<button class="btn btn-primary" onclick="saveWeight()" style="margin-top:12px">Save Weight</button>'
+    '<button type="button" class="btn btn-primary" onclick="saveWeight()" style="margin-top:12px">Save Weight</button>'
   );
   window._weightFasted = true;
 };

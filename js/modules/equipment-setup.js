@@ -11,7 +11,7 @@ reg('equipment-setup', function() {
   const brands = EquipmentDB.brands;
 
   const envBtns = EquipmentDB.environments.map(e =>
-    '<button class="btn btn-' + (env === e.id ? 'primary' : 'secondary') + ' btn-sm" style="flex:1" onclick="setTrainEnv(\'' + e.id + '\')">' + e.icon + ' ' + e.label + '</button>'
+    '<button type="button" class="btn btn-' + (env === e.id ? 'primary' : 'secondary') + ' btn-sm" style="flex:1" onclick="setTrainEnv(\'' + e.id + '\')">' + e.icon + ' ' + e.label + '</button>'
   ).join('');
 
   const brandOpts = '<option value="">All brands</option>' + brands.map(b =>
@@ -49,7 +49,7 @@ reg('equipment-setup', function() {
       '</div></div>';
   }).join('');
 
-  return '<div class="topbar"><button onclick="go(\'settings\',{tab:\'training\'})" style="background:none;border:none;color:var(--c1);font-size:15px;cursor:pointer;padding:0 16px">← Back</button>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'settings\',{tab:\'training\'})" style="background:none;border:none;color:var(--c1);font-size:15px;cursor:pointer;padding:0 16px">← Back</button>' +
     '<div class="topbar-title">My Equipment</div></div>' +
 
     '<div style="padding:16px">' +
@@ -58,16 +58,16 @@ reg('equipment-setup', function() {
     '<div class="field-wrap"><label class="field-label">Filter by brand</label>' +
     '<select class="field" onchange="_eqBrand=this.value;go(\'equipment-setup\')">' + brandOpts + '</select></div>' +
     '<div style="display:flex;gap:8px;margin-top:12px">' +
-    '<button class="btn btn-secondary btn-sm" onclick="selectEquipmentPreset(\'gym_full\')">🏢 Full Gym</button>' +
-    '<button class="btn btn-secondary btn-sm" onclick="selectEquipmentPreset(\'home_basic\')">🏠 Home Basics</button>' +
-    '<button class="btn btn-secondary btn-sm" onclick="selectEquipmentPreset(\'bodyweight\')">🤸 Bodyweight</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm" onclick="selectEquipmentPreset(\'gym_full\')">🏢 Full Gym</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm" onclick="selectEquipmentPreset(\'home_basic\')">🏠 Home Basics</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm" onclick="selectEquipmentPreset(\'bodyweight\')">🤸 Bodyweight</button>' +
     '</div></div>' +
 
     catTabs +
     '<div style="background:var(--bg3);border-top:1px solid var(--border)">' + rows + '</div>' +
     '<div style="padding:16px calc(16px + var(--safe))">' +
     '<div style="font-size:12px;color:var(--txt3);margin-bottom:10px;text-align:center">' + selected.length + ' items selected</div>' +
-    '<button class="btn btn-primary" style="width:100%" onclick="saveEquipmentSetup()">Save Equipment</button></div>';
+    '<button type="button" class="btn btn-primary" style="width:100%" onclick="saveEquipmentSetup()">Save Equipment</button></div>';
 });
 
 window.setTrainEnv = function(env) {
