@@ -257,12 +257,10 @@ reg('dashboard', function() {
       emptyState('💪', 'First workout', 'Your split is ready — one tap to start logging sets.', '▶ Start Workout', 'startWorkout&&startWorkout()') : '';
 
     const moreRow = '<div style="margin:0 16px 14px">' +
-      '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">More</div>' +
-      '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">' +
-      '<button type="button" onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🔍 Search</button>' +
-      '<button type="button" onclick="go(\'academy\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🎓 Academy</button>' +
-      '<button type="button" onclick="go(\'rehab\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🩹 Rehab</button>' +
-      '<button type="button" onclick="go(\'anatomy\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🔬 Anatomy</button>' +
+      '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Browse</div>' +
+      '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
+      '<button type="button" onclick="go(\'hub\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 10px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left">📚 Learn directory</button>' +
+      '<button type="button" onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 10px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left">🔍 Search</button>' +
       '</div></div>';
 
     const todayWt = (S.g('bodyStats') || []).find(b => b.date === new Date().toISOString().slice(0, 10));

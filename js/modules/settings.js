@@ -281,24 +281,12 @@ function _tabAppearance(u) {
     _toggle('Low Power Mode', 'settings.lowPower', S.g('settings.lowPower') === true) +
     '<div style="font-size:12px;color:var(--txt3);margin:-6px 0 14px;padding:0 2px">Disables animated background for smoother scrolling on older phones.</div>' +
 
-    _sectionTitle('Navigation Tabs') +
-    '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.5">Home is always first. Tap to toggle tabs (3–5). Default: Home · Train · Coach · Recover · Me.</div>' +
-    (function() {
-      const allTabs = ['dashboard','workout','assistant','recovery','bodymap','progress','rehab','anatomy','calisthenics','search','settings'];
-      const tabIcons = {dashboard:'🏠',workout:'💪',bodymap:'🫀',settings:'⚙️',recovery:'😴',coach:'🤖',progress:'📈',rehab:'🩹',anatomy:'🔬',calisthenics:'🤸',search:'🔎',assistant:'💬'};
-      const tabLabels = {dashboard:'Home',workout:'Train',assistant:'Smart Coach',coach:'Smart Coach',recovery:'Recover',bodymap:'Body',settings:'Me',progress:'Stats',rehab:'Rehab',anatomy:'Anatomy',calisthenics:'Skills',search:'Search'};
-      const cur = (typeof _getNavTabIds === 'function' ? _getNavTabIds() : (S.g('settings.navTabs') || CORE_NAV_DEFAULT));
-      return allTabs.map(function(t) {
-        const active = cur.includes(t);
-        return '<div onclick="toggleNavTab(\''+t+'\')" style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
-          '<div style="display:flex;align-items:center;gap:12px">' +
-          '<span style="font-size:20px">'+tabIcons[t]+'</span>' +
-          '<span style="font-size:14px;font-weight:600;color:var(--txt)">'+(tabLabels[t]||t)+'</span>' +
-          '</div>' +
-          '<div style="width:24px;height:24px;border-radius:50%;border:2px solid '+(active?'var(--c1)':'var(--border)')+';background:'+(active?'var(--c1)':'transparent')+';display:flex;align-items:center;justify-content:center;font-size:12px;color:#fff">'+(active?'✓':'')+'</div>' +
-          '</div>';
-      }).join('');
-    })() +
+    _sectionTitle('Navigation') +
+    '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.5">Fixed v5 IA tabs — not customizable.</div>' +
+    '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 16px;font-size:13px;color:var(--txt);line-height:1.55;font-weight:600">' +
+    'Today · Train · Body · Learn · Me' +
+    '</div>' +
+    '<div style="font-size:12px;color:var(--txt3);margin-top:8px;line-height:1.45">Nested screens light the parent tab. Browse full module list under Learn.</div>' +
 
     '</div>';
 }

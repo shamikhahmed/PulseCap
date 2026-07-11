@@ -4,15 +4,15 @@
 
 | Field | Value |
 |-------|-------|
-| **Phase** | P1 — AUDIT |
-| **Status** | ✅ done (this iteration) |
+| **Phase** | P2 — IA 5 tabs |
+| **Status** | ✅ done — committing |
 | **Started** | 2026-07-11 |
 | **Last update** | 2026-07-11 |
 
 ## Done
 
-- [x] P1: Map all registered modules → `docs/AUDIT-IA.md` (34 regs; merge/keep/demote)
-- [x] Create this state file
+- [x] P1: `docs/AUDIT-IA.md`
+- [x] P2: 5 tabs Today·Train·Body·Learn·Me; aliases; hub Learn dir; module smoke; v4.9.0 / SW v40
 
 ## Blockers
 
@@ -22,13 +22,13 @@ _(none)_
 
 | Phase | Status | Notes |
 |-------|--------|-------|
-| P1 AUDIT | ✅ | docs-only commit |
-| P2 IA 5 tabs | ⬜ | next |
-| P3 MERGE dupes | ⬜ | one merge / commit |
-| P4 CONTRACT & CSS | ⬜ | ~5 modules / commit |
+| P1 AUDIT | ✅ | |
+| P2 IA 5 tabs | ✅ | v4.9.0 |
+| P3 MERGE dupes | ⬜ | next — one merge / commit |
+| P4 CONTRACT & CSS | ⬜ | |
 | P5 SEARCH & DISCLOSURE | ⬜ | |
-| P6 RELEASE v5.0.0 | ⬜ | tag + push + CI |
+| P6 RELEASE v5.0.0 | ⬜ | |
 
 ## Next
 
-P2: rewire nav Today · Train · Body · Learn · Me; `go()` alias map; per-module smoke test.
+P3.1: physique triple → Physique sub-tabs + aliases + store migrate test.

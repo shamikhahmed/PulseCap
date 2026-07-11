@@ -1,6 +1,13 @@
 # Changelog — PulseCap
 
 
+## 4.9.0 (2026-07-11)
+- **P2 IA:** Fixed 5 tabs — Today · Train · Body · Learn · Me (`navMigration` v4).
+- Learn = `hub` module directory; Body/Train expose nested tools; Home More no longer duplicates Learn modules.
+- `SCREEN_ALIASES` + `NAV_PARENT` so old `go()` ids and nested screens keep working / light correct tab.
+- Per-module smoke: every registered screen renders with zero page errors (`tests/module-smoke.spec.js`).
+- SW cache `pulsecap-v40`.
+
 ## 4.8.0 (2026-07-11)
 - Cap Standard rollout: 64-shot screen gallery (32 modules x mobile/desktop, `npm run gallery`) + browsable `screen-gallery.html`.
 - CI: PulseCap CI workflow runs full Playwright suite on every push (fixed stale package-lock; vendored viewport-helpers into tests/).

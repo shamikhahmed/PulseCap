@@ -6,11 +6,40 @@
 const _screens = {};
 let _currentScreen = null;
 
+/** Old go() ids → canonical screen. Keep registered screens until P3 deletes them. */
+const SCREEN_ALIASES = {
+  today: 'dashboard',
+  home: 'dashboard',
+  explore: 'hub',
+  learn: 'hub',
+  me: 'settings',
+  train: 'workout',
+  body: 'bodymap'
+};
+window.SCREEN_ALIASES = SCREEN_ALIASES;
+
+/** Which bottom-nav tab stays lit for nested screens (P2 IA). */
+const NAV_PARENT = {
+  dashboard: 'dashboard', briefing: 'dashboard', quests: 'dashboard',
+  workout: 'workout', active: 'workout', cardio: 'workout', progress: 'workout',
+  calisthenics: 'workout', 'training-intel': 'workout', 'training-style': 'workout',
+  bodymap: 'bodymap', physique: 'bodymap', 'physique-archetype': 'bodymap',
+  'physique-timeline': 'bodymap', recovery: 'bodymap', 'recovery-debt': 'bodymap',
+  nutrition: 'bodymap', rehab: 'bodymap', 'injury-risk': 'bodymap',
+  'body-intelligence': 'bodymap',
+  hub: 'hub', search: 'hub', encyclopedia: 'hub', anatomy: 'hub', academy: 'hub',
+  calculators: 'hub', visualizations: 'hub', assistant: 'hub', coach: 'hub',
+  settings: 'settings', profiles: 'settings', 'equipment-setup': 'settings'
+};
+window.NAV_PARENT = NAV_PARENT;
+
 function reg(id, fn) { _screens[id] = fn; }
 window.reg = reg;
+window.listScreens = function() { return Object.keys(_screens).sort(); };
 
 function go(id, data) {
   try {
+    if (SCREEN_ALIASES[id]) id = SCREEN_ALIASES[id];
     if (!_screens[id]) throw new Error('Screen "' + id + '" not registered');
     const sameScreen = id === _currentScreen;
     const SCROLL_PRESERVE_SCREENS = { bodymap: 1, recovery: 1 };
@@ -44,11 +73,12 @@ function go(id, data) {
     const nav = document.getElementById('nav');
     const noNav = ['onboarding', 'intro', 'briefing'];
     if (nav) nav.style.display = noNav.includes(id) ? 'none' : 'flex';
+    const navId = NAV_PARENT[id] || id;
     document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
-    const nb = document.getElementById('nb-' + id);
+    const nb = document.getElementById('nb-' + navId);
     if (nb) nb.classList.add('on');
     document.querySelectorAll('.cap-side-btn').forEach(b => b.classList.remove('on'));
-    const sb = document.getElementById('cap-sb-' + id);
+    const sb = document.getElementById('cap-sb-' + navId);
     if (sb) sb.classList.add('on');
   } catch(e) {
     console.error('go(' + id + ')', e);
@@ -1574,50 +1604,36 @@ window.PlanEngine = PlanEngine;
 /* ══════════════════════════════════════════════════════
    NAV
 ══════════════════════════════════════════════════════ */
-const CORE_NAV_DEFAULT = ['dashboard', 'workout', 'assistant', 'recovery', 'settings'];
-const NAV_TAB_ORDER = ['dashboard', 'workout', 'assistant', 'recovery', 'hub', 'bodymap', 'progress', 'coach', 'settings', 'rehab', 'anatomy', 'calisthenics', 'search'];
+/* P2 IA: Today · Train · Body · Learn · Me (fixed 5; customization retired) */
+const CORE_NAV_DEFAULT = ['dashboard', 'workout', 'bodymap', 'hub', 'settings'];
+const NAV_TAB_ORDER = ['dashboard', 'workout', 'bodymap', 'hub', 'settings'];
 
 const DEFAULT_NAV_TABS = [
-  { id:'dashboard', label:'Home',    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>' },
-  { id:'workout',   label:'Train',   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5.5" cy="12" r="2.5"/><circle cx="18.5" cy="12" r="2.5"/><line x1="8" y1="12" x2="16" y2="12"/><circle cx="5.5" cy="7" r="1.5"/><circle cx="5.5" cy="17" r="1.5"/><circle cx="18.5" cy="7" r="1.5"/><circle cx="18.5" cy="17" r="1.5"/></svg>' },
-  { id:'hub',       label:'Explore', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>' },
-  { id:'bodymap',   label:'Body',    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="2"/><path d="M12 7v5m-4 2l4-2 4 2m-8 0l-2 6m10-6l2 6M8 13l-1 6m10-6l1 6"/></svg>' },
-  { id:'settings',  label:'Me',      icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>' },
-  { id:'recovery',  label:'Recover', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>' },
-  { id:'coach',     label:'Coach',   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>' },
-  { id:'progress',  label:'Stats',   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>' },
-  { id:'rehab',     label:'Rehab',   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4.5 12.5l3 3 8-8"/><circle cx="12" cy="12" r="10"/></svg>' },
-  { id:'anatomy',   label:'Anatomy', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2c1.1 0 2 .9 2 2s-.9 2-2 2-2-.9-2-2 .9-2 2-2zm0 6c2.2 0 4 1.8 4 4v4h-2v4h-4v-4H8v-4c0-2.2 1.8-4 4-4z"/></svg>' },
-  { id:'calisthenics', label:'Skills', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 2v4m0 12v4M2 12h4m12 0h4M4.9 4.9l2.8 2.8m8.6 8.6l2.8 2.8M4.9 19.1l2.8-2.8m8.6-8.6l2.8-2.8"/></svg>' },
-  { id:'search',    label:'Search',  icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' },
-  { id:'assistant', label:'Coach',   icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>' }
+  { id:'dashboard', label:'Today', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>' },
+  { id:'workout',   label:'Train', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5.5" cy="12" r="2.5"/><circle cx="18.5" cy="12" r="2.5"/><line x1="8" y1="12" x2="16" y2="12"/><circle cx="5.5" cy="7" r="1.5"/><circle cx="5.5" cy="17" r="1.5"/><circle cx="18.5" cy="7" r="1.5"/><circle cx="18.5" cy="17" r="1.5"/></svg>' },
+  { id:'bodymap',   label:'Body',  icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="2"/><path d="M12 7v5m-4 2l4-2 4 2m-8 0l-2 6m10-6l2 6M8 13l-1 6m10-6l1 6"/></svg>' },
+  { id:'hub',       label:'Learn', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>' },
+  { id:'settings',  label:'Me',    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>' }
 ];
 window.DEFAULT_NAV_TABS = DEFAULT_NAV_TABS;
 window.CORE_NAV_DEFAULT = CORE_NAV_DEFAULT;
 window.NAV_TAB_ORDER = NAV_TAB_ORDER;
 
 function _normalizeNavTabs(ids) {
-  let list = (ids || []).map(function(id) {
-    if (id === 'coach') return 'assistant';
-    if (id === 'hub') return 'search';
-    return id;
-  });
+  /* P2: force canonical 5 tabs; map legacy ids into closest slot */
+  const legacyMap = {
+    coach: 'hub', assistant: 'hub', recovery: 'bodymap', search: 'hub',
+    progress: 'workout', rehab: 'bodymap', anatomy: 'hub', calisthenics: 'workout',
+    home: 'dashboard', today: 'dashboard', explore: 'hub', learn: 'hub', me: 'settings',
+    train: 'workout', body: 'bodymap'
+  };
+  let list = (ids || []).map(function(id) { return legacyMap[id] || id; });
   list = list.filter(function(id, i) {
     return list.indexOf(id) === i && DEFAULT_NAV_TABS.some(function(t) { return t.id === id; });
   });
-  if (!list.includes('dashboard')) list.unshift('dashboard');
-  const hasSettings = list.includes('settings');
-  let middle = list.filter(function(id) { return id !== 'dashboard' && id !== 'settings'; });
-  middle.sort(function(a, b) {
-    const ai = NAV_TAB_ORDER.indexOf(a), bi = NAV_TAB_ORDER.indexOf(b);
-    return (ai < 0 ? 99 : ai) - (bi < 0 ? 99 : bi);
-  });
-  if (middle.length > 3) middle = middle.slice(0, 3);
-  list = hasSettings
-    ? ['dashboard'].concat(middle, ['settings'])
-    : ['dashboard'].concat(middle.slice(0, 4));
-  if (list.length < 3) return CORE_NAV_DEFAULT.slice();
-  if (list.length > 5) return CORE_NAV_DEFAULT.slice();
+  if (list.length !== 5 || JSON.stringify(list) !== JSON.stringify(CORE_NAV_DEFAULT)) {
+    return CORE_NAV_DEFAULT.slice();
+  }
   return list;
 }
 
@@ -1636,13 +1652,14 @@ function _getNavTabIds() {
   return CORE_NAV_DEFAULT.slice();
 }
 window._normalizeNavTabs = _normalizeNavTabs;
+window._getNavTabIds = _getNavTabIds;
 
 function buildNav() {
   const nav = document.getElementById('nav');
   if (!nav) return;
-  if (S.g('settings.navMigration') !== 3) {
-    S.set('settings.navTabs', _normalizeNavTabs(S.g('settings.navTabs') || CORE_NAV_DEFAULT));
-    S.set('settings.navMigration', 3);
+  if (S.g('settings.navMigration') !== 4) {
+    S.set('settings.navTabs', CORE_NAV_DEFAULT.slice());
+    S.set('settings.navMigration', 4);
   }
   const ids = _getNavTabIds();
   const tabs = ids.map(function(id) { return DEFAULT_NAV_TABS.find(function(t) { return t.id === id; }); }).filter(Boolean);

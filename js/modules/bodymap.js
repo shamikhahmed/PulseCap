@@ -14,22 +14,20 @@ reg('bodymap', function() {
   _measUnit = user.measureUnit || 'cm';
 
   return '<div class="topbar">' +
-    '<div><div class="topbar-title">Body Map</div>' +
-    '<div class="topbar-date">Recovery & measurements</div></div>' +
-    '<div class="topbar-right">' +
-    '<button type="button" class="topbar-icon press" onclick="go(\'calculators\')">📊</button>' +
-    '<button type="button" class="topbar-icon press" onclick="go(\'progress\')">📈</button>' +
-    '</div></div>' +
-
-    '<div style="padding:0 16px 14px">' +
-    '<button type="button" onclick="go(\'calculators\')" class="press" style="width:100%;display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:18px;border:1px solid rgba(0,213,255,0.25);background:linear-gradient(135deg,rgba(0,213,255,0.12),rgba(123,95,255,0.08));cursor:pointer;touch-action:manipulation;text-align:left">' +
-    '<div style="font-size:32px;line-height:1">📊</div>' +
-    '<div style="flex:1;min-width:0">' +
-    '<div style="font-size:15px;font-weight:800;color:var(--txt)">Calculators</div>' +
-    '<div style="font-size:12px;color:var(--txt3);margin-top:2px">Body fat, macros, FFMI, 1RM & more</div>' +
+    '<div><div class="topbar-title">Body</div>' +
+    '<div class="topbar-date">Map · recovery · measurements</div></div>' +
     '</div>' +
-    '<div style="font-size:18px;color:var(--c1)">›</div>' +
-    '</button></div>' +
+
+    '<div style="padding:12px 16px 8px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px">' +
+    '<button type="button" onclick="go(\'recovery\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 4px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">💚 Recover</button>' +
+    '<button type="button" onclick="go(\'nutrition\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 4px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🍎 Fuel</button>' +
+    '<button type="button" onclick="go(\'physique\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 4px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">📐 Physique</button>' +
+    '<button type="button" onclick="go(\'rehab\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 4px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🩹 Rehab</button>' +
+    '</div>' +
+    '<div style="padding:0 16px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
+    '<button type="button" onclick="go(\'body-intelligence\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 8px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left">🧬 Body Intel</button>' +
+    '<button type="button" onclick="go(\'injury-risk\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 8px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left">⚠️ Injury Risk</button>' +
+    '</div>' +
 
     _bodyMapSection(muscleColors) +
     _muscleStatusGrid(muscleStatus) +
