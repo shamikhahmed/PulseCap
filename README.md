@@ -197,3 +197,16 @@ Karachi, Pakistan
 ---
 
 *Built by Shamikh Ahmed — offline-first Smart Coach fitness OS.*
+
+## Screen gallery
+
+```bash
+npm run gallery        # regenerate docs/screenshots/gallery/ (64 shots)
+npm run gallery:view   # then open http://127.0.0.1:8766/screen-gallery.html
+```
+
+## Verify
+
+```bash
+npm run verify   # full Playwright suite — CI runs this on every push
+```

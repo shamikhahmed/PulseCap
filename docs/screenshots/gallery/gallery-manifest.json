@@ -1,0 +1,391 @@
+{
+  "app": "PulseCap",
+  "version": "4.7.5",
+  "generated": "2026-07-11T16:50:46.703Z",
+  "shots": [
+    {
+      "file": "desktop-01-dashboard.png",
+      "label": "Dashboard",
+      "route": "go('dashboard')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-02-hub.png",
+      "label": "Hub",
+      "route": "go('hub')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-03-workout.png",
+      "label": "Workout",
+      "route": "go('workout')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-04-quests.png",
+      "label": "Quests",
+      "route": "go('quests')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-05-progress.png",
+      "label": "Progress",
+      "route": "go('progress')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-06-nutrition.png",
+      "label": "Nutrition",
+      "route": "go('nutrition')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-07-coach.png",
+      "label": "Coach",
+      "route": "go('coach')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-08-recovery.png",
+      "label": "Recovery",
+      "route": "go('recovery')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-09-recovery-debt.png",
+      "label": "Recovery Debt",
+      "route": "go('recovery-debt')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-10-anatomy.png",
+      "label": "Anatomy",
+      "route": "go('anatomy')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-11-bodymap.png",
+      "label": "Bodymap",
+      "route": "go('bodymap')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-12-encyclopedia.png",
+      "label": "Encyclopedia",
+      "route": "go('encyclopedia')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-13-search.png",
+      "label": "Search",
+      "route": "go('search')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-14-calculators.png",
+      "label": "Calculators",
+      "route": "go('calculators')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-15-calisthenics.png",
+      "label": "Calisthenics",
+      "route": "go('calisthenics')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-16-cardio.png",
+      "label": "Cardio",
+      "route": "go('cardio')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-17-academy.png",
+      "label": "Academy",
+      "route": "go('academy')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-18-assistant.png",
+      "label": "Assistant",
+      "route": "go('assistant')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-19-briefing.png",
+      "label": "Briefing",
+      "route": "go('briefing')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-20-body-intelligence.png",
+      "label": "Body Intelligence",
+      "route": "go('body-intelligence')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-21-equipment-setup.png",
+      "label": "Equipment Setup",
+      "route": "go('equipment-setup')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-22-injury-risk.png",
+      "label": "Injury Risk",
+      "route": "go('injury-risk')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-23-physique.png",
+      "label": "Physique",
+      "route": "go('physique')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-24-physique-archetype.png",
+      "label": "Physique Archetype",
+      "route": "go('physique-archetype')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-25-physique-timeline.png",
+      "label": "Physique Timeline",
+      "route": "go('physique-timeline')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-26-profiles.png",
+      "label": "Profiles",
+      "route": "go('profiles')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-27-rehab.png",
+      "label": "Rehab",
+      "route": "go('rehab')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-28-settings.png",
+      "label": "Settings",
+      "route": "go('settings')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-29-training-intel.png",
+      "label": "Training Intel",
+      "route": "go('training-intel')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-30-training-style.png",
+      "label": "Training Style",
+      "route": "go('training-style')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-31-visualizations.png",
+      "label": "Visualizations",
+      "route": "go('visualizations')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-32-onboarding.png",
+      "label": "Onboarding",
+      "route": "go('onboarding')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "mobile-01-dashboard.png",
+      "label": "Dashboard",
+      "route": "go('dashboard')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-02-hub.png",
+      "label": "Hub",
+      "route": "go('hub')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-03-workout.png",
+      "label": "Workout",
+      "route": "go('workout')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-04-quests.png",
+      "label": "Quests",
+      "route": "go('quests')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-05-progress.png",
+      "label": "Progress",
+      "route": "go('progress')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-06-nutrition.png",
+      "label": "Nutrition",
+      "route": "go('nutrition')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-07-coach.png",
+      "label": "Coach",
+      "route": "go('coach')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-08-recovery.png",
+      "label": "Recovery",
+      "route": "go('recovery')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-09-recovery-debt.png",
+      "label": "Recovery Debt",
+      "route": "go('recovery-debt')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-10-anatomy.png",
+      "label": "Anatomy",
+      "route": "go('anatomy')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-11-bodymap.png",
+      "label": "Bodymap",
+      "route": "go('bodymap')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-12-encyclopedia.png",
+      "label": "Encyclopedia",
+      "route": "go('encyclopedia')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-13-search.png",
+      "label": "Search",
+      "route": "go('search')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-14-calculators.png",
+      "label": "Calculators",
+      "route": "go('calculators')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-15-calisthenics.png",
+      "label": "Calisthenics",
+      "route": "go('calisthenics')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-16-cardio.png",
+      "label": "Cardio",
+      "route": "go('cardio')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-17-academy.png",
+      "label": "Academy",
+      "route": "go('academy')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-18-assistant.png",
+      "label": "Assistant",
+      "route": "go('assistant')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-19-briefing.png",
+      "label": "Briefing",
+      "route": "go('briefing')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-20-body-intelligence.png",
+      "label": "Body Intelligence",
+      "route": "go('body-intelligence')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-21-equipment-setup.png",
+      "label": "Equipment Setup",
+      "route": "go('equipment-setup')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-22-injury-risk.png",
+      "label": "Injury Risk",
+      "route": "go('injury-risk')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-23-physique.png",
+      "label": "Physique",
+      "route": "go('physique')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-24-physique-archetype.png",
+      "label": "Physique Archetype",
+      "route": "go('physique-archetype')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-25-physique-timeline.png",
+      "label": "Physique Timeline",
+      "route": "go('physique-timeline')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-26-profiles.png",
+      "label": "Profiles",
+      "route": "go('profiles')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-27-rehab.png",
+      "label": "Rehab",
+      "route": "go('rehab')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-28-settings.png",
+      "label": "Settings",
+      "route": "go('settings')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-29-training-intel.png",
+      "label": "Training Intel",
+      "route": "go('training-intel')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-30-training-style.png",
+      "label": "Training Style",
+      "route": "go('training-style')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-31-visualizations.png",
+      "label": "Visualizations",
+      "route": "go('visualizations')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-32-onboarding.png",
+      "label": "Onboarding",
+      "route": "go('onboarding')",
+      "viewport": "mobile"
+    }
+  ]
+}

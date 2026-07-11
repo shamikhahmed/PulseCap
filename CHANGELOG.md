@@ -1,5 +1,12 @@
 # Changelog — PulseCap
 
+
+## 4.8.0 (2026-07-11)
+- Cap Standard rollout: 64-shot screen gallery (32 modules x mobile/desktop, `npm run gallery`) + browsable `screen-gallery.html`.
+- CI: PulseCap CI workflow runs full Playwright suite on every push (fixed stale package-lock; vendored viewport-helpers into tests/).
+- `verify` / `gallery` / `gallery:view` npm scripts per Cap Standard contract.
+- SW cache pulsecap-v39.
+
 ## 4.7.1 (2026-06-15)
 - Restore pre–Capricorn identity home-screen icons; service worker cache bump.
 
