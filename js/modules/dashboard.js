@@ -295,8 +295,22 @@ reg('dashboard', function() {
       '<button type="button" class="btn btn-primary btn-sm" onclick="applySuggestedSplit()">Use this split</button> ' +
       '<button type="button" class="btn btn-ghost btn-sm" onclick="go(\'settings\',{tab:\'training\'})">Choose another</button></div>' : '';
 
-    return demoBanner + topbar + weightPrompt + injuryBanner + setupBanner + splitBanner + briefingCard + heroCard + quickActions + todayWorkout +
-      firstWorkoutEmpty + activeQuestCard + lastWktCard + moreRow +
+    const moreDisclosure = '<details style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:4px 0">' +
+      '<summary style="padding:12px 16px;font-size:13px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;list-style:none">More for today</summary>' +
+      '<div style="padding:0 0 8px">' +
+      (briefingCard || '') +
+      (activeQuestCard || '') +
+      (lastWktCard || '') +
+      moreRow +
+      '</div></details>';
+
+    /* P5 first paint: 5-tab shell + ≤3 cards (hero, session, optional empty-state). Rest behind disclosure. */
+    return demoBanner + topbar +
+      (weightPrompt || '') + (injuryBanner || '') + (setupBanner || '') + (splitBanner || '') +
+      heroCard +
+      todayWorkout +
+      (firstWorkoutEmpty || '') +
+      moreDisclosure +
       '<div style="height:24px"></div>';
 
   } catch(e) {

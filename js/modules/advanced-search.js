@@ -158,6 +158,34 @@ const FitnessSearch = {
       });
     }
 
+    // 9. App screens + tools (unified IA directory)
+    const SCREENS = [
+      { title: 'Today', sub: 'Dashboard · daily decision', action: "go('dashboard')", tags: ['home', 'today'] },
+      { title: 'Train', sub: 'Workout logger', action: "go('workout')", tags: ['train', 'workout'] },
+      { title: 'Body Map', sub: 'Measurements · recovery map', action: "go('bodymap')", tags: ['body'] },
+      { title: 'Learn', sub: 'Module directory', action: "go('hub')", tags: ['learn', 'hub'] },
+      { title: 'Smart Coach', sub: 'Offline Q&A', action: "go('assistant')", tags: ['coach', 'chat'] },
+      { title: 'Search', sub: 'Global search', action: "go('search')", tags: ['search'] },
+      { title: 'Calculators', sub: '1RM · BMI · macros · FFMI', action: "go('calculators')", tags: ['calculator', 'bmi', '1rm', 'ffmi', 'macros'] },
+      { title: 'Encyclopedia', sub: 'Mobility · warmups · sports', action: "go('encyclopedia')", tags: ['encyclopedia'] },
+      { title: 'Anatomy', sub: 'Muscle database', action: "go('anatomy')", tags: ['anatomy'] },
+      { title: 'Recovery', sub: 'Check-in · debt forecast', action: "go('recovery')", tags: ['recovery', 'sleep'] },
+      { title: 'Physique', sub: 'Scores · archetype · timeline', action: "go('physique')", tags: ['physique', 'aesthetic'] },
+      { title: 'Nutrition', sub: 'Meals · water · macros', action: "go('nutrition')", tags: ['nutrition', 'food'] },
+      { title: 'Progress', sub: 'PRs · charts · volume', action: "go('progress')", tags: ['progress', 'pr'] },
+      { title: 'Rehab', sub: 'Injury protocols', action: "go('rehab')", tags: ['rehab'] },
+      { title: 'Settings', sub: 'Profile · theme · goals', action: "go('settings')", tags: ['settings', 'me'] }
+    ];
+    SCREENS.forEach(function(s) {
+      const hay = s.title + ' ' + s.sub + ' ' + (s.tags || []).join(' ');
+      if (FitnessSearch.fuzzyMatch(hay, q)) {
+        results.push({
+          type: 'screen', icon: '📱', title: s.title, sub: s.sub,
+          action: s.action, tags: s.tags, relevance: 3
+        });
+      }
+    });
+
     // Deduplicate by title + type
     const seen = new Set();
     const unique = results.filter(r => {

@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'pulsecap-v45';
+const CACHE = 'pulsecap-v46';
 const ASSETS = [
   './css/capricorn-core.css',
   './',
