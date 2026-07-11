@@ -1,6 +1,11 @@
 # Changelog — PulseCap
 
 
+## 4.9.4 (2026-07-11)
+- **P3 merges:** Physique (score/archetype/timeline), Recovery (check-in/debt), Training Intel (intel/style).
+- Aliases: `coach`→`assistant`, `intro`→`onboarding` (slides via `showIntro`), deprecated regs kept.
+- SW `pulsecap-v44`.
+
 ## 4.9.0 (2026-07-11)
 - **P2 IA:** Fixed 5 tabs — Today · Train · Body · Learn · Me (`navMigration` v4).
 - Learn = `hub` module directory; Body/Train expose nested tools; Home More no longer duplicates Learn modules.
