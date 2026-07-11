@@ -353,7 +353,20 @@ window.SpecializationEngine = SpecializationEngine;
 /* ══════════════════════════════════════════════════════
    TRAINING INTELLIGENCE SCREEN
 ══════════════════════════════════════════════════════ */
-reg('training-intel', function() {
+
+function _trainingIntelTabBar(tab) {
+  var tabs = [{ id: 'intel', label: 'Intel' }, { id: 'style', label: 'Style' }];
+  return '<div style="display:flex;gap:6px;padding:8px 16px 12px">' +
+    tabs.map(function(t) {
+      var on = t.id === tab;
+      return '<button type="button" onclick="go(\'training-intel\',{tab:\'' + t.id + '\'})" class="press" style="flex-shrink:0;padding:8px 14px;border-radius:999px;border:1px solid ' +
+        (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'rgba(var(--c1-rgb),0.15)' : 'var(--bg3)') +
+        ';color:' + (on ? 'var(--c1)' : 'var(--txt2)') + ';font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">' + esc(t.label) + '</button>';
+    }).join('') + '</div>';
+}
+
+window.renderTrainingIntelBody = function() {
+
   var age = TrainingAgeEngine.calculate();
   var volRecs = VolumeAllocationEngine.recommendations();
   var topEx = ExerciseResponseEngine.topExercises(5);
@@ -370,7 +383,7 @@ reg('training-intel', function() {
     return f ? Object.assign({ name: ex }, f) : null;
   }).filter(Boolean);
 
-  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Training Intelligence</div></div>' +
+  return '' +
 
     '<div style="padding:20px 16px 14px">' +
     '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:18px">' +
@@ -468,4 +481,24 @@ reg('training-intel', function() {
     '</div>' +
 
     '<div style="height:20px"></div>';
+
+};
+
+window.renderTrainingIntelUnified = function(data) {
+  var tab = (data && data.tab) || 'intel';
+  var shell = '<div class="topbar"><button type="button" onclick="go(\'workout\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Training Intel</div></div>' + _trainingIntelTabBar(tab);
+  if (tab === 'style') {
+    return shell + (typeof window.renderTrainingStyleBody === 'function' ? window.renderTrainingStyleBody() : '');
+  }
+  return shell + window.renderTrainingIntelBody();
+};
+
+reg('training-intel', function(data) {
+  return window.renderTrainingIntelUnified(data);
 });
+
+window.migrateTrainingIntelMerge = function() {
+  if (S.g('settings.migrations.trainingIntelMerge') === 1) return false;
+  S.set('settings.migrations.trainingIntelMerge', 1);
+  return true;
+};

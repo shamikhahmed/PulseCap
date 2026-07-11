@@ -204,6 +204,7 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
     S.init();
     if (typeof migratePhysiqueMerge === "function") migratePhysiqueMerge();
     if (typeof migrateRecoveryMerge === "function") migrateRecoveryMerge();
+    if (typeof migrateTrainingIntelMerge === "function") migrateTrainingIntelMerge();
     const _isDemo = bootDemoIfRequested();
     const _savedTheme = S.g('user.theme') || S.g('user.mode') || 'dark';
     applyTheme(_savedTheme);

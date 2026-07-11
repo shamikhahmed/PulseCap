@@ -267,12 +267,12 @@ window.SmartRotation = SmartRotation;
 /* ══════════════════════════════════════════════════════
    TRAINING INTELLIGENCE COMBINED SCREEN
 ══════════════════════════════════════════════════════ */
-reg('training-style', function() {
+window.renderTrainingStyleBody = function() {
   var style = TrainingStyleDetector.detect();
   var rotation = SmartRotation.globalSuggestions();
   var proportion = (typeof ProportionAnalyzer !== 'undefined') ? ProportionAnalyzer.analyze() : null;
 
-  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Training Style & Rotation</div></div>' +
+  return '' +
 
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:20px;padding:18px">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">Detected Training Style</div>' +
@@ -323,4 +323,9 @@ reg('training-style', function() {
       '</div>' : '') +
 
     '<div style="height:20px"></div>';
+
+};
+
+reg('training-style', function() {
+  return window.renderTrainingIntelUnified({ tab: 'style' });
 });

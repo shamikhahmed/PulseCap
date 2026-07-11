@@ -17,7 +17,8 @@ const SCREEN_ALIASES = {
   body: 'bodymap',
   'physique-archetype': { id: 'physique', data: { tab: 'archetype' } },
   'physique-timeline': { id: 'physique', data: { tab: 'timeline' } },
-  'recovery-debt': { id: 'recovery', data: { tab: 'debt' } }
+  'recovery-debt': { id: 'recovery', data: { tab: 'debt' } },
+  'training-style': { id: 'training-intel', data: { tab: 'style' } }
 };
 window.SCREEN_ALIASES = SCREEN_ALIASES;
 
