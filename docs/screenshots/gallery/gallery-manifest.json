@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "4.7.5",
-  "generated": "2026-07-11T16:50:46.703Z",
+  "version": "5.0.0",
+  "generated": "2026-07-11T17:29:05.860Z",
   "shots": [
     {
       "file": "desktop-01-dashboard.png",

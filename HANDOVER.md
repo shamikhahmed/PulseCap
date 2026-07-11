@@ -7,7 +7,7 @@
 Smart Coach fitness OS — offline PWA. Workouts, nutrition, recovery, anatomy, 30+ modules.
 
 ## Facts
-**Version:** 4.7.5
+**Version:** 5.0.0
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.
@@ -40,7 +40,7 @@ Gaps are tracked as tasks in `ROADMAP.md`.
 
 ## Gotchas — read before coding
 - All UI is string-template HTML with inline styles — XSS discipline: esc() everything user-entered.
-- v4.7.5 added type="button" everywhere — keep it; bare <button> inside forms submits.
+- v4.7.5+ keep type="button"; v5.0.0 IA tabs everywhere — keep it; bare <button> inside forms submits.
 
 ## Where decisions live
 - Dated decisions: Capricorn-Brain project note (path above)

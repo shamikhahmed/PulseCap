@@ -1,6 +1,14 @@
 # Changelog — PulseCap
 
 
+## 5.0.0 (2026-07-11)
+- **Major IA overhaul:** Today · Train · Body · Learn · Me (fixed 5 tabs).
+- Module merges: Physique, Recovery, Training Intel; coach→assistant; intro→onboarding slides.
+- Module contract CSS + helpers; hub/calculators/profiles converted.
+- Unified search indexes screens + calculators + existing knowledge bases.
+- Today first paint: hero + session + optional empty; extras behind "More for today".
+- Per-module smoke green; SW `pulsecap-v50`.
+
 ## 4.9.4 (2026-07-11)
 - **P3 merges:** Physique (score/archetype/timeline), Recovery (check-in/debt), Training Intel (intel/style).
 - Aliases: `coach`→`assistant`, `intro`→`onboarding` (slides via `showIntro`), deprecated regs kept.

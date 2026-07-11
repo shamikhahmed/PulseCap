@@ -2,8 +2,8 @@
 
 > Updated 2026-07-11. Fleet order & standard: `capricorn-tooling/shared/CAP-STANDARD.md`.
 
-## Now — v4.9.0 (P2 IA shipped)
-5 tabs: Today · Train · Body · Learn · Me. See `docs/AUDIT-IA.md` + `docs/ULTRACODE-STATE.md`.
+## Now — v5.0.0
+IA overhaul shipped (ULTRACODE P1–P6). See `CHANGELOG.md` + `docs/AUDIT-IA.md`.
 
 ## Cap Standard gaps
 | Cap Standard item | Status |
@@ -16,11 +16,10 @@
 | PWA polish | ✅ |
 | Demo mode | ✅ |
 
-## Next (ordered) — ULTRACODE
-1. **P3** Merge duplicates (physique triple, recovery pair, training intel, coach family, intro/onboarding)
-2. **P4** Module contract + CSS (kill inline styles ~5 modules / commit)
-3. **P5** Unified search + advanced disclosure (first paint ≤3 cards)
-4. **P6** Release `v5.0.0` (major IA), gallery regen, tag, push, CI green
+## Next
+1. Delete deprecated module regs after alias soak (physique-archetype, recovery-debt, training-style, coach, intro).
+2. Continue P4 CSS conversion (~5 modules / commit) until inline `style=` on buttons ≈ 0 in touched modules.
+3. Pages deploy workflow with test gate (owner decision vs legacy branch deploy).
 
 ## Ground rules
 - No dirty trees: commit or discard before ending a session.
