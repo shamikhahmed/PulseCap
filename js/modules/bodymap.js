@@ -252,18 +252,19 @@ function _muscleStatusGrid(muscleStatus) {
   var injured = muscleStatus.filter(function(m) { return m.status === 'injured'; });
 
   var banner = injured.length ?
-    '<div onclick="go(\'rehab\')" style="margin:0 16px 10px;padding:12px 14px;border-radius:14px;background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.25);display:flex;align-items:center;gap:10px;cursor:pointer;touch-action:manipulation">' +
-    '<span style="color:#ff453a;display:flex">' + icon('bandage', 20) + '</span>' +
-    '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:#ff453a">' +
-    injured.map(function(m){ return m.name; }).join(', ') + ' held back by injury</div>' +
-    '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Recovery here follows your rehab, not the clock · Rehab →</div></div>' +
-    '<span style="color:#ff453a;font-size:16px">›</span></div>' : '';
+    '<button type="button" onclick="go(\'rehab\')" class="list-row" style="margin:0 16px 10px;width:calc(100% - 32px);border:1px solid rgba(255,69,58,0.25);border-radius:14px;background:rgba(255,69,58,0.08);border-bottom:1px solid rgba(255,69,58,0.25)" aria-label="Open rehab for injured muscles">' +
+    '<span class="list-row__icon" style="color:#ff453a;display:flex;justify-content:center">' + icon('bandage', 20) + '</span>' +
+    '<span class="list-row__body"><span class="list-row__title" style="color:#ff453a">' +
+    injured.map(function(m){ return esc(m.name); }).join(', ') + ' held back by injury</span>' +
+    '<span class="list-row__sub">Recovery here follows your rehab, not the clock · Rehab →</span></span>' +
+    '<span class="list-row__chev" style="color:#ff453a" aria-hidden="true">›</span></button>' : '';
 
   var chips = muscleStatus.map(function(m) {
     var isInjured = m.status === 'injured';
     var big = isInjured ? icon('bandage', 16) : m.pct + '%';
-    return '<div onclick="' + (isInjured ? 'go(\'rehab\')' : 'showMuscleInfo(\''+esc(m.name)+'\')') + '" class="press" ' +
-      'style="background:var(--bg3);border-radius:14px;padding:12px;cursor:pointer;touch-action:manipulation;border:1px solid ' + (isInjured ? 'rgba(255,69,58,0.35)' : 'var(--border)') + '">' +
+    return '<button type="button" onclick="' + (isInjured ? 'go(\'rehab\')' : 'showMuscleInfo(\''+esc(m.name)+'\')') + '" class="press" ' +
+      'aria-label="' + esc(m.name) + ' recovery" ' +
+      'style="background:var(--bg3);border-radius:14px;padding:12px;cursor:pointer;touch-action:manipulation;border:1px solid ' + (isInjured ? 'rgba(255,69,58,0.35)' : 'var(--border)') + ';text-align:left;width:100%;font:inherit;color:inherit">' +
       '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">' +
       '<div style="font-size:13px;font-weight:700;color:var(--txt)">'+esc(m.name)+'</div>' +
       '<div style="font-size:15px;font-weight:800;color:'+m.color+'">'+big+'</div>' +
@@ -271,7 +272,7 @@ function _muscleStatusGrid(muscleStatus) {
       '<div style="font-size:10px;color:'+(isInjured ? m.color : 'var(--txt3)')+';margin-top:2px;font-weight:600">'+esc(m.label)+(m.hrs ? ' · '+m.hrs+'h ago' : '')+'</div>' +
       '<div style="margin-top:8px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden">' +
       '<div style="width:'+m.pct+'%;height:100%;background:'+m.color+';transition:width 0.6s ease"></div>' +
-      '</div></div>';
+      '</div></button>';
   }).join('');
 
   return sh('Muscle Recovery') + banner +

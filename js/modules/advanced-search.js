@@ -276,11 +276,11 @@ reg('search', function(data) {
         '<button type="button" onclick="S.s(\'recentSearches\',[]);go(\'search\')" style="font-size:12px;color:var(--txt3);background:none;border:none;cursor:pointer;touch-action:manipulation;padding:4px 8px">Clear</button>' +
         '</div>' +
         recents.slice(0, 5).map(function(r, i) {
-          return '<div onclick="_searchRun(_srRecents[' + i + '])" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
-            '<div style="font-size:16px;color:var(--txt3)">🕐</div>' +
-            '<div style="flex:1;font-size:14px;color:var(--txt)">' + esc(r) + '</div>' +
-            '<div style="font-size:16px;color:var(--txt3)">›</div>' +
-            '</div>';
+          return '<button type="button" class="list-row" onclick="_searchRun(_srRecents[' + i + '])" aria-label="Search ' + esc(r) + '">' +
+            '<span class="list-row__icon" aria-hidden="true">◷</span>' +
+            '<span class="list-row__body"><span class="list-row__title">' + esc(r) + '</span></span>' +
+            '<span class="list-row__chev" aria-hidden="true">›</span>' +
+            '</button>';
         }).join('');
     } else {
       content =
@@ -312,15 +312,15 @@ reg('search', function(data) {
       results.map(function(r, idx) {
         const badgeColor = TYPE_COLORS[r.type] || 'var(--txt3)';
         const badgeLabel = TYPE_BADGE[r.type] || r.type;
-        return '<div onclick="_doSearchResult(' + idx + ')" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
-          '<div style="font-size:26px;flex-shrink:0;width:36px;text-align:center">' + r.icon + '</div>' +
-          '<div style="flex:1;min-width:0">' +
-          '<div style="font-size:14px;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(r.title) + '</div>' +
-          '<div style="font-size:11px;color:var(--txt3);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(r.sub) + '</div>' +
-          '</div>' +
-          '<span style="flex-shrink:0;font-size:10px;font-weight:700;color:' + badgeColor + ';background:' + badgeColor + '22;padding:3px 8px;border-radius:10px;white-space:nowrap">' + badgeLabel + '</span>' +
-          '<div style="font-size:16px;color:var(--txt3);flex-shrink:0;margin-left:4px">›</div>' +
-          '</div>';
+        return '<button type="button" class="list-row" onclick="_doSearchResult(' + idx + ')" aria-label="' + esc(r.title) + '">' +
+          '<span class="list-row__icon" aria-hidden="true">' + r.icon + '</span>' +
+          '<span class="list-row__body">' +
+          '<span class="list-row__title">' + esc(r.title) + '</span>' +
+          '<span class="list-row__sub">' + esc(r.sub) + '</span>' +
+          '</span>' +
+          '<span class="list-row__badge" style="color:' + badgeColor + ';background:' + badgeColor + '22">' + badgeLabel + '</span>' +
+          '<span class="list-row__chev" aria-hidden="true">›</span>' +
+          '</button>';
       }).join('');
   }
 

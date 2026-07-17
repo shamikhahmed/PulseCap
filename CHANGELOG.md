@@ -1,5 +1,13 @@
 # Changelog — PulseCap
 
+## 5.5.2 (2026-07-17) — Production audit hardening
+- **Audit:** full principal-engineer pass documented in `docs/PRODUCTION-AUDIT-5.5.2.md`.
+- **Dead path removal:** deleted unused `js/cap-validators.js`, removed Capacitor packages/config/scripts (PWA-only), removed orphan roadmap modal.
+- **Docs honesty:** `APP_STORE.md` / `IOS_INFO_PLIST.md` / pitch roadmap now say PWA-only (no fake native/HealthKit path).
+- **a11y:** search results + recent rows + body-map muscle chips are real `<button>`s; shared `.list-row` design-system class; focus ring coverage.
+- **Perf/security:** wger fetches use 15s `AbortController` timeout; form-guide Watch link gets `noreferrer` + 44px tap target.
+- SW `pulsecap-v58`. Tests assert no Capacitor deps.
+
 ## 5.5.1 (2026-07-17) — Security + honesty patch
 - **XSS hardening:** `esc()` now escapes single quotes for attribute contexts; router error messages are escaped.
 - **Search hardening:** removed `eval(r.action)` from global search result dispatch; search now parses allowed `go(...)` actions only.

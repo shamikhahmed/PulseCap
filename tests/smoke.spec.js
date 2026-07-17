@@ -23,8 +23,14 @@ test.describe('PulseCap smoke', () => {
     expect(res && res.ok()).toBeTruthy();
     const text = await page.textContent('body');
     expect(text || '').toContain('ASSET_URLS');
-    expect(text || '').toContain('pulsecap-v57');
+    expect(text || '').toContain('pulsecap-v58');
     expect(text || '').toContain('sameOrigin');
+  });
+
+  test('PWA-only: no Capacitor runtime dependency', async () => {
+    const pkg = require('../package.json');
+    expect(pkg.dependencies || {}).not.toHaveProperty('@capacitor/core');
+    expect(pkg.devDependencies || {}).not.toHaveProperty('@capacitor/cli');
   });
 
   test('demo mode has nutrition and active quest data', async ({ page }) => {

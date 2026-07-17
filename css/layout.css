@@ -555,7 +555,8 @@ select:focus-visible,
 textarea:focus-visible,
 .cap-tab:focus-visible,
 .ob-opt:focus-visible,
-.dash-prompt:focus-visible {
+.dash-prompt:focus-visible,
+.list-row:focus-visible {
   outline: 2px solid var(--c1);
   outline-offset: 2px;
 }

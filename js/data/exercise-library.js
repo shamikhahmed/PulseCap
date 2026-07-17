@@ -161,10 +161,27 @@ const ExerciseLibrary = (() => {
       return FormLoops.cardHTML(name, { height: h });
     }
     return '<div style="margin-bottom:14px;border-radius:16px;padding:14px;background:var(--bg4);border:1px solid var(--border);display:flex;align-items:center;gap:12px">' +
-      '<div style="font-size:32px">🎬</div>' +
       '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:4px">Form guide</div>' +
       '<div style="font-size:12px;color:var(--txt3);line-height:1.45">No cached demo yet — open a curated YouTube search for proper form.</div></div>' +
-      '<a href="' + esc(media.formUrl) + '" target="_blank" rel="noopener" onclick="haptic(15)" style="flex-shrink:0;padding:10px 14px;border-radius:12px;background:var(--grad);color:#fff;font-size:12px;font-weight:700;text-decoration:none">Watch</a></div>';
+      '<a href="' + esc(media.formUrl) + '" target="_blank" rel="noopener noreferrer" onclick="haptic(15)" style="flex-shrink:0;padding:10px 14px;border-radius:12px;background:var(--grad);color:#fff;font-size:12px;font-weight:700;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Watch</a></div>';
+  }
+
+  async function _fetchJson(url, ms) {
+    ms = ms || 15000;
+    const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+    const timer = ctrl ? setTimeout(function() { ctrl.abort(); }, ms) : null;
+    try {
+      const res = await fetch(url, {
+        headers: { Accept: 'application/json' },
+        signal: ctrl ? ctrl.signal : undefined
+      });
+      return res;
+    } catch (e) {
+      if (e && e.name === 'AbortError') throw new Error('Network timeout — try again on a better connection');
+      throw e;
+    } finally {
+      if (timer) clearTimeout(timer);
+    }
   }
 
   async function _fetchPaginated(path, onProgress) {
@@ -174,7 +191,7 @@ const ExerciseLibrary = (() => {
     let total = 0;
     while (true) {
       const url = WGER_BASE + path + (path.includes('?') ? '&' : '?') + 'limit=' + limit + '&offset=' + offset;
-      const res = await fetch(url, { headers: { Accept: 'application/json' } });
+      const res = await _fetchJson(url);
       if (!res.ok) break;
       const data = await res.json();
       total = data.count || total;
@@ -262,7 +279,7 @@ const ExerciseLibrary = (() => {
 
     while (true) {
       const url = WGER_BASE + '/exerciseinfo/?language=2&limit=' + limit + '&offset=' + offset;
-      const res = await fetch(url, { headers: { Accept: 'application/json' } });
+      const res = await _fetchJson(url);
       if (!res.ok) throw new Error('wger API error ' + res.status);
       const data = await res.json();
       total = data.count || total;

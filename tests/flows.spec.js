@@ -278,4 +278,16 @@ test.describe('PulseCap flows', () => {
     expect(csp || '').toContain('https://wger.de');
     expect(csp || '').toContain('media-src');
   });
+
+  test('search results render as accessible list-row buttons', async ({ page }) => {
+    const out = await page.evaluate(() => {
+      // @ts-ignore
+      const w = window;
+      w.go('search', { q: 'bench', filter: 'all' });
+      const view = document.getElementById('view');
+      const rows = view ? view.querySelectorAll('button.list-row') : [];
+      return { n: rows.length };
+    });
+    expect(out.n).toBeGreaterThan(0);
+  });
 });
