@@ -1,7 +1,8 @@
 // @ts-check
-// Screen gallery capture — every screen, tab, and flow step, in dark + light,
-// at mobile + desktop widths. Gated behind CAPTURE_GALLERY=1 (npm run gallery)
-// so routine test runs don't churn PNGs.
+// Screen gallery — every screen, tab, and flow step, in dark + light,
+// at mobile + desktop widths.
+// Default `playwright test`: walk all states, assert render (no PNG churn).
+// `npm run gallery` (CAPTURE_GALLERY=1): write 200 PNGs + manifest.
 const { test, expect } = require('@playwright/test');
 const { mkdirSync, writeFileSync, readFileSync } = require('node:fs');
 const { join } = require('node:path');
@@ -74,6 +75,7 @@ const VIEWPORTS = {
   desktop: { width: 1440, height: 900, dsf: 1 },
 };
 const THEMES = ['dark', 'light'];
+const CAPTURE = process.env.CAPTURE_GALLERY === '1';
 
 function appendManifest(shots) {
   const manifestPath = join(GALLERY_DIR, 'gallery-manifest.json');
@@ -115,13 +117,12 @@ async function waitReady(page) {
 
 for (const [viewport, vp] of Object.entries(VIEWPORTS)) {
   test.describe(`Screen gallery — ${viewport}`, () => {
-    test.skip(!process.env.CAPTURE_GALLERY, 'Gallery capture runs via `npm run gallery` (CAPTURE_GALLERY=1)');
     test.use({ viewport: { width: vp.width, height: vp.height }, deviceScaleFactor: vp.dsf });
 
     test.beforeAll(() => { mkdirSync(GALLERY_DIR, { recursive: true }); });
 
-    test(`capture ${viewport} screens (dark + light)`, async ({ page }) => {
-      test.setTimeout(600_000);
+    test(`${CAPTURE ? 'capture' : 'walk'} ${viewport} screens (dark + light)`, async ({ page }) => {
+      test.setTimeout(CAPTURE ? 600_000 : 180_000);
       await bootDemo(page);
 
       const shots = [];
@@ -137,30 +138,38 @@ for (const [viewport, vp] of Object.entries(VIEWPORTS)) {
           }, s.go);
           expect(ok, `go('${s.stateId}') should not throw`).toBe(true);
           await waitReady(page);
-          n += 1;
-          const file = `${theme}-${viewport}-${String(n).padStart(3, '0')}-${s.stateId}.png`;
-          await page.screenshot({ path: join(GALLERY_DIR, file), fullPage: false });
-          shots.push({ file, theme, viewport, section: s.section, screenId: s.stateId, label: s.label, route: `go('${s.go[0]}'${s.go[1] ? ', ' + JSON.stringify(s.go[1]) : ''})` });
+          const hasScreen = await page.locator('#view .screen').count();
+          expect(hasScreen, `${s.stateId} should render .screen`).toBeGreaterThan(0);
+          if (CAPTURE) {
+            n += 1;
+            const file = `${theme}-${viewport}-${String(n).padStart(3, '0')}-${s.stateId}.png`;
+            await page.screenshot({ path: join(GALLERY_DIR, file), fullPage: false });
+            shots.push({ file, theme, viewport, section: s.section, screenId: s.stateId, label: s.label, route: `go('${s.go[0]}'${s.go[1] ? ', ' + JSON.stringify(s.go[1]) : ''})` });
+          }
         }
 
         // First-run flow: intro slides
         for (let i = 0; i < INTRO_COUNT; i += 1) {
           await page.evaluate((idx) => { window.__pcOnboardingState({ intro: idx }); window.go('onboarding', { showIntro: true }); }, i);
           await waitReady(page);
-          n += 1;
-          const file = `${theme}-${viewport}-${String(n).padStart(3, '0')}-intro-${i + 1}.png`;
-          await page.screenshot({ path: join(GALLERY_DIR, file), fullPage: false });
-          shots.push({ file, theme, viewport, section: 'Onboarding', screenId: `intro-${i + 1}`, label: `Welcome ${i + 1}/${INTRO_COUNT}`, route: "go('onboarding',{showIntro:true})" });
+          if (CAPTURE) {
+            n += 1;
+            const file = `${theme}-${viewport}-${String(n).padStart(3, '0')}-intro-${i + 1}.png`;
+            await page.screenshot({ path: join(GALLERY_DIR, file), fullPage: false });
+            shots.push({ file, theme, viewport, section: 'Onboarding', screenId: `intro-${i + 1}`, label: `Welcome ${i + 1}/${INTRO_COUNT}`, route: "go('onboarding',{showIntro:true})" });
+          }
         }
 
         // First-run flow: onboarding steps
         for (let step = 1; step <= OB_STEPS; step += 1) {
           await page.evaluate((cfg) => { window.__pcOnboardingState({ step: cfg.step, data: cfg.seed }); window.go('onboarding'); }, { step, seed: OB_SEED });
           await waitReady(page);
-          n += 1;
-          const file = `${theme}-${viewport}-${String(n).padStart(3, '0')}-onboarding-${step}.png`;
-          await page.screenshot({ path: join(GALLERY_DIR, file), fullPage: false });
-          shots.push({ file, theme, viewport, section: 'Onboarding', screenId: `onboarding-${step}`, label: `Onboarding ${step}/${OB_STEPS}`, route: `onboarding step ${step}` });
+          if (CAPTURE) {
+            n += 1;
+            const file = `${theme}-${viewport}-${String(n).padStart(3, '0')}-onboarding-${step}.png`;
+            await page.screenshot({ path: join(GALLERY_DIR, file), fullPage: false });
+            shots.push({ file, theme, viewport, section: 'Onboarding', screenId: `onboarding-${step}`, label: `Onboarding ${step}/${OB_STEPS}`, route: `onboarding step ${step}` });
+          }
         }
 
         // Active workout — live session
@@ -173,17 +182,19 @@ for (const [viewport, vp] of Object.entries(VIEWPORTS)) {
         });
         expect(activeOk, 'active workout should render').toBe(true);
         await page.waitForTimeout(500);
-        n += 1;
-        const activeFile = `${theme}-${viewport}-${String(n).padStart(3, '0')}-active.png`;
-        await page.screenshot({ path: join(GALLERY_DIR, activeFile), fullPage: false });
-        shots.push({ file: activeFile, theme, viewport, section: 'Train', screenId: 'active', label: 'Active Workout', route: 'startWorkout()' });
+        if (CAPTURE) {
+          n += 1;
+          const activeFile = `${theme}-${viewport}-${String(n).padStart(3, '0')}-active.png`;
+          await page.screenshot({ path: join(GALLERY_DIR, activeFile), fullPage: false });
+          shots.push({ file: activeFile, theme, viewport, section: 'Train', screenId: 'active', label: 'Active Workout', route: 'startWorkout()' });
+        }
 
         // Return to a clean screen before switching theme
         await page.evaluate(() => window.go('dashboard'));
         await waitReady(page);
       }
 
-      appendManifest(shots);
+      if (CAPTURE) appendManifest(shots);
     });
   });
 }
