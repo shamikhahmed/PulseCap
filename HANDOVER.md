@@ -7,8 +7,8 @@
 Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Activity / widgets planned). Workouts, nutrition, recovery, anatomy, 30+ modules.
 
 ## Facts
-**Version:** 5.6.1
-**SW cache:** `pulsecap-v60`
+**Version:** 5.6.3
+**SW cache:** `pulsecap-v62`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.
@@ -18,9 +18,18 @@ Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Acti
 ```bash
 python3 -m http.server 8766   # or npm run serve
 npx playwright test           # current suite
-npm run gallery               # regenerate screen shots (includes active workout)
-open screen-gallery.html
+npm run gallery               # regen 200-shot matrix: dark+light × mobile+desktop
+open screen-gallery.html      # Dark/Light + viewport + section filters
 ```
+
+## Sample personas
+- `S.seedPersonas(force, activate)` seeds 5 demo athletes (`demo_beginner/strong/injured/cutter/senior`) defined in `DEMO_PERSONAS` (`js/storage.js`). Each lives in its own `fos_profiles_<id>` bucket; never touches real profiles.
+- UI: Profiles → "Load sample athletes". QA: `tests/functional.spec.js` sweeps every screen + core actions per profile.
+
+## Screen gallery
+- Matrix = every screen + sub-tab + welcome/intro + 7 onboarding steps + active workout, in **dark & light × mobile & desktop** (200 PNGs).
+- Driven by `tests/gallery.spec.js` (`CAPTURE_GALLERY=1`). Onboarding/intro steps advanced via `window.__pcOnboardingState()` (QA-only hook, inert in normal use).
+- Manifest fields: `theme`, `viewport`, `section`, `screenId`, `label`, `route`.
 
 ## Architecture
 - `js/app.js` — shell, router (`go()` + lazy `MODULE_SRC`), helpers, nav

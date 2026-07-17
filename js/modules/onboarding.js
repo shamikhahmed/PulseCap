@@ -17,7 +17,7 @@ const INTRO_SLIDES = [
     ]
   },
   {
-    emoji: '🧠',
+    ic: 'sparkles',
     grad: 'linear-gradient(135deg, #6b5fff, #ff6bff)',
     title: 'It thinks like a trainer',
     sub: 'Not a logbook. A coach that makes calls.',
@@ -29,7 +29,7 @@ const INTRO_SLIDES = [
     ]
   },
   {
-    emoji: '⚡',
+    ic: 'dumbbell',
     grad: 'linear-gradient(135deg, #00ff88, #00d5ff)',
     title: 'Logging that keeps up',
     sub: 'Made for one hand, mid-set, between breaths.',
@@ -41,7 +41,7 @@ const INTRO_SLIDES = [
     ]
   },
   {
-    emoji: '🎯',
+    ic: 'target',
     grad: 'linear-gradient(135deg, #ff6b6b, #ffb347)',
     title: 'Cutting, bulking, or both',
     sub: 'Tell it the goal. It handles the math.',
@@ -86,7 +86,7 @@ function _renderIntro(idx) {
       '<svg width="52" height="52" viewBox="0 0 512 512" fill="none" aria-hidden="true">' +
       '<path d="M96 256 H176 L208 208 L256 304 L304 176 L352 256 H416" stroke="#fff" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>' +
       '<circle cx="256" cy="256" r="18" fill="#fff"/></svg>'
-      : slide.emoji) + '</div>' +
+      : (slide.ic ? icon(slide.ic, 46, '#fff') : (slide.emoji || ''))) + '</div>' +
 
     '<div style="font-size:30px;font-weight:900;letter-spacing:-1.5px;' +
     'color:var(--txt);margin-bottom:12px;line-height:1.15">' + esc(slide.title) + '</div>' +
@@ -147,6 +147,16 @@ reg('intro', function() {
 let _obData = {};
 let _obStep = 1;
 const OB_TOTAL = 7;
+
+/* Gallery/QA hook — drive intro slide + onboarding step without user input.
+   Inert in normal use (only called by the screenshot harness). */
+window.__pcOnboardingState = function(o) {
+  o = o || {};
+  if (typeof o.step === 'number') _obStep = Math.min(Math.max(o.step, 1), OB_TOTAL);
+  if (typeof o.intro === 'number') _introSlide = Math.min(Math.max(o.intro, 0), INTRO_SLIDES.length - 1);
+  if (o.data) Object.assign(_obData, o.data);
+  return { step: _obStep, intro: _introSlide };
+};
 
 const SPLIT_WEEKLY = (typeof SplitsDB !== 'undefined'
   ? Object.fromEntries(SplitsDB.splits.map(function(s) { return [s.id, s.days || 4]; }))
@@ -243,7 +253,7 @@ function _dots(step) {
 function _footer(step) {
   return '<div class="ob-footer">' +
     '<button type="button" class="btn btn-primary" onclick="obContinue()">' +
-    (step < OB_TOTAL ? 'Continue →' : 'Start Training 💪') +
+    (step < OB_TOTAL ? 'Continue →' : 'Start Training') +
     '</button>' +
     (step > 1 ? '<button type="button" class="btn btn-ghost" onclick="obBack()">← Back</button>' : '') +
     '</div>';
@@ -276,7 +286,7 @@ function _opt(field, val, icon, title, sub, multi) {
 const OB_STEPS = {
   1() {
     return '<div class="ob-screen">' + _dots(1) +
-      '<div class="ob-title">Hey there! 👋<br>What should we call you?</div>' +
+      '<div class="ob-title">Hey there.<br>What should we call you?</div>' +
       '<div class="ob-sub">This is your personal training OS. Let\'s make it yours.</div>' +
       '<div class="ob-body">' +
       '<div class="field-wrap">' +
@@ -289,16 +299,16 @@ const OB_STEPS = {
       '<div class="ob-title">What\'s your primary goal?</div>' +
       '<div class="ob-sub">Your Smart Coach will build everything around this.</div>' +
       '<div class="ob-body">' +
-      _opt('goal','hypertrophy','💪','Build Muscle','Gain lean muscle and improve body composition') +
-      _opt('goal','fat_loss','🔥','Lose Fat','Reduce body fat while keeping muscle') +
-      _opt('goal','weight_gain','📈','Gain Weight','Healthy mass gain — muscle and size') +
-      _opt('goal','general_health','❤️','Get Healthier','Move more, feel better, live longer') +
-      _opt('goal','recomp','⚡','Recomposition','Build muscle and lose fat together') +
-      _opt('goal','strength','🏋️','Get Stronger','Maximise strength in the big lifts') +
-      _opt('goal','athletic','🏃','Athletic','Speed, power, and sport performance') +
-      _opt('goal','endurance','🏃‍♂️','Cardio & Endurance','Stamina, heart health, conditioning') +
-      _opt('goal','mobility','🧘','Mobility','Flexibility, joint health, pain-free movement') +
-      _opt('goal','maintenance','✅','Maintain','Stay fit with no dramatic changes') +
+      _opt('goal','hypertrophy',_obIcon('dumbbell'),'Build Muscle','Gain lean muscle and improve body composition') +
+      _opt('goal','fat_loss',_obIcon('flame'),'Lose Fat','Reduce body fat while keeping muscle') +
+      _opt('goal','weight_gain',_obIcon('chart'),'Gain Weight','Healthy mass gain — muscle and size') +
+      _opt('goal','general_health',_obIcon('heart'),'Get Healthier','Move more, feel better, live longer') +
+      _opt('goal','recomp',_obIcon('sparkles'),'Recomposition','Build muscle and lose fat together') +
+      _opt('goal','strength',_obIcon('dumbbell'),'Get Stronger','Maximise strength in the big lifts') +
+      _opt('goal','athletic',_obIcon('run'),'Athletic','Speed, power, and sport performance') +
+      _opt('goal','endurance',_obIcon('walk'),'Cardio & Endurance','Stamina, heart health, conditioning') +
+      _opt('goal','mobility',_obIcon('leaf'),'Mobility','Flexibility, joint health, pain-free movement') +
+      _opt('goal','maintenance',_obIcon('check'),'Maintain','Stay fit with no dramatic changes') +
       '</div>' + _footer(2) + '</div>';
   },
   3() {
@@ -306,10 +316,10 @@ const OB_STEPS = {
       '<div class="ob-title">Training experience?</div>' +
       '<div class="ob-sub">Honest answers get better programs. No judgement here.</div>' +
       '<div class="ob-body">' +
-      _opt('exp','beginner','🌱','Beginner','Less than 1 year of consistent training') +
-      _opt('exp','intermediate','💪','Intermediate','1-3 years of consistent training') +
-      _opt('exp','advanced','🔥','Advanced','3+ years with structured programming') +
-      _opt('exp','athlete','🏆','Athlete','Competitive sport background or elite training') +
+      _opt('exp','beginner',_obIcon('leaf'),'Beginner','Less than 1 year of consistent training') +
+      _opt('exp','intermediate',_obIcon('dumbbell'),'Intermediate','1-3 years of consistent training') +
+      _opt('exp','advanced',_obIcon('flame'),'Advanced','3+ years with structured programming') +
+      _opt('exp','athlete',_obIcon('target'),'Athlete','Competitive sport background or elite training') +
       '</div>' + _footer(3) + '</div>';
   },
   4() {
@@ -364,17 +374,17 @@ const OB_STEPS = {
   },
   6() {
     const coaches = [
-      {v:'maya',e:'🧪',n:'Maya',role:'Sports Scientist',d:'Evidence-based, analytical'},
-      {v:'alex',e:'🔥',n:'Alex',role:'Drill Sergeant',d:'Intense, no excuses'},
-      {v:'sam',e:'⚡',n:'Sam',role:'Motivator',d:'Energetic, encouraging'},
-      {v:'zen',e:'🧘',n:'Zen',role:'Mindful Coach',d:'Calm, technique-focused'},
-      {v:'rex',e:'💪',n:'Rex',role:'Powerlifter',d:'Strength-focused, raw'}
+      {v:'maya',e:'chart',n:'Maya',role:'Sports Scientist',d:'Evidence-based, analytical'},
+      {v:'alex',e:'flame',n:'Alex',role:'Drill Sergeant',d:'Intense, no excuses'},
+      {v:'sam',e:'sparkles',n:'Sam',role:'Motivator',d:'Energetic, encouraging'},
+      {v:'zen',e:'leaf',n:'Zen',role:'Mindful Coach',d:'Calm, technique-focused'},
+      {v:'rex',e:'dumbbell',n:'Rex',role:'Powerlifter',d:'Strength-focused, raw'}
     ];
     return '<div class="ob-screen">' + _dots(6) +
       '<div class="ob-title">Choose your coach</div>' +
       '<div class="ob-sub">Shapes motivation and daily guidance. Change anytime in Settings.</div>' +
       '<div class="ob-body">' +
-      coaches.map(function(c) { return _opt('personality', c.v, c.e, c.n + ' · ' + c.role, c.d); }).join('') +
+      coaches.map(function(c) { return _opt('personality', c.v, _obIcon(c.e), c.n + ' · ' + c.role, c.d); }).join('') +
       '</div>' + _footer(6) + '</div>';
   },
   7() {
@@ -383,7 +393,7 @@ const OB_STEPS = {
     const coaches = { alex:'Alex', maya:'Maya', sam:'Sam', zen:'Zen', rex:'Rex' };
     const goals = { hypertrophy:'Build Muscle', fat_loss:'Lose Fat', weight_gain:'Gain Weight', general_health:'Get Healthier', recomp:'Recomposition', athletic:'Athletic', strength:'Strength', endurance:'Cardio', mobility:'Mobility', maintenance:'Maintain' };
     const cName = coaches[u.personality||'maya'] || 'Maya';
-    const cEmoji = { alex:'🔥', maya:'🧪', sam:'⚡', zen:'🧘', rex:'💪' }[u.personality||'maya'] || '🧪';
+    const cIcon = { alex:'flame', maya:'chart', sam:'sparkles', zen:'leaf', rex:'dumbbell' }[u.personality||'maya'] || 'chart';
     const draftUser = {
       name: name, goal: u.goal || 'hypertrophy', exp: u.exp || 'intermediate',
       gender: u.gender || 'male', age: parseInt(u.age) || 25, height: parseFloat(u.height) || 175,
@@ -394,29 +404,33 @@ const OB_STEPS = {
     const rec = typeof SplitsDB !== 'undefined' ? SplitsDB.recommend(draftUser) : { name: 'Push Pull Legs', reason: 'Balanced hypertrophy split', daysPerWeek: 4 };
     return '<div class="ob-screen">' + _dots(7) +
       '<div style="text-align:center;padding:24px 0 20px">' +
-      '<div style="font-size:64px;margin-bottom:16px">📋</div>' +
-      '<div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px">Your Plan</div>' +
+      '<div style="width:72px;height:72px;border-radius:20px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;background:var(--grad);color:#fff;box-shadow:0 12px 32px rgba(var(--c1-rgb),0.3)">'+icon('check',36,'#fff')+'</div>' +
+      '<div style="font-size:28px;font-weight:900;color:var(--txt);letter-spacing:-1px">Your Plan</div>' +
       '<div style="font-size:15px;color:var(--txt2);margin-top:8px">Ready, '+esc(name)+' — here\'s your starting point.</div>' +
       '</div>' +
       '<div class="card card-solid" style="margin:0 0 14px">' +
-      _summaryRow('🎯','Goal', goals[u.goal||'hypertrophy'] || '—') +
-      _summaryRow('📅','Split', plan ? plan.split + ' (' + (draftUser.weeklyGoal || rec.daysPerWeek) + 'd/wk)' : rec.name) +
-      _summaryRow('🔥','Calories', plan ? plan.calorieTarget + ' kcal/day' : '—') +
-      _summaryRow('🥩','Protein', plan ? plan.protein + ' g/day' : '—') +
-      _summaryRow('💡','Why', plan ? plan.splitReason : rec.reason) +
-      _summaryRow('⚡','Coach', cName) +
+      _summaryRow('target','Goal', goals[u.goal||'hypertrophy'] || '—') +
+      _summaryRow('calendar','Split', plan ? plan.split + ' (' + (draftUser.weeklyGoal || rec.daysPerWeek) + 'd/wk)' : rec.name) +
+      _summaryRow('flame','Calories', plan ? plan.calorieTarget + ' kcal/day' : '—') +
+      _summaryRow('apple','Protein', plan ? plan.protein + ' g/day' : '—') +
+      _summaryRow('sparkles','Why', plan ? plan.splitReason : rec.reason) +
+      _summaryRow('chart','Coach', cName) +
       '</div>' +
       '<div class="ob-body">' +
-      '<div class="ai-msg"><div class="ai-msg-header"><span>'+cEmoji+'</span><span class="ai-msg-label">'+cName+' says</span></div>' +
+      '<div class="ai-msg"><div class="ai-msg-header"><span style="color:var(--c1);display:inline-flex">'+icon(cIcon,16)+'</span><span class="ai-msg-label">'+cName+' says</span></div>' +
       '<div class="ai-msg-text">Set up your equipment and injuries anytime in Settings. I\'ll adapt every workout to what you actually have access to.</div></div>' +
       '</div>' +
       _footer(7) + '</div>';
   }
 };
 
-function _summaryRow(icon, label, val) {
+function _obIcon(name) {
+  return '<span style="color:var(--c1);display:inline-flex">' + icon(name, 22) + '</span>';
+}
+
+function _summaryRow(iconName, label, val) {
   return '<div class="list-divider-row">' +
-    '<div style="display:flex;align-items:center;gap:10px;color:var(--txt3);font-size:13px">'+icon+' <span>'+esc(label)+'</span></div>' +
+    '<div style="display:flex;align-items:center;gap:10px;color:var(--txt3);font-size:13px"><span style="color:var(--c1);display:inline-flex">'+icon(iconName,16)+'</span><span>'+esc(label)+'</span></div>' +
     '<div  class="row-strong">'+esc(val)+'</div>' +
     '</div>';
 }

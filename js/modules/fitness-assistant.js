@@ -369,7 +369,7 @@ reg('assistant', function() {
         ? 'background:rgba(var(--c1-rgb),0.2);border:1px solid rgba(var(--c1-rgb),0.3);border-radius:18px 18px 4px 18px;padding:12px 14px'
         : 'background:var(--bg3);border:1px solid var(--border);border-radius:18px 18px 18px 4px;padding:12px 14px') +
       '">' +
-      (isUser ? '' : '<div style="font-size:18px;margin-bottom:6px">' + (h.icon || '🤖') + '</div>') +
+      (isUser ? '' : '<div style="color:var(--c1);margin-bottom:6px">' + icon('sparkles', 18) + '</div>') +
       (!isUser && h.title ? '<div style="font-size:12px;font-weight:800;color:var(--c1);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.05em">' + esc(h.title) + '</div>' : '') +
       '<div style="font-size:13px;color:var(--txt);line-height:1.6;white-space:pre-line">' + esc(h.content) + '</div>' +
       (h.actions && h.actions.length ?
@@ -382,14 +382,14 @@ reg('assistant', function() {
   }).join('');
 
   return '<div class="topbar">' +
-    '<div class="topbar-title">🤖 Fitness Assistant</div>' +
+    '<div class="topbar-title" style="display:flex;align-items:center;gap:8px"><span style="color:var(--c1);display:inline-flex">' + icon('sparkles', 20) + '</span>Fitness Assistant</div>' +
     '<button type="button" onclick="S.set(\'assistantHistory\',[]);go(\'assistant\')" style="background:none;border:none;color:var(--txt3);font-size:12px;cursor:pointer;padding:0 16px">Clear</button>' +
     '</div>' +
 
     '<div id="chat-history" style="min-height:300px;padding-bottom:20px">' +
     (history.length === 0 ?
       '<div style="padding:30px 20px;text-align:center">' +
-      '<div style="font-size:56px;margin-bottom:12px">🤖</div>' +
+      '<div style="width:72px;height:72px;border-radius:20px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;background:rgba(var(--c1-rgb),0.12);color:var(--c1)">' + icon('sparkles', 34) + '</div>' +
       '<div style="font-size:16px;font-weight:800;color:var(--txt);margin-bottom:8px">Fitness Assistant</div>' +
       '<div style="font-size:13px;color:var(--txt2);line-height:1.7;max-width:260px;margin:0 auto">Offline coach powered by your data. Ask me anything about training, recovery, nutrition, or pain.</div>' +
       '</div>' : historyHtml) +

@@ -119,7 +119,7 @@ js/
     settings.js     — 6-tab settings screen
     profiles.js     — Profile switcher, demo mode
     onboarding.js   — 12-step onboarding + 4 intro slides
-sw.js               — Service worker (cache: pulsecap-v60)
+sw.js               — Service worker (cache: pulsecap-v62)
 manifest.json       — PWA manifest
 ```
 

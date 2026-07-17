@@ -8,43 +8,37 @@ function _muscleHeatmap() {
   const muscles = typeof MuscleEngine !== 'undefined' ? MuscleEngine.status() : [];
   if (!muscles.length) return '<div style="padding:20px;text-align:center;color:var(--txt3)">Log workouts to see muscle recovery heatmap</div>';
 
-  const MUSCLE_POSITIONS = {
-    chest:      { x: 47, y: 22, label: 'Chest' },
-    shoulders:  { x: 28, y: 18, label: 'Shoulders' },
-    back:       { x: 53, y: 22, label: 'Back' },
-    biceps:     { x: 20, y: 30, label: 'Biceps' },
-    triceps:    { x: 80, y: 30, label: 'Triceps' },
-    core:       { x: 47, y: 38, label: 'Core' },
-    quads:      { x: 40, y: 58, label: 'Quads' },
-    hamstrings: { x: 60, y: 58, label: 'Hams' },
-    glutes:     { x: 53, y: 48, label: 'Glutes' },
-    calves:     { x: 47, y: 78, label: 'Calves' },
-  };
-
+  const ORDER = ['chest','back','shoulders','biceps','triceps','core','quads','hamstrings','glutes','calves'];
   const muscleMap = {};
   muscles.forEach(m => { muscleMap[m.name.toLowerCase()] = m; });
 
-  const dots = Object.entries(MUSCLE_POSITIONS).map(([key, pos]) => {
+  const keys = ORDER.filter(k => muscleMap[k]);
+  muscles.forEach(m => { if (!keys.includes(m.name.toLowerCase())) keys.push(m.name.toLowerCase()); });
+
+  const tiles = keys.map(key => {
     const m = muscleMap[key];
-    const pct = m ? m.pct : 100;
+    const pct = Math.round(m ? m.pct : 100);
     const color = pct >= 90 ? '#30d158' : pct >= 70 ? '#f5c842' : pct >= 50 ? '#ff9f0a' : '#ff453a';
-    return '<g>' +
-      '<circle cx="' + pos.x + '%" cy="' + pos.y + '%" r="14" fill="' + color + '" opacity="0.85"/>' +
-      '<text x="' + pos.x + '%" y="' + pos.y + '%" text-anchor="middle" dominant-baseline="middle" font-size="9" font-weight="700" fill="#fff">' + Math.round(pct) + '%</text>' +
-      '<text x="' + pos.x + '%" y="calc(' + pos.y + '% + 18px)" text-anchor="middle" font-size="8" fill="var(--txt3)">' + pos.label + '</text>' +
-      '</g>';
+    const label = prettyMuscle(m ? m.name : key);
+    return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 10px;' +
+      'display:flex;flex-direction:column;gap:8px">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px">' +
+      '<span style="font-size:12px;font-weight:600;color:var(--txt2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(label) + '</span>' +
+      '<span style="font-size:14px;font-weight:800;font-variant-numeric:tabular-nums;color:' + color + '">' + pct + '%</span>' +
+      '</div>' +
+      '<div style="height:6px;border-radius:3px;background:rgba(128,128,128,0.16);overflow:hidden">' +
+      '<div style="width:' + pct + '%;height:100%;border-radius:3px;background:' + color + '"></div>' +
+      '</div></div>';
   }).join('');
 
-  const legend = '<div style="display:flex;gap:16px;justify-content:center;margin-top:12px;flex-wrap:wrap">' +
+  const legend = '<div style="display:flex;gap:14px;justify-content:center;margin-top:14px;flex-wrap:wrap">' +
     [['#30d158','90-100% Ready'],['#f5c842','70-89% Recovering'],['#ff9f0a','50-69% Fatigued'],['#ff453a','< 50% Rest']].map(([c, l]) =>
       '<div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:50%;background:' + c + '"></div><div  class="muted-11">' + l + '</div></div>'
     ).join('') +
     '</div>';
 
-  return '<svg viewBox="0 0 100 100" style="width:100%;max-height:300px;display:block" preserveAspectRatio="xMidYMid meet">' +
-    '<rect width="100" height="100" fill="rgba(255,255,255,0.02)" rx="8"/>' +
-    dots +
-    '</svg>' + legend;
+  return '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px">' +
+    tiles + '</div>' + legend;
 }
 
 /* ══════════════════════════════════════════════════════
@@ -171,13 +165,13 @@ function _weaknessMap() {
   const undertrained = volRecs.filter(r => r.status === 'undertrained' || r.status === 'neglected');
 
   if (!weak.length && !undertrained.length) {
-    return '<div style="padding:16px;text-align:center;color:#30d158;font-weight:700">✅ No significant weaknesses detected</div>';
+    return '<div style="padding:16px;display:flex;align-items:center;justify-content:center;gap:8px;color:#30d158;font-weight:700">' + icon('check', 18, '#30d158') + 'No significant weaknesses detected</div>';
   }
 
   let html = '';
 
   if (weak.length) {
-    html += '<div  class="mb-12"><div style="font-size:11px;font-weight:700;color:#ff453a;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">⚡ Fatigued / Recovering</div>' +
+    html += '<div  class="mb-12"><div style="font-size:11px;font-weight:700;color:#ff453a;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Fatigued / Recovering</div>' +
       weak.map(m => '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">' +
         '<div style="font-size:13px;font-weight:600;color:var(--txt);flex:1">' + esc(m.name) + '</div>' +
         '<div style="width:80px;height:6px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + m.pct + '%;height:6px;border-radius:3px;background:' + (m.pct < 50 ? '#ff453a' : '#ff9f0a') + '"></div></div>' +
@@ -186,7 +180,7 @@ function _weaknessMap() {
   }
 
   if (undertrained.length) {
-    html += '<div><div style="font-size:11px;font-weight:700;color:#ff9f0a;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">📉 Undertrained This Month</div>' +
+    html += '<div><div style="font-size:11px;font-weight:700;color:#ff9f0a;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Undertrained This Month</div>' +
       undertrained.map(r => '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">' +
         '<div  class="flex-1"><div  class="row-title">' + esc(r.muscle) + '</div>' +
         '<div style="font-size:11px;color:' + r.color + '">' + esc(r.action) + '</div></div>' +
@@ -204,22 +198,22 @@ reg('visualizations', function() {
   return moduleBackTopbar('Analytics & Visualizations') +
 
     '<div  class="card-block">' +
-    '<div class="row-title-16 mb-14">🌡️ Muscle Recovery Heatmap</div>' +
+    '<div class="viz-head"><span class="viz-ic">' + icon('heart', 18) + '</span>Muscle Recovery Heatmap</div>' +
     _muscleHeatmap() +
     '</div>' +
 
     '<div  class="card-block">' +
-    '<div class="row-title-16 mb-14">📡 Muscle Readiness Radar</div>' +
+    '<div class="viz-head"><span class="viz-ic">' + icon('target', 18) + '</span>Muscle Readiness Radar</div>' +
     _progressionRadar() +
     '</div>' +
 
     '<div  class="card-block">' +
-    '<div class="row-title-16 mb-14">🗓️ 7-Day Training Heatmap</div>' +
+    '<div class="viz-head"><span class="viz-ic">' + icon('calendar', 18) + '</span>7-Day Training Heatmap</div>' +
     _fatigueMap() +
     '</div>' +
 
     '<div  class="card-block">' +
-    '<div class="row-title-16 mb-14">⚠️ Weakness Map</div>' +
+    '<div class="viz-head"><span class="viz-ic">' + icon('alert', 18) + '</span>Weakness Map</div>' +
     _weaknessMap() +
     '</div>' +
 

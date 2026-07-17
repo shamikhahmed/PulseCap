@@ -45,6 +45,7 @@
     }
     .btn:hover { border-color: var(--accent); }
     .btn.active { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+    .divider { width: 1px; height: 24px; background: var(--border); }
     .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
     .pill {
       background: var(--surface);
@@ -125,6 +126,9 @@
     <div class="toolbar">
       <button type="button" class="btn active" id="btnMobile">Mobile</button>
       <button type="button" class="btn" id="btnDesktop">Desktop</button>
+      <span class="divider" aria-hidden="true"></span>
+      <button type="button" class="btn active" id="btnDark">Dark</button>
+      <button type="button" class="btn" id="btnLight">Light</button>
       <a class="btn" href="docs/screenshots/gallery/gallery-manifest.json" target="_blank" rel="noopener">Manifest</a>
       <span style="color:var(--muted);font-size:0.8rem">Regen: <code>npm run gallery</code></span>
     </div>
@@ -141,10 +145,11 @@
   </div>
 
   <script>
+    /* Fallback section map for legacy manifests without a `section` field. */
     const SECTION_MAP = {
-      dashboard: 'Today', hub: 'Learn', workout: 'Train', quests: 'Train', progress: 'Train',
+      dashboard: 'Today', hub: 'Learn', workout: 'Train', quests: 'Today', progress: 'Train',
       nutrition: 'Body', coach: 'Learn', recovery: 'Body', 'recovery-debt': 'Body', anatomy: 'Body',
-      bodymap: 'Body', encyclopedia: 'Learn', search: 'Learn', calculators: 'Body',
+      bodymap: 'Body', encyclopedia: 'Learn', search: 'Learn', calculators: 'Learn',
       calisthenics: 'Train', cardio: 'Train', academy: 'Learn', assistant: 'Learn', briefing: 'Today',
       'body-intelligence': 'Body', 'equipment-setup': 'Me', 'injury-risk': 'Body', physique: 'Body',
       'physique-archetype': 'Body', 'physique-timeline': 'Body', profiles: 'Me', rehab: 'Body',
@@ -155,6 +160,7 @@
     const state = {
       manifest: null,
       viewport: 'mobile',
+      theme: 'dark',
       section: '',
       flat: [],
       entries: [],
@@ -164,28 +170,38 @@
     const $ = (s) => document.querySelector(s);
 
     function sectionFor(shot) {
+      if (shot.section) return shot.section;
       const id = (shot.route || '').match(/go\('([^']+)'\)/)?.[1]
-        || (shot.file || '').replace(/^(mobile|desktop)-\d+-/, '').replace(/\.png$/, '');
+        || (shot.file || '').replace(/^(dark|light)-/, '').replace(/^(mobile|desktop)-\d+-/, '').replace(/\.png$/, '');
       return SECTION_MAP[id] || 'Other';
+    }
+
+    function themeFor(shot) {
+      if (shot.theme) return shot.theme;
+      const m = (shot.file || '').match(/^(dark|light)-/);
+      return m ? m[1] : 'dark';
     }
 
     function buildFlat() {
       state.flat = (state.manifest.shots || []).map((s) => ({
         ...s,
         section: sectionFor(s),
-        screenId: (s.file || '').replace(/^(mobile|desktop)-\d+-/, '').replace(/\.png$/, '')
+        theme: themeFor(s),
+        screenId: s.screenId || (s.file || '').replace(/^(dark|light)-/, '').replace(/^(mobile|desktop)-\d+-/, '').replace(/\.png$/, '')
       }));
     }
 
+    function scope() {
+      return state.flat.filter((s) => s.viewport === state.viewport && s.theme === state.theme);
+    }
+
     function visible() {
-      return state.flat.filter((s) =>
-        s.viewport === state.viewport && (!state.section || s.section === state.section)
-      );
+      return scope().filter((s) => !state.section || s.section === state.section);
     }
 
     function sectionsPresent() {
-      const set = new Set(state.flat.filter((s) => s.viewport === state.viewport).map((s) => s.section));
-      const order = ['Today', 'Train', 'Body', 'Learn', 'Me', 'Onboarding', 'Other'];
+      const set = new Set(scope().map((s) => s.section));
+      const order = ['Onboarding', 'Today', 'Train', 'Body', 'Learn', 'Me', 'Other'];
       return order.filter((o) => set.has(o));
     }
 
@@ -199,7 +215,7 @@
       all.onclick = () => { state.section = ''; render(); };
       pills.appendChild(all);
       sectionsPresent().forEach((sec) => {
-        const n = state.flat.filter((s) => s.viewport === state.viewport && s.section === sec).length;
+        const n = scope().filter((s) => s.section === sec).length;
         const b = document.createElement('button');
         b.type = 'button';
         b.className = 'pill' + (state.section === sec ? ' active' : '');
@@ -213,6 +229,8 @@
       document.body.classList.toggle('viewport-desktop', state.viewport === 'desktop');
       $('#btnMobile').classList.toggle('active', state.viewport === 'mobile');
       $('#btnDesktop').classList.toggle('active', state.viewport === 'desktop');
+      $('#btnDark').classList.toggle('active', state.theme === 'dark');
+      $('#btnLight').classList.toggle('active', state.theme === 'light');
       renderPills();
 
       const shots = visible();
@@ -271,6 +289,8 @@
 
     $('#btnMobile').onclick = () => { state.viewport = 'mobile'; render(); };
     $('#btnDesktop').onclick = () => { state.viewport = 'desktop'; render(); };
+    $('#btnDark').onclick = () => { state.theme = 'dark'; render(); };
+    $('#btnLight').onclick = () => { state.theme = 'light'; render(); };
     $('#lb-close').onclick = closeLb;
     $('#lb-prev').onclick = () => openLb(state.lbIndex - 1);
     $('#lb-next').onclick = () => openLb(state.lbIndex + 1);

@@ -268,6 +268,30 @@ const S = {
     this.createDemo(false);
   },
 
+  /* ── Sample persona profiles (QA + showcase) ──
+     Seeds several distinct athlete profiles so the app can be exercised as
+     many different user types. Never overwrites real profiles; each persona
+     lives under its own `_key + '_' + id` bucket. Does not change the active
+     profile unless `activate` is passed. */
+  seedPersonas(force, activate) {
+    const meta = this.getMeta();
+    if (!meta.profiles) meta.profiles = [];
+    const ids = [];
+    (typeof DEMO_PERSONAS !== 'undefined' ? DEMO_PERSONAS : []).forEach((cfg) => {
+      ids.push(cfg.id);
+      if (!meta.profiles.find((p) => p.id === cfg.id)) {
+        meta.profiles.push({ id: cfg.id, name: cfg.name, avatar: cfg.avatar, created: new Date().toISOString(), isDemo: true });
+      }
+      const key = this._key + '_' + cfg.id;
+      if (force || !localStorage.getItem(key)) {
+        localStorage.setItem(key, JSON.stringify(_buildPersonaData(cfg)));
+      }
+    });
+    this.saveMeta(meta);
+    if (activate && ids.length) this.switchProfile(ids[0]);
+    return ids;
+  },
+
   /* ── Core data ops ── */
   _load() {
     try {
@@ -346,4 +370,151 @@ function _demoWorkouts() {
       exercises: t.exercises
     };
   });
+}
+
+/* ══════════════════════════════════════════════════════
+   SAMPLE PERSONAS — distinct athlete types for QA/showcase
+══════════════════════════════════════════════════════ */
+const DEMO_PERSONAS = [
+  {
+    id: 'demo_beginner', name: 'Sam · Beginner', avatar: '🌱',
+    user: { name: 'Sam', goal: 'fat_loss', exp: 'beginner', gender: 'female', age: 24, units: 'metric',
+      height: 165, weight: 72, goalWeight: 62, split: 'fb', weeklyGoal: 3,
+      equipment: ['dumbbell','bar','bodyweight'], coachPersonality: 'zen', theme: 'light' },
+    level: 0.55, workoutCount: 4, calorieTarget: 1700, proteinTarget: 120, trend: -0.15, injuries: []
+  },
+  {
+    id: 'demo_strong', name: 'Marcus · Advanced', avatar: '🏆',
+    user: { name: 'Marcus', goal: 'strength', exp: 'advanced', gender: 'male', age: 31, units: 'metric',
+      height: 183, weight: 92, goalWeight: 95, split: 'ul', weeklyGoal: 5,
+      equipment: ['barbell','dumbbell','cables','machine','bar'], coachPersonality: 'rex', theme: 'dark' },
+    level: 1.35, workoutCount: 16, calorieTarget: 3200, proteinTarget: 200, trend: 0.05, injuries: []
+  },
+  {
+    id: 'demo_injured', name: 'Jordan · Rehab', avatar: '🩹',
+    user: { name: 'Jordan', goal: 'hypertrophy', exp: 'intermediate', gender: 'male', age: 28, units: 'metric',
+      height: 178, weight: 80, goalWeight: 82, split: 'ppl', weeklyGoal: 4,
+      equipment: ['barbell','dumbbell','cables','machine','bar'], coachPersonality: 'maya', theme: 'dark' },
+    level: 1.0, workoutCount: 8, calorieTarget: 2500, proteinTarget: 170, trend: 0,
+    injuries: [{ id: 'shoulder_impingement', bodyPart: 'Shoulder', severity: 2,
+      date: new Date(Date.now() - 12 * 864e5).toISOString(), recovered: false }]
+  },
+  {
+    id: 'demo_cutter', name: 'Lena · Cutting', avatar: '🔥',
+    user: { name: 'Lena', goal: 'fat_loss', exp: 'intermediate', gender: 'female', age: 29, units: 'metric',
+      height: 170, weight: 68, goalWeight: 60, split: 'ul', weeklyGoal: 4,
+      equipment: ['dumbbell','cables','machine','bar'], coachPersonality: 'sam', theme: 'dark' },
+    level: 0.85, workoutCount: 10, calorieTarget: 1600, proteinTarget: 140, trend: -0.2, injuries: []
+  },
+  {
+    id: 'demo_senior', name: 'Ray · Longevity', avatar: '🧘',
+    user: { name: 'Ray', goal: 'general_health', exp: 'beginner', gender: 'male', age: 58, units: 'imperial',
+      height: 175, weight: 88, goalWeight: 84, split: 'fb', weeklyGoal: 3,
+      equipment: ['dumbbell','machine','bodyweight'], coachPersonality: 'zen', theme: 'light' },
+    level: 0.6, workoutCount: 5, calorieTarget: 2100, proteinTarget: 130, trend: -0.08, injuries: []
+  }
+];
+
+function _round2p5(n) { return Math.round(n / 2.5) * 2.5; }
+
+function _personaWorkouts(cfg) {
+  const base = [
+    { name: 'Push Day', ex: [['Barbell Bench Press', 60, 'chest'], ['Overhead Press', 40, 'front_delts'], ['Incline Dumbbell Press', 22, 'upper_chest']] },
+    { name: 'Pull Day', ex: [['Deadlift', 90, 'lower_back'], ['Barbell Row', 55, 'lats'], ['Lat Pulldown', 50, 'lats']] },
+    { name: 'Leg Day', ex: [['Back Squat', 80, 'quads'], ['Leg Press', 120, 'quads'], ['Standing Calf Raise', 40, 'calves']] }
+  ];
+  const out = [];
+  for (let i = 0; i < cfg.workoutCount; i++) {
+    const t = base[i % base.length];
+    const daysAgo = i * 3 + 1;
+    const exs = t.ex.map(function (e) {
+      const w = Math.max(2.5, _round2p5(e[1] * cfg.level));
+      return { name: e[0], sets: [
+        { weight: w, reps: 8, done: true }, { weight: w, reps: 7, done: true }, { weight: w, reps: 6, done: true }
+      ], muscles: { primary: [e[2]] } };
+    });
+    const totalVol = exs.reduce(function (s, ex) { return s + ex.sets.reduce(function (a, st) { return a + st.weight * st.reps; }, 0); }, 0);
+    out.push({ id: 'p_wkt_' + cfg.id + '_' + i, name: t.name,
+      date: new Date(Date.now() - daysAgo * 864e5).toISOString().slice(0, 10),
+      duration: 40 + (i % 4) * 8, totalVol: totalVol, exercises: exs });
+  }
+  return out;
+}
+
+function _personaPRs(cfg) {
+  const lifts = [['Barbell Bench Press', 100], ['Back Squat', 120], ['Deadlift', 150], ['Overhead Press', 70]];
+  return lifts.map(function (l, i) {
+    const w = Math.max(20, _round2p5(l[1] * cfg.level));
+    const reps = 5;
+    return { exercise: l[0], weight: w, reps: reps, e1rm: Math.round(w * (1 + reps / 30)),
+      date: new Date(Date.now() - (i + 2) * 864e5).toISOString() };
+  });
+}
+
+function _personaBodyStats(cfg) {
+  const bs = []; let sw = cfg.user.weight - cfg.trend * -30;
+  sw = cfg.user.weight + Math.abs(cfg.trend) * 30 * (cfg.trend < 0 ? 1 : -1);
+  for (let i = 29; i >= 0; i--) {
+    if (i % 3 === 0) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      sw = Math.round((sw + cfg.trend) * 10) / 10;
+      bs.push({ weight: sw, date: d.toISOString().slice(0, 10), time: d.toISOString() });
+    }
+  }
+  return bs;
+}
+
+function _personaMeals(cfg) {
+  const ml = [];
+  const cal = cfg.calorieTarget;
+  const todayStr = new Date().toISOString().slice(0, 10);
+  for (let i = 4; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i); const ds = d.toISOString().slice(0, 10);
+    const t1 = new Date(d); t1.setHours(8, 15, 0, 0);
+    const t2 = new Date(d); t2.setHours(13, 0, 0, 0);
+    const t3 = new Date(d); t3.setHours(19, 30, 0, 0);
+    ml.push({ name: 'Breakfast', calories: Math.round(cal * 0.25), protein: Math.round(cfg.proteinTarget * 0.25), carbs: 40, fat: 12, date: ds, time: t1.toISOString() });
+    ml.push({ name: 'Lunch', calories: Math.round(cal * 0.35), protein: Math.round(cfg.proteinTarget * 0.35), carbs: 55, fat: 14, date: ds, time: t2.toISOString() });
+    ml.push({ name: 'Dinner', calories: Math.round(cal * 0.3), protein: Math.round(cfg.proteinTarget * 0.3), carbs: 45, fat: 16, date: ds, time: t3.toISOString() });
+  }
+  return ml;
+}
+
+function _personaRecoveryHistory() {
+  const rh = [];
+  for (let i = 6; i >= 0; i--) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    rh.push({ sleep: 6.5 + (i % 3), soreness: (i % 4) + 1, stress: (i % 3) + 2, energy: 5 + (i % 4),
+      hydration: 1.8 + (i % 2), date: d.toISOString().slice(0, 10), time: d.toISOString() });
+  }
+  return rh;
+}
+
+function _buildPersonaData(cfg) {
+  const user = Object.assign({
+    split: 'ppl', weeklyGoal: 4, splitDay: 1,
+    joinDate: new Date(Date.now() - 90 * 864e5).toISOString(),
+    waterTarget: 8, mode: cfg.user.theme
+  }, cfg.user, {
+    calorieTarget: cfg.calorieTarget, proteinTarget: cfg.proteinTarget,
+    injuries: cfg.injuries || []
+  });
+  const todayStr = new Date().toISOString().slice(0, 10);
+  return {
+    onboarded: true,
+    user: user,
+    recovery: { sleep: 7, soreness: 3, stress: 3, energy: 7, hydration: 2.2, date: todayStr },
+    recoveryHistory: _personaRecoveryHistory(),
+    workouts: _personaWorkouts(cfg),
+    prs: _personaPRs(cfg),
+    bodyStats: _personaBodyStats(cfg),
+    meals: _personaMeals(cfg),
+    water: (function () { const w = []; for (let i = 0; i < 5; i++) w.push({ date: todayStr, time: new Date(Date.now() - i * 3600000).toISOString() }); return w; })(),
+    supplements: [
+      { id: 'creatine', name: 'Creatine Monohydrate', timing: 'anytime', dose: '5g', active: true },
+      { id: 'whey', name: 'Whey Protein', timing: 'post', dose: '1 scoop', active: true }
+    ],
+    supplementLogs: [{ suppId: 'creatine', date: todayStr, time: new Date().toISOString() }],
+    achievements: ['first_workout', 'streak_3'].concat(cfg.workoutCount >= 10 ? ['workouts_10', 'pr_first'] : [])
+  };
 }

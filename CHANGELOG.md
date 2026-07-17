@@ -1,5 +1,19 @@
 # Changelog — PulseCap
 
+## 5.6.3 (2026-07-17) — Sample personas + functional QA
+- **Sample athletes:** `S.seedPersonas()` seeds 5 distinct demo profiles — Beginner (Sam), Advanced (Marcus), Rehab/injured (Jordan), Cutting (Lena), Longevity (Ray) — each with its own goal, split, equipment, coach, theme, workouts, PRs, body/meal/recovery history. "Load sample athletes" button in Profiles.
+- **Functional QA:** `tests/functional.spec.js` switches through every profile (demo + 5 personas), visits **every registered screen**, and runs a core-action battery (log water, quick-add meal, recovery check-in, start→log set→save workout) asserting zero runtime errors.
+- No regressions found; app renders + functions clean across all user types.
+- SW `pulsecap-v62`.
+
+## 5.6.2 (2026-07-17) — Visual polish + full screen gallery
+- **Heatmap fix:** Muscle Recovery Heatmap was a broken overlapping-blob SVG (`%` coords vs `viewBox` units, `r=14` in a 100-unit space). Rebuilt as a clean responsive tile grid with per-muscle recovery bars.
+- **De-emoji chrome:** Nutrition (quick-add, streak, water, supplements), Assistant, Onboarding (intro + steps + coach picker), Settings (theme/coach/tone), Physique scores, Rehab, Anatomy, Workout plan, Visualizations → stroke icons via `icon()`.
+- **Water intake:** emoji drops → clean filled/outlined dots.
+- **Desktop:** content column capped at 1120px and centred so screens stop reading as a stretched phone.
+- **Screen gallery:** capture matrix expanded to **dark + light × mobile + desktop** across every screen, sub-tab, welcome/intro slides, all 7 onboarding steps, and the active workout — 200 shots. Gallery viewer gets a Dark/Light toggle; manifest now carries `theme`/`section`/`screenId`.
+- SW `pulsecap-v61`.
+
 ## 5.6.1 (2026-07-17) — Design-token migration
 - **Utility CSS:** spacing/type/card/flex/back-chip classes expanded in `layout.css`.
 - **Inline style kill:** ~580 static chrome `style=` strings across modules → utility classes.

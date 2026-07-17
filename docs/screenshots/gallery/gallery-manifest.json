@@ -1,427 +1,1807 @@
 {
   "app": "PulseCap",
-  "version": "5.6.1",
-  "generated": "2026-07-17T12:30:26.991Z",
+  "version": "5.6.2",
+  "generated": "2026-07-17T14:13:13.883Z",
   "shots": [
     {
-      "file": "desktop-01-dashboard.png",
+      "file": "dark-desktop-001-dashboard.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "dashboard",
       "label": "Dashboard",
-      "route": "go('dashboard')",
-      "viewport": "desktop"
+      "route": "go('dashboard')"
     },
     {
-      "file": "desktop-02-hub.png",
-      "label": "Hub",
-      "route": "go('hub')",
-      "viewport": "desktop"
+      "file": "dark-desktop-002-briefing.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "briefing",
+      "label": "Morning Briefing",
+      "route": "go('briefing')"
     },
     {
-      "file": "desktop-03-workout.png",
-      "label": "Workout",
-      "route": "go('workout')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-04-quests.png",
+      "file": "dark-desktop-003-quests.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "quests",
       "label": "Quests",
-      "route": "go('quests')",
-      "viewport": "desktop"
+      "route": "go('quests')"
     },
     {
-      "file": "desktop-05-progress.png",
-      "label": "Progress",
-      "route": "go('progress')",
-      "viewport": "desktop"
+      "file": "dark-desktop-004-workout.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "workout",
+      "label": "Workout Plan",
+      "route": "go('workout')"
     },
     {
-      "file": "desktop-06-nutrition.png",
-      "label": "Nutrition",
-      "route": "go('nutrition')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-07-coach.png",
-      "label": "Coach",
-      "route": "go('coach')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-08-recovery.png",
-      "label": "Recovery",
-      "route": "go('recovery')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-09-recovery-debt.png",
-      "label": "Recovery Debt",
-      "route": "go('recovery-debt')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-10-anatomy.png",
-      "label": "Anatomy",
-      "route": "go('anatomy')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-11-bodymap.png",
-      "label": "Bodymap",
-      "route": "go('bodymap')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-12-encyclopedia.png",
-      "label": "Encyclopedia",
-      "route": "go('encyclopedia')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-13-search.png",
-      "label": "Search",
-      "route": "go('search')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-14-calculators.png",
-      "label": "Calculators",
-      "route": "go('calculators')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-15-calisthenics.png",
-      "label": "Calisthenics",
-      "route": "go('calisthenics')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-16-cardio.png",
+      "file": "dark-desktop-005-cardio.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "cardio",
       "label": "Cardio",
-      "route": "go('cardio')",
-      "viewport": "desktop"
+      "route": "go('cardio')"
     },
     {
-      "file": "desktop-17-academy.png",
-      "label": "Academy",
-      "route": "go('academy')",
-      "viewport": "desktop"
+      "file": "dark-desktop-006-calisthenics.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "calisthenics",
+      "label": "Calisthenics",
+      "route": "go('calisthenics')"
     },
     {
-      "file": "desktop-18-assistant.png",
-      "label": "Assistant",
-      "route": "go('assistant')",
-      "viewport": "desktop"
+      "file": "dark-desktop-007-progress.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "progress",
+      "label": "Progress",
+      "route": "go('progress')"
     },
     {
-      "file": "desktop-19-briefing.png",
-      "label": "Briefing",
-      "route": "go('briefing')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-20-body-intelligence.png",
-      "label": "Body Intelligence",
-      "route": "go('body-intelligence')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-21-equipment-setup.png",
-      "label": "Equipment Setup",
-      "route": "go('equipment-setup')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-22-injury-risk.png",
-      "label": "Injury Risk",
-      "route": "go('injury-risk')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-23-physique.png",
-      "label": "Physique",
-      "route": "go('physique')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-24-physique-archetype.png",
-      "label": "Physique Archetype",
-      "route": "go('physique-archetype')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-25-physique-timeline.png",
-      "label": "Physique Timeline",
-      "route": "go('physique-timeline')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-26-profiles.png",
-      "label": "Profiles",
-      "route": "go('profiles')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-27-rehab.png",
-      "label": "Rehab",
-      "route": "go('rehab')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-28-settings.png",
-      "label": "Settings",
-      "route": "go('settings')",
-      "viewport": "desktop"
-    },
-    {
-      "file": "desktop-29-training-intel.png",
+      "file": "dark-desktop-008-training-intel.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "training-intel",
       "label": "Training Intel",
-      "route": "go('training-intel')",
-      "viewport": "desktop"
+      "route": "go('training-intel', {\"tab\":\"intel\"})"
     },
     {
-      "file": "desktop-30-training-style.png",
+      "file": "dark-desktop-009-training-style.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "training-style",
       "label": "Training Style",
-      "route": "go('training-style')",
-      "viewport": "desktop"
+      "route": "go('training-intel', {\"tab\":\"style\"})"
     },
     {
-      "file": "desktop-31-visualizations.png",
+      "file": "dark-desktop-010-bodymap.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "bodymap",
+      "label": "Body Map",
+      "route": "go('bodymap')"
+    },
+    {
+      "file": "dark-desktop-011-nutrition.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "nutrition",
+      "label": "Nutrition",
+      "route": "go('nutrition')"
+    },
+    {
+      "file": "dark-desktop-012-recovery.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "recovery",
+      "label": "Recovery Check-in",
+      "route": "go('recovery', {\"tab\":\"checkin\"})"
+    },
+    {
+      "file": "dark-desktop-013-recovery-debt.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "recovery-debt",
+      "label": "Recovery Debt",
+      "route": "go('recovery', {\"tab\":\"debt\"})"
+    },
+    {
+      "file": "dark-desktop-014-rehab.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "rehab",
+      "label": "Rehab",
+      "route": "go('rehab')"
+    },
+    {
+      "file": "dark-desktop-015-injury-risk.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "injury-risk",
+      "label": "Injury Risk",
+      "route": "go('injury-risk')"
+    },
+    {
+      "file": "dark-desktop-016-body-intelligence.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "body-intelligence",
+      "label": "Body Intelligence",
+      "route": "go('body-intelligence')"
+    },
+    {
+      "file": "dark-desktop-017-anatomy.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "anatomy",
+      "label": "Anatomy",
+      "route": "go('anatomy')"
+    },
+    {
+      "file": "dark-desktop-018-photos.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "photos",
+      "label": "Progress Photos",
+      "route": "go('photos')"
+    },
+    {
+      "file": "dark-desktop-019-physique.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "physique",
+      "label": "Physique Score",
+      "route": "go('physique', {\"tab\":\"score\"})"
+    },
+    {
+      "file": "dark-desktop-020-physique-archetype.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "physique-archetype",
+      "label": "Physique Archetype",
+      "route": "go('physique', {\"tab\":\"archetype\"})"
+    },
+    {
+      "file": "dark-desktop-021-physique-timeline.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "physique-timeline",
+      "label": "Physique Timeline",
+      "route": "go('physique', {\"tab\":\"timeline\"})"
+    },
+    {
+      "file": "dark-desktop-022-hub.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "hub",
+      "label": "Learn Hub",
+      "route": "go('hub')"
+    },
+    {
+      "file": "dark-desktop-023-encyclopedia.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "encyclopedia",
+      "label": "Encyclopedia",
+      "route": "go('encyclopedia')"
+    },
+    {
+      "file": "dark-desktop-024-search.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "search",
+      "label": "Search",
+      "route": "go('search')"
+    },
+    {
+      "file": "dark-desktop-025-calculators.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "calculators",
+      "label": "Calculators",
+      "route": "go('calculators')"
+    },
+    {
+      "file": "dark-desktop-026-visualizations.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "visualizations",
       "label": "Visualizations",
-      "route": "go('visualizations')",
-      "viewport": "desktop"
+      "route": "go('visualizations')"
     },
     {
-      "file": "desktop-32-onboarding.png",
-      "label": "Onboarding",
-      "route": "go('onboarding')",
-      "viewport": "desktop"
+      "file": "dark-desktop-027-assistant.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "assistant",
+      "label": "Fitness Assistant",
+      "route": "go('assistant')"
     },
     {
-      "file": "desktop-33-split-builder.png",
+      "file": "dark-desktop-028-academy.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "academy",
+      "label": "Academy",
+      "route": "go('academy')"
+    },
+    {
+      "file": "dark-desktop-029-settings-profile.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-profile",
+      "label": "Settings · Profile",
+      "route": "go('settings', {\"tab\":\"profile\"})"
+    },
+    {
+      "file": "dark-desktop-030-settings-training.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-training",
+      "label": "Settings · Training",
+      "route": "go('settings', {\"tab\":\"training\"})"
+    },
+    {
+      "file": "dark-desktop-031-settings-supplements.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-supplements",
+      "label": "Settings · Supps",
+      "route": "go('settings', {\"tab\":\"supplements\"})"
+    },
+    {
+      "file": "dark-desktop-032-settings-nutrition.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-nutrition",
+      "label": "Settings · Nutrition",
+      "route": "go('settings', {\"tab\":\"nutrition\"})"
+    },
+    {
+      "file": "dark-desktop-033-settings-appearance.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-appearance",
+      "label": "Settings · Style",
+      "route": "go('settings', {\"tab\":\"appearance\"})"
+    },
+    {
+      "file": "dark-desktop-034-settings-notifications.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-notifications",
+      "label": "Settings · Alerts",
+      "route": "go('settings', {\"tab\":\"notifications\"})"
+    },
+    {
+      "file": "dark-desktop-035-settings-data.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-data",
+      "label": "Settings · Data",
+      "route": "go('settings', {\"tab\":\"data\"})"
+    },
+    {
+      "file": "dark-desktop-036-profiles.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "profiles",
+      "label": "Profiles",
+      "route": "go('profiles')"
+    },
+    {
+      "file": "dark-desktop-037-equipment-setup.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "equipment-setup",
+      "label": "Equipment Setup",
+      "route": "go('equipment-setup')"
+    },
+    {
+      "file": "dark-desktop-038-split-builder.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "split-builder",
       "label": "Split Builder",
-      "route": "go('split-builder')",
-      "viewport": "desktop"
+      "route": "go('split-builder')"
     },
     {
-      "file": "desktop-34-photos.png",
-      "label": "Photos",
-      "route": "go('photos')",
-      "viewport": "desktop"
+      "file": "dark-desktop-039-intro-1.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-1",
+      "label": "Welcome 1/4",
+      "route": "go('onboarding',{showIntro:true})"
     },
     {
-      "file": "desktop-35-active.png",
+      "file": "dark-desktop-040-intro-2.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-2",
+      "label": "Welcome 2/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "dark-desktop-041-intro-3.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-3",
+      "label": "Welcome 3/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "dark-desktop-042-intro-4.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-4",
+      "label": "Welcome 4/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "dark-desktop-043-onboarding-1.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-1",
+      "label": "Onboarding 1/7",
+      "route": "onboarding step 1"
+    },
+    {
+      "file": "dark-desktop-044-onboarding-2.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-2",
+      "label": "Onboarding 2/7",
+      "route": "onboarding step 2"
+    },
+    {
+      "file": "dark-desktop-045-onboarding-3.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-3",
+      "label": "Onboarding 3/7",
+      "route": "onboarding step 3"
+    },
+    {
+      "file": "dark-desktop-046-onboarding-4.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-4",
+      "label": "Onboarding 4/7",
+      "route": "onboarding step 4"
+    },
+    {
+      "file": "dark-desktop-047-onboarding-5.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-5",
+      "label": "Onboarding 5/7",
+      "route": "onboarding step 5"
+    },
+    {
+      "file": "dark-desktop-048-onboarding-6.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-6",
+      "label": "Onboarding 6/7",
+      "route": "onboarding step 6"
+    },
+    {
+      "file": "dark-desktop-049-onboarding-7.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-7",
+      "label": "Onboarding 7/7",
+      "route": "onboarding step 7"
+    },
+    {
+      "file": "dark-desktop-050-active.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "active",
       "label": "Active Workout",
-      "route": "go('active')",
-      "viewport": "desktop"
+      "route": "startWorkout()"
     },
     {
-      "file": "mobile-01-dashboard.png",
+      "file": "dark-mobile-001-dashboard.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "dashboard",
       "label": "Dashboard",
-      "route": "go('dashboard')",
-      "viewport": "mobile"
+      "route": "go('dashboard')"
     },
     {
-      "file": "mobile-02-hub.png",
-      "label": "Hub",
-      "route": "go('hub')",
-      "viewport": "mobile"
+      "file": "dark-mobile-002-briefing.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "briefing",
+      "label": "Morning Briefing",
+      "route": "go('briefing')"
     },
     {
-      "file": "mobile-03-workout.png",
-      "label": "Workout",
-      "route": "go('workout')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-04-quests.png",
+      "file": "dark-mobile-003-quests.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "quests",
       "label": "Quests",
-      "route": "go('quests')",
-      "viewport": "mobile"
+      "route": "go('quests')"
     },
     {
-      "file": "mobile-05-progress.png",
-      "label": "Progress",
-      "route": "go('progress')",
-      "viewport": "mobile"
+      "file": "dark-mobile-004-workout.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "workout",
+      "label": "Workout Plan",
+      "route": "go('workout')"
     },
     {
-      "file": "mobile-06-nutrition.png",
-      "label": "Nutrition",
-      "route": "go('nutrition')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-07-coach.png",
-      "label": "Coach",
-      "route": "go('coach')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-08-recovery.png",
-      "label": "Recovery",
-      "route": "go('recovery')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-09-recovery-debt.png",
-      "label": "Recovery Debt",
-      "route": "go('recovery-debt')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-10-anatomy.png",
-      "label": "Anatomy",
-      "route": "go('anatomy')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-11-bodymap.png",
-      "label": "Bodymap",
-      "route": "go('bodymap')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-12-encyclopedia.png",
-      "label": "Encyclopedia",
-      "route": "go('encyclopedia')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-13-search.png",
-      "label": "Search",
-      "route": "go('search')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-14-calculators.png",
-      "label": "Calculators",
-      "route": "go('calculators')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-15-calisthenics.png",
-      "label": "Calisthenics",
-      "route": "go('calisthenics')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-16-cardio.png",
+      "file": "dark-mobile-005-cardio.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "cardio",
       "label": "Cardio",
-      "route": "go('cardio')",
-      "viewport": "mobile"
+      "route": "go('cardio')"
     },
     {
-      "file": "mobile-17-academy.png",
-      "label": "Academy",
-      "route": "go('academy')",
-      "viewport": "mobile"
+      "file": "dark-mobile-006-calisthenics.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "calisthenics",
+      "label": "Calisthenics",
+      "route": "go('calisthenics')"
     },
     {
-      "file": "mobile-18-assistant.png",
-      "label": "Assistant",
-      "route": "go('assistant')",
-      "viewport": "mobile"
+      "file": "dark-mobile-007-progress.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "progress",
+      "label": "Progress",
+      "route": "go('progress')"
     },
     {
-      "file": "mobile-19-briefing.png",
-      "label": "Briefing",
-      "route": "go('briefing')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-20-body-intelligence.png",
-      "label": "Body Intelligence",
-      "route": "go('body-intelligence')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-21-equipment-setup.png",
-      "label": "Equipment Setup",
-      "route": "go('equipment-setup')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-22-injury-risk.png",
-      "label": "Injury Risk",
-      "route": "go('injury-risk')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-23-physique.png",
-      "label": "Physique",
-      "route": "go('physique')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-24-physique-archetype.png",
-      "label": "Physique Archetype",
-      "route": "go('physique-archetype')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-25-physique-timeline.png",
-      "label": "Physique Timeline",
-      "route": "go('physique-timeline')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-26-profiles.png",
-      "label": "Profiles",
-      "route": "go('profiles')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-27-rehab.png",
-      "label": "Rehab",
-      "route": "go('rehab')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-28-settings.png",
-      "label": "Settings",
-      "route": "go('settings')",
-      "viewport": "mobile"
-    },
-    {
-      "file": "mobile-29-training-intel.png",
+      "file": "dark-mobile-008-training-intel.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "training-intel",
       "label": "Training Intel",
-      "route": "go('training-intel')",
-      "viewport": "mobile"
+      "route": "go('training-intel', {\"tab\":\"intel\"})"
     },
     {
-      "file": "mobile-30-training-style.png",
+      "file": "dark-mobile-009-training-style.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "training-style",
       "label": "Training Style",
-      "route": "go('training-style')",
-      "viewport": "mobile"
+      "route": "go('training-intel', {\"tab\":\"style\"})"
     },
     {
-      "file": "mobile-31-visualizations.png",
+      "file": "dark-mobile-010-bodymap.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "bodymap",
+      "label": "Body Map",
+      "route": "go('bodymap')"
+    },
+    {
+      "file": "dark-mobile-011-nutrition.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "nutrition",
+      "label": "Nutrition",
+      "route": "go('nutrition')"
+    },
+    {
+      "file": "dark-mobile-012-recovery.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "recovery",
+      "label": "Recovery Check-in",
+      "route": "go('recovery', {\"tab\":\"checkin\"})"
+    },
+    {
+      "file": "dark-mobile-013-recovery-debt.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "recovery-debt",
+      "label": "Recovery Debt",
+      "route": "go('recovery', {\"tab\":\"debt\"})"
+    },
+    {
+      "file": "dark-mobile-014-rehab.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "rehab",
+      "label": "Rehab",
+      "route": "go('rehab')"
+    },
+    {
+      "file": "dark-mobile-015-injury-risk.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "injury-risk",
+      "label": "Injury Risk",
+      "route": "go('injury-risk')"
+    },
+    {
+      "file": "dark-mobile-016-body-intelligence.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "body-intelligence",
+      "label": "Body Intelligence",
+      "route": "go('body-intelligence')"
+    },
+    {
+      "file": "dark-mobile-017-anatomy.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "anatomy",
+      "label": "Anatomy",
+      "route": "go('anatomy')"
+    },
+    {
+      "file": "dark-mobile-018-photos.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "photos",
+      "label": "Progress Photos",
+      "route": "go('photos')"
+    },
+    {
+      "file": "dark-mobile-019-physique.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "physique",
+      "label": "Physique Score",
+      "route": "go('physique', {\"tab\":\"score\"})"
+    },
+    {
+      "file": "dark-mobile-020-physique-archetype.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "physique-archetype",
+      "label": "Physique Archetype",
+      "route": "go('physique', {\"tab\":\"archetype\"})"
+    },
+    {
+      "file": "dark-mobile-021-physique-timeline.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "physique-timeline",
+      "label": "Physique Timeline",
+      "route": "go('physique', {\"tab\":\"timeline\"})"
+    },
+    {
+      "file": "dark-mobile-022-hub.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "hub",
+      "label": "Learn Hub",
+      "route": "go('hub')"
+    },
+    {
+      "file": "dark-mobile-023-encyclopedia.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "encyclopedia",
+      "label": "Encyclopedia",
+      "route": "go('encyclopedia')"
+    },
+    {
+      "file": "dark-mobile-024-search.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "search",
+      "label": "Search",
+      "route": "go('search')"
+    },
+    {
+      "file": "dark-mobile-025-calculators.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "calculators",
+      "label": "Calculators",
+      "route": "go('calculators')"
+    },
+    {
+      "file": "dark-mobile-026-visualizations.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "visualizations",
       "label": "Visualizations",
-      "route": "go('visualizations')",
-      "viewport": "mobile"
+      "route": "go('visualizations')"
     },
     {
-      "file": "mobile-32-onboarding.png",
-      "label": "Onboarding",
-      "route": "go('onboarding')",
-      "viewport": "mobile"
+      "file": "dark-mobile-027-assistant.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "assistant",
+      "label": "Fitness Assistant",
+      "route": "go('assistant')"
     },
     {
-      "file": "mobile-33-split-builder.png",
+      "file": "dark-mobile-028-academy.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "academy",
+      "label": "Academy",
+      "route": "go('academy')"
+    },
+    {
+      "file": "dark-mobile-029-settings-profile.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-profile",
+      "label": "Settings · Profile",
+      "route": "go('settings', {\"tab\":\"profile\"})"
+    },
+    {
+      "file": "dark-mobile-030-settings-training.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-training",
+      "label": "Settings · Training",
+      "route": "go('settings', {\"tab\":\"training\"})"
+    },
+    {
+      "file": "dark-mobile-031-settings-supplements.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-supplements",
+      "label": "Settings · Supps",
+      "route": "go('settings', {\"tab\":\"supplements\"})"
+    },
+    {
+      "file": "dark-mobile-032-settings-nutrition.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-nutrition",
+      "label": "Settings · Nutrition",
+      "route": "go('settings', {\"tab\":\"nutrition\"})"
+    },
+    {
+      "file": "dark-mobile-033-settings-appearance.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-appearance",
+      "label": "Settings · Style",
+      "route": "go('settings', {\"tab\":\"appearance\"})"
+    },
+    {
+      "file": "dark-mobile-034-settings-notifications.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-notifications",
+      "label": "Settings · Alerts",
+      "route": "go('settings', {\"tab\":\"notifications\"})"
+    },
+    {
+      "file": "dark-mobile-035-settings-data.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-data",
+      "label": "Settings · Data",
+      "route": "go('settings', {\"tab\":\"data\"})"
+    },
+    {
+      "file": "dark-mobile-036-profiles.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "profiles",
+      "label": "Profiles",
+      "route": "go('profiles')"
+    },
+    {
+      "file": "dark-mobile-037-equipment-setup.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "equipment-setup",
+      "label": "Equipment Setup",
+      "route": "go('equipment-setup')"
+    },
+    {
+      "file": "dark-mobile-038-split-builder.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "split-builder",
       "label": "Split Builder",
-      "route": "go('split-builder')",
-      "viewport": "mobile"
+      "route": "go('split-builder')"
     },
     {
-      "file": "mobile-34-photos.png",
-      "label": "Photos",
-      "route": "go('photos')",
-      "viewport": "mobile"
+      "file": "dark-mobile-039-intro-1.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-1",
+      "label": "Welcome 1/4",
+      "route": "go('onboarding',{showIntro:true})"
     },
     {
-      "file": "mobile-35-active.png",
+      "file": "dark-mobile-040-intro-2.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-2",
+      "label": "Welcome 2/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "dark-mobile-041-intro-3.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-3",
+      "label": "Welcome 3/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "dark-mobile-042-intro-4.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-4",
+      "label": "Welcome 4/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "dark-mobile-043-onboarding-1.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-1",
+      "label": "Onboarding 1/7",
+      "route": "onboarding step 1"
+    },
+    {
+      "file": "dark-mobile-044-onboarding-2.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-2",
+      "label": "Onboarding 2/7",
+      "route": "onboarding step 2"
+    },
+    {
+      "file": "dark-mobile-045-onboarding-3.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-3",
+      "label": "Onboarding 3/7",
+      "route": "onboarding step 3"
+    },
+    {
+      "file": "dark-mobile-046-onboarding-4.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-4",
+      "label": "Onboarding 4/7",
+      "route": "onboarding step 4"
+    },
+    {
+      "file": "dark-mobile-047-onboarding-5.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-5",
+      "label": "Onboarding 5/7",
+      "route": "onboarding step 5"
+    },
+    {
+      "file": "dark-mobile-048-onboarding-6.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-6",
+      "label": "Onboarding 6/7",
+      "route": "onboarding step 6"
+    },
+    {
+      "file": "dark-mobile-049-onboarding-7.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-7",
+      "label": "Onboarding 7/7",
+      "route": "onboarding step 7"
+    },
+    {
+      "file": "dark-mobile-050-active.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "active",
       "label": "Active Workout",
-      "route": "go('active')",
-      "viewport": "mobile"
+      "route": "startWorkout()"
+    },
+    {
+      "file": "light-desktop-051-dashboard.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "dashboard",
+      "label": "Dashboard",
+      "route": "go('dashboard')"
+    },
+    {
+      "file": "light-desktop-052-briefing.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "briefing",
+      "label": "Morning Briefing",
+      "route": "go('briefing')"
+    },
+    {
+      "file": "light-desktop-053-quests.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "quests",
+      "label": "Quests",
+      "route": "go('quests')"
+    },
+    {
+      "file": "light-desktop-054-workout.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "workout",
+      "label": "Workout Plan",
+      "route": "go('workout')"
+    },
+    {
+      "file": "light-desktop-055-cardio.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "cardio",
+      "label": "Cardio",
+      "route": "go('cardio')"
+    },
+    {
+      "file": "light-desktop-056-calisthenics.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "calisthenics",
+      "label": "Calisthenics",
+      "route": "go('calisthenics')"
+    },
+    {
+      "file": "light-desktop-057-progress.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "progress",
+      "label": "Progress",
+      "route": "go('progress')"
+    },
+    {
+      "file": "light-desktop-058-training-intel.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "training-intel",
+      "label": "Training Intel",
+      "route": "go('training-intel', {\"tab\":\"intel\"})"
+    },
+    {
+      "file": "light-desktop-059-training-style.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "training-style",
+      "label": "Training Style",
+      "route": "go('training-intel', {\"tab\":\"style\"})"
+    },
+    {
+      "file": "light-desktop-060-bodymap.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "bodymap",
+      "label": "Body Map",
+      "route": "go('bodymap')"
+    },
+    {
+      "file": "light-desktop-061-nutrition.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "nutrition",
+      "label": "Nutrition",
+      "route": "go('nutrition')"
+    },
+    {
+      "file": "light-desktop-062-recovery.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "recovery",
+      "label": "Recovery Check-in",
+      "route": "go('recovery', {\"tab\":\"checkin\"})"
+    },
+    {
+      "file": "light-desktop-063-recovery-debt.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "recovery-debt",
+      "label": "Recovery Debt",
+      "route": "go('recovery', {\"tab\":\"debt\"})"
+    },
+    {
+      "file": "light-desktop-064-rehab.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "rehab",
+      "label": "Rehab",
+      "route": "go('rehab')"
+    },
+    {
+      "file": "light-desktop-065-injury-risk.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "injury-risk",
+      "label": "Injury Risk",
+      "route": "go('injury-risk')"
+    },
+    {
+      "file": "light-desktop-066-body-intelligence.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "body-intelligence",
+      "label": "Body Intelligence",
+      "route": "go('body-intelligence')"
+    },
+    {
+      "file": "light-desktop-067-anatomy.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "anatomy",
+      "label": "Anatomy",
+      "route": "go('anatomy')"
+    },
+    {
+      "file": "light-desktop-068-photos.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "photos",
+      "label": "Progress Photos",
+      "route": "go('photos')"
+    },
+    {
+      "file": "light-desktop-069-physique.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "physique",
+      "label": "Physique Score",
+      "route": "go('physique', {\"tab\":\"score\"})"
+    },
+    {
+      "file": "light-desktop-070-physique-archetype.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "physique-archetype",
+      "label": "Physique Archetype",
+      "route": "go('physique', {\"tab\":\"archetype\"})"
+    },
+    {
+      "file": "light-desktop-071-physique-timeline.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "physique-timeline",
+      "label": "Physique Timeline",
+      "route": "go('physique', {\"tab\":\"timeline\"})"
+    },
+    {
+      "file": "light-desktop-072-hub.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "hub",
+      "label": "Learn Hub",
+      "route": "go('hub')"
+    },
+    {
+      "file": "light-desktop-073-encyclopedia.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "encyclopedia",
+      "label": "Encyclopedia",
+      "route": "go('encyclopedia')"
+    },
+    {
+      "file": "light-desktop-074-search.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "search",
+      "label": "Search",
+      "route": "go('search')"
+    },
+    {
+      "file": "light-desktop-075-calculators.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "calculators",
+      "label": "Calculators",
+      "route": "go('calculators')"
+    },
+    {
+      "file": "light-desktop-076-visualizations.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "visualizations",
+      "label": "Visualizations",
+      "route": "go('visualizations')"
+    },
+    {
+      "file": "light-desktop-077-assistant.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "assistant",
+      "label": "Fitness Assistant",
+      "route": "go('assistant')"
+    },
+    {
+      "file": "light-desktop-078-academy.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "academy",
+      "label": "Academy",
+      "route": "go('academy')"
+    },
+    {
+      "file": "light-desktop-079-settings-profile.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-profile",
+      "label": "Settings · Profile",
+      "route": "go('settings', {\"tab\":\"profile\"})"
+    },
+    {
+      "file": "light-desktop-080-settings-training.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-training",
+      "label": "Settings · Training",
+      "route": "go('settings', {\"tab\":\"training\"})"
+    },
+    {
+      "file": "light-desktop-081-settings-supplements.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-supplements",
+      "label": "Settings · Supps",
+      "route": "go('settings', {\"tab\":\"supplements\"})"
+    },
+    {
+      "file": "light-desktop-082-settings-nutrition.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-nutrition",
+      "label": "Settings · Nutrition",
+      "route": "go('settings', {\"tab\":\"nutrition\"})"
+    },
+    {
+      "file": "light-desktop-083-settings-appearance.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-appearance",
+      "label": "Settings · Style",
+      "route": "go('settings', {\"tab\":\"appearance\"})"
+    },
+    {
+      "file": "light-desktop-084-settings-notifications.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-notifications",
+      "label": "Settings · Alerts",
+      "route": "go('settings', {\"tab\":\"notifications\"})"
+    },
+    {
+      "file": "light-desktop-085-settings-data.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-data",
+      "label": "Settings · Data",
+      "route": "go('settings', {\"tab\":\"data\"})"
+    },
+    {
+      "file": "light-desktop-086-profiles.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "profiles",
+      "label": "Profiles",
+      "route": "go('profiles')"
+    },
+    {
+      "file": "light-desktop-087-equipment-setup.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "equipment-setup",
+      "label": "Equipment Setup",
+      "route": "go('equipment-setup')"
+    },
+    {
+      "file": "light-desktop-088-split-builder.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "split-builder",
+      "label": "Split Builder",
+      "route": "go('split-builder')"
+    },
+    {
+      "file": "light-desktop-089-intro-1.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-1",
+      "label": "Welcome 1/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "light-desktop-090-intro-2.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-2",
+      "label": "Welcome 2/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "light-desktop-091-intro-3.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-3",
+      "label": "Welcome 3/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "light-desktop-092-intro-4.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-4",
+      "label": "Welcome 4/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "light-desktop-093-onboarding-1.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-1",
+      "label": "Onboarding 1/7",
+      "route": "onboarding step 1"
+    },
+    {
+      "file": "light-desktop-094-onboarding-2.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-2",
+      "label": "Onboarding 2/7",
+      "route": "onboarding step 2"
+    },
+    {
+      "file": "light-desktop-095-onboarding-3.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-3",
+      "label": "Onboarding 3/7",
+      "route": "onboarding step 3"
+    },
+    {
+      "file": "light-desktop-096-onboarding-4.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-4",
+      "label": "Onboarding 4/7",
+      "route": "onboarding step 4"
+    },
+    {
+      "file": "light-desktop-097-onboarding-5.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-5",
+      "label": "Onboarding 5/7",
+      "route": "onboarding step 5"
+    },
+    {
+      "file": "light-desktop-098-onboarding-6.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-6",
+      "label": "Onboarding 6/7",
+      "route": "onboarding step 6"
+    },
+    {
+      "file": "light-desktop-099-onboarding-7.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-7",
+      "label": "Onboarding 7/7",
+      "route": "onboarding step 7"
+    },
+    {
+      "file": "light-desktop-100-active.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "active",
+      "label": "Active Workout",
+      "route": "startWorkout()"
+    },
+    {
+      "file": "light-mobile-051-dashboard.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "dashboard",
+      "label": "Dashboard",
+      "route": "go('dashboard')"
+    },
+    {
+      "file": "light-mobile-052-briefing.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "briefing",
+      "label": "Morning Briefing",
+      "route": "go('briefing')"
+    },
+    {
+      "file": "light-mobile-053-quests.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "quests",
+      "label": "Quests",
+      "route": "go('quests')"
+    },
+    {
+      "file": "light-mobile-054-workout.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "workout",
+      "label": "Workout Plan",
+      "route": "go('workout')"
+    },
+    {
+      "file": "light-mobile-055-cardio.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "cardio",
+      "label": "Cardio",
+      "route": "go('cardio')"
+    },
+    {
+      "file": "light-mobile-056-calisthenics.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "calisthenics",
+      "label": "Calisthenics",
+      "route": "go('calisthenics')"
+    },
+    {
+      "file": "light-mobile-057-progress.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "progress",
+      "label": "Progress",
+      "route": "go('progress')"
+    },
+    {
+      "file": "light-mobile-058-training-intel.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "training-intel",
+      "label": "Training Intel",
+      "route": "go('training-intel', {\"tab\":\"intel\"})"
+    },
+    {
+      "file": "light-mobile-059-training-style.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "training-style",
+      "label": "Training Style",
+      "route": "go('training-intel', {\"tab\":\"style\"})"
+    },
+    {
+      "file": "light-mobile-060-bodymap.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "bodymap",
+      "label": "Body Map",
+      "route": "go('bodymap')"
+    },
+    {
+      "file": "light-mobile-061-nutrition.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "nutrition",
+      "label": "Nutrition",
+      "route": "go('nutrition')"
+    },
+    {
+      "file": "light-mobile-062-recovery.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "recovery",
+      "label": "Recovery Check-in",
+      "route": "go('recovery', {\"tab\":\"checkin\"})"
+    },
+    {
+      "file": "light-mobile-063-recovery-debt.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "recovery-debt",
+      "label": "Recovery Debt",
+      "route": "go('recovery', {\"tab\":\"debt\"})"
+    },
+    {
+      "file": "light-mobile-064-rehab.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "rehab",
+      "label": "Rehab",
+      "route": "go('rehab')"
+    },
+    {
+      "file": "light-mobile-065-injury-risk.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "injury-risk",
+      "label": "Injury Risk",
+      "route": "go('injury-risk')"
+    },
+    {
+      "file": "light-mobile-066-body-intelligence.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "body-intelligence",
+      "label": "Body Intelligence",
+      "route": "go('body-intelligence')"
+    },
+    {
+      "file": "light-mobile-067-anatomy.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "anatomy",
+      "label": "Anatomy",
+      "route": "go('anatomy')"
+    },
+    {
+      "file": "light-mobile-068-photos.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "photos",
+      "label": "Progress Photos",
+      "route": "go('photos')"
+    },
+    {
+      "file": "light-mobile-069-physique.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "physique",
+      "label": "Physique Score",
+      "route": "go('physique', {\"tab\":\"score\"})"
+    },
+    {
+      "file": "light-mobile-070-physique-archetype.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "physique-archetype",
+      "label": "Physique Archetype",
+      "route": "go('physique', {\"tab\":\"archetype\"})"
+    },
+    {
+      "file": "light-mobile-071-physique-timeline.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "physique-timeline",
+      "label": "Physique Timeline",
+      "route": "go('physique', {\"tab\":\"timeline\"})"
+    },
+    {
+      "file": "light-mobile-072-hub.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "hub",
+      "label": "Learn Hub",
+      "route": "go('hub')"
+    },
+    {
+      "file": "light-mobile-073-encyclopedia.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "encyclopedia",
+      "label": "Encyclopedia",
+      "route": "go('encyclopedia')"
+    },
+    {
+      "file": "light-mobile-074-search.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "search",
+      "label": "Search",
+      "route": "go('search')"
+    },
+    {
+      "file": "light-mobile-075-calculators.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "calculators",
+      "label": "Calculators",
+      "route": "go('calculators')"
+    },
+    {
+      "file": "light-mobile-076-visualizations.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "visualizations",
+      "label": "Visualizations",
+      "route": "go('visualizations')"
+    },
+    {
+      "file": "light-mobile-077-assistant.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "assistant",
+      "label": "Fitness Assistant",
+      "route": "go('assistant')"
+    },
+    {
+      "file": "light-mobile-078-academy.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "academy",
+      "label": "Academy",
+      "route": "go('academy')"
+    },
+    {
+      "file": "light-mobile-079-settings-profile.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-profile",
+      "label": "Settings · Profile",
+      "route": "go('settings', {\"tab\":\"profile\"})"
+    },
+    {
+      "file": "light-mobile-080-settings-training.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-training",
+      "label": "Settings · Training",
+      "route": "go('settings', {\"tab\":\"training\"})"
+    },
+    {
+      "file": "light-mobile-081-settings-supplements.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-supplements",
+      "label": "Settings · Supps",
+      "route": "go('settings', {\"tab\":\"supplements\"})"
+    },
+    {
+      "file": "light-mobile-082-settings-nutrition.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-nutrition",
+      "label": "Settings · Nutrition",
+      "route": "go('settings', {\"tab\":\"nutrition\"})"
+    },
+    {
+      "file": "light-mobile-083-settings-appearance.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-appearance",
+      "label": "Settings · Style",
+      "route": "go('settings', {\"tab\":\"appearance\"})"
+    },
+    {
+      "file": "light-mobile-084-settings-notifications.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-notifications",
+      "label": "Settings · Alerts",
+      "route": "go('settings', {\"tab\":\"notifications\"})"
+    },
+    {
+      "file": "light-mobile-085-settings-data.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-data",
+      "label": "Settings · Data",
+      "route": "go('settings', {\"tab\":\"data\"})"
+    },
+    {
+      "file": "light-mobile-086-profiles.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "profiles",
+      "label": "Profiles",
+      "route": "go('profiles')"
+    },
+    {
+      "file": "light-mobile-087-equipment-setup.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "equipment-setup",
+      "label": "Equipment Setup",
+      "route": "go('equipment-setup')"
+    },
+    {
+      "file": "light-mobile-088-split-builder.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "split-builder",
+      "label": "Split Builder",
+      "route": "go('split-builder')"
+    },
+    {
+      "file": "light-mobile-089-intro-1.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-1",
+      "label": "Welcome 1/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "light-mobile-090-intro-2.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-2",
+      "label": "Welcome 2/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "light-mobile-091-intro-3.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-3",
+      "label": "Welcome 3/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "light-mobile-092-intro-4.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-4",
+      "label": "Welcome 4/4",
+      "route": "go('onboarding',{showIntro:true})"
+    },
+    {
+      "file": "light-mobile-093-onboarding-1.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-1",
+      "label": "Onboarding 1/7",
+      "route": "onboarding step 1"
+    },
+    {
+      "file": "light-mobile-094-onboarding-2.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-2",
+      "label": "Onboarding 2/7",
+      "route": "onboarding step 2"
+    },
+    {
+      "file": "light-mobile-095-onboarding-3.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-3",
+      "label": "Onboarding 3/7",
+      "route": "onboarding step 3"
+    },
+    {
+      "file": "light-mobile-096-onboarding-4.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-4",
+      "label": "Onboarding 4/7",
+      "route": "onboarding step 4"
+    },
+    {
+      "file": "light-mobile-097-onboarding-5.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-5",
+      "label": "Onboarding 5/7",
+      "route": "onboarding step 5"
+    },
+    {
+      "file": "light-mobile-098-onboarding-6.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-6",
+      "label": "Onboarding 6/7",
+      "route": "onboarding step 6"
+    },
+    {
+      "file": "light-mobile-099-onboarding-7.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-7",
+      "label": "Onboarding 7/7",
+      "route": "onboarding step 7"
+    },
+    {
+      "file": "light-mobile-100-active.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "active",
+      "label": "Active Workout",
+      "route": "startWorkout()"
     }
   ]
 }

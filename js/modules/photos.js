@@ -103,7 +103,7 @@ reg('photos', function() {
     try { items = await PhotoStore.all(); } catch(e) {}
     if (!items.length) {
       grid.innerHTML = '<div style="grid-column:1/-1">' +
-        emptyState('📸', 'No photos yet', 'The scale lies some weeks. Photos don\'t. One a week, same light, same pose.', null, null) + '</div>';
+        emptyState(icon('camera', 30), 'No photos yet', 'The scale lies some weeks. Photos don\'t. One a week, same light, same pose.', null, null) + '</div>';
       return;
     }
     grid.innerHTML = items.map(function(p) {
@@ -121,7 +121,7 @@ reg('photos', function() {
 
   return moduleTopbar('Progress Photos', 'Private · stays on this phone') +
     '<div style="padding:0 16px 8px">' +
-    '<label class="btn btn-primary" style="display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer">📸 Add today\'s photo' +
+    '<label class="btn btn-primary" style="display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer">' + icon('camera', 18, '#fff') + ' Add today\'s photo' +
     '<input type="file" accept="image/*" capture="environment" onchange="addProgressPhoto(this)" style="display:none"></label>' +
     '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-top:8px">Same spot, same light, once a week — that\'s where change shows.</div>' +
     '</div>' +

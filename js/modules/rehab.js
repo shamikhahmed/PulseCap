@@ -288,16 +288,16 @@ reg('rehab', function() {
             var lbl = typeof InjuriesDB !== 'undefined' ? (InjuriesDB.severities.find(function(x){return x.id===s;})||{}).label : s;
             return '<button type="button" onclick="setInjurySeverity(' + item.idx + ',' + s + ')" style="flex:1;padding:6px;border-radius:8px;font-size:11px;font-weight:600;border:1px solid ' + (sev===s?'var(--c1)':'var(--border)') + ';background:' + (sev===s?'rgba(var(--c1-rgb),0.15)':'transparent') + ';color:var(--txt);cursor:pointer;touch-action:manipulation">' + lbl + '</button>';
           }).join('') + '</div>' +
-          (phaseData ? '<div style="font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:6px">' + phaseData.do.slice(0, 2).map(function(d) { return '✅ ' + d; }).join('<br>') + '</div>' +
-            '<div style="font-size:12px;color:#ff453a;line-height:1.6;margin-bottom:10px">' + phaseData.avoid.slice(0, 2).map(function(d) { return '❌ ' + d; }).join('<br>') + '</div>' : '') +
+          (phaseData ? '<div style="font-size:12px;color:var(--txt2);line-height:1.7;margin-bottom:6px">' + phaseData.do.slice(0, 2).map(function(d) { return icon('check',12,'#30d158') + ' ' + esc(d); }).join('<br>') + '</div>' +
+            '<div style="font-size:12px;color:#ff453a;line-height:1.7;margin-bottom:10px">' + phaseData.avoid.slice(0, 2).map(function(d) { return icon('alert',12,'#ff453a') + ' ' + esc(d); }).join('<br>') + '</div>' : '') +
           '<div  class="flex-gap-8">' +
-          '<button type="button" onclick="showInjuryProtocol(\'' + injId + '\')" style="flex:1;padding:10px;border-radius:12px;background:var(--bg4);border:1px solid var(--border);color:var(--txt);font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation">📋 Full Protocol</button>' +
-          '<button type="button" onclick="markInjuryRecovered(\'' + esc(inj.bodyPart || '') + '\')" style="padding:10px 14px;border-radius:12px;background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.3);color:#30d158;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation">✅ Recovered</button>' +
+          '<button type="button" onclick="showInjuryProtocol(\'' + injId + '\')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;background:var(--bg4);border:1px solid var(--border);color:var(--txt);font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation">' + icon('book',14) + ' Full Protocol</button>' +
+          '<button type="button" onclick="markInjuryRecovered(\'' + esc(inj.bodyPart || '') + '\')" style="display:flex;align-items:center;gap:6px;padding:10px 14px;border-radius:12px;background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.3);color:#30d158;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation">' + icon('check',14,'#30d158') + ' Recovered</button>' +
           '</div></div>';
       }).join('') + '</div>';
   } else {
     activeSection = '<div style="margin:0 16px 14px;padding:16px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;text-align:center">' +
-      '<div style="font-size:32px;margin-bottom:8px">🟢</div>' +
+      '<div style="width:48px;height:48px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;background:rgba(48,209,88,0.12);color:#30d158">'+icon('check',26,'#30d158')+'</div>' +
       '<div  class="row-title-14">No active injuries</div>' +
       '<div style="font-size:12px;color:var(--txt3);margin-top:4px">Your body is ready to train</div></div>';
   }
@@ -308,8 +308,9 @@ reg('rehab', function() {
     sh('Injury Library') +
     '<div  class="pad-x-16">' +
     Object.values(INJURY_DB).map(function(inj) {
+      var sevColor = inj.severity === 'mild' ? '#30d158' : inj.severity === 'moderate' ? '#ff9f0a' : '#ff453a';
       return '<div onclick="showInjuryProtocol(\'' + inj.id + '\')" style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
-        '<div style="font-size:24px;flex-shrink:0">' + inj.icon + '</div>' +
+        '<div style="width:34px;height:34px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:' + sevColor + '1f;color:' + sevColor + '">' + icon('bandage',18,sevColor) + '</div>' +
         '<div  class="flex-1">' +
         '<div  class="row-strong">' + inj.name + '</div>' +
         '<div  class="muted-12">Return: ' + inj.return_to_gym_weeks.typical + ' weeks typical</div>' +

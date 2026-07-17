@@ -128,9 +128,11 @@ reg('anatomy', function() {
     '</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px">' +
     filtered.map(function(m) {
+      var REGION_COLORS = { shoulder:'#0e7bff', back:'#00f2ff', chest:'#73ffcf', arms:'#ffe04a', core:'#ff9f0a', hips:'#ff4560', legs:'#30d158' };
+      var rc = REGION_COLORS[m.region] || 'var(--c1)';
       return '<div onclick="showMuscleDetail(\''+m.id+'\')" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;cursor:pointer;touch-action:manipulation;position:relative;overflow:hidden">' +
         '<div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad)"></div>' +
-        '<div style="font-size:20px;margin-bottom:6px">'+m.icon+'</div>' +
+        '<div style="width:12px;height:12px;border-radius:50%;background:'+rc+';margin-bottom:8px;box-shadow:0 0 10px '+rc+'66"></div>' +
         '<div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:2px">'+m.name+'</div>' +
         '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em">'+m.region+'</div>' +
         '<div style="margin-top:8px;font-size:11px;color:var(--txt3);line-height:1.4">'+m.function.slice(0,60)+'...</div>' +
@@ -142,7 +144,7 @@ reg('anatomy', function() {
 window.showMuscleDetail = function(id) {
   var m = MUSCLE_DB[id];
   if (!m) return;
-  modal('💪 '+m.name,
+  modal(m.name,
     '<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">'+m.region+' · '+m.group+'</div>' +
     '<div style="font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:12px">'+m.function+'</div>' +
     '<div style="background:var(--bg4);border-radius:12px;padding:12px;margin-bottom:10px">' +

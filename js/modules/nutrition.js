@@ -71,7 +71,7 @@ function _macroBar(name, current, target, color, cls) {
 
 function _waterSection(current, target) {
   const drops = Array.from({length: target}, (_, i) =>
-    '<button type="button" class="water-drop'+(i<current?' filled':'')+'" onclick="logWater('+(i+1)+')">💧</button>'
+    '<button type="button" class="water-drop'+(i<current?' filled':'')+'" aria-label="Glass '+(i+1)+'" onclick="logWater('+(i+1)+')"></button>'
   ).join('');
   return sh('Water Intake', current+'/'+target+' glasses') +
     '<div class="water-grid">'+drops+'</div>' +
@@ -83,19 +83,19 @@ function _dueSuppsSection(due) {
   return sh('Due Now') +
     due.map(s =>
       '<div class="supp-card due">' +
-      '<div class="supp-icon">💊</div>' +
+      '<div class="supp-icon">'+icon('pill',22)+'</div>' +
       '<div class="supp-info">' +
       '<div class="supp-name">'+esc(s.name)+'</div>' +
       '<div class="supp-timing">'+esc(s.timing)+' · '+esc(s.dose||'')+'</div>' +
       '</div>' +
-      '<button type="button" class="supp-mark" onclick="SupplementEngine.markTaken(\''+esc(s.id)+'\');go(\'nutrition\')">Done ✓</button>' +
+      '<button type="button" class="supp-mark" onclick="SupplementEngine.markTaken(\''+esc(s.id)+'\');go(\'nutrition\')">Done</button>' +
       '</div>'
     ).join('');
 }
 
 function _mySuppsSection(userSupps, logs) {
   if (!userSupps.length) return sh('My Stack') +
-    emptyState('💊','No supplements','Add your stack in the onboarding or below','+ Add Supplement','showAddSuppModal()');
+    emptyState(icon('pill',30),'No supplements','Add your stack in the onboarding or below','+ Add Supplement','showAddSuppModal()');
 
   return sh('My Stack', '+ Add', 'showAddSuppModal()') +
     userSupps.map(s => {
@@ -105,12 +105,12 @@ function _mySuppsSection(userSupps, logs) {
       const dbEntry = SupplementDB.find(d=>d.id===s.id)||{};
       const cafWarn = dbEntry.caffeine ? SupplementEngine.checkCaffeineWarning(dbEntry,22) : null;
       return '<div class="supp-card'+(taken?' taken':'')+'">' +
-        '<div class="supp-icon">'+(taken?'✅':'💊')+'</div>' +
+        '<div class="supp-icon" style="color:'+(taken?'#30d158':'var(--c1)')+'">'+icon(taken?'check':'pill',22)+'</div>' +
         '<div class="supp-info">' +
         '<div class="supp-name">'+esc(s.name)+'</div>' +
         '<div class="supp-timing">'+esc(s.timing)+' · '+esc(s.dose||dbEntry.dose||'')+'</div>' +
         (taken&&lastTime?'<div class="supp-taken">Taken at '+lastTime+'</div>':'') +
-        (cafWarn?'<div class="supp-warn">⚠️ '+esc(cafWarn)+'</div>':'') +
+        (cafWarn?'<div class="supp-warn" style="display:flex;align-items:center;gap:4px">'+icon('alert',13,'#f5c842')+esc(cafWarn)+'</div>':'') +
         '</div>' +
         (!taken?'<button type="button" class="supp-mark" onclick="SupplementEngine.markTaken(\''+esc(s.id)+'\');go(\'nutrition\')">Done</button>':'') +
         '</div>';
@@ -126,7 +126,7 @@ function _stackSuggestions(user) {
   return sh('Recommended for Your Goal') +
     suggestions.slice(0,4).map(s =>
       '<div class="supp-card">' +
-      '<div class="supp-icon">💡</div>' +
+      '<div class="supp-icon" style="color:var(--c5)">'+icon('sparkles',22)+'</div>' +
       '<div class="supp-info">' +
       '<div class="supp-name">'+esc(s.name)+'</div>' +
       '<div class="supp-timing">'+esc(s.dose)+' · '+esc(s.timing)+'</div>' +
@@ -162,17 +162,17 @@ var MEAL_PRESETS = {
 
 function _mealPresets() {
   var chips = [
-    { key: 'breakfast', label: 'Breakfast', icon: '🌅' },
-    { key: 'lunch', label: 'Lunch', icon: '🥗' },
-    { key: 'dinner', label: 'Dinner', icon: '🍽️' },
-    { key: 'snacks', label: 'Snacks', icon: '🍎' }
+    { key: 'breakfast', label: 'Breakfast', icon: 'sun' },
+    { key: 'lunch', label: 'Lunch', icon: 'leaf' },
+    { key: 'dinner', label: 'Dinner', icon: 'moon' },
+    { key: 'snacks', label: 'Snacks', icon: 'apple' }
   ];
   return sh('Quick Add') +
     '<div  class="pad-x-16-b">' +
     '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">' +
     chips.map(function(c) {
-      return '<button type="button" onclick="showMealPresets(\'' + c.key + '\')" style="flex:1;min-width:72px;padding:10px 8px;background:var(--bg4);border:1px solid var(--border);border-radius:12px;color:var(--txt);font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">' +
-        c.icon + ' ' + esc(c.label) + '</button>';
+      return '<button type="button" onclick="showMealPresets(\'' + c.key + '\')" style="flex:1;min-width:72px;padding:10px 8px;background:var(--bg4);border:1px solid var(--border);border-radius:12px;color:var(--txt);font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center;gap:6px">' +
+        '<span style="color:var(--c1);display:inline-flex">' + icon(c.icon, 16) + '</span>' + esc(c.label) + '</button>';
     }).join('') +
     '</div>' +
     '<div  class="muted-11">Tap a meal slot, then pick a preset — or use + Log for custom entries.</div>' +
@@ -208,7 +208,7 @@ function _nutritionStreak(meals) {
   }
   if (streak < 2) return '';
   return '<div style="margin:0 16px 14px;padding:10px 14px;background:rgba(var(--c5-rgb,255,152,0),0.1);border:1px solid rgba(var(--c5-rgb,255,152,0),0.2);border-radius:12px;display:flex;align-items:center;gap:10px">' +
-    '<div class="fs-20">🔥</div>' +
+    '<div style="color:var(--c5);display:inline-flex">'+icon('flame',20)+'</div>' +
     '<div><div  class="row-title">'+streak+' day nutrition streak</div>' +
     '<div  class="muted-11">Keep logging meals daily</div></div>' +
     '</div>';

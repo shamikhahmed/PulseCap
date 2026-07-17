@@ -34,6 +34,7 @@ reg('profiles', function() {
 
     '<div  class="pad-x-16-b">' +
     '<button type="button" class="btn btn-secondary mb-10"  onclick="showCreateProfile()">+ New Profile</button>' +
+    '<button type="button" class="btn btn-secondary mb-10" onclick="loadSamplePersonas()">Load sample athletes</button>' +
     (activeId === 'demo' ? '' :
       '<button type="button" class="btn" style="background:rgba(123,95,255,0.1);border:1px solid rgba(123,95,255,0.25);color:#7b5fff;margin-bottom:10px" onclick="openDemoProfile()">🤖 Open demo profile</button>' +
       '<a href="?demo=1" class="btn btn-secondary" style="display:block;text-align:center;text-decoration:none;margin-bottom:0">Fresh demo snapshot ↗</a>') +
@@ -68,6 +69,12 @@ window.confirmDeleteProfile = function(id) {
   S.deleteProfile(id);
   closeModal();
   toast('Profile deleted', 'ok');
+  go('profiles');
+};
+
+window.loadSamplePersonas = function() {
+  var ids = S.seedPersonas(false, false);
+  toast(ids.length + ' sample athletes ready — tap one to switch', 'ok', 3500);
   go('profiles');
 };
 

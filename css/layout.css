@@ -536,6 +536,9 @@ input[type=range] {
     box-shadow: none;
   }
   #view { padding-bottom: 24px; }
+  /* Stop screens reading as a stretched phone: cap the content column and
+     centre it in the main pane so long rows stay readable on wide monitors. */
+  #view > .screen { max-width: 1120px; margin-inline: auto; width: 100%; }
 }
 
 @media (min-width: 768px) and (max-width: 899px) {

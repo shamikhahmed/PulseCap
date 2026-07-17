@@ -263,33 +263,33 @@ function _tabNutrition(u) {
 
 function _tabAppearance(u) {
   const coaches = [
-    {id:'alex',e:'🔥',n:'Alex — Drill Sergeant'},
-    {id:'maya',e:'🧪',n:'Maya — Sports Scientist'},
-    {id:'sam',e:'⚡',n:'Sam — The Motivator'},
-    {id:'zen',e:'🧘',n:'Zen — Mindful Coach'},
-    {id:'rex',e:'💪',n:'Rex — The Powerlifter'}
+    {id:'alex',e:'flame',n:'Alex — Drill Sergeant'},
+    {id:'maya',e:'chart',n:'Maya — Sports Scientist'},
+    {id:'sam',e:'sparkles',n:'Sam — The Motivator'},
+    {id:'zen',e:'leaf',n:'Zen — Mindful Coach'},
+    {id:'rex',e:'dumbbell',n:'Rex — The Powerlifter'}
   ];
   const pinned = u.theme || u.mode;               /* null = following device */
   const cur = pinned ? (pinned === 'light' ? 'light' : 'dark') : 'auto';
   const curCoach = u.coachPersonality || 'maya';
 
-  const seg = function(id, emoji, label, onclick) {
+  const seg = function(id, ic, label, onclick) {
     const on = cur === id;
     return '<button type="button" onclick="' + onclick + '" ' +
-      'style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;border-radius:12px;cursor:pointer;touch-action:manipulation;' +
+      'style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border-radius:12px;cursor:pointer;touch-action:manipulation;' +
       'border:1.5px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';' +
-      'background:' + (on ? 'rgba(var(--c1-rgb),0.10)' : 'var(--bg3)') + '">' +
-      '<span class="fs-20">' + emoji + '</span>' +
-      '<span style="font-size:12px;font-weight:700;color:' + (on ? 'var(--c1)' : 'var(--txt2)') + '">' + label + '</span>' +
+      'background:' + (on ? 'rgba(var(--c1-rgb),0.10)' : 'var(--bg3)') + ';color:' + (on ? 'var(--c1)' : 'var(--txt2)') + '">' +
+      '<span style="display:inline-flex">' + icon(ic, 20) + '</span>' +
+      '<span style="font-size:12px;font-weight:700">' + label + '</span>' +
       '</button>';
   };
 
   return '<div  class="pad-16">' +
     _sectionTitle('Appearance') +
     '<div style="display:flex;gap:8px;margin-bottom:8px">' +
-    seg('auto', '📱', 'Auto', 'clearThemePref();go(\'settings\',{tab:\'appearance\'})') +
-    seg('dark', '🌙', 'Dark', 'applyTheme(\'dark\');go(\'settings\',{tab:\'appearance\'})') +
-    seg('light', '☀️', 'Light', 'applyTheme(\'light\');go(\'settings\',{tab:\'appearance\'})') +
+    seg('auto', 'refresh', 'Auto', 'clearThemePref();go(\'settings\',{tab:\'appearance\'})') +
+    seg('dark', 'moon', 'Dark', 'applyTheme(\'dark\');go(\'settings\',{tab:\'appearance\'})') +
+    seg('light', 'sun', 'Light', 'applyTheme(\'light\');go(\'settings\',{tab:\'appearance\'})') +
     '</div>' +
     '<div style="font-size:12px;color:var(--txt3);margin:0 0 16px">' + (cur==='auto' ? 'Follows your phone\'s setting.' : 'Pinned — ignores your phone\'s setting.') + '</div>' +
 
@@ -298,7 +298,7 @@ function _tabAppearance(u) {
       '<div onclick="_setSetting(\'user.coachPersonality\',\''+c.id+'\');go(\'settings\',{tab:\'appearance\'})" ' +
       'style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;margin-bottom:8px;cursor:pointer;touch-action:manipulation;' +
       'background:var(--bg3);border:1.5px solid ' + (curCoach===c.id ? 'var(--c1)' : 'var(--border)') + '">' +
-      '<div style="width:38px;height:38px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+c.e+'</div>' +
+      '<div style="width:38px;height:38px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;color:var(--c1);flex-shrink:0">'+icon(c.e,18)+'</div>' +
       '<div style="flex:1;font-size:14px;font-weight:600;color:var(--txt)">'+esc(c.n)+'</div>' +
       '<div style="width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;' +
       'border:2px solid ' + (curCoach===c.id ? 'var(--c1)' : 'var(--border2)') + ';background:' + (curCoach===c.id ? 'var(--c1)' : 'transparent') + '">' +
@@ -309,21 +309,20 @@ function _tabAppearance(u) {
     _sectionTitle('Coach Tone') +
     (function() {
       const curTone = S.g('settings.coachTone') || 'motivational';
-      const tones = [{v:'motivational',l:'🔥 Motivational'},{v:'scientific',l:'🧪 Scientific'},{v:'hardcore',l:'💪 Hardcore'}];
+      const tones = [{v:'motivational',ic:'flame',l:'Motivational'},{v:'scientific',ic:'chart',l:'Scientific'},{v:'hardcore',ic:'dumbbell',l:'Hardcore'}];
       const examples = {
-        motivational:'"🔥 You\'re crushing it — shoulders are 92% recovered!"',
+        motivational:'"You\'re crushing it — shoulders are 92% recovered!"',
         scientific:'"Deltoid recovery index: 92%. Optimal training window active."',
         hardcore:'"Shoulders are ready. No excuses. Get in there."'
       };
       return '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">' +
         tones.map(t => {
           const on = curTone === t.v;
-          const parts = t.l.split(' ');
           return '<button type="button" onclick="_setSetting(\'settings.coachTone\',\''+t.v+'\');go(\'settings\',{tab:\'appearance\'})" ' +
-            'style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:11px 4px;border-radius:12px;cursor:pointer;touch-action:manipulation;' +
+            'style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:11px 4px;border-radius:12px;cursor:pointer;touch-action:manipulation;color:'+(on?'var(--c1)':'var(--txt2)')+';' +
             'border:1.5px solid '+(on?'var(--c1)':'var(--border)')+';background:'+(on?'rgba(var(--c1-rgb),0.10)':'var(--bg3)')+'">' +
-            '<span class="fs-18">'+parts[0]+'</span>' +
-            '<span style="font-size:11px;font-weight:700;color:'+(on?'var(--c1)':'var(--txt2)')+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">'+parts.slice(1).join(' ')+'</span>' +
+            '<span style="display:inline-flex">'+icon(t.ic,18)+'</span>' +
+            '<span style="font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">'+t.l+'</span>' +
             '</button>';
         }).join('') +
         '</div>' +

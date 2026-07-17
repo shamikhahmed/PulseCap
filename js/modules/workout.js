@@ -758,7 +758,7 @@ reg('workout', function() {
   const suggestion = CoachEngine.insights()[0];
 
   const warmupItems = (splitDay.warmup || []).map(w =>
-    '<div class="warmup-item"><span class="warmup-item-icon">🔥</span>'+esc(w)+'</div>'
+    '<div class="warmup-item"><span class="warmup-item-icon" style="color:var(--c5);display:inline-flex">'+icon('flame',14)+'</span>'+esc(w)+'</div>'
   ).join('');
 
   const swapMap = {};
@@ -771,20 +771,20 @@ reg('workout', function() {
     const needsSpot = GUIDANCE.needsSpotter(name);
     const swap = swapMap[name];
     return '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">' +
-      '<div style="font-size:24px;width:36px;text-align:center">'+(ex?ex.em:'💪')+'</div>' +
+      '<div style="width:38px;height:38px;border-radius:11px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(var(--c1-rgb),0.12);color:var(--c1)">'+icon('dumbbell',18)+'</div>' +
       '<div  class="flex-1">' +
       '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
       '<div  class="row-title-14">'+esc(name)+'</div>' +
       (swap ? '<span style="font-size:10px;font-weight:700;color:var(--c5);background:rgba(255,159,10,0.12);border-radius:4px;padding:2px 6px">↔ '+esc(swap.original)+'</span>' : '') +
       (diff ? '<span style="font-size:10px;font-weight:700;color:'+diff.c+';text-transform:uppercase;letter-spacing:0.06em">'+diff.l+'</span>' : '') +
-      (needsSpot ? '<span style="font-size:10px;color:#ff453a;font-weight:700">⚠️ SPOTTER</span>' : '') +
+      (needsSpot ? '<span style="font-size:10px;color:#ff453a;font-weight:700;display:inline-flex;align-items:center;gap:3px">'+icon('alert',11,'#ff453a')+'SPOTTER</span>' : '') +
       '</div>' +
       (ex?'<div  class="muted-12 mt-2">'+esc(ex.pri)+(ex.sec?', '+ex.sec:'')+'</div>':'') +
       (prev?'<div style="font-size:12px;color:var(--c1);margin-top:2px">'+esc(prev)+'</div>':'') +
       '</div>' +
-      '<button type="button" onclick="showExerciseDetail(\''+esc(name)+'\')" ' +
-      'style="width:32px;height:32px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);' +
-      'font-size:14px;cursor:pointer;touch-action:manipulation;flex-shrink:0">ℹ️</button>' +
+      '<button type="button" onclick="showExerciseDetail(\''+esc(name)+'\')" aria-label="Exercise details" ' +
+      'style="width:32px;height:32px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);' +
+      'display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0">'+icon('book',15)+'</button>' +
       '</div>';
   }).join('');
 
@@ -811,7 +811,7 @@ reg('workout', function() {
       const injSwaps = (splitDay._swaps || []).filter(function(s){ return s.injury; });
       if (!injSwaps.length) return '';
       const parts = injSwaps.map(function(s){ return s.injury; }).filter(function(v,i,a){ return a.indexOf(v)===i; });
-      return '<div onclick="go(\'rehab\')" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,159,10,0.12);border:1px solid rgba(255,159,10,0.3);border-radius:10px;padding:6px 12px;margin-bottom:14px;font-size:12px;font-weight:700;color:var(--c5);cursor:pointer;touch-action:manipulation">🩹 Modified for ' + esc(parts.join(', ')) + ' · Rehab →</div>';
+      return '<div onclick="go(\'rehab\')" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,159,10,0.12);border:1px solid rgba(255,159,10,0.3);border-radius:10px;padding:6px 12px;margin-bottom:14px;font-size:12px;font-weight:700;color:var(--c5);cursor:pointer;touch-action:manipulation">' + icon('bandage',13) + ' Modified for ' + esc(parts.join(', ')) + ' · Rehab →</div>';
     })() +
     exPreviews + '</div>' +
 

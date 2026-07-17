@@ -304,10 +304,11 @@ function _physiqueScoreBody() {
   const lagging = GrowthSimulator.laggingMuscles();
   const weak = PhysiqueEngine.weakestArea(report);
 
-  function scoreCard(label, data, emoji) {
-    if (!data) return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center"><div style="font-size:20px;margin-bottom:6px">' + emoji + '</div><div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">' + label + '</div><div  class="muted-13">No data yet</div></div>';
+  function scoreCard(label, data, ic) {
+    const glyph = '<div style="color:var(--c1);display:flex;justify-content:center;margin-bottom:6px">' + icon(ic, 22) + '</div>';
+    if (!data) return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center">' + glyph + '<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">' + label + '</div><div  class="muted-13">No data yet</div></div>';
     return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center">' +
-      '<div style="font-size:20px;margin-bottom:4px">' + emoji + '</div>' +
+      glyph +
       '<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">' + label + '</div>' +
       '<div style="font-size:28px;font-weight:900;color:' + data.color + '">' + data.score + '</div>' +
       '<div style="font-size:11px;color:' + data.color + ';font-weight:600;margin-top:2px">' + esc(data.grade) + '</div>' +
@@ -353,7 +354,7 @@ function _physiqueScoreBody() {
     return '<svg width="240" height="240" viewBox="0 0 240 240" style="display:block;margin:0 auto">' + gridSVG + scorePolygon + labels + dots + '</svg>';
   }
 
-  const noDataMsg = !m ? '<div style="margin:0 16px 14px;background:rgba(255,159,10,0.08);border:1px solid rgba(255,159,10,0.2);border-radius:14px;padding:14px;font-size:13px;color:var(--txt2);line-height:1.6">📊 Add body measurements in <button type="button" onclick="go(\'bodymap\')" style="background:none;border:none;color:var(--c1);font-weight:700;cursor:pointer;font-size:13px;padding:0">Body tab</button> to unlock physique scoring.</div>' : '';
+  const noDataMsg = !m ? '<div style="margin:0 16px 14px;background:rgba(255,159,10,0.08);border:1px solid rgba(255,159,10,0.2);border-radius:14px;padding:14px;font-size:13px;color:var(--txt2);line-height:1.6">Add body measurements in <button type="button" onclick="go(\'bodymap\')" style="background:none;border:none;color:var(--c1);font-weight:700;cursor:pointer;font-size:13px;padding:0">Body tab</button> to unlock physique scoring.</div>' : '';
 
   return noDataMsg +
 
@@ -362,13 +363,13 @@ function _physiqueScoreBody() {
       '<div style="font-size:72px;font-weight:900;color:' + aesthetic.color + ';line-height:1;letter-spacing:-3px">' + aesthetic.score + '</div>' +
       '<div style="font-size:16px;font-weight:700;color:' + aesthetic.color + ';margin-top:4px">' + esc(aesthetic.grade) + '</div>' +
       radarChart() +
-      '</div>' : '<div style="padding:20px 16px;text-align:center"><div style="font-size:48px;margin-bottom:10px">📊</div><div style="font-size:15px;color:var(--txt2)">Add measurements to see scores</div></div>') +
+      '</div>' : '<div style="padding:20px 16px;text-align:center"><div style="color:var(--txt3);display:flex;justify-content:center;margin-bottom:10px">'+icon('chart',40)+'</div><div style="font-size:15px;color:var(--txt2)">Add measurements to see scores</div></div>') +
 
     '<div style="margin:0 16px 14px;display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
-    scoreCard('V-Taper', vTaper, '📐') +
-    scoreCard('Symmetry', symmetry, '⚖️') +
-    scoreCard('Muscularity', muscularity, '💪') +
-    scoreCard('Conditioning', conditioning, '🏃') +
+    scoreCard('V-Taper', vTaper, 'target') +
+    scoreCard('Symmetry', symmetry, 'scale') +
+    scoreCard('Muscularity', muscularity, 'dumbbell') +
+    scoreCard('Conditioning', conditioning, 'run') +
     '</div>' +
     '<div  class="mx-card">' +
     scoreCard('Athleticism', athleticism, '⚡') +
@@ -381,7 +382,7 @@ function _physiqueScoreBody() {
 
     (weak ? '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:16px;padding:14px">' +
       '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Priority Focus</div>' +
-      '<div style="font-size:14px;font-weight:700;color:var(--c1);margin-bottom:4px">🎯 ' + esc(weak.name) + ' needs most attention</div>' +
+      '<div style="font-size:14px;font-weight:700;color:var(--c1);margin-bottom:4px;display:flex;align-items:center;gap:6px">' + icon('target',15) + esc(weak.name) + ' needs most attention</div>' +
       '<div  class="body-12">Score: ' + weak.data.score + '/100 · ' + esc(weak.data.grade) + '</div>' +
       '</div>' : '') +
 
