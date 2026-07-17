@@ -70,7 +70,13 @@ for (const viewport of ['mobile', 'desktop']) {
           }
         }, id);
         expect(ok, `go('${id}') should not throw`).toBe(true);
-        await page.waitForTimeout(500);
+        await page.waitForFunction(() => {
+          const scr = document.querySelector('#view .screen');
+          if (!scr) return false;
+          const t = (scr.textContent || '').trim();
+          return t !== 'Loading…' && t !== 'Loading...';
+        }, undefined, { timeout: 15000 });
+        await page.waitForTimeout(350);
         const file = `${viewport}-${String(i + 1).padStart(2, '0')}-${id}.png`;
         await page.screenshot({ path: join(GALLERY_DIR, file), fullPage: false });
         shots.push({ file, label: id.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()), route: `go('${id}')`, viewport });

@@ -2,11 +2,11 @@
 /* ── PulseCap v4 — Coach Screen ── */
 
 const COACH_META = {
-  alex: { name:'Alex', emoji:'🔥', title:'Drill Sergeant', color:'#ff4444' },
-  maya: { name:'Maya', emoji:'🧪', title:'Sports Scientist', color:'var(--c1)' },
-  sam:  { name:'Sam',  emoji:'⚡', title:'The Motivator',   color:'#f5c842' },
-  zen:  { name:'Zen',  emoji:'🧘', title:'Mindful Coach',   color:'#10B981' },
-  rex:  { name:'Rex',  emoji:'💪', title:'The Powerlifter', color:'var(--c2)' }
+  alex: { name:'Alex', ic:'flame', title:'Drill Sergeant', color:'#ff4444' },
+  maya: { name:'Maya', ic:'dna', title:'Sports Scientist', color:'var(--c1)' },
+  sam:  { name:'Sam',  ic:'sparkles', title:'The Motivator',   color:'#f5c842' },
+  zen:  { name:'Zen',  ic:'leaf', title:'Mindful Coach',   color:'#10B981' },
+  rex:  { name:'Rex',  ic:'dumbbell', title:'The Powerlifter', color:'var(--c2)' }
 };
 
 reg('briefing', function() {
@@ -33,7 +33,7 @@ reg('briefing', function() {
 
   const injuryAlert = injuries.length ?
     '<div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);border-radius:14px;padding:14px;margin:0 16px 14px;display:flex;gap:12px">' +
-    '<span style="font-size:20px;flex-shrink:0">⚠️</span>' +
+    '<span style="flex-shrink:0;color:#ff453a">' + icon('alert', 20) + '</span>' +
     '<div><div style="font-size:13px;font-weight:700;color:#ff453a;margin-bottom:4px">'+injuries.length+' Active Injur'+(injuries.length>1?'ies':'y')+'</div>' +
     '<div style="font-size:12px;color:var(--txt2);line-height:1.5">Some exercises have been flagged. Check coach screen for modifications.</div>' +
     '<button type="button" onclick="go(\'settings\',{tab:\'profile\'})" style="margin-top:8px;font-size:12px;color:var(--c1);font-weight:600;background:none;border:none;cursor:pointer;touch-action:manipulation">Manage injuries →</button>' +
@@ -48,20 +48,20 @@ reg('briefing', function() {
     'text-transform:uppercase;letter-spacing:0.06em;background:rgba(var(--c1-rgb),0.12);color:var(--c1);margin-bottom:10px">'+rl.l+'</div>' +
     '<div style="font-size:14px;color:var(--txt2);line-height:1.6;max-width:300px;margin:0 auto">'+esc(coachMsg)+'</div>' +
     '<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px">' +
-    '<div style="font-size:22px">'+cm.emoji+'</div>' +
+    '<div style="display:flex">' + iconTile(cm.ic || 'sparkles', 'c1', 28) + '</div>' +
     '<div style="font-size:13px;color:var(--txt3)"><strong style="color:var(--txt)">'+esc(cm.name)+'</strong> · '+esc(cm.title)+'</div>' +
     '</div></div>' +
 
     sh('Today\'s Plan') +
     '<div class="card card-grad-border" style="margin:0 16px 14px">' +
     '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">' +
-    '<div style="font-size:28px">🏋️</div>' +
+    '<div style="display:flex">' + iconTile('dumbbell', 'c1', 36) + '</div>' +
     '<div><div style="font-size:16px;font-weight:800;color:var(--txt)">'+esc(splitDay.n||'Rest Day')+'</div>' +
     '<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+esc(prettyMuscles(splitDay.muscles))+'</div></div>' +
     '</div>' +
     '<div style="display:flex;gap:10px">' +
     '<button type="button" class="btn btn-primary" style="flex:1" onclick="startWorkout&&startWorkout()">▶ Start Workout</button>' +
-    '<button type="button" class="btn btn-secondary" style="flex:1" onclick="go(\'coach\')">📋 Full Plan</button>' +
+    '<button type="button" class="btn btn-secondary" style="flex:1" onclick="go(\'coach\')">Full Plan</button>' +
     '</div></div>' +
 
     injuryAlert +
@@ -75,15 +75,15 @@ reg('briefing', function() {
     '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 16px 14px">' +
     '<div style="background:var(--bg3);border-radius:14px;padding:12px;text-align:center;border:1px solid var(--border)">' +
     '<div style="font-size:22px;font-weight:800;color:var(--c1)">'+streak+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">🔥 Streak</div>' +
+    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">Streak</div>' +
     '</div>' +
     '<div style="background:var(--bg3);border-radius:14px;padding:12px;text-align:center;border:1px solid var(--border)">' +
     '<div style="font-size:22px;font-weight:800;color:var(--txt)">'+(S.g('workouts')||[]).length+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">💪 Sessions</div>' +
+    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">Sessions</div>' +
     '</div>' +
     '<div style="background:var(--bg3);border-radius:14px;padding:12px;text-align:center;border:1px solid var(--border)">' +
     '<div style="font-size:22px;font-weight:800;color:#ffd60a">'+(S.g('prs')||[]).length+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">🏆 PRs</div>' +
+    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">PRs</div>' +
     '</div></div>' +
 
     (insights.length ? sh('Coach Insights') +
@@ -99,7 +99,7 @@ reg('briefing', function() {
     (dueSupps.length ?
       sh('Due Now') +
       dueSupps.slice(0,2).map(function(s) {
-        return '<div class="supp-card due"><div class="supp-icon">💊</div>' +
+        return '<div class="supp-card due"><div class="supp-icon">' + icon('pill', 22) + '</div>' +
           '<div class="supp-info"><div class="supp-name">'+esc(s.name)+'</div><div class="supp-timing">'+esc(s.timing)+'</div></div>' +
           '<button type="button" class="supp-mark" onclick="SupplementEngine.markTaken(\''+s.id+'\');go(\'briefing\')">Done</button></div>';
       }).join('') : '') +
@@ -150,7 +150,7 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
 
   const deloadBanner = streak >= 5 ?
     '<div class="ai-msg" style="border-left-color:#f5c842;margin:0 16px 12px">' +
-    '<div class="ai-msg-header"><span>⚠️</span><span class="ai-msg-label" style="color:#f5c842">Deload Week Advised</span></div>' +
+    '<div class="ai-msg-header"><span style="color:#f5c842">' + icon('alert', 16) + '</span><span class="ai-msg-label" style="color:#f5c842">Deload Week Advised</span></div>' +
     '<div class="ai-msg-text">'+streak+' consecutive training days detected. Keep the schedule but cut volume 50% — your CNS and connective tissue need systemic recovery.</div></div>' : '';
 
   if (score < 50) {
@@ -163,16 +163,16 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
     return sh('Today\'s Program') + deloadBanner +
       '<div class="card card-solid" style="margin:0 16px 14px;border-left:3px solid #ff6b35">' +
       '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">' +
-      '<div style="font-size:32px">🛌</div>' +
+      '<div style="display:flex">' + iconTile('bed', 'c4', 40) + '</div>' +
       '<div><div style="font-size:16px;font-weight:800;color:var(--txt)">Rest or Light Session</div>' +
       '<div style="font-size:13px;color:var(--txt2)">Readiness '+score+'/100 — body needs recovery</div></div></div>' +
-      lightOpts.map(r=>'<div style="padding:6px 0;font-size:13px;color:var(--txt2);border-bottom:1px solid var(--border)">🧘 '+esc(r)+'</div>').join('') +
+      lightOpts.map(r=>'<div style="padding:6px 0;font-size:13px;color:var(--txt2);border-bottom:1px solid var(--border)">' + esc(r) + '</div>').join('') +
       '</div>' +
-      '<div style="padding:0 16px 14px"><button type="button" class="btn btn-secondary" onclick="go(\'workout\')">Log Light Session 🚶</button></div>';
+      '<div style="padding:0 16px 14px"><button type="button" class="btn btn-secondary" onclick="go(\'workout\')">Log Light Session</button></div>';
   }
 
   const warmupItems = (splitDay.warmup||[]).map(w =>
-    '<div style="padding:6px 0;font-size:13px;color:var(--txt2);border-bottom:1px solid var(--border)">🔥 '+esc(w)+'</div>'
+    '<div style="padding:6px 0;font-size:13px;color:var(--txt2);border-bottom:1px solid var(--border)">' + esc(w) + '</div>'
   ).join('');
 
   const mainExercises = (splitDay.exercises||[]).map(name => {
@@ -192,21 +192,21 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
 
     return '<div style="padding:12px 0;border-bottom:1px solid var(--border)">' +
       '<div style="display:flex;align-items:flex-start;gap:10px">' +
-      '<div style="font-size:22px;width:32px">'+(ex?ex.em:'💪')+'</div>' +
+      '<div style="font-size:22px;width:32px">'+(ex && ex.em ? esc(ex.em) : '')+'</div>' +
       '<div style="flex:1">' +
       '<div style="font-size:14px;font-weight:700;color:var(--txt)">' +
-        (fatiguedMuscle?'<span style="color:#f5c842">⚡ </span>':'') +
-        (injWarn?'<span style="color:#ff4444">⚠️ </span>':'') +
+        (fatiguedMuscle?'<span style="color:#f5c842;font-weight:700">Fatigue · </span>':'') +
+        (injWarn?'<span style="color:#ff4444;font-weight:700">Caution · </span>':'') +
         esc(name)+'</div>' +
       '<div style="font-size:12px;color:var(--txt3)">'+sets+(suggest?' · Try '+(suggest||'—')+'kg':'')+'</div>' +
       (fatiguedMuscle?'<div style="font-size:11px;color:#f5c842;margin-top:2px">'+fatiguePct+'% recovery — consider reduced volume</div>':'') +
-      (injWarn?'<div style="font-size:11px;color:#ff4444;margin-top:2px">⚠️ Injury caution: '+esc(injWarn)+'</div>':'') +
+      (injWarn?'<div style="font-size:11px;color:#ff4444;margin-top:2px">Injury caution: '+esc(injWarn)+'</div>':'') +
       (!fatiguedMuscle&&!injWarn&&progNote?'<div style="font-size:11px;color:#10B981;margin-top:2px">'+esc(progNote)+'</div>':'') +
       '</div></div></div>';
   }).join('');
 
   const cooldownItems = ['Quad stretch 30s each','Hip flexor stretch 30s each','Chest doorway stretch 30s','Child\'s pose 60s','Spinal twist 30s each side'].map(s=>
-    '<div style="padding:6px 0;font-size:13px;color:var(--txt2);border-bottom:1px solid var(--border)">🧘 '+esc(s)+'</div>'
+    '<div style="padding:6px 0;font-size:13px;color:var(--txt2);border-bottom:1px solid var(--border)">' + esc(s) + '</div>'
   ).join('');
 
   return sh('Today\'s Program') + deloadBanner +
@@ -220,10 +220,10 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
     '<div style="font-size:16px;font-weight:700;color:var(--c1);margin-bottom:4px">'+esc(cardioRec.machine)+'</div>' +
     '<div style="font-size:13px;color:var(--txt2);margin-bottom:4px">'+esc(cardioRec.duration)+'</div>' +
     '<div style="font-size:13px;color:var(--txt3);margin-bottom:12px">'+esc(cardioRec.details)+'</div>' +
-    '<button type="button" class="btn btn-secondary" onclick="showLogCardio()" style="width:100%">🏃 Log Cardio</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="showLogCardio()" style="width:100%">Log Cardio</button>' +
     '</div>' +
     '<div class="warmup-card"><div class="warmup-title">Cooldown Stretches</div>'+cooldownItems+'</div>' +
-    '<div style="padding:0 16px 14px"><button type="button" class="btn btn-primary" onclick="go(\'workout\')">Start Workout 💪</button></div>';
+    '<div style="padding:0 16px 14px"><button type="button" class="btn btn-primary" onclick="go(\'workout\')">Start Workout</button></div>';
 }
 
 /* ── IMPROVEMENT 2: Progression Analysis per Exercise ── */
@@ -275,7 +275,7 @@ function _progressionAnalysisBlock() {
       '<div style="font-size:14px;font-weight:700;color:'+(prog.plateau?'#f5c842':'#10B981')+'">'+prog.suggestedWeight+u+'</div>' +
       '</div>' +
       '</div>' +
-      (prog.plateau ? '<div style="font-size:12px;color:#f5c842;background:rgba(245,200,66,0.1);padding:6px 8px;border-radius:8px">⚠️ Plateau — '+prog.sessions+' sessions, 1RM unchanged. Try technique variation or a planned deload.</div>' : '') +
+      (prog.plateau ? '<div style="font-size:12px;color:#f5c842;background:rgba(245,200,66,0.1);padding:6px 8px;border-radius:8px">Plateau — '+prog.sessions+' sessions, 1RM unchanged. Try technique variation or a planned deload.</div>' : '') +
       '</div>';
   }).join('');
 
@@ -302,7 +302,7 @@ function _weeklySummaryBlock(report) {
     '<div style="background:var(--bg3);border-radius:12px;padding:12px">' +
     '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Workouts</div>' +
     '<div style="font-size:22px;font-weight:900;color:var(--txt)">'+report.weekWorkouts+'/'+report.weeklyGoal+'</div>' +
-    '<div style="font-size:12px;color:'+(completionPct>=100?'#10B981':'var(--txt3)')+';margin-top:2px">'+(completionPct>=100?'✅ Goal hit!':completionPct+'% of goal')+'</div>' +
+    '<div style="font-size:12px;color:'+(completionPct>=100?'#10B981':'var(--txt3)')+';margin-top:2px">'+(completionPct>=100?'Goal hit':completionPct+'% of goal')+'</div>' +
     '</div>' +
     '</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">' +
@@ -354,12 +354,12 @@ function _suppTimingBlock(userSupps, user) {
       const cafWarn = user.caffeineWarning && dbEntry.caffeine ?
         SupplementEngine.checkCaffeineWarning(dbEntry, 22) : null;
       return '<div class="supp-time-item">' +
-        '<div style="font-size:22px;width:32px">💊</div>' +
+        '<div style="width:32px;display:flex;justify-content:center">' + icon('pill', 22) + '</div>' +
         '<div style="flex:1">' +
         '<div style="font-size:14px;font-weight:600;color:var(--txt)">'+esc(s.name)+'</div>' +
         '<div style="font-size:12px;color:var(--txt3)">'+esc(s.dose||dbEntry.dose||'')+'</div>' +
         (dbEntry.notes?'<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+esc(dbEntry.notes)+'</div>':'') +
-        (cafWarn?'<div style="font-size:12px;color:#f5c842;margin-top:4px">⚠️ '+esc(cafWarn)+'</div>':'') +
+        (cafWarn?'<div style="font-size:12px;color:#f5c842;margin-top:4px">'+esc(cafWarn)+'</div>':'') +
         '</div></div>';
     }).join('');
     return '<div class="supp-time-group">' +
@@ -376,13 +376,13 @@ function _deloadBlock(user) {
   if (!needsDeload) return '';
   return sh('Recovery Alert') +
     '<div class="ai-msg" style="border-left-color:#f5c842">' +
-    '<div class="ai-msg-header"><span>⚠️</span><span class="ai-msg-label" style="color:#f5c842">Deload Recommended</span></div>' +
+    '<div class="ai-msg-header"><span style="color:#f5c842">' + icon('alert', 16) + '</span><span class="ai-msg-label" style="color:#f5c842">Deload Recommended</span></div>' +
     '<div class="ai-msg-text">5+ weeks of progressive training detected. A deload week (50% volume, same frequency) will prevent overtraining and drive adaptation.</div></div>';
 }
 
 window.showLogCardio = function() {
   const rec = CoachEngine.cardioRec(SplitEngine.getSplitDay());
-  modal('🏃 Log Cardio',
+  modal('Log Cardio',
     '<div class="field-wrap"><label class="field-label">Type</label>' +
     '<input id="cardio-type" class="field" type="text" value="'+esc(rec.machine||'')+'"></div>' +
     '<div class="field-row">' +
@@ -401,5 +401,5 @@ window.saveCardioLog = function() {
   const notes = document.getElementById('cardio-notes')?.value || '';
   S.push('cardioLogs', { type, duration: dur, calories: cal, notes, date: today(), time: isoNow() });
   closeModal();
-  toast('Cardio logged! 🏃', 'ok');
+  toast('Cardio logged', 'ok');
 };

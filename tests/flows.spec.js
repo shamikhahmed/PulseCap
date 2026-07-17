@@ -254,9 +254,10 @@ test.describe('PulseCap flows', () => {
   });
 
   test('security: search result dispatch does not use eval', async ({ page }) => {
-    const out = await page.evaluate(() => {
+    const out = await page.evaluate(async () => {
       // @ts-ignore
       const w = window;
+      await w.loadScript('js/modules/advanced-search.js');
       let evalCalled = false;
       // @ts-ignore
       const oldEval = window.eval;
@@ -266,6 +267,14 @@ test.describe('PulseCap flows', () => {
       w._doSearchResult(0);
       // @ts-ignore
       window.eval = oldEval;
+      await new Promise(function(resolve) {
+        const t0 = Date.now();
+        (function poll() {
+          if (w.currentScreenId() === 'calculators') resolve();
+          else if (Date.now() - t0 > 8000) resolve();
+          else setTimeout(poll, 40);
+        })();
+      });
       return { evalCalled, screen: w.currentScreenId && w.currentScreenId() };
     });
     expect(out.evalCalled).toBeFalsy();
@@ -280,14 +289,49 @@ test.describe('PulseCap flows', () => {
   });
 
   test('search results render as accessible list-row buttons', async ({ page }) => {
-    const out = await page.evaluate(() => {
+    const out = await page.evaluate(async () => {
       // @ts-ignore
       const w = window;
       w.go('search', { q: 'bench', filter: 'all' });
+      await new Promise(function(resolve) {
+        const t0 = Date.now();
+        (function poll() {
+          const rows = document.querySelectorAll('#view button.list-row');
+          if (rows.length > 0) resolve();
+          else if (Date.now() - t0 > 8000) resolve();
+          else setTimeout(poll, 40);
+        })();
+      });
       const view = document.getElementById('view');
       const rows = view ? view.querySelectorAll('button.list-row') : [];
       return { n: rows.length };
     });
     expect(out.n).toBeGreaterThan(0);
+  });
+
+  test('lazy Learn screens load via MODULE_SRC', async ({ page }) => {
+    const out = await page.evaluate(async () => {
+      // @ts-ignore
+      const w = window;
+      const before = !w.listScreens || w.listScreens().indexOf('calculators') >= 0;
+      w.go('calculators');
+      await new Promise(function(resolve) {
+        const t0 = Date.now();
+        (function poll() {
+          if (w.currentScreenId() === 'calculators' && document.querySelector('#view .screen') &&
+              !/^Loading/.test((document.querySelector('#view .screen').textContent || '').trim())) {
+            resolve();
+          } else if (Date.now() - t0 > 8000) resolve();
+          else setTimeout(poll, 40);
+        })();
+      });
+      return {
+        screen: w.currentScreenId(),
+        hasMod: !!(document.querySelector('script[data-pc-mod="js/modules/calculators.js"]')),
+        beforeListed: before
+      };
+    });
+    expect(out.screen).toBe('calculators');
+    expect(out.hasMod).toBeTruthy();
   });
 });

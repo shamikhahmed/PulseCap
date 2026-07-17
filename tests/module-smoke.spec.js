@@ -17,14 +17,16 @@ test.describe('PulseCap per-module smoke', () => {
     const failed = [];
     for (const id of ids) {
       errors.length = 0;
-      await page.evaluate((screenId) => {
-        try {
-          window.go(screenId);
-        } catch (e) {
-          throw e;
-        }
-      }, id);
-      await page.waitForTimeout(120);
+      await page.evaluate((screenId) => { window.go(screenId); }, id);
+      await page.waitForFunction((screenId) => {
+        const scr = document.querySelector('#view .screen');
+        if (!scr) return false;
+        const t = (scr.textContent || '').trim();
+        if (t === 'Loading…' || t === 'Loading...') return false;
+        // aliases may land on a different canonical id
+        return !!window.currentScreenId();
+      }, id, { timeout: 15000 });
+      await page.waitForTimeout(80);
       const fatal = errors.filter(e => !/serviceWorker|ResizeObserver|favicon/i.test(e));
       const hasScreen = await page.locator('#view .screen').count();
       if (fatal.length || !hasScreen) {
@@ -75,10 +77,12 @@ test.describe('PulseCap per-module smoke', () => {
     await page.waitForLoadState('domcontentloaded');
     await page.waitForFunction(() => typeof window.go === 'function' && typeof window.migratePhysiqueMerge === 'function');
 
-    const titles = await page.evaluate(() => {
+    const titles = await page.evaluate(async () => {
       window.go('physique-archetype');
+      await new Promise(r => setTimeout(r, 50));
       const a = document.title;
       window.go('physique-timeline');
+      await new Promise(r => setTimeout(r, 50));
       const b = document.title;
       window.go('physique', { tab: 'score' });
       const c = document.querySelector('.topbar-title') && document.querySelector('.topbar-title').textContent;

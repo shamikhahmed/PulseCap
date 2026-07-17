@@ -96,7 +96,7 @@ reg('dashboard', function() {
         '</button>';
     const heroCard = '<div onclick="go(\'' + heroTap + '\')" class="card-press" style="margin:0 16px 20px;border-radius:16px;background:' + heroGrad + ';border:1px solid var(--border);padding:22px 20px;cursor:pointer;touch-action:manipulation;box-shadow:var(--ds2)">' +
       '<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:16px">' +
-      ((dd && dd.ic) ? iconTile(dd.ic, dd.tint || 'c1', 56) : '<div style="font-size:52px;line-height:1;flex-shrink:0">' + (dd ? dd.emoji : '💪') + '</div>') +
+      ((dd && dd.ic) ? iconTile(dd.ic, dd.tint || 'c1', 56) : (typeof iconTile === 'function' ? iconTile('dumbbell', 'c1', 56) : '')) +
       '<div style="flex:1;min-width:0">' +
       '<div style="font-size:22px;font-weight:800;color:var(--txt);line-height:1.25;letter-spacing:-0.4px">' + esc(dd ? dd.title : (plan ? splitDay.n || 'Ready to Train' : 'Ready to Train')) + '</div>' +
       '<div style="font-size:13px;color:var(--txt2);margin-top:8px;line-height:1.5">' + esc(plan ? plan.message : (dd ? (dd.reason || (dd.actions && dd.actions[0]) || '') : 'Tap to see your recommendation')) + '</div>' +

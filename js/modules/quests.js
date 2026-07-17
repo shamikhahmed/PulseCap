@@ -8,7 +8,7 @@ const QuestEngine = {
 
   QUEST_TEMPLATES: [
     {
-      id: 'chest_growth', category: 'Specialization', icon: '🫁',
+      id: 'chest_growth', category: 'Specialization', icon: 'heart',
       title: 'Chest Growth Quest',
       description: 'Complete focused chest training to build upper chest mass',
       condition: (data) => data.weakMuscles.includes('chest') || data.lowVolume.includes('Chest'),
@@ -16,11 +16,11 @@ const QuestEngine = {
         { type: 'workouts_with_muscle', muscle: 'chest', target: 8, label: '8 chest workouts' },
         { type: 'sets_muscle', muscle: 'chest', target: 120, label: '120 chest sets total' },
       ],
-      reward: { xp: 500, badge: '🫁 Chest Builder', tip: 'Add incline pressing for upper chest development' },
+      reward: { xp: 500, badge: 'Chest Builder', tip: 'Add incline pressing for upper chest development' },
       duration_weeks: 6,
     },
     {
-      id: 'pull_strength', category: 'Strength', icon: '🔵',
+      id: 'pull_strength', category: 'Strength', icon: 'target',
       title: 'Pull Strength Quest',
       description: 'Build your back and pull strength to impressive levels',
       condition: (data) => data.weakMuscles.includes('back') || data.lowVolume.includes('Back'),
@@ -29,11 +29,11 @@ const QuestEngine = {
         { type: 'pr_exercise', exercise: 'Pull-Ups', label: 'Hit a Pull-Up PR' },
         { type: 'sets_muscle', muscle: 'back', target: 150, label: '150 back sets total' },
       ],
-      reward: { xp: 600, badge: '🔵 Back Builder', tip: 'Wide grip for lat width, close grip for thickness' },
+      reward: { xp: 600, badge: 'Back Builder', tip: 'Wide grip for lat width, close grip for thickness' },
       duration_weeks: 6,
     },
     {
-      id: 'shoulder_health', category: 'Injury Prevention', icon: '🦾',
+      id: 'shoulder_health', category: 'Injury Prevention', icon: 'bandage',
       title: 'Shoulder Health Quest',
       description: 'Fix push/pull imbalance and build bulletproof shoulders',
       condition: (data) => data.pushPullImbalance || data.weakMuscles.includes('shoulders'),
@@ -41,11 +41,11 @@ const QuestEngine = {
         { type: 'sessions_total', target: 6, label: '6 sessions with face pulls or rear delt work' },
         { type: 'joint_score', joint: 'shoulder', target: 75, label: 'Shoulder health score >= 75' },
       ],
-      reward: { xp: 400, badge: '🦾 Shoulder Guardian', tip: 'Maintain 1:1 push to pull ratio permanently' },
+      reward: { xp: 400, badge: 'Shoulder Guardian', tip: 'Maintain 1:1 push to pull ratio permanently' },
       duration_weeks: 4,
     },
     {
-      id: 'leg_day_warrior', category: 'Consistency', icon: '🦵',
+      id: 'leg_day_warrior', category: 'Consistency', icon: 'walk',
       title: 'Leg Day Warrior',
       description: 'Stop skipping legs. Build serious lower body strength',
       condition: (data) => data.lowVolume.includes('Quads') || data.lowVolume.includes('Hamstrings'),
@@ -53,11 +53,11 @@ const QuestEngine = {
         { type: 'workouts_with_muscle', muscle: 'quads', target: 8, label: '8 leg sessions' },
         { type: 'pr_exercise', exercise: 'Back Squat', label: 'Set a Squat PR' },
       ],
-      reward: { xp: 550, badge: '🦵 Leg Day Warrior', tip: 'Posterior chain is your athletic foundation' },
+      reward: { xp: 550, badge: 'Leg Day Warrior', tip: 'Posterior chain is your athletic foundation' },
       duration_weeks: 6,
     },
     {
-      id: 'consistency_30', category: 'Consistency', icon: '🔥',
+      id: 'consistency_30', category: 'Consistency', icon: 'flame',
       title: '30-Day Consistency Quest',
       description: 'Build the habit that builds the physique',
       condition: (data) => data.streak < 5,
@@ -65,11 +65,11 @@ const QuestEngine = {
         { type: 'sessions_total', target: 16, label: '16 sessions in 30 days' },
         { type: 'streak_days', target: 7, label: '7-day training streak' },
       ],
-      reward: { xp: 700, badge: '🔥 Consistency Champion', tip: 'Consistency beats perfection every time' },
+      reward: { xp: 700, badge: 'Consistency Champion', tip: 'Consistency beats perfection every time' },
       duration_weeks: 4,
     },
     {
-      id: 'strength_foundation', category: 'Strength', icon: '🏋️',
+      id: 'strength_foundation', category: 'Strength', icon: 'dumbbell',
       title: 'Strength Foundation',
       description: 'Build real strength on the big compound lifts',
       condition: (data) => data.prs < 5,
@@ -77,11 +77,11 @@ const QuestEngine = {
         { type: 'pr_any', count: 5, label: 'Set 5 PRs on compound lifts' },
         { type: 'sessions_total', target: 12, label: '12 strength sessions' },
       ],
-      reward: { xp: 800, badge: '💪 Strength Foundation', tip: 'PR frequency drops naturally — celebrate each one' },
+      reward: { xp: 800, badge: 'Strength Foundation', tip: 'PR frequency drops naturally — celebrate each one' },
       duration_weeks: 8,
     },
     {
-      id: 'arm_specialization', category: 'Specialization', icon: '💪',
+      id: 'arm_specialization', category: 'Specialization', icon: 'dumbbell',
       title: 'Arm Specialization Block',
       description: 'Dedicated arm training to add size and definition',
       condition: (data) => data.lowVolume.includes('Biceps') || data.lowVolume.includes('Triceps'),
@@ -89,11 +89,11 @@ const QuestEngine = {
         { type: 'sets_muscle', muscle: 'biceps', target: 80, label: '80 bicep sets' },
         { type: 'sets_muscle', muscle: 'triceps', target: 80, label: '80 tricep sets' },
       ],
-      reward: { xp: 450, badge: '💪 Arm Specialist', tip: 'Incline curls for maximum bicep stretch stimulus' },
+      reward: { xp: 450, badge: 'Arm Specialist', tip: 'Incline curls for maximum bicep stretch stimulus' },
       duration_weeks: 6,
     },
     {
-      id: 'recovery_master', category: 'Recovery', icon: '😴',
+      id: 'recovery_master', category: 'Recovery', icon: 'bed',
       title: 'Recovery Master',
       description: 'Optimize your recovery to unlock your next level of gains',
       condition: (data) => data.recoveryDebt >= 50,
@@ -101,11 +101,11 @@ const QuestEngine = {
         { type: 'log_recovery', target: 7, label: 'Log recovery check-in 7 days' },
         { type: 'debt_below', target: 30, label: 'Get recovery debt below 30' },
       ],
-      reward: { xp: 350, badge: '😴 Recovery Master', tip: 'Growth happens during recovery, not in the gym' },
+      reward: { xp: 350, badge: 'Recovery Master', tip: 'Growth happens during recovery, not in the gym' },
       duration_weeks: 3,
     },
     {
-      id: 'volume_champion', category: 'Volume', icon: '📈',
+      id: 'volume_champion', category: 'Volume', icon: 'chart',
       title: 'Volume Champion',
       description: 'Hit impressive weekly volume milestones',
       condition: (data) => data.totalSessions >= 10,
@@ -113,11 +113,11 @@ const QuestEngine = {
         { type: 'total_volume_kg', target: 50000, label: '50,000 kg total volume' },
         { type: 'sessions_total', target: 20, label: '20 sessions completed' },
       ],
-      reward: { xp: 600, badge: '📈 Volume Champion', tip: 'Track volume trends in your Progress screen' },
+      reward: { xp: 600, badge: 'Volume Champion', tip: 'Track volume trends in your Progress screen' },
       duration_weeks: 8,
     },
     {
-      id: 'calf_redemption', category: 'Specialization', icon: '🦵',
+      id: 'calf_redemption', category: 'Specialization', icon: 'walk',
       title: 'Calf Redemption',
       description: 'The most neglected muscle group deserves attention',
       condition: (data) => data.lowVolume.includes('Calves'),
@@ -125,7 +125,7 @@ const QuestEngine = {
         { type: 'sets_muscle', muscle: 'calves', target: 60, label: '60 calf sets' },
         { type: 'sessions_with_calves', target: 12, label: '12 sessions including calves' },
       ],
-      reward: { xp: 300, badge: '🦵 Calf Redeemed', tip: 'Calves need 4-5x/week high frequency to grow' },
+      reward: { xp: 300, badge: 'Calf Redeemed', tip: 'Calves need 4-5x/week high frequency to grow' },
       duration_weeks: 8,
     },
   ],
@@ -271,7 +271,7 @@ const QuestEngine = {
         const completedList = S.g('completedQuests') || [];
         completedList.push({ id: quest.templateId, completedDate: today(), reward: quest.reward });
         S.set('completedQuests', completedList);
-        if (typeof celebrate === 'function') celebrate('⚔️', 'Quest Complete!', quest.title + ' · +' + (quest.reward.xp || 0) + ' XP', 2500);
+        if (typeof celebrate === 'function') celebrate(typeof icon==='function'?icon('check',28):'', 'Quest Complete!', quest.title + ' · +' + (quest.reward.xp || 0) + ' XP', 2500);
       }
 
       return quest;
@@ -341,7 +341,7 @@ const KnowledgeAcademy = {
 
   LESSONS: [
     {
-      id: 'progressive_overload', module: 'Training Fundamentals', icon: '📈', xp: 100,
+      id: 'progressive_overload', module: 'Training Fundamentals', icon: 'chart', xp: 100,
       title: 'Progressive Overload',
       summary: 'The #1 principle of muscle growth',
       content: 'Progressive overload is the gradual increase of stress on your muscles over time. Without it, your body has no reason to adapt.\n\nMethods:\n- Add weight (2.5kg upper, 5kg lower when you hit rep ceiling)\n- Add reps (same weight, more reps)\n- Add sets (increase volume)\n- Reduce rest time\n- Improve technique\n\nThe most important method is load progression. Track every session.',
@@ -349,7 +349,7 @@ const KnowledgeAcademy = {
       unlock: 'Advanced Periodization lesson',
     },
     {
-      id: 'muscle_protein_synthesis', module: 'Physiology', icon: '🔬', xp: 120,
+      id: 'muscle_protein_synthesis', module: 'Physiology', icon: 'dna', xp: 120,
       title: 'Muscle Protein Synthesis',
       summary: 'How muscles actually grow',
       content: 'Muscle growth (hypertrophy) occurs when muscle protein synthesis (MPS) exceeds muscle protein breakdown (MPB).\n\nKey drivers:\n- Training creates micro-damage which triggers MPS\n- Protein provides amino acids (building blocks)\n- Sleep is when MPS peaks (growth hormone release)\n- Leucine is the key amino acid trigger (found in whey, eggs, chicken)\n\nTarget: 1.8-2.2g protein/kg. Distribute across 3-4 meals. Post-workout window is real but not critical if daily intake is hit.',
@@ -357,7 +357,7 @@ const KnowledgeAcademy = {
       unlock: 'Nutrition Timing lesson',
     },
     {
-      id: 'sleep_recovery', module: 'Recovery', icon: '😴', xp: 100,
+      id: 'sleep_recovery', module: 'Recovery', icon: 'bed', xp: 100,
       title: 'Sleep & Recovery Science',
       summary: 'Sleep is your most powerful anabolic tool',
       content: 'Sleep is not passive — it is when your body repairs and grows.\n\nWhat happens during sleep:\n- Growth hormone released (peaks in deep sleep)\n- Testosterone synthesis\n- Muscle protein synthesis elevated\n- Central nervous system recovery\n- Memory consolidation (skill learning)\n\nSleep deprivation effects:\n- Testosterone drops 15-20% after one week of 5hr sleep\n- Cortisol rises (catabolic)\n- Strength output reduces 5-10%\n- Injury risk increases\n\nTarget: 7-9 hours. Consistent sleep schedule matters more than duration.',
@@ -365,7 +365,7 @@ const KnowledgeAcademy = {
       unlock: 'Recovery Debt lesson',
     },
     {
-      id: 'rep_ranges', module: 'Training Fundamentals', icon: '🔢', xp: 80,
+      id: 'rep_ranges', module: 'Training Fundamentals', icon: 'calc', xp: 80,
       title: 'Rep Ranges & Adaptations',
       summary: 'Different rep ranges produce different results',
       content: 'Rep ranges target different physiological adaptations:\n\n- 1-5 reps: Neural strength (max force production, CNS adaptation)\n- 6-8 reps: Strength-hypertrophy overlap\n- 8-12 reps: Primary hypertrophy range (most research support)\n- 12-20 reps: Hypertrophy + metabolic stress + endurance\n- 20+ reps: Muscular endurance, metabolic conditioning\n\nKey insight: All rep ranges from 5-30 build similar muscle IF taken close to failure. The 8-12 range is optimal for most because it balances load and fatigue.',
@@ -373,7 +373,7 @@ const KnowledgeAcademy = {
       unlock: 'Periodization lesson',
     },
     {
-      id: 'nutrition_basics', module: 'Nutrition', icon: '🥩', xp: 100,
+      id: 'nutrition_basics', module: 'Nutrition', icon: 'apple', xp: 100,
       title: 'Nutrition for Muscle Growth',
       summary: 'Food is your body\'s building material',
       content: 'Muscle growth requires:\n\n1. PROTEIN: 1.8-2.2g per kg bodyweight. Sources: chicken, beef, eggs, fish, whey, Greek yogurt. Distribute across meals (30-40g per meal optimal).\n\n2. CALORIES: Slight surplus (+200-300 kcal) for lean muscle gain. Too large a surplus = fat gain.\n\n3. CARBOHYDRATES: Fuel your training. Do not fear them. Time around workouts.\n\n4. FATS: Essential for hormone production (testosterone). Minimum 0.8g/kg.\n\nSimple rule: Protein first, then calories, then everything else.',
@@ -381,7 +381,7 @@ const KnowledgeAcademy = {
       unlock: 'Advanced Nutrition lesson',
     },
     {
-      id: 'compound_vs_isolation', module: 'Training Fundamentals', icon: '🏋️', xp: 80,
+      id: 'compound_vs_isolation', module: 'Training Fundamentals', icon: 'dumbbell', xp: 80,
       title: 'Compound vs Isolation Exercises',
       summary: 'When to use each type for maximum results',
       content: 'Compound exercises:\n- Multiple joints and muscles\n- Higher neuromuscular demand\n- More hormonal response\n- Better for strength and mass\n- Examples: Squat, Deadlift, Bench, OHP, Row\n\nIsolation exercises:\n- Single joint\n- Target specific muscles\n- Lower fatigue — can add more volume\n- Best used AFTER compounds\n- Examples: Curl, Lateral Raise, Leg Curl\n\nOptimal structure: 2-3 compounds, 2-4 isolations per session. Compounds first — they require the most energy and focus.',
@@ -389,7 +389,7 @@ const KnowledgeAcademy = {
       unlock: 'Exercise Selection lesson',
     },
     {
-      id: 'deload_science', module: 'Recovery', icon: '📉', xp: 90,
+      id: 'deload_science', module: 'Recovery', icon: 'trendDown', xp: 90,
       title: 'The Science of Deloading',
       summary: 'Planned rest supercompensates your strength',
       content: 'Deloading is a planned reduction in training stress to allow full recovery and supercompensation.\n\nSupercompensation theory:\n- Training leads to fatigue\n- Deload allows recovery\n- After recovery, fitness EXCEEDS previous baseline\n- This is where real gains happen\n\nWhen to deload:\n- Every 4-6 weeks of progressive training\n- When recovery debt is high\n- Before a performance test\n- When motivation drops significantly\n\nHow to deload:\n- Keep frequency (same days)\n- Reduce volume 40-50%\n- Reduce intensity to 60-70%\n- Duration: 5-7 days',
@@ -397,7 +397,7 @@ const KnowledgeAcademy = {
       unlock: 'Periodization lesson',
     },
     {
-      id: 'mind_muscle', module: 'Training Fundamentals', icon: '🧠', xp: 70,
+      id: 'mind_muscle', module: 'Training Fundamentals', icon: 'sparkles', xp: 70,
       title: 'Mind-Muscle Connection',
       summary: 'Think your way to better gains',
       content: 'The mind-muscle connection is the intentional focus on contracting a specific muscle during exercise.\n\nResearch shows:\n- Internal focus (think about the muscle) increases EMG activation\n- Particularly effective for isolation exercises\n- Less effective on heavy compound lifts (external focus better there)\n\nHow to develop it:\n- Start with very light weight\n- Touch the muscle you\'re training (tactile feedback)\n- Pause at peak contraction (1-2 seconds)\n- Slow the eccentric (lowering phase)\n- Visualise the muscle shortening and lengthening\n\nPractice this on curls, lateral raises, and chest flys first.',
@@ -433,14 +433,14 @@ const KnowledgeAcademy = {
     const totalInModule = this.LESSONS.filter(l => l.module === lesson.module).length;
     if (moduleCount >= totalInModule - 1) {
       const badges = S.g('earnedBadges') || [];
-      const badgeName = '🎓 ' + lesson.module + ' Expert';
+      const badgeName = lesson.module + ' Expert';
       if (!badges.some(b => b.badge === badgeName)) {
         badges.push({ badge: badgeName, date: today(), type: 'academy' });
         S.set('earnedBadges', badges);
       }
     }
 
-    if (typeof celebrate === 'function') celebrate('🎓', 'Lesson Complete!', '+' + lesson.xp + ' XP', 2000);
+    if (typeof celebrate === 'function') celebrate(typeof icon==='function'?icon('gradcap',28):'', 'Lesson Complete!', '+' + lesson.xp + ' XP', 2000);
     return { success: true, xp: lesson.xp, unlock: lesson.unlock };
   },
 
@@ -475,25 +475,25 @@ window.KnowledgeAcademy = KnowledgeAcademy;
 const AchievementEngine2 = {
 
   ACHIEVEMENTS: [
-    { id: 'vol_10k', icon: '🏋️', title: '10,000 kg Lifted', desc: 'Total training volume milestone', check: () => { const ws = S.g('workouts')||[]; return ws.reduce((a,w)=>a+(w.totalVol||0),0) >= 10000; } },
-    { id: 'vol_100k', icon: '💎', title: '100,000 kg Lifted', desc: 'Serious training volume', check: () => { const ws = S.g('workouts')||[]; return ws.reduce((a,w)=>a+(w.totalVol||0),0) >= 100000; } },
-    { id: 'vol_500k', icon: '🌟', title: '500,000 kg Lifted', desc: 'Elite training volume', check: () => { const ws = S.g('workouts')||[]; return ws.reduce((a,w)=>a+(w.totalVol||0),0) >= 500000; } },
-    { id: 'sessions_10', icon: '🔥', title: 'First 10 Sessions', desc: 'Habit forming begins', check: () => (S.g('workouts')||[]).length >= 10 },
+    { id: 'vol_10k', icon: 'dumbbell', title: '10,000 kg Lifted', desc: 'Total training volume milestone', check: () => { const ws = S.g('workouts')||[]; return ws.reduce((a,w)=>a+(w.totalVol||0),0) >= 10000; } },
+    { id: 'vol_100k', icon: 'sparkles', title: '100,000 kg Lifted', desc: 'Serious training volume', check: () => { const ws = S.g('workouts')||[]; return ws.reduce((a,w)=>a+(w.totalVol||0),0) >= 100000; } },
+    { id: 'vol_500k', icon: 'sparkles', title: '500,000 kg Lifted', desc: 'Elite training volume', check: () => { const ws = S.g('workouts')||[]; return ws.reduce((a,w)=>a+(w.totalVol||0),0) >= 500000; } },
+    { id: 'sessions_10', icon: 'flame', title: 'First 10 Sessions', desc: 'Habit forming begins', check: () => (S.g('workouts')||[]).length >= 10 },
     { id: 'sessions_50', icon: '⚡', title: '50 Sessions', desc: 'Committed to the process', check: () => (S.g('workouts')||[]).length >= 50 },
-    { id: 'sessions_100', icon: '🏆', title: '100 Sessions', desc: 'Century milestone', check: () => (S.g('workouts')||[]).length >= 100 },
-    { id: 'sessions_365', icon: '🎖️', title: '365 Sessions', desc: 'A full year of training', check: () => (S.g('workouts')||[]).length >= 365 },
-    { id: 'pr_1', icon: '🥇', title: 'First PR', desc: 'You got stronger', check: () => (S.g('prs')||[]).length >= 1 },
-    { id: 'pr_10', icon: '🥈', title: '10 PRs Set', desc: 'Consistently improving', check: () => (S.g('prs')||[]).length >= 10 },
-    { id: 'pr_50', icon: '🥉', title: '50 PRs Set', desc: 'Strength progression master', check: () => (S.g('prs')||[]).length >= 50 },
-    { id: 'streak_3', icon: '🔥', title: '3-Day Streak', desc: 'Momentum building', check: () => (typeof StreakEngine !== 'undefined' ? StreakEngine.get() : 0) >= 3 },
-    { id: 'streak_7', icon: '💪', title: '7-Day Streak', desc: 'One full week of consistency', check: () => (typeof StreakEngine !== 'undefined' ? StreakEngine.get() : 0) >= 7 },
-    { id: 'streak_30', icon: '🌟', title: '30-Day Streak', desc: 'Iron discipline', check: () => (typeof StreakEngine !== 'undefined' ? StreakEngine.get() : 0) >= 30 },
-    { id: 'night_owl', icon: '🦉', title: 'Night Owl', desc: 'Logged a workout after 10pm', check: () => { const ws = S.g('workouts')||[]; return ws.some(w => { const h = new Date(w.startTime||w.date).getHours(); return h >= 22; }); } },
-    { id: 'early_bird', icon: '🌅', title: 'Early Bird', desc: 'Logged a workout before 6am', check: () => { const ws = S.g('workouts')||[]; return ws.some(w => { const h = new Date(w.startTime||w.date).getHours(); return h < 6; }); } },
-    { id: 'knowledge_start', icon: '📚', title: 'Knowledge Seeker', desc: 'Completed first Academy lesson', check: () => (S.g('completedLessons')||[]).length >= 1 },
-    { id: 'knowledge_all', icon: '🎓', title: 'Fitness Scholar', desc: 'Completed all Academy lessons', check: () => (S.g('completedLessons')||[]).length >= KnowledgeAcademy.LESSONS.length },
-    { id: 'quest_first', icon: '⚔️', title: 'Quest Accepted', desc: 'Started your first quest', check: () => (S.g('completedQuests')||[]).length >= 1 },
-    { id: 'quest_master', icon: '👑', title: 'Quest Master', desc: 'Completed 5 quests', check: () => (S.g('completedQuests')||[]).length >= 5 },
+    { id: 'sessions_100', icon: 'target', title: '100 Sessions', desc: 'Century milestone', check: () => (S.g('workouts')||[]).length >= 100 },
+    { id: 'sessions_365', icon: 'gradcap', title: '365 Sessions', desc: 'A full year of training', check: () => (S.g('workouts')||[]).length >= 365 },
+    { id: 'pr_1', icon: 'sparkles', title: 'First PR', desc: 'You got stronger', check: () => (S.g('prs')||[]).length >= 1 },
+    { id: 'pr_10', icon: 'sparkles', title: '10 PRs Set', desc: 'Consistently improving', check: () => (S.g('prs')||[]).length >= 10 },
+    { id: 'pr_50', icon: 'sparkles', title: '50 PRs Set', desc: 'Strength progression master', check: () => (S.g('prs')||[]).length >= 50 },
+    { id: 'streak_3', icon: 'flame', title: '3-Day Streak', desc: 'Momentum building', check: () => (typeof StreakEngine !== 'undefined' ? StreakEngine.get() : 0) >= 3 },
+    { id: 'streak_7', icon: 'dumbbell', title: '7-Day Streak', desc: 'One full week of consistency', check: () => (typeof StreakEngine !== 'undefined' ? StreakEngine.get() : 0) >= 7 },
+    { id: 'streak_30', icon: 'sparkles', title: '30-Day Streak', desc: 'Iron discipline', check: () => (typeof StreakEngine !== 'undefined' ? StreakEngine.get() : 0) >= 30 },
+    { id: 'night_owl', icon: 'moon', title: 'Night Owl', desc: 'Logged a workout after 10pm', check: () => { const ws = S.g('workouts')||[]; return ws.some(w => { const h = new Date(w.startTime||w.date).getHours(); return h >= 22; }); } },
+    { id: 'early_bird', icon: 'sun', title: 'Early Bird', desc: 'Logged a workout before 6am', check: () => { const ws = S.g('workouts')||[]; return ws.some(w => { const h = new Date(w.startTime||w.date).getHours(); return h < 6; }); } },
+    { id: 'knowledge_start', icon: 'book', title: 'Knowledge Seeker', desc: 'Completed first Academy lesson', check: () => (S.g('completedLessons')||[]).length >= 1 },
+    { id: 'knowledge_all', icon: 'gradcap', title: 'Fitness Scholar', desc: 'Completed all Academy lessons', check: () => (S.g('completedLessons')||[]).length >= KnowledgeAcademy.LESSONS.length },
+    { id: 'quest_first', icon: 'target', title: 'Quest Accepted', desc: 'Started your first quest', check: () => (S.g('completedQuests')||[]).length >= 1 },
+    { id: 'quest_master', icon: 'sparkles', title: 'Quest Master', desc: 'Completed 5 quests', check: () => (S.g('completedQuests')||[]).length >= 5 },
   ],
 
   checkAll() {
@@ -519,7 +519,7 @@ const AchievementEngine2 = {
   getEarned() {
     const earned = S.g('achievements') || [];
     return earned.map(a => {
-      if (typeof a === 'string') return { id: a, icon: '🏆', title: a, desc: '', date: null };
+      if (typeof a === 'string') return { id: a, icon: 'target', title: a, desc: '', date: null };
       return a;
     });
   },
@@ -605,7 +605,7 @@ reg('quests', function() {
         const daysLeft = q.dueDate ? Math.max(0, Math.round((new Date(q.dueDate) - new Date()) / 86400000)) : '?';
         return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px">' +
           '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">' +
-          '<div style="font-size:28px">' + q.icon + '</div>' +
+          '<div style="display:flex;width:36px;justify-content:center">' + (typeof icon==='function' && q.icon && q.icon.indexOf(' ')===-1 ? icon(q.icon, 26) : esc(q.icon||'')) + '</div>' +
           '<div style="flex:1"><div style="font-size:14px;font-weight:800;color:var(--txt)">' + esc(q.title) + '</div>' +
           '<div style="font-size:11px;color:var(--txt3)">' + esc(q.category) + ' · ' + daysLeft + ' days left</div></div>' +
           '<div style="font-size:18px;font-weight:900;color:var(--c1)">' + pct + '%</div>' +
@@ -624,7 +624,7 @@ reg('quests', function() {
 
     (recommended.length ? '<div style="margin:0 16px 14px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">Recommended For You</div>' +
       recommended.map(t => '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start">' +
-        '<div style="font-size:32px;flex-shrink:0">' + t.icon + '</div>' +
+        '<div style="display:flex;width:40px;justify-content:center;flex-shrink:0">' + (typeof icon==='function' && t.icon && t.icon.indexOf(' ')===-1 ? icon(t.icon, 28) : esc(t.icon||'')) + '</div>' +
         '<div style="flex:1">' +
         '<div style="font-size:14px;font-weight:800;color:var(--txt);margin-bottom:3px">' + esc(t.title) + '</div>' +
         '<div style="font-size:12px;color:var(--txt2);margin-bottom:8px">' + esc(t.description) + '</div>' +
@@ -640,14 +640,14 @@ reg('quests', function() {
       '</div>' : '') +
 
     (badges.length ? '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">🏅 Earned Badges (' + badges.length + ')</div>' +
+      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">Earned Badges (' + badges.length + ')</div>' +
       '<div style="display:flex;flex-wrap:wrap;gap:8px">' +
       badges.map(b => '<div style="background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:10px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--c1)">' + esc(b.badge) + '</div>').join('') +
       '</div></div>' : '') +
 
     (StreakProtection.needsProtection() && !StreakProtection.isTodaySaved() ?
       '<div style="margin:0 16px 14px;background:rgba(255,159,10,0.08);border:1px solid rgba(255,159,10,0.3);border-radius:16px;padding:14px">' +
-      '<div style="font-size:14px;font-weight:800;color:#ff9f0a;margin-bottom:6px">🛡️ Protect Your Streak</div>' +
+      '<div style="font-size:14px;font-weight:800;color:#ff9f0a;margin-bottom:6px">Protect Your Streak</div>' +
       '<div style="font-size:12px;color:var(--txt2);margin-bottom:12px">No workout logged today. Complete a quick recovery session to save your streak.</div>' +
       '<div style="display:flex;flex-direction:column;gap:8px">' +
       StreakProtection.PROTECTION_EXERCISES.map(s => '<button type="button" onclick="StreakProtection.saveStreak(\'' + s.id + '\');go(\'quests\')" style="padding:10px 14px;background:rgba(255,159,10,0.1);border:1px solid rgba(255,159,10,0.3);border-radius:12px;color:#ff9f0a;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;text-align:left">' + esc(s.name) + ' <span style="font-size:11px;opacity:0.7">(' + s.duration + ')</span></button>').join('') +
@@ -669,7 +669,7 @@ reg('academy', function(data) {
 
     return '<div class="topbar">' +
       '<button type="button" onclick="go(\'academy\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button>' +
-      '<div class="topbar-title">' + lesson.icon + ' ' + esc(lesson.title) + '</div>' +
+      '<div class="topbar-title">' + esc(lesson.title) + '</div>' +
       '</div>' +
 
       '<div style="padding:16px">' +
@@ -682,7 +682,7 @@ reg('academy', function(data) {
 
       lesson.quiz ?
         '<div style="background:rgba(var(--c1-rgb),0.06);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:12px;padding:14px">' +
-        '<div style="font-size:12px;font-weight:700;color:var(--c1);margin-bottom:10px">📝 Quick Quiz</div>' +
+        '<div style="font-size:12px;font-weight:700;color:var(--c1);margin-bottom:10px">Quick Quiz</div>' +
         '<div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:12px">' + esc(lesson.quiz.question) + '</div>' +
         lesson.quiz.options.map((opt, i) =>
           '<button type="button" onclick="var r=KnowledgeAcademy.completeLesson(\'' + lessonId + '\',' + i + ');if(r.success){go(\'academy\',{lesson:\'' + lessonId + '\'})}else{this.style.background=\'rgba(255,69,58,0.15)\';this.style.borderColor=\'rgba(255,69,58,0.4)\'}" ' +
@@ -706,7 +706,7 @@ reg('academy', function(data) {
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
     '<div><div style="font-size:14px;font-weight:800;color:' + level.color + '">Level ' + level.level + ' · ' + esc(level.title) + '</div>' +
     '<div style="font-size:11px;color:var(--txt3)">' + xp + ' XP · ' + KnowledgeAcademy.completed().length + '/' + KnowledgeAcademy.LESSONS.length + ' lessons</div></div>' +
-    '<div style="font-size:36px">🎓</div></div>' +
+    '<div style="display:flex;justify-content:center">' + (typeof iconTile==='function'?iconTile('gradcap','c1',48):'') + '</div></div>' +
     '<div style="width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px">' +
     '<div style="width:' + xpProg.pct + '%;height:6px;border-radius:3px;background:' + level.color + '"></div></div>' +
     '</div>' +
@@ -719,7 +719,7 @@ reg('academy', function(data) {
         modLessons.map(l => {
           const done = KnowledgeAcademy.isCompleted(l.id);
           return '<div onclick="go(\'academy\',{lesson:\'' + l.id + '\'})" style="background:var(--bg3);border:1px solid ' + (done ? 'rgba(48,209,88,0.3)' : 'var(--border)') + ';border-radius:14px;padding:14px;margin-bottom:8px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;gap:12px">' +
-            '<div style="font-size:28px">' + l.icon + '</div>' +
+            '<div style="display:flex;width:36px;justify-content:center">' + (typeof icon==='function' && l.icon && l.icon.indexOf(' ')===-1 ? icon(l.icon, 26) : esc(l.icon||'')) + '</div>' +
             '<div style="flex:1">' +
             '<div style="font-size:14px;font-weight:700;color:var(--txt)">' + esc(l.title) + '</div>' +
             '<div style="font-size:11px;color:var(--txt3)">' + esc(l.summary) + ' · ' + l.xp + ' XP</div>' +
@@ -740,10 +740,10 @@ window.renderPhysiqueTimelineBody = function() {
   const points = PhysiqueTimeline.getPoints();
   const changes = PhysiqueTimeline.changes();
 
-  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">📸 Physique Timeline</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Physique Timeline</div></div>' +
 
     (points.length === 0 ?
-      '<div style="padding:60px 20px;text-align:center"><div style="font-size:56px;margin-bottom:14px">📸</div>' +
+      '<div style="padding:60px 20px;text-align:center"><div style="display:flex;justify-content:center;margin-bottom:14px">' + (typeof iconTile === 'function' ? iconTile('camera', 'c1', 56) : '') + '</div>' +
       '<div style="font-size:16px;font-weight:800;color:var(--txt);margin-bottom:8px">No Measurements Yet</div>' +
       '<div style="font-size:13px;color:var(--txt2);line-height:1.6;max-width:260px;margin:0 auto">Add body measurements in Body tab to track your physique transformation over time.</div>' +
       '<button type="button" onclick="go(\'bodymap\')" class="btn btn-primary" style="margin-top:20px">Add First Measurement ›</button>' +

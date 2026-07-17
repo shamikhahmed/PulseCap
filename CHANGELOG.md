@@ -1,5 +1,12 @@
 # Changelog — PulseCap
 
+## 5.6.0 (2026-07-17) — Architecture + lazy Learn + polish
+- **Split engines:** `js/engines.js` extracted from monolith `app.js` (~2.5k → ~700 LOC shell).
+- **Lazy Learn routes:** anatomy/encyclopedia/search/calculators/quests/assistant/… load on demand via `MODULE_SRC` + `loadScript`; SW still precaches for offline (`pulsecap-v59`).
+- **Design tokens:** expanded spacing/type/radius utilities (`.pad`, `.card-block`, `.type-*`).
+- **De-emoji:** coach / quests / recovery-debt chrome → stroke icons; install banner + celebrate defaults cleaned.
+- **Viewport QA:** 320/430/768 tests + `docs/IPHONE-SOAK.md` real-device checklist.
+
 ## 5.5.2 (2026-07-17) — Production audit hardening
 - **Audit:** full principal-engineer pass documented in `docs/PRODUCTION-AUDIT-5.5.2.md`.
 - **Dead path removal:** deleted unused `js/cap-validators.js`, removed Capacitor packages/config/scripts (PWA-only), removed orphan roadmap modal.

@@ -177,38 +177,28 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
   <script src="js/data/splits-db.js"></script>
   <script src="js/data/injuries-db.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/engines.js"></script>
+  <!-- Eager boot path: Today / Train / Body / Me + shared deps -->
   <script src="js/modules/onboarding.js"></script>
   <script src="js/modules/dashboard.js"></script>
   <script src="js/modules/workout.js"></script>
   <script src="js/data/exercise-library.js"></script>
   <script src="js/data/form-loops.js"></script>
   <script src="js/modules/bodymap.js"></script>
-  <script src="js/modules/calculators.js"></script>
   <script src="js/modules/coach.js"></script>
   <script src="js/modules/progress.js"></script>
   <script src="js/modules/nutrition.js"></script>
   <script src="js/modules/recovery.js"></script>
   <script src="js/modules/settings.js"></script>
   <script src="js/modules/profiles.js"></script>
-  <script src="js/modules/anatomy.js"></script>
   <script src="js/modules/rehab.js"></script>
-  <script src="js/modules/calisthenics.js"></script>
   <script src="js/modules/knowledge-graph.js"></script>
   <script src="js/modules/recovery-debt.js"></script>
   <script src="js/modules/physique.js"></script>
-  <script src="js/modules/injury-risk.js"></script>
   <script src="js/modules/training-intelligence.js"></script>
-  <script src="js/modules/advanced-search.js"></script>
-  <script src="js/modules/visualizations.js"></script>
-  <script src="js/modules/encyclopedia.js"></script>
-  <script src="js/modules/body-intelligence.js"></script>
-  <script src="js/modules/physique-archetype.js"></script>
-  <script src="js/modules/training-style.js"></script>
-  <script src="js/modules/fitness-assistant.js"></script>
-  <script src="js/modules/quests.js"></script>
   <script src="js/modules/hub.js"></script>
-  <script src="js/modules/equipment-setup.js"></script>
   <script src="js/modules/photos.js"></script>
+  <!-- Learn deep-screens load on demand via go() + MODULE_SRC (still SW-cached for offline) -->
 
   <script>
     S.init();
@@ -243,7 +233,7 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
           var banner = document.createElement('div');
           banner.id = 'install-banner';
           banner.style.cssText = 'position:fixed;bottom:calc(var(--nav-h,64px) + var(--safe,0px) + 8px);left:16px;right:16px;background:var(--bg3);border:1px solid var(--border2);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;z-index:888;box-shadow:0 8px 32px rgba(0,0,0,0.3);animation:entryIn 0.3s ease';
-          banner.innerHTML = '<div style="font-size:28px" aria-hidden="true">📱</div><div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">Add to Home Screen</div><div style="font-size:11px;color:var(--txt3)">Install PulseCap for the best experience</div></div><button type="button" onclick="_installPWA()" style="background:var(--grad);color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">Install</button><button type="button" aria-label="Dismiss" onclick="document.getElementById(\'install-banner\').remove();localStorage.setItem(\'fos_installed\',\'dismissed\')" style="background:none;border:none;color:var(--txt3);font-size:18px;cursor:pointer;padding:4px;touch-action:manipulation">×</button>';
+          banner.innerHTML = '<div style="flex-shrink:0">' + (typeof iconTile === 'function' ? iconTile('sparkles', 'c1', 40) : '') + '</div><div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">Add to Home Screen</div><div style="font-size:11px;color:var(--txt3)">Install PulseCap for the best experience</div></div><button type="button" onclick="_installPWA()" style="background:var(--grad);color:#fff;border:none;border-radius:10px;padding:8px 14px;font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">Install</button><button type="button" aria-label="Dismiss" onclick="document.getElementById(\'install-banner\').remove();localStorage.setItem(\'fos_installed\',\'dismissed\')" style="background:none;border:none;color:var(--txt3);font-size:18px;cursor:pointer;padding:4px;touch-action:manipulation">×</button>';
           document.body.appendChild(banner);
         }, 2000);
       }
@@ -257,13 +247,13 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
       if (!_deferredInstallPrompt) return;
       _deferredInstallPrompt.prompt();
       _deferredInstallPrompt.userChoice.then(function(r) {
-        if (r.outcome === 'accepted') { localStorage.setItem('fos_installed','true'); toast('PulseCap installed! 🎉','ok'); }
+        if (r.outcome === 'accepted') { localStorage.setItem('fos_installed','true'); toast('PulseCap installed','ok'); }
         _deferredInstallPrompt = null;
         var b = document.getElementById('install-banner'); if (b) b.remove();
       });
     };
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=58').then(function(r){ r.update(); }).catch(function(){});
+      navigator.serviceWorker.register('sw.js?v=59').then(function(r){ r.update(); }).catch(function(){});
     }
   </script>
   <script src="js/capricorn-motion.js"></script>

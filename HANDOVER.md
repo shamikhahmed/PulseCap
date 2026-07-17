@@ -7,8 +7,8 @@
 Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Activity / widgets planned). Workouts, nutrition, recovery, anatomy, 30+ modules.
 
 ## Facts
-**Version:** 5.5.2
-**SW cache:** `pulsecap-v58`
+**Version:** 5.6.0
+**SW cache:** `pulsecap-v59`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.
@@ -23,8 +23,9 @@ open screen-gallery.html
 ```
 
 ## Architecture
-- `js/app.js` — shell, router (`go()`), engines (Program / Recap / Plate / RestNotify / Weight / Muscle / …)
-- `js/modules/` — feature screens
+- `js/app.js` — shell, router (`go()` + lazy `MODULE_SRC`), helpers, nav
+- `js/engines.js` — Program / Recap / Plate / RestNotify / Weight / Muscle / …
+- `js/modules/` — feature screens (Learn deep-screens load on demand)
 - `js/data/form-loops.js` — honest offline form **cues** (not videos) + `isBarbell()`
 - `js/data/exercise-library.js` — optional wger.de download for real form clips
 - Desktop sidebar + mobile glass tab bar (Today · Train · Body · Learn · Me)

@@ -561,7 +561,7 @@ textarea:focus-visible,
   outline-offset: 2px;
 }
 
-/* Spacing tokens (4pt grid) */
+/* Spacing + type tokens (4pt grid) */
 :root {
   --space-1: 4px;
   --space-2: 8px;
@@ -571,9 +571,30 @@ textarea:focus-visible,
   --space-6: 24px;
   --space-8: 32px;
   --type-caption: 11px;
+  --type-label: 12px;
   --type-body: 15px;
   --type-title: 22px;
   --type-hero: 28px;
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+}
+
+.pad { padding: var(--space-4); }
+.pad-x { padding-left: var(--space-4); padding-right: var(--space-4); }
+.pad-y { padding-top: var(--space-4); padding-bottom: var(--space-4); }
+.stack-2 > * + * { margin-top: var(--space-2); }
+.stack-3 > * + * { margin-top: var(--space-3); }
+.stack-4 > * + * { margin-top: var(--space-4); }
+.type-caption { font-size: var(--type-caption); letter-spacing: 0.06em; text-transform: uppercase; font-weight: 700; color: var(--txt3); }
+.type-body { font-size: var(--type-body); color: var(--txt2); line-height: 1.5; }
+.type-title { font-size: var(--type-title); font-weight: 800; color: var(--txt); letter-spacing: -0.02em; }
+.card-block {
+  margin: 0 var(--space-4) var(--space-3);
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
 }
 
 #toast .toast-icon {

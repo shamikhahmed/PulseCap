@@ -53,11 +53,11 @@ const RecoveryDebtEngine = {
   },
 
   label(debt) {
-    if (debt >= 80) return { text: 'Critical', color: '#ff453a', emoji: '🔴', action: 'Full rest day required' };
-    if (debt >= 60) return { text: 'High', color: '#ff9f0a', emoji: '🟠', action: 'Light session only or rest' };
-    if (debt >= 40) return { text: 'Moderate', color: '#f5c842', emoji: '🟡', action: 'Reduce volume 20-30%' };
-    if (debt >= 20) return { text: 'Low', color: '#30d158', emoji: '🟢', action: 'Train normally' };
-    return { text: 'Minimal', color: '#00c7ff', emoji: '🔵', action: 'Peak performance window' };
+    if (debt >= 80) return { text: 'Critical', color: '#ff453a', action: 'Full rest day required' };
+    if (debt >= 60) return { text: 'High', color: '#ff9f0a', action: 'Light session only or rest' };
+    if (debt >= 40) return { text: 'Moderate', color: '#f5c842', action: 'Reduce volume 20-30%' };
+    if (debt >= 20) return { text: 'Low', color: '#30d158', action: 'Train normally' };
+    return { text: 'Minimal', color: '#00c7ff', action: 'Peak performance window' };
   },
 
   history() {
@@ -154,7 +154,7 @@ const DailyDecision = {
     /* Severe injury outranks everything — lifting waits, walking doesn't */
     const injury = typeof InjuriesDB !== 'undefined' ? InjuriesDB.assessActive() : { shouldRest: false, messages: [], count: 0 };
     if (injury.shouldRest) return {
-      decision: 'rest', title: 'Injury Recovery', emoji: '🩹', ic: 'bandage', tint: 'c4', color: '#ff453a',
+      decision: 'rest', title: 'Injury Recovery', ic: 'bandage', tint: 'c4', color: '#ff453a',
       reason: (injury.messages[0] || 'A severe injury is flagged') + '. Skip lifting today — a 20-30 min walk keeps blood flowing without loading the injury.',
       actions: ['Walk 20-30 min at easy pace','Follow your rehab protocol (Body → Rehab)','Ice/elevate if swollen, heat if stiff','Log pain level changes in Rehab'],
       confidence: 96
@@ -164,7 +164,7 @@ const DailyDecision = {
     const skips = S.g('skippedDays') || [];
     const lastSkip = skips[skips.length - 1];
     if (lastSkip && lastSkip.date === today()) return {
-      decision: 'rest', allowTrain: true, title: 'Day Skipped', emoji: '🗓️', ic: 'calendar', tint: 'c2', color: '#8e8e93',
+      decision: 'rest', allowTrain: true, title: 'Day Skipped', ic: 'calendar', tint: 'c2', color: '#8e8e93',
       reason: lastSkip.shifted
         ? lastSkip.name + ' moved to your next gym day. The week shifts with you — nothing lost.'
         : 'Schedule holds. A short walk today keeps the habit alive.',
@@ -174,56 +174,56 @@ const DailyDecision = {
 
     /* Scheduled rest day (gym days in Settings → Training) */
     if (typeof SplitEngine !== 'undefined' && SplitEngine.isScheduledRestDay()) return {
-      decision: 'rest', allowTrain: true, title: 'Scheduled Rest Day', emoji: '🌿', ic: 'leaf', tint: 'c3', color: '#30d158',
+      decision: 'rest', allowTrain: true, title: 'Scheduled Rest Day', ic: 'leaf', tint: 'c3', color: '#30d158',
       reason: 'Today isn\'t one of your gym days. Active recovery beats the couch — but the gym is open if you feel great.',
       actions: ['20-30 min walk or easy cycle','10 min stretching or mobility','Hit your protein target anyway','Sleep 8+ hours tonight'],
       confidence: 90
     };
 
     if (debt >= 80 || readiness < 30) return {
-      decision: 'rest', title: 'Take the Day', emoji: '🛌', ic: 'bed', tint: 'c4', color: '#ff453a',
+      decision: 'rest', title: 'Take the Day', ic: 'bed', tint: 'c4', color: '#ff453a',
       reason: 'Your body\'s deep in the red (' + debt + '/100 debt). Training through this buys nothing. Rest is the workout today.',
       actions: ['Sleep 8+ hours tonight','A short walk is fine — nothing more','Eat properly, drink water','Foam roll if you\'re restless'],
       confidence: 95
     };
 
     if (debt >= 60 || readiness < 45) return {
-      decision: 'light', title: 'Go Light Today', emoji: '🚶', ic: 'walk', tint: 'c5', color: '#ff9f0a',
+      decision: 'light', title: 'Go Light Today', ic: 'walk', tint: 'c5', color: '#ff9f0a',
       reason: 'Recovery\'s behind (' + debt + '/100). Show up, move well, leave wanting more.',
       actions: ['Drop weights 30-40%','Cut a set from everything','Slow reps, perfect form','Nothing to failure today'],
       confidence: 88
     };
 
     if (RecoveryDebtEngine.deloadRecommended() || streak >= 21) return {
-      decision: 'deload', title: 'Deload Week', emoji: '📉', ic: 'trendDown', tint: 'c5', color: '#f5c842',
+      decision: 'deload', title: 'Deload Week', ic: 'trendDown', tint: 'c5', color: '#f5c842',
       reason: 'You\'ve stacked serious training stress. Back off now and you\'ll come back stronger — that\'s how it works.',
       actions: ['Same days, same lifts','Half the volume','60-70% of your usual weight','Make every rep look perfect'],
       confidence: 82
     };
 
     if (plateauRisk >= 70) return {
-      decision: 'variation', title: 'Shake It Up', emoji: '🔄', ic: 'refresh', tint: 'c2', color: '#af52de',
+      decision: 'variation', title: 'Shake It Up', ic: 'refresh', tint: 'c2', color: '#af52de',
       reason: 'Progress is flattening (' + plateauRisk + '% plateau risk). Same stimulus, same body. Change something.',
       actions: ['Swap one or two main lifts','Change rep range — try 3-5 heavy','Add a superset or drop set','Hit your weak point first'],
       confidence: 76
     };
 
     if (readiness >= 85 && debt < 20) return {
-      decision: 'push', title: 'Green Light — Send It', emoji: '🚀', ic: 'flame', tint: 'c3', color: '#30d158',
+      decision: 'push', title: 'Green Light — Send It', ic: 'flame', tint: 'c3', color: '#30d158',
       reason: 'Readiness ' + readiness + '/100 and fully recovered. Days like this are for PRs.',
       actions: ['Go for the PR on your main lift','Take sets 1-2 reps from failure','One extra set if you\'ve got it','Warm up properly first'],
       confidence: 91
     };
 
     if (debt < 30 && readiness >= 70) return {
-      decision: 'cardio', title: 'Good Day for Cardio', emoji: '🏃', ic: 'run', tint: 'c1', color: '#00c7ff',
+      decision: 'cardio', title: 'Good Day for Cardio', ic: 'run', tint: 'c1', color: '#00c7ff',
       reason: 'You\'re recovered and fresh. Some easy cardio today pays off in every session this week.',
       actions: ['20-30 min at conversation pace','Heart rate 130-150','Bike, incline walk, or row','Stretch after while you\'re warm'],
       confidence: 65
     };
 
     return {
-      decision: 'train', title: 'Train As Planned', emoji: '💪', ic: 'dumbbell', tint: 'c1', color: 'var(--c1)',
+      decision: 'train', title: 'Train As Planned', ic: 'dumbbell', tint: 'c1', color: 'var(--c1)',
       reason: 'Readiness ' + readiness + '/100, recovery on track. Normal day — go do the work.',
       actions: ['Run your split as written','Add weight where last week felt easy','Finish every planned set','Log it all — the data is the coach'],
       confidence: 84
@@ -295,16 +295,16 @@ window.renderRecoveryDebtBody = function() {
     debtCircle +
     '<div style="text-align:left">' +
     '<div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:6px">Recovery Status</div>' +
-    '<div style="font-size:22px;font-weight:900;color:' + debtColor + ';margin-bottom:4px">' + label.emoji + ' ' + esc(label.text) + '</div>' +
+    '<div style="font-size:22px;font-weight:900;color:' + debtColor + ';margin-bottom:4px">' + esc(label.text) + '</div>' +
     '<div style="font-size:12px;color:var(--txt2);line-height:1.5;max-width:160px">' + esc(label.action) + '</div>' +
-    (RecoveryDebtEngine.deloadRecommended() ? '<div style="margin-top:8px;font-size:11px;color:#f5c842;font-weight:700">⚠️ Deload Recommended</div>' : '') +
+    (RecoveryDebtEngine.deloadRecommended() ? '<div style="margin-top:8px;font-size:11px;color:#f5c842;font-weight:700">Deload Recommended</div>' : '') +
     '</div></div></div>' +
 
     // Coach Decision card
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:20px;padding:18px">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">Today\'s Coach Recommendation</div>' +
     '<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">' +
-    '<div style="font-size:40px">' + decision.emoji + '</div>' +
+    '<div style="display:flex">' + (typeof iconTile === 'function' ? iconTile(decision.ic || 'dumbbell', decision.tint || 'c1', 44) : '') + '</div>' +
     '<div>' +
     '<div style="font-size:18px;font-weight:800;color:' + decision.color + '">' + esc(decision.title) + '</div>' +
     '<div style="font-size:12px;color:var(--txt3);margin-top:2px">Confidence: ' + decision.confidence + '%</div>' +
