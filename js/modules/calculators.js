@@ -53,7 +53,7 @@ reg('calculators', function() {
 
   return moduleTopbar('Calculators', {
     backScreen: 'hub',
-    right: '<button type="button" class="topbar-icon press" onclick="go(\'bodymap\')" aria-label="Body">🫀</button>'
+    right: '<button type="button" class="topbar-icon press" onclick="go(\'bodymap\')" aria-label="Body">' + (typeof icon==='function'?icon('heart',20):'') + '</button>'
   }) +
 
     '<div  class="pad-x-16-b">' +
@@ -95,7 +95,7 @@ reg('calculators', function() {
     '</div>' +
 
     '<div  class="pad-x-16-b">' +
-    '<button type="button" class="btn btn-secondary w-full" onclick="go(\'bodymap\')" >📏 Log Measurements in Body Tab</button>' +
+    '<button type="button" class="btn btn-secondary w-full" onclick="go(\'bodymap\')" style="display:flex;align-items:center;justify-content:center;gap:8px">' + (typeof icon==='function'?icon('ruler',18):'') + 'Log Measurements in Body Tab</button>' +
     '</div>' +
     '<div  class="spacer-bottom"></div>';
 });

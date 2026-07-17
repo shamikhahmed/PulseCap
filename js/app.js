@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '5.6.4';
+window.APP_VERSION = '5.6.5';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -96,7 +96,9 @@ const _ICONS = {
   book:     'M5 4h6a2 2 0 012 2v14a2 2 0 00-2-2H5zM19 4h-6a2 2 0 00-2 2v14a2 2 0 012-2h6z',
   gradcap:  'M12 4L2 9l10 5 10-5zM6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6',
   target:   'M12 21a9 9 0 100-18 9 9 0 000 18zM12 17a5 5 0 100-10 5 5 0 000 10zM12 13a1 1 0 100-2 1 1 0 000 2z',
-  clock:    'M12 21a9 9 0 100-18 9 9 0 000 18zM12 7v5l3 3'
+  clock:    'M12 21a9 9 0 100-18 9 9 0 000 18zM12 7v5l3 3',
+  star:     'M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6-4.5-4.2 6.1-.7z',
+  edit:     'M4 20h4L18.5 9.5l-4-4L4 16zM14 6l4 4'
 };
 function icon(name, size, color) {
   const d = _ICONS[name];

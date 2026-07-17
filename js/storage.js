@@ -247,7 +247,7 @@ const S = {
           { type: 'sessions_total', target: 30, label: '30 strength sessions', progress: 0, completed: false },
           { type: 'sets_muscle', muscle: 'chest', target: 200, label: '200 chest sets', progress: 0, completed: false }
         ],
-        reward: { xp: 800, badge: '💪 Strength Foundation', tip: 'PR frequency drops naturally — celebrate each one' },
+        reward: { xp: 800, badge: 'Strength Foundation', tip: 'PR frequency drops naturally — celebrate each one' },
         startDate: new Date(Date.now() - 14 * 864e5).toISOString().slice(0, 10),
         dueDate: new Date(Date.now() + 42 * 864e5).toISOString().slice(0, 10),
         status: 'active'

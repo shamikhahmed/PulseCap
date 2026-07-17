@@ -428,6 +428,17 @@ window.renderPhysiqueUnified = function(data) {
 };
 
 reg('physique', function(data) {
+  const tab = (data && data.tab) || 'score';
+  const need = tab === 'archetype'
+    ? { fn: 'renderPhysiqueArchetypeBody', src: 'js/modules/physique-archetype.js' }
+    : tab === 'timeline'
+      ? { fn: 'renderPhysiqueTimelineBody', src: 'js/modules/quests.js' }
+      : null;
+  if (need && typeof window[need.fn] !== 'function' && typeof loadScript === 'function') {
+    loadScript(need.src).then(function() {
+      if (typeof currentScreenId === 'function' && currentScreenId() === 'physique') go('physique', data);
+    }).catch(function() {});
+  }
   return window.renderPhysiqueUnified(data);
 });
 

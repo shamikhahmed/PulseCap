@@ -1,5 +1,13 @@
 # Changelog — PulseCap
 
+## 5.6.5 (2026-07-17) — iPhone 16 Pro Max device audit
+- **Device walk:** simulated iPhone 16 Pro Max (440×956, DPR 3, safe-area top 62 / bottom 34) across every screen + active workout in dark + light; screenshotted and reviewed each, plus per-screen nav-overlap and horizontal-scroll probes.
+- **Physique tabs fixed (bug):** Archetype/Timeline tabs never lazy-loaded their module — Archetype sat on "Archetype loading…" forever. `reg('physique')` now loads the module and re-renders.
+- **Double topbar fixed (bug):** Physique Archetype + Timeline bodies rendered their own topbar inside the unified Physique shell → two stacked headers + dead gap. Inner topbars removed (always embedded via alias).
+- **De-emoji wave 3:** quests (`⭐`→star icon, `⚔️`/`💪` dropped, checkboxes → clean boxes), academy (`🎓`/`✅`→icons), calculators (`🫀`/`📏`→heart/ruler icons), active workout note (`📝`→edit icon), seeded quest badge.
+- **Icons:** added `star` + `edit` stroke glyphs to the icon set.
+- SW `pulsecap-v64`.
+
 ## 5.6.4 (2026-07-17) — Close the honesty gaps
 - **Exhaustive widgets:** `tests/functional.spec.js` battery covers settings tabs, theme cycle, weight/meals, recovery, workout, search, calculators, assistant, rehab, anatomy, quests, profiles, cardio, equipment, export, physique/recovery/intel tabs.
 - **Nav clearance:** `#view` always reserves `108px + safe` bottom padding (not only after premium-nav class attaches); `.spacer-bottom` matches.

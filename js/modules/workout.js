@@ -1002,7 +1002,7 @@ reg('active', function() {
       '<div class="sets-list">'+setsHTML+'</div>' +
       '<div style="padding:10px 16px;display:flex;gap:8px;border-top:1px solid var(--border)">' +
       '<button type="button" onclick="_addSet('+exIdx+')" style="flex:1;padding:10px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">+ Set</button>' +
-      (!_focusMode ? '<button type="button" onclick="_toggleNote('+exIdx+')" style="padding:10px 14px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);font-size:13px;cursor:pointer;touch-action:manipulation">📝</button>' : '') +
+      (!_focusMode ? '<button type="button" onclick="_toggleNote('+exIdx+')" style="padding:10px 14px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);font-size:13px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center" aria-label="Add note">' + (typeof icon==='function'?icon('edit',18):'📝') + '</button>' : '') +
       '</div>' +
       '<div id="note-'+exIdx+'" style="display:'+(_focusMode?'none':(noteVal?'block':'none'))+';padding:0 16px 12px">' +
       '<textarea class="field" placeholder="How did this feel? Form notes, energy level..." ' +

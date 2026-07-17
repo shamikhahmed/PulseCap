@@ -593,7 +593,7 @@ reg('quests', function() {
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
     '<div><div style="font-size:14px;font-weight:800;color:' + level.color + '">Level ' + level.level + ' · ' + esc(level.title) + '</div>' +
     '<div  class="muted-11">' + xp + ' total XP</div></div>' +
-    '<div style="font-size:32px">⭐</div></div>' +
+    '<div style="display:flex">' + (typeof icon==='function'?icon('star',30,level.color):'') + '</div></div>' +
     '<div style="width:100%;height:8px;background:rgba(255,255,255,0.06);border-radius:4px">' +
     '<div style="width:' + xpProg.pct + '%;height:8px;border-radius:4px;background:' + level.color + '"></div></div>' +
     '<div style="font-size:11px;color:var(--txt3);margin-top:4px">' + xpProg.current + ' / ' + xpProg.needed + ' XP to next level</div>' +
@@ -613,7 +613,7 @@ reg('quests', function() {
           '<div style="width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;margin-bottom:10px">' +
           '<div style="width:' + pct + '%;height:6px;border-radius:3px;background:var(--c1);transition:width 0.6s ease"></div></div>' +
           q.goals.map(g => '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)">' +
-            '<div style="font-size:14px">' + (g.completed ? '✅' : '⬜') + '</div>' +
+            '<div style="display:flex;width:16px;height:16px;align-items:center;justify-content:center;border-radius:5px;' + (g.completed ? 'background:#30d158;color:#fff' : 'border:1.5px solid var(--border)') + '">' + (g.completed && typeof icon==='function' ? icon('check', 11, '#fff') : '') + '</div>' +
             '<div style="flex:1;font-size:12px;color:' + (g.completed ? '#30d158' : 'var(--txt2)') + '">' + esc(g.label) + '</div>' +
             (g.target ? '<div  class="muted-11">' + Math.min(g.progress||0, g.target) + '/' + g.target + '</div>' : '') +
             '</div>').join('') +
@@ -629,7 +629,7 @@ reg('quests', function() {
         '<div style="font-size:14px;font-weight:800;color:var(--txt);margin-bottom:3px">' + esc(t.title) + '</div>' +
         '<div style="font-size:12px;color:var(--txt2);margin-bottom:8px">' + esc(t.description) + '</div>' +
         '<div style="font-size:11px;color:var(--txt3);margin-bottom:8px">Reward: ' + esc(t.reward.badge) + ' · ' + t.reward.xp + ' XP · ' + t.duration_weeks + ' weeks</div>' +
-        '<button type="button" onclick="QuestEngine.startQuest(\'' + t.id + '\');go(\'quests\')" style="padding:8px 16px;background:var(--c1);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">⚔️ Start Quest</button>' +
+        '<button type="button" onclick="QuestEngine.startQuest(\'' + t.id + '\');go(\'quests\')" style="padding:8px 16px;background:var(--c1);border:none;border-radius:10px;color:#fff;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">Start Quest</button>' +
         '</div></div>').join('') + '</div>' : '') +
 
     (!active.length && !recommended.length ?
@@ -678,7 +678,7 @@ reg('academy', function(data) {
       '<div style="font-size:18px;font-weight:800;color:var(--txt);margin-bottom:8px">' + esc(lesson.title) + '</div>' +
       '<div style="font-size:13px;color:var(--txt2);line-height:1.8;white-space:pre-line;margin-bottom:16px">' + esc(lesson.content) + '</div>' +
 
-      (isCompleted ? '<div style="background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.3);border-radius:12px;padding:12px;text-align:center"><div style="font-size:13px;font-weight:700;color:#30d158">✅ Lesson Completed · +' + lesson.xp + ' XP earned</div></div>' :
+      (isCompleted ? '<div style="background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.3);border-radius:12px;padding:12px;text-align:center"><div style="font-size:13px;font-weight:700;color:#30d158;display:flex;align-items:center;justify-content:center;gap:6px">' + (typeof icon==='function'?icon('check',15,'#30d158'):'') + 'Lesson Completed · +' + lesson.xp + ' XP earned</div></div>' :
 
       lesson.quiz ?
         '<div style="background:rgba(var(--c1-rgb),0.06);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:12px;padding:14px">' +
@@ -700,7 +700,7 @@ reg('academy', function(data) {
   const xpProg = KnowledgeAcademy.xpProgress();
   const modules = [...new Set(KnowledgeAcademy.LESSONS.map(l => l.module))];
 
-  return '<div class="topbar"><button type="button" class="topbar-icon press fs-20" onclick="go(\'dashboard\')">‹</button><div class="topbar-title">🎓 Knowledge Academy</div></div>' +
+  return '<div class="topbar"><button type="button" class="topbar-icon press fs-20" onclick="go(\'dashboard\')">‹</button><div class="topbar-title">Knowledge Academy</div></div>' +
 
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:16px;padding:14px">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
@@ -724,7 +724,7 @@ reg('academy', function(data) {
             '<div  class="row-title-14">' + esc(l.title) + '</div>' +
             '<div  class="muted-11">' + esc(l.summary) + ' · ' + l.xp + ' XP</div>' +
             '</div>' +
-            '<div class="fs-20">' + (done ? '✅' : '›') + '</div>' +
+            '<div class="fs-20" style="display:flex">' + (done && typeof icon==='function' ? icon('check', 20, '#30d158') : '<span style="color:var(--txt3)">›</span>') + '</div>' +
             '</div>';
         }).join('') +
         '</div>';
@@ -740,9 +740,7 @@ window.renderPhysiqueTimelineBody = function() {
   const points = PhysiqueTimeline.getPoints();
   const changes = PhysiqueTimeline.changes();
 
-  return moduleBackTopbar('Physique Timeline') +
-
-    (points.length === 0 ?
+  return (points.length === 0 ?
       '<div style="padding:60px 20px;text-align:center"><div style="display:flex;justify-content:center;margin-bottom:14px">' + (typeof iconTile === 'function' ? iconTile('camera', 'c1', 56) : '') + '</div>' +
       '<div style="font-size:16px;font-weight:800;color:var(--txt);margin-bottom:8px">No Measurements Yet</div>' +
       '<div style="font-size:13px;color:var(--txt2);line-height:1.6;max-width:260px;margin:0 auto">Add body measurements in Body tab to track your physique transformation over time.</div>' +

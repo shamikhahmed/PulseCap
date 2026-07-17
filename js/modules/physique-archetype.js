@@ -422,12 +422,7 @@ window.renderPhysiqueArchetypeBody = function(data) {
     var arch = archetypes[selected];
     var comp = PhysiqueArchetypes.comparison(selected);
 
-    return '<div class="topbar">' +
-      '<button type="button" onclick="PhysiqueArchetypes.setUserArchetype(null);go(\'physique-archetype\')"  class="back-chip">←</button>' +
-      '<div class="topbar-title" style="display:flex;align-items:center;gap:8px">' + icon(arch.icon, 18, arch.color) + esc(arch.name) + '</div>' +
-      '</div>' +
-
-      '<div style="padding:20px 16px 14px;text-align:center;background:linear-gradient(180deg,rgba(0,0,0,0.3),transparent)">' +
+    return '<div style="padding:20px 16px 14px;text-align:center;background:linear-gradient(180deg,rgba(0,0,0,0.3),transparent)">' +
       '<div style="display:flex;justify-content:center;color:' + arch.color + ';margin-bottom:8px">' + icon(arch.icon, 56, arch.color) + '</div>' +
       '<div style="font-size:20px;font-weight:900;color:' + arch.color + ';margin-bottom:6px">' + esc(arch.name) + '</div>' +
       '<div style="font-size:13px;color:var(--txt2);max-width:280px;margin:0 auto;line-height:1.6">' + esc(arch.description) + '</div>' +
@@ -481,9 +476,7 @@ window.renderPhysiqueArchetypeBody = function(data) {
       '<div  class="spacer-bottom"></div>';
   }
 
-  return moduleBackTopbar('Physique Archetype') +
-
-    '<div style="padding:16px 16px 8px">' +
+  return '<div style="padding:16px 16px 8px">' +
     '<div style="font-size:14px;color:var(--txt2);line-height:1.6;margin-bottom:4px">Choose your physique goal. PulseCap will show your current measurements vs target proportions and guide your training.</div>' +
     '</div>' +
 
