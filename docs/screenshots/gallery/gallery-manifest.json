@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "5.4.0",
-  "generated": "2026-07-17T10:59:43.905Z",
+  "version": "5.5.0",
+  "generated": "2026-07-17T11:53:39.741Z",
   "shots": [
     {
       "file": "desktop-01-dashboard.png",
@@ -208,6 +208,12 @@
       "viewport": "desktop"
     },
     {
+      "file": "desktop-35-active.png",
+      "label": "Active Workout",
+      "route": "go('active')",
+      "viewport": "desktop"
+    },
+    {
       "file": "mobile-01-dashboard.png",
       "label": "Dashboard",
       "route": "go('dashboard')",
@@ -409,6 +415,12 @@
       "file": "mobile-34-photos.png",
       "label": "Photos",
       "route": "go('photos')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-35-active.png",
+      "label": "Active Workout",
+      "route": "go('active')",
       "viewport": "mobile"
     }
   ]

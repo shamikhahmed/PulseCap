@@ -251,7 +251,7 @@ reg('dashboard', function() {
       return '<div style="margin:0 16px 14px;border-radius:18px;padding:14px 16px;' +
         'background:linear-gradient(135deg,rgba(0,213,255,0.1),rgba(123,95,255,0.08));' +
         'border:1px solid rgba(0,213,255,0.2);display:flex;align-items:center;gap:12px">' +
-        '<div style="font-size:28px;flex-shrink:0">☀️</div>' +
+        '<div style="font-size:28px;flex-shrink:0">' + iconTile('sun', 'c5', 36) + '</div>' +
         '<div style="flex:1;min-width:0">' +
         '<div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:3px">Morning Briefing</div>' +
         '<div style="font-size:11px;color:var(--txt3);line-height:1.45;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">' + esc(coachMsg) + '</div>' +
@@ -267,8 +267,8 @@ reg('dashboard', function() {
     const moreRow = '<div style="margin:0 16px 14px">' +
       '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Browse</div>' +
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
-      '<button type="button" onclick="go(\'hub\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 10px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left">📚 Learn directory</button>' +
-      '<button type="button" onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 10px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left">🔍 Search</button>' +
+      '<button type="button" onclick="go(\'hub\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 10px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left;display:flex;align-items:center;gap:8px">' + icon('book', 16) + ' Learn</button>' +
+      '<button type="button" onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 10px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left;display:flex;align-items:center;gap:8px">' + icon('search', 16) + ' Search</button>' +
       '</div></div>';
 
     const todayWt = (S.g('bodyStats') || []).find(b => b.date === localISO(new Date()));
@@ -314,36 +314,36 @@ reg('dashboard', function() {
       try { const r = S.g('recovery') || {}; return r.date === localISO(new Date()); } catch(e) { return false; }
     })();
     const checkinCard = (!checkedInToday && hr < 12) ?
-      '<div onclick="go(\'recovery\')" style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;touch-action:manipulation">' +
+      '<button type="button" onclick="go(\'recovery\')" class="dash-prompt" style="margin:0 16px 14px;width:calc(100% - 32px);border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;touch-action:manipulation;text-align:left">' +
       iconTile('sun', 'c5') +
       '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">30-second check-in</div>' +
       '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Sleep, soreness, mood — then I\'ll shape your day around it</div></div>' +
-      '<span style="color:var(--c1);font-size:18px">›</span></div>' : '';
+      '<span style="color:var(--c1);font-size:18px" aria-hidden="true">›</span></button>' : '';
 
     const dueSupps = typeof SupplementEngine !== 'undefined' ? SupplementEngine.getDueNow() : [];
     const suppPrompt = dueSupps.length ?
-      '<div onclick="go(\'nutrition\')" style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;touch-action:manipulation">' +
+      '<button type="button" onclick="go(\'nutrition\')" class="dash-prompt" style="margin:0 16px 14px;width:calc(100% - 32px);border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;touch-action:manipulation;text-align:left">' +
       iconTile('pill', 'c2') +
       '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">' + dueSupps.length + ' supplement' + (dueSupps.length > 1 ? 's' : '') + ' due</div>' +
       '<div style="font-size:11px;color:var(--txt3);margin-top:2px">' + esc(dueSupps.slice(0, 3).map(function(s){ return s.name; }).join(', ')) + '</div></div>' +
-      '<span style="color:var(--c1);font-size:18px">›</span></div>' : '';
+      '<span style="color:var(--c1);font-size:18px" aria-hidden="true">›</span></button>' : '';
 
     const setupBanner = (S.g('settings.equipmentSetupPending') || !S.g('user.equipmentConfigured')) ?
-      '<div onclick="go(\'equipment-setup\')" style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:rgba(0,213,255,0.08);border:1px solid rgba(0,213,255,0.2);display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;touch-action:manipulation">' +
+      '<button type="button" onclick="go(\'equipment-setup\')" class="dash-prompt" style="margin:0 16px 14px;width:calc(100% - 32px);border-radius:16px;padding:14px 16px;background:rgba(0,213,255,0.08);border:1px solid rgba(0,213,255,0.2);display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;touch-action:manipulation;text-align:left">' +
       iconTile('dumbbell', 'c1') +
       '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--c1)">Set up your equipment</div>' +
       '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Home, gym, Life Fitness machines — get matched workouts</div></div>' +
-      '<span style="color:var(--c1);font-size:18px">›</span></div>' : '';
+      '<span style="color:var(--c1);font-size:18px" aria-hidden="true">›</span></button>' : '';
 
     const injuryAssess = typeof InjuriesDB !== 'undefined' ? InjuriesDB.assessActive() : { shouldRest: false, messages: [], count: 0 };
     const injuryBanner = injuryAssess.count > 0 && (injuryAssess.shouldRest || injuryAssess.messages.length) ?
-      '<div onclick="go(\'settings\',{tab:\'profile\'})" style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.2);cursor:pointer;touch-action:manipulation">' +
+      '<button type="button" onclick="go(\'rehab\')" class="dash-prompt" style="margin:0 16px 14px;width:calc(100% - 32px);border-radius:16px;padding:14px 16px;background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.2);cursor:pointer;touch-action:manipulation;text-align:left">' +
       '<div style="font-size:13px;font-weight:700;color:#ff453a;margin-bottom:4px">' +
-      (injuryAssess.shouldRest ? '⚠️ Consider a rest day' : '🩹 Injury modifications active') +
+      (injuryAssess.shouldRest ? 'Consider a rest day' : 'Injury modifications active') +
       '</div>' +
       '<div style="font-size:11px;color:var(--txt3);line-height:1.45">' +
       esc(injuryAssess.messages.slice(0, 2).join(' · ') || 'Active injuries may swap exercises in today\'s workout') +
-      '</div></div>' : '';
+      '</div></button>' : '';
 
     const splitRec = S.g('settings.suggestedSplit');
     const splitBanner = splitRec && !S.g('user.splitConfirmed') ?
@@ -354,18 +354,33 @@ reg('dashboard', function() {
       '<button type="button" class="btn btn-primary btn-sm" onclick="applySuggestedSplit()">Use this split</button> ' +
       '<button type="button" class="btn btn-ghost btn-sm" onclick="go(\'settings\',{tab:\'training\'})">Choose another</button></div>' : '';
 
+    /* Priority queue: show max 2 prompts on first paint; rest behind More */
+    const promptQueue = [];
+    if (recapCard) promptQueue.push({ pri: 0, html: recapCard });
+    if (injuryBanner) promptQueue.push({ pri: 1, html: injuryBanner });
+    if (checkinCard) promptQueue.push({ pri: 2, html: checkinCard });
+    if (weightPrompt) promptQueue.push({ pri: 3, html: weightPrompt });
+    if (suppPrompt) promptQueue.push({ pri: 4, html: suppPrompt });
+    if (setupBanner) promptQueue.push({ pri: 5, html: setupBanner });
+    if (splitBanner) promptQueue.push({ pri: 6, html: splitBanner });
+    promptQueue.sort(function(a, b) { return a.pri - b.pri; });
+    const topPrompts = promptQueue.slice(0, 2).map(function(p) { return p.html; }).join('');
+    const overflowPrompts = promptQueue.slice(2).map(function(p) { return p.html; }).join('');
+
     const moreDisclosure = '<details style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:4px 0">' +
-      '<summary style="padding:12px 16px;font-size:13px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;list-style:none">More for today</summary>' +
+      '<summary style="padding:12px 16px;font-size:13px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;list-style:none">More for today' +
+      (overflowPrompts ? ' · ' + promptQueue.slice(2).length + ' more' : '') + '</summary>' +
       '<div style="padding:0 0 8px">' +
+      overflowPrompts +
       (briefingCard || '') +
       (activeQuestCard || '') +
       (lastWktCard || '') +
       moreRow +
       '</div></details>';
 
-    /* P5 first paint: 5-tab shell + ≤3 cards (hero, session, optional empty-state). Rest behind disclosure. */
+    /* P5 first paint: hero + session + ≤2 prompts. Rest behind disclosure. */
     return demoBanner + topbar +
-      (recapCard || '') + (checkinCard || '') + (weightPrompt || '') + (suppPrompt || '') + (injuryBanner || '') + (setupBanner || '') + (splitBanner || '') +
+      topPrompts +
       heroCard +
       todayWorkout +
       (firstWorkoutEmpty || '') +
@@ -375,7 +390,7 @@ reg('dashboard', function() {
   } catch(e) {
     console.error('dashboard', e);
     return '<div style="padding:28px 20px;color:var(--txt);line-height:1.6">' +
-      '<div style="font-size:32px;margin-bottom:12px">⚠️</div>' +
+      '<div style="font-size:32px;margin-bottom:12px">' + icon('alert', 32, '#ff453a') + '</div>' +
       '<strong>Dashboard error</strong><br><span style="color:var(--txt3);font-size:13px">' + esc(e.message) + '</span>' +
       '<br><br><button type="button" class="btn btn-secondary" onclick="go(\'dashboard\')">Retry</button></div>';
   }

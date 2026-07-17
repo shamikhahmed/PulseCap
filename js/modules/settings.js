@@ -359,8 +359,8 @@ function _tabNotifications(u) {
     _toggle('Caffeine Warning', 'user.caffeineWarning', u.caffeineWarning!==false) +
     _toggle('Daily Morning Briefing', 'settings.dailyBriefing', S.g('settings.dailyBriefing') !== false) +
     _sectionTitle('Rest timer') +
-    '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.45">When the app is backgrounded, a system banner can show remaining rest (PWA Notification API).</div>' +
-    '<button type="button" class="btn btn-secondary" onclick="RestNotify.ensurePermission().then(function(p){toast(p===\'granted\'?\'Rest notifications on\':\'Permission \'+(p||\'denied\'),p===\'granted\'?\'ok\':\'warn\')})" style="width:100%;margin-bottom:14px">Enable rest notifications</button>' +
+    '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.45">Background rest banners need PulseCap <strong>installed to Home Screen</strong> (iOS 16.4+). Enable here once — never mid-workout.</div>' +
+    '<button type="button" class="btn btn-secondary" onclick="_enableRestNotify()" style="width:100%;margin-bottom:14px">Enable rest notifications</button>' +
     _sectionTitle('Coach Update Frequency') +
     '<div style="display:flex;gap:8px;margin-bottom:4px">' +
     ['daily','weekly'].map(function(freq) {
@@ -446,6 +446,15 @@ function _infoStat(label, val, sub) {
 }
 
 /* ── Actions ── */
+window._enableRestNotify = function() {
+  if (typeof RestNotify === 'undefined') return;
+  RestNotify.ensurePermission().then(function(p) {
+    if (p === 'granted') toast('Rest notifications on', 'ok');
+    else if (p === 'not-installed') toast('Add PulseCap to Home Screen first (Share → Add to Home Screen)', 'warn', 5000);
+    else if (p === 'unsupported') toast('Notifications not supported in this browser', 'warn');
+    else toast('Permission ' + (p || 'denied'), 'warn');
+  });
+};
 window._setSetting = function(key, val) {
   S.set(key, val);
   if (key === 'user.split') {

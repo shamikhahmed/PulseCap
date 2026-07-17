@@ -4,11 +4,11 @@
 > Last updated: 2026-07-17 · Fleet-wide standard: `capricorn-tooling/shared/CAP-STANDARD.md`
 
 ## What this is
-Smart Coach fitness OS — offline PWA. Workouts, nutrition, recovery, anatomy, 30+ modules.
+Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Activity / widgets planned). Workouts, nutrition, recovery, anatomy, 30+ modules.
 
 ## Facts
-**Version:** 5.4.0
-**SW cache:** `pulsecap-v55`
+**Version:** 5.5.0
+**SW cache:** `pulsecap-v56`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.
@@ -16,50 +16,49 @@ Smart Coach fitness OS — offline PWA. Workouts, nutrition, recovery, anatomy, 
 
 ## Run & verify
 ```bash
-python3 -m http.server 8766   # static (or npm run serve)
-npx playwright test           # 24 pass / 2 skip
-npm run gallery               # regenerate screen shots
-open screen-gallery.html      # VaultCap-style gallery browser
+python3 -m http.server 8766   # or npm run serve
+npx playwright test           # 26 pass / 2 skip
+npm run gallery               # regenerate screen shots (includes active workout)
+open screen-gallery.html
 ```
 
 ## Architecture
 - `js/app.js` — shell, router (`go()`), engines (Program / Recap / Plate / RestNotify / Weight / Muscle / …)
-- `js/modules/` — feature screens (dashboard, workout, nutrition, coach, anatomy, bodymap, settings, …)
-- `js/data/form-loops.js` — offline top-50 SVG form cues
-- `js/data/exercise-library.js` — optional wger.de download → localStorage
+- `js/modules/` — feature screens
+- `js/data/form-loops.js` — honest offline form **cues** (not videos) + `isBarbell()`
+- `js/data/exercise-library.js` — optional wger.de download for real form clips
 - Desktop sidebar + mobile glass tab bar (Today · Train · Body · Learn · Me)
 
 ## Cap Standard status (2026-07-17)
 | Cap Standard item | Status |
 |---|---|
 | Docs pack | ✅ |
-| Screen gallery | ✅ VaultCap-style `screen-gallery.html` |
+| Screen gallery | ✅ VaultCap-style + active workout |
 | Version discipline | ✅ VERSION.json ↔ APP_VERSION ↔ SW |
-| QA / e2e | ✅ flows + module-smoke |
+| QA / e2e | ✅ 26 flows + module-smoke |
 | CI gate | ✅ Playwright on push |
-| PWA polish | ✅ shortcuts + rest notifications |
+| PWA polish | ✅ shortcuts + rest notify (installed only) |
 | Demo mode | ✅ `?demo=1` |
 
 ## Engines worth knowing
 | Engine | Role |
 |---|---|
-| `ProgramEngine` | Stronglifts / SS linear + 5/3/1 TM waves |
-| `RecapEngine` | Weekly stats + coachReport (volume vs target) |
-| `PlateEngine` | Barbell → plates per side |
-| `RestNotify` | Background rest banner via Notification API |
-| `WeightEngine.warmupSets` | 40/60/80% ramp |
-| `FormLoops` | Offline SVG form cards for top-50 lifts |
+| `ProgramEngine` | Stronglifts / SS / 5/3/1 + starting-weight confirm |
+| `RecapEngine` | Weekly stats + goal-aware coachReport |
+| `PlateEngine` | Barbell → plates per side (barbell compounds only in UI) |
+| `RestNotify` | Background rest banner — **installed PWA only** |
+| `WeightEngine.warmupSets` | 40/60/80% ramp (barbell only in UI) |
+| `FormLoops` | Offline form **cues** + `isBarbell()` |
 | `SplitEngine` | Schedule, skip-day, custom split, ranked swaps |
 
 ## Gotchas — read before coding
-- All UI is string-template HTML — XSS: `esc()` everything user-entered.
-- Dates: always `localISO()` / `today()` — never `toISOString().slice(0,10)` (UTC breaks evenings east of Greenwich).
-- `type="button"` on every button inside forms (bare `<button>` submits).
-- Skip link must stay clip-hidden until `:focus` — iOS PWA was painting it over the status bar.
-- Settings version footer must use `window.APP_VERSION` (synced with `VERSION.json`).
-- Owner flip-flop: glass floating nav is current truth (see Brain / V5.2-PLAN WS12).
+- PWA-only — do not add Cap HealthKit / Live Activity / WidgetKit unless owner reverses.
+- Form cues ≠ video. Real clips need wger download once online.
+- Rest notifications need Add to Home Screen on iOS; never `requestPermission` mid-workout.
+- Dates: always `localISO()` / `today()`.
+- Settings version footer uses `window.APP_VERSION`.
+- Glass floating nav is current truth (V5.2-PLAN WS12).
 
 ## Where decisions live
-- Dated decisions: Capricorn-Brain project note
-- Release history: `CHANGELOG.md`
-- Long plan/handover: `docs/V5.2-PLAN.md` (WS14 = v5.3; this release = v5.4 coach tools)
+- Capricorn-Brain project note
+- `CHANGELOG.md` / `docs/V5.2-PLAN.md` (WS15 = 5.5)

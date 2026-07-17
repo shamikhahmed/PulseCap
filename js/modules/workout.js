@@ -822,15 +822,15 @@ reg('workout', function() {
     '<div class="warmup-title">Cardio Recommendation</div>' +
     '<div style="font-size:15px;font-weight:700;color:var(--c1);margin-bottom:4px">'+esc(cardioRec.machine)+'</div>' +
     '<div style="font-size:13px;color:var(--txt2)">'+esc(cardioRec.duration)+' — '+esc(cardioRec.details)+'</div>' +
-    '<div style="font-size:12px;color:var(--txt3);margin-top:6px">🕐 Best performed after your lifting session</div>' +
+    '<div style="font-size:12px;color:var(--txt3);margin-top:6px">Best performed after your lifting session</div>' +
     '</div>' +
 
-    (suggestion?'<div class="ai-msg"><div class="ai-msg-header"><span>⚡</span><span class="ai-msg-label">Coach Insight</span></div><div class="ai-msg-text">'+esc(suggestion.m)+'</div></div>':'') +
+    (suggestion?'<div class="ai-msg"><div class="ai-msg-header"><span class="ai-msg-label">Coach Insight</span></div><div class="ai-msg-text">'+esc(suggestion.m)+'</div></div>':'') +
 
     '<div style="padding:16px 16px 0">' +
-    '<button type="button" class="btn btn-primary" onclick="startWorkout()">Start Workout 💪</button>' +
-    '<button type="button" class="btn btn-secondary" style="margin-top:10px" onclick="startQuickWorkout()">⚡ Quick Workout (20 min)</button>' +
-    '<button type="button" class="btn btn-secondary" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="showBrowseExercises()">' + icon('search', 16) + 'Browse All Exercises</button>' +
+    '<button type="button" class="btn btn-primary" onclick="startWorkout()">Start Workout</button>' +
+    '<button type="button" class="btn btn-secondary" style="margin-top:10px" onclick="startQuickWorkout()">Quick Workout (20 min)</button>' +
+    '<button type="button" class="btn btn-secondary" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="showBrowseExercises()">' + icon('search', 16) + ' Browse All Exercises</button>' +
     '<button type="button" class="btn" style="margin-top:10px;background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);color:#ff453a;font-weight:700" onclick="go(\'cardio\')">Cardio Protocols</button>' +
     '<button type="button" class="btn" style="margin-top:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);color:var(--c1)" onclick="showAddCustomExercise()">+ Add Custom Exercise</button>' +
     '</div>' +
@@ -911,7 +911,7 @@ reg('active', function() {
     '</div>' +
     '<div style="display:flex;gap:8px">' +
     '<button type="button" onclick="toggleSupersetMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_supersetMode?'var(--grad)':'var(--bg3)')+';color:'+(_supersetMode?'#fff':'var(--txt3)')+'">SS</button>' +
-    '<button type="button" onclick="toggleFocusMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_focusMode?'var(--c1)':'var(--bg3)')+';color:'+(_focusMode?'#fff':'var(--txt3)')+'">'+(_focusMode?'← Exit':'🎯')+'</button>' +
+    '<button type="button" onclick="toggleFocusMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_focusMode?'var(--c1)':'var(--bg3)')+';color:'+(_focusMode?'#fff':'var(--txt3)')+'">'+(_focusMode?'Exit':'Focus')+'</button>' +
     '<button type="button" onclick="confirmFinishWorkout()" style="padding:8px 16px;border-radius:20px;background:var(--grad);color:#fff;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;border:none">Finish</button>' +
     '</div></div></div>';
 
@@ -923,10 +923,12 @@ reg('active', function() {
     const needsSpot = GUIDANCE.needsSpotter(ex.name);
     const allDone = (ex.sets||[]).length > 0 && (ex.sets||[]).every(function(s){return s.done;});
     const rec = GUIDANCE.setsReps(goal);
+    const barbell = typeof isBarbellExercise === 'function' ? isBarbellExercise(ex.name) : false;
 
     const setsHTML = (ex.sets||[]).map(function(set, sIdx) {
       const isDone = set.done;
       const isPR = set._isPR;
+      const showPlates = barbell && set.weight && sIdx === 0;
       return '<div class="set-row' + (isDone?' done':'') + (isPR?' pr':'') + '" id="set-'+exIdx+'-'+sIdx+'">' +
         '<div class="set-num">'+(sIdx+1)+'</div>' +
         '<div class="set-inputs">' +
@@ -935,7 +937,7 @@ reg('active', function() {
         '<input type="number" class="set-inp" placeholder="'+(suggest||0)+'" value="'+(set.weight||'')+'" ' +
         'onchange="_setVal('+exIdx+','+sIdx+',\'weight\',parseFloat(this.value)||0)" ' +
         'inputmode="decimal" style="width:64px">' +
-        (set.weight && sIdx === 0 ?
+        (showPlates ?
           '<button type="button" onclick="event.stopPropagation();showPlateCalc('+set.weight+')" style="margin-top:4px;font-size:9px;font-weight:700;color:var(--c1);background:none;border:none;cursor:pointer;padding:0;touch-action:manipulation">plates</button>' : '') +
         '</div>' +
         '<div style="font-size:16px;color:var(--txt3);margin:0 4px">×</div>' +
@@ -946,8 +948,8 @@ reg('active', function() {
         'inputmode="numeric" style="width:56px">' +
         '</div>' +
         '</div>' +
-        '<button type="button" class="set-check'+(isDone?' done':'')+'" onclick="_doneSet('+exIdx+','+sIdx+')">' +
-        (isPR ? '🏆' : isDone ? '✓' : '') +
+        '<button type="button" class="set-check'+(isDone?' done':'')+'" onclick="_doneSet('+exIdx+','+sIdx+')" aria-label="'+(isDone?'Set done':'Mark set done')+'">' +
+        (isDone ? (typeof icon === 'function' ? icon('check', 16, isPR ? '#000' : 'currentColor') : '✓') : '') +
         '</button>' +
         (isPR ? '<div style="position:absolute;top:-8px;right:40px;background:linear-gradient(135deg,#ffd60a,#ff9f0a);color:#000;font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;letter-spacing:0.06em;animation:prBounce 0.4s var(--spring) both">PR!</div>' : '') +
         '</div>';
@@ -955,7 +957,7 @@ reg('active', function() {
 
     const noteVal = _wktNotes[ex.name] || '';
     const workW = (ex.sets && ex.sets[0] && ex.sets[0].weight) || suggest || 0;
-    const warmups = (workW >= 40 && typeof WeightEngine !== 'undefined') ? WeightEngine.warmupSets(workW) : [];
+    const warmups = (barbell && workW >= 40 && typeof WeightEngine !== 'undefined') ? WeightEngine.warmupSets(workW) : [];
     const warmupHTML = (!_focusMode && warmups.length) ?
       '<div style="padding:0 16px 10px">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
@@ -968,12 +970,13 @@ reg('active', function() {
       }).join('') + '</div></div>' : '';
 
     const mediaThumb = (typeof ExerciseLibrary !== 'undefined' ? ExerciseLibrary.getMedia(exData || ex.name).thumb : null);
+    const doneMark = allDone ? (typeof icon === 'function' ? icon('check', 22, 'var(--c1)') : '✓') : '';
 
     return '<div class="ex-card' + (allDone?' done':'') + '" id="ex-card-'+exIdx+'">' +
       '<div class="ex-card-header">' +
       (mediaThumb && !_focusMode ?
         '<div style="width:44px;height:44px;border-radius:12px;overflow:hidden;border:1px solid var(--border);flex-shrink:0;background:var(--bg4)"><img src="'+esc(mediaThumb)+'" alt="" style="width:100%;height:100%;object-fit:cover"/></div>' :
-        '<div style="font-size:28px;width:40px;text-align:center;transition:all 0.3s">'+(allDone?'✅':(exData?exData.em:'💪'))+'</div>') +
+        '<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(allDone ? doneMark : (typeof iconTile === 'function' ? iconTile('dumbbell', 'c1', 36) : ''))+'</div>') +
       '<div style="flex:1;min-width:0">' +
       '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
       '<div style="font-size:15px;font-weight:700;color:var(--txt)">'+esc(ex.name)+'</div>' +
@@ -1276,6 +1279,10 @@ function _startWktTimer() {
 
 window.startWorkout = function(templateName) {
   haptic(50);
+  if (typeof ProgramEngine !== 'undefined' && ProgramEngine.needsWeightConfirm && ProgramEngine.needsWeightConfirm()) {
+    showProgramWeightSetup();
+    return;
+  }
   const splitDay = SplitEngine.getSplitDay();
   const user = S.g('user') || {};
   const goal = user.goal || 'hypertrophy';
@@ -1318,7 +1325,7 @@ window.startQuickWorkout = function() {
     }
     return { name: name, sets: sets, muscles: {} };
   });
-  _wkt = { name: '⚡ Quick — ' + (splitDay.n || 'Workout'), exercises: exercises, startTime: Date.now() };
+  _wkt = { name: 'Quick — ' + (splitDay.n || 'Workout'), exercises: exercises, startTime: Date.now() };
   _wktNotes = {};
   _quickMode = true;
   _startWktTimer();
@@ -1374,6 +1381,10 @@ window.stopRestTimer = function() {
 window.insertWarmupSets = function(exIdx) {
   if (!_wkt || !_wkt.exercises[exIdx]) return;
   const ex = _wkt.exercises[exIdx];
+  if (typeof isBarbellExercise === 'function' && !isBarbellExercise(ex.name)) {
+    toast('Warm-up ramp is for barbell compounds', 'info');
+    return;
+  }
   const workW = (ex.sets && ex.sets[0] && ex.sets[0].weight) || WeightEngine.suggest(ex.name, S.g('user') || {}) || 60;
   const warmups = WeightEngine.warmupSets(workW);
   if (ex._warmupsInserted) { toast('Warm-ups already added', 'info'); return; }

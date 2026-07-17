@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '5.4.0';
+window.APP_VERSION = '5.5.0';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -259,12 +259,17 @@ let _toastTimer = null;
 function toast(msg, type, dur) {
   const t = document.getElementById('toast');
   if (!t) return;
-  const icons = { ok:'✅', err:'❌', pr:'🏆', achieve:'🎖️', warn:'⚠️', info:'ℹ️' };
-  t.querySelector('.toast-icon').textContent = icons[type||'ok']||'✅';
+  /* Stroke icons — no emoji in chrome */
+  const iconMap = { ok: 'check', err: 'alert', pr: 'sparkles', achieve: 'sparkles', warn: 'alert', info: 'sparkles' };
+  const ic = t.querySelector('.toast-icon');
+  if (ic) {
+    ic.textContent = '';
+    ic.innerHTML = typeof icon === 'function' ? icon(iconMap[type || 'ok'] || 'check', 18) : '';
+  }
   t.querySelector('.toast-msg').textContent = msg;
-  t.className = 't-' + (type||'ok') + ' show';
+  t.className = 't-' + (type || 'ok') + ' show';
   clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(() => { t.className = ''; }, dur||3200);
+  _toastTimer = setTimeout(() => { t.className = ''; }, dur || 3200);
 }
 window.toast = toast;
 
@@ -675,10 +680,22 @@ const RecapEngine = {
     const w = Math.ceil((((t - Date.UTC(y, 0, 1)) / 864e5) + 1) / 7);
     return y + '-W' + (w < 10 ? '0' : '') + w;
   },
-  /* Hypertrophy-ish weekly set targets by primary muscle */
-  TARGETS: {
-    chest: 12, back: 14, quads: 12, hamstrings: 10, glutes: 10,
-    shoulders: 12, biceps: 8, triceps: 8, core: 6, calves: 6, forearms: 4
+  /* Weekly set targets by goal — strength lower volume, hypertrophy higher */
+  TARGETS_BY_GOAL: {
+    strength:     { chest: 8,  back: 10, quads: 8,  hamstrings: 8,  glutes: 6,  shoulders: 8,  biceps: 4, triceps: 4, core: 4, calves: 4, forearms: 2 },
+    hypertrophy:  { chest: 12, back: 14, quads: 12, hamstrings: 10, glutes: 10, shoulders: 12, biceps: 8, triceps: 8, core: 6, calves: 6, forearms: 4 },
+    fat_loss:     { chest: 10, back: 12, quads: 10, hamstrings: 8,  glutes: 8,  shoulders: 10, biceps: 6, triceps: 6, core: 8, calves: 6, forearms: 2 },
+    athletic:     { chest: 10, back: 12, quads: 12, hamstrings: 10, glutes: 10, shoulders: 10, biceps: 6, triceps: 6, core: 8, calves: 6, forearms: 4 },
+    recomp:       { chest: 12, back: 14, quads: 12, hamstrings: 10, glutes: 10, shoulders: 12, biceps: 8, triceps: 8, core: 6, calves: 6, forearms: 4 },
+    maintenance:  { chest: 8,  back: 10, quads: 8,  hamstrings: 8,  glutes: 6,  shoulders: 8,  biceps: 6, triceps: 6, core: 4, calves: 4, forearms: 2 }
+  },
+  TARGETS: null, /* resolved via targets() */
+  targets() {
+    const goal = (S.g('user') || {}).goal || 'hypertrophy';
+    const map = { strength: 'strength', athletic: 'athletic', fat_loss: 'fat_loss', weight_gain: 'hypertrophy',
+      hypertrophy: 'hypertrophy', recomp: 'recomp', maintenance: 'maintenance', general_health: 'maintenance',
+      endurance: 'athletic', mobility: 'maintenance' };
+    return this.TARGETS_BY_GOAL[map[goal] || 'hypertrophy'];
   },
   _muscleKey(ex) {
     const db = typeof ExDB !== 'undefined' ? ExDB.byName(ex.name) : null;
@@ -711,9 +728,10 @@ const RecapEngine = {
   /* Coach report: volume vs target + weak-point flags + next-week advice */
   coachReport(end) {
     const vol = this.volumeByMuscle(end);
-    const rows = Object.keys(this.TARGETS).map(m => {
+    const targets = this.targets();
+    const rows = Object.keys(targets).map(m => {
       const got = vol[m] || 0;
-      const target = this.TARGETS[m];
+      const target = targets[m];
       const pct = target ? Math.round((got / target) * 100) : 0;
       let flag = 'ok';
       if (got === 0) flag = 'missed';
@@ -836,47 +854,59 @@ window.showPlateCalc = function(weight) {
     '</div><div id="plate-out">' + PlateEngine.html(w) + '</div>');
 };
 
-/* ── REST TIMER NOTIFICATIONS (PWA / Dynamic-Island-style banner) ── */
+/* ── REST TIMER NOTIFICATIONS (installed PWA only — iOS needs Add to Home Screen) ── */
 const RestNotify = {
   _timer: null,
   _endAt: 0,
+  isInstalled() {
+    try {
+      if (window.matchMedia && window.matchMedia('(display-mode: standalone)').matches) return true;
+      if (window.navigator.standalone === true) return true; /* iOS Safari */
+    } catch (e) { /* ignore */ }
+    return false;
+  },
   ensurePermission() {
-    if (!('Notification' in window)) return Promise.resolve('denied');
+    if (!('Notification' in window)) return Promise.resolve('unsupported');
+    if (!this.isInstalled()) return Promise.resolve('not-installed');
     if (Notification.permission === 'granted') return Promise.resolve('granted');
     if (Notification.permission === 'denied') return Promise.resolve('denied');
     return Notification.requestPermission();
   },
   _show(title, body, tag) {
+    if (!this.isInstalled()) return;
     if (!('Notification' in window) || Notification.permission !== 'granted') return;
     try {
-      const opts = { body: body, tag: tag || 'pulsecap-rest', silent: false, renotify: true };
+      const opts = { body: body, tag: tag || 'pulsecap-rest', silent: false, renotify: true, icon: 'icon-192.png' };
       if (navigator.serviceWorker && navigator.serviceWorker.ready) {
         navigator.serviceWorker.ready.then(function(reg) {
           if (reg.showNotification) reg.showNotification(title, opts);
           else new Notification(title, opts);
-        }).catch(function() { new Notification(title, opts); });
+        }).catch(function() { try { new Notification(title, opts); } catch (e2) {} });
       } else {
         new Notification(title, opts);
       }
     } catch (e) { /* ignore */ }
   },
+  /* Never prompt mid-workout — only fire if already granted */
   start(secs) {
     const self = this;
     clearTimeout(this._timer);
     this._endAt = Date.now() + secs * 1000;
-    this.ensurePermission().then(function(perm) {
-      if (perm !== 'granted') return;
-      if (document.hidden) {
-        self._show('Rest · ' + fmtTime(secs), 'Timer running — tap back when ready', 'pulsecap-rest');
-      }
-      self._timer = setTimeout(function() {
-        self._show('Rest done', 'Next set — load the bar', 'pulsecap-rest-done');
-        haptic([80, 40, 80, 40, 160]);
-      }, Math.max(0, secs * 1000));
-    });
+    if (!this.isInstalled() || !('Notification' in window) || Notification.permission !== 'granted') {
+      this._timer = setTimeout(function() { haptic([80, 40, 80, 40, 160]); }, Math.max(0, secs * 1000));
+      return;
+    }
+    if (document.hidden) {
+      self._show('Rest · ' + fmtTime(secs), 'Timer running — tap back when ready', 'pulsecap-rest');
+    }
+    self._timer = setTimeout(function() {
+      self._show('Rest done', 'Next set — load the bar', 'pulsecap-rest-done');
+      haptic([80, 40, 80, 40, 160]);
+    }, Math.max(0, secs * 1000));
   },
   onVisibility() {
     if (!document.hidden || !this._endAt) return;
+    if (!this.isInstalled() || Notification.permission !== 'granted') return;
     const left = Math.ceil((this._endAt - Date.now()) / 1000);
     if (left > 0) this._show('Rest · ' + fmtTime(left), 'Background rest timer', 'pulsecap-rest');
   },
@@ -931,10 +961,26 @@ const ProgramEngine = {
     if (!st[key]) {
       const base = this._round((WeightEngine.suggest(name, user) || 40) * 0.8);
       const oneRM = this._best1RM(name) || base * 1.25;
-      st[key] = { w: base, tm: this._round(oneRM * 0.9), fails: 0, week: 0 };
+      st[key] = { w: base, tm: this._round(oneRM * 0.9), fails: 0, week: 0, guessed: !this._best1RM(name) };
       S.set('programState', st);
     }
     return { key: key, st: st, L: st[key] };
+  },
+  needsWeightConfirm() {
+    if (!this.mode()) return false;
+    if (S.g('programWeightsConfirmed')) return false;
+    const st = S.g('programState') || {};
+    const keys = Object.keys(st);
+    if (!keys.length) return true;
+    return keys.some(function(k) { return st[k] && st[k].guessed; });
+  },
+  setWorking(key, kg) {
+    const st = S.g('programState') || {};
+    const w = this._round(parseFloat(kg) || 40);
+    if (!st[key]) st[key] = { w: w, tm: this._round(w * 1.15), fails: 0, week: 0 };
+    else { st[key].w = w; st[key].tm = this._round(Math.max(st[key].tm || 0, w * 1.15)); }
+    st[key].guessed = false;
+    S.set('programState', st);
   },
   /* Prescribed sets for this exercise under the active program, or null */
   prescribe(name, user) {
@@ -993,6 +1039,39 @@ const ProgramEngine = {
   }
 };
 window.ProgramEngine = ProgramEngine;
+window.confirmProgramWeights = function() {
+  const pe = ProgramEngine;
+  ['squat', 'bench', 'deadlift', 'ohp', 'row'].forEach(function(k) {
+    const el = document.getElementById('pw-' + k);
+    if (el && el.value) pe.setWorking(k, el.value);
+  });
+  S.set('programWeightsConfirmed', true);
+  closeModal();
+  toast('Starting weights locked in', 'ok');
+  if (typeof startWorkout === 'function') startWorkout();
+};
+window.showProgramWeightSetup = function() {
+  const pe = ProgramEngine;
+  const st = S.g('programState') || {};
+  const user = S.g('user') || {};
+  const fields = [
+    { k: 'squat', l: 'Squat working weight' },
+    { k: 'bench', l: 'Bench working weight' },
+    { k: 'deadlift', l: 'Deadlift working weight' },
+    { k: 'ohp', l: 'Overhead press' },
+    { k: 'row', l: 'Barbell row' }
+  ];
+  const html = '<div style="font-size:13px;color:var(--txt2);line-height:1.45;margin-bottom:14px">Enter what you can do for clean sets of 5 today. Guessed numbers feel wrong — you set these once.</div>' +
+    fields.map(function(f) {
+      const cur = (st[f.k] && st[f.k].w) || pe._round((WeightEngine.suggest(
+        f.k === 'squat' ? 'Back Squat' : f.k === 'bench' ? 'Barbell Bench Press' : f.k === 'deadlift' ? 'Deadlift' : f.k === 'ohp' ? 'Overhead Press' : 'Barbell Row', user) || 40) * 0.8);
+      return '<div class="field-wrap" style="margin-bottom:10px"><label class="field-label">' + f.l + ' (kg)</label>' +
+        '<input id="pw-' + f.k + '" class="field" type="number" inputmode="decimal" value="' + cur + '" style="font-size:18px;font-weight:700"></div>';
+    }).join('') +
+    '<button type="button" class="btn btn-primary" onclick="confirmProgramWeights()" style="width:100%;margin-top:8px">Lock in & start</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="S.set(\'programWeightsConfirmed\',true);closeModal();startWorkout()" style="width:100%;margin-top:8px">Skip — use estimates</button>';
+  modal('Your starting weights', html);
+};
 
 const ProgEngine = {
   epley(w, r) { if(!w||!r) return 0; return r===1 ? w : Math.round(w*(1+r/30)); },

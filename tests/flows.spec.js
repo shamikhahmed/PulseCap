@@ -23,6 +23,7 @@ test.describe('PulseCap flows', () => {
     const out = await page.evaluate(() => {
       // @ts-ignore
       const w = window;
+    w.S.set('programWeightsConfirmed', true);
       w.startWorkout();
       w._doneSet(0, 0); w._doneSet(0, 1);
       const counter = document.getElementById('wkt-count') && document.getElementById('wkt-count').textContent;
@@ -43,6 +44,7 @@ test.describe('PulseCap flows', () => {
       // @ts-ignore
       const w = window;
       w.S.set('user.split', 'stronglifts');
+      w.S.set('programWeightsConfirmed', true);
       w.startWorkout();
       // main lift must be program-prescribed: 5 sets of 5
       const wkt = (function(){ w.go('active'); return document.body.innerText; })();
@@ -145,18 +147,22 @@ test.describe('PulseCap flows', () => {
     const out = await page.evaluate(() => {
       // @ts-ignore
       const w = window;
+      w.S.set('programWeightsConfirmed', true);
       w.startWorkout();
-      const ex = w.getActiveWorkout().exercises[0];
-      ex.sets = [{ weight: 100, reps: 5, done: false }];
+      const wkt = w.getActiveWorkout();
+      // Force first exercise to a barbell compound
+      wkt.exercises[0] = { name: 'Back Squat', sets: [{ weight: 100, reps: 5, done: false }] };
       w.insertWarmupSets(0);
       const sets = w.getActiveWorkout().exercises[0].sets;
       return {
         n: sets.length,
         firstWarm: !!sets[0]._warmup,
         lastWork: sets[sets.length - 1].weight === 100,
-        ramp: w.WeightEngine.warmupSets(100).length
+        ramp: w.WeightEngine.warmupSets(100).length,
+        isBB: w.isBarbellExercise('Back Squat')
       };
     });
+    expect(out.isBB).toBeTruthy();
     expect(out.ramp).toBe(3);
     expect(out.n).toBe(4);
     expect(out.firstWarm).toBeTruthy();
@@ -169,11 +175,50 @@ test.describe('PulseCap flows', () => {
       const fl = window.FormLoops;
       const squat = fl.forExercise('Back Squat');
       const html = fl.cardHTML('Deadlift');
-      return { count: fl.count, hasSvg: !!(squat && squat.svg), htmlHasOffline: /offline/i.test(html) };
+      return {
+        count: fl.count,
+        hasCue: !!(squat && squat.cue),
+        htmlHonest: /form cues/i.test(html) && /not a video/i.test(html),
+        barbell: fl.isBarbell('Back Squat') && !fl.isBarbell('Leg Press')
+      };
     });
     expect(out.count).toBeGreaterThanOrEqual(45);
-    expect(out.hasSvg).toBeTruthy();
-    expect(out.htmlHasOffline).toBeTruthy();
+    expect(out.hasCue).toBeTruthy();
+    expect(out.htmlHonest).toBeTruthy();
+    expect(out.barbell).toBeTruthy();
+  });
+
+  test('dashboard prompt queue caps at 2 on first paint', async ({ page }) => {
+    const out = await page.evaluate(() => {
+      // @ts-ignore
+      const w = window;
+      w.S.set('recapDismissed', null);
+      // Force many prompts: no weigh-in, no check-in, equipment pending
+      w.S.set('user.equipmentConfigured', false);
+      w.S.set('settings.equipmentSetupPending', true);
+      w.S.set('recovery', {});
+      w.go('dashboard');
+      const view = document.getElementById('view');
+      const details = view && view.querySelector('details');
+      return { hasMore: !!(details && /More for today/i.test(details.textContent || '')) };
+    });
+    expect(out.hasMore).toBeTruthy();
+  });
+
+  test('program weight setup gates first strength start', async ({ page }) => {
+    const out = await page.evaluate(() => {
+      // @ts-ignore
+      const w = window;
+      w.S.set('user.split', 'stronglifts');
+      w.S.set('programWeightsConfirmed', null);
+      w.S.set('programState', null);
+      const needs = w.ProgramEngine.needsWeightConfirm();
+      w.showProgramWeightSetup();
+      const modal = document.querySelector('.modal-sheet, .modal-overlay');
+      return { needs: needs, modal: !!modal };
+    });
+    expect(out.needs).toBeTruthy();
+    expect(out.modal).toBeTruthy();
   });
 
   test('settings version matches APP_VERSION (not stale 4.7.4)', async ({ page }) => {

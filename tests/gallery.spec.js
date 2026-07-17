@@ -8,7 +8,6 @@ const { join } = require('node:path');
 const GALLERY_DIR = join(process.cwd(), 'docs', 'screenshots', 'gallery');
 
 // Registered module ids (from reg() calls) worth a gallery shot.
-// Excluded: 'active' (needs a live workout session), 'intro'/'onboarding' captured, others plain.
 const MODULES = [
   'dashboard', 'hub', 'workout', 'quests', 'progress', 'nutrition', 'coach',
   'recovery', 'recovery-debt', 'anatomy', 'bodymap', 'encyclopedia', 'search',
@@ -50,8 +49,8 @@ for (const viewport of ['mobile', 'desktop']) {
       mkdirSync(GALLERY_DIR, { recursive: true });
     });
 
-    test(`capture ${MODULES.length} ${viewport} module screens`, async ({ page }) => {
-      test.setTimeout(240_000);
+    test(`capture ${MODULES.length + 1} ${viewport} module screens`, async ({ page }) => {
+      test.setTimeout(300_000);
       await page.goto('/?demo=1');
       await page.waitForFunction(
         () => typeof window.S !== 'undefined' && window.S.activeId && window.S.activeId() === 'demo',
@@ -76,6 +75,25 @@ for (const viewport of ['mobile', 'desktop']) {
         await page.screenshot({ path: join(GALLERY_DIR, file), fullPage: false });
         shots.push({ file, label: id.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase()), route: `go('${id}')`, viewport });
       }
+
+      /* Active workout — most important screen; needs a live session */
+      const activeOk = await page.evaluate(() => {
+        try {
+          // @ts-ignore
+          window.S.set('programWeightsConfirmed', true);
+          // @ts-ignore
+          window.startWorkout();
+          return !!document.getElementById('wkt-header');
+        } catch {
+          return false;
+        }
+      });
+      expect(activeOk, 'active workout should render').toBe(true);
+      await page.waitForTimeout(600);
+      const activeFile = `${viewport}-${String(MODULES.length + 1).padStart(2, '0')}-active.png`;
+      await page.screenshot({ path: join(GALLERY_DIR, activeFile), fullPage: false });
+      shots.push({ file: activeFile, label: 'Active Workout', route: "go('active')", viewport });
+
       appendManifest(shots);
     });
   });

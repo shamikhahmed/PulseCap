@@ -537,3 +537,49 @@ body:has(#nav.cap-premium-nav) #view {
 @supports not selector(body:has(a)) {
   #view { padding-bottom: calc(84px + var(--safe)); }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  #bg-canvas { display: none !important; }
+}
+
+/* Focus rings — Apple-grade keyboard / VoiceOver */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+.cap-tab:focus-visible,
+.ob-opt:focus-visible,
+.dash-prompt:focus-visible {
+  outline: 2px solid var(--c1);
+  outline-offset: 2px;
+}
+
+/* Spacing tokens (4pt grid) */
+:root {
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --type-caption: 11px;
+  --type-body: 15px;
+  --type-title: 22px;
+  --type-hero: 28px;
+}
+
+#toast .toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+}
+#toast .toast-icon svg { display: block; }

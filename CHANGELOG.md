@@ -1,5 +1,17 @@
 # Changelog — PulseCap
 
+## 5.5.0 (2026-07-17) — Apple polish (PWA-only)
+- **Honest form cues:** FormLoops no longer pretend to be videos — text coaching cards + ExDB cues; label says "not a video".
+- **Barbell-only plates + warm-up ramp:** plate calc and ramp gated to barbell compounds (`FormLoops.isBarbell`).
+- **Rest notifications:** installed-PWA only (iOS Home Screen); never prompts mid-workout; Settings explains Add to Home Screen.
+- **Dashboard prompt queue:** max 2 prompts on first paint; overflow under "More for today".
+- **Goal-aware weekly targets:** RecapEngine targets scale by goal (strength vs hypertrophy vs fat loss).
+- **Program starting weights:** strength programs ask once for working weights before first session.
+- **De-emoji chrome:** toast stroke icons; Train Start/Quick/Focus; active workout checkmarks; Learn/Search tiles.
+- **a11y:** focus-visible rings, `prefers-reduced-motion` kills canvas, prompt cards are real `<button>`s.
+- **Spacing/type tokens** in layout.css (`--space-*`, `--type-*`).
+- **Gallery:** active workout shot included. SW `pulsecap-v56`. Tests 26 pass.
+
 ## 5.4.0 (2026-07-17) — Coach tools + screenshot polish
 - **Screenshot bugs fixed:** skip-to-content link no longer stuck over the iOS status bar (clip/sr-only until focus); gender Male/Female icons spaced so ♀ never clips the label; Settings version reads `APP_VERSION` (was hard-coded **v4.7.4**); Safari's opaque `"Load failed"` network toast mapped to a human offline/wger message.
 - **Weekly coach report:** recap card grows into volume-vs-target per muscle + weak-point flags + "what to change next week" advice (`RecapEngine.coachReport`).
