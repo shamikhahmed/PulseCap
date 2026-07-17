@@ -73,7 +73,13 @@ Built by Shamikh Ahmed across 14 development sessions as a production-grade pers
 ### ⚙️ Settings
 - **Dark & light modes** — Settings → Appearance
 - **Nav tab customization** — toggle which tabs appear (min 3)
-- **6 training splits** — PPL, Upper/Lower, Full Body, Bro Split, Strength, Home
+- **18 training splits + build-your-own** — PPL, Upper/Lower, Full Body, Arnold, PHUL, PHAT & more, plus a custom split builder with live exercise search
+- **Real strength programs** — Stronglifts/Starting Strength linear progression (+2.5kg, auto-deload) and 5/3/1 training-max waves, prescribed straight into the logger
+- **Weekly schedule** — split days auto-map to your gym days (Monday shows Monday's workout), editable per weekday; non-gym days give active-recovery guidance with a "Train anyway" option
+- **Skip-day coach** — can't train? The engine decides like a trainer: shift the week forward or absorb the skip, with its reasoning shown
+- **Habit loop** — weekly recap card, streaks that respect rest days (one freeze per week, milestones at 7/30/100), morning check-in, private progress photos (IndexedDB, on-device compression)
+- **Goal-aware weigh-ins** — every weight log gets a coach reaction: on pace, eat more, or rein it in
+- **Injury-aware training** — log injuries in Body → Rehab (severity + phased protocol); unsafe exercises auto-swap via avoid-lists and joint-stress ratings, with a "Modified for X" badge
 - **Equipment selection** — filters exercises by available gear
 - **Import/Export** — full JSON backup/restore
 

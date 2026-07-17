@@ -36,7 +36,7 @@ reg('dashboard', function() {
       '<div style="font-size:11px;color:var(--txt3)">' + esc(todayStr) + '</div></div>' +
       '</div>' +
       '<div class="topbar-right">' +
-      '<button type="button" class="topbar-icon press" onclick="go(\'search\')" aria-label="Search">🔍</button>' +
+      '<button type="button" class="topbar-icon press" onclick="go(\'search\')" aria-label="Search" style="display:flex;align-items:center;justify-content:center">' + icon('search', 18) + '</button>' +
       '<div onclick="go(\'profiles\')" style="width:32px;height:32px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:#fff;cursor:pointer;touch-action:manipulation;flex-shrink:0">' + avatarLetter + '</div>' +
       '</div></div>';
 
@@ -76,25 +76,27 @@ reg('dashboard', function() {
       ? esc((dd && dd.reason) || 'Focus on recovery — optional light movement only.')
       : isLightDay
         ? esc((dd && dd.reason) || 'Reduce volume and intensity today.')
-        : esc((splitDay.muscles || []).slice(0, 3).join(' · ')) +
+        : esc(prettyMuscles(splitDay.muscles, 3)) +
           (splitDay.exercises && splitDay.exercises.length ? ' · ' + splitDay.exercises.length + ' exercises' : '');
     const sessionBtn = isRestDay
-      ? '<button type="button" onclick="go(\'recovery-debt\')" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:8px">View Recovery Plan</button>'
+      ? '<button type="button" onclick="go(\'recovery-debt\')" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:8px">View Recovery Plan</button>' +
+        (dd && dd.allowTrain ? '<button type="button" onclick="startWorkout&&startWorkout()" style="width:100%;padding:9px;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.25);color:rgba(255,255,255,0.85);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;margin-top:8px">Train anyway</button>' : '')
       : isLightDay
-        ? '<button type="button" onclick="startWorkout&&startWorkout()" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:8px">▶ Light Session</button>'
-        : '<button type="button" onclick="startWorkout&&startWorkout()" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:8px">▶ Start Workout</button>';
+        ? '<button type="button" onclick="startWorkout&&startWorkout()" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:8px">Light Session</button>'
+        : '<button type="button" onclick="startWorkout&&startWorkout()" style="width:100%;padding:11px;border-radius:12px;background:rgba(255,255,255,0.2);border:1.5px solid rgba(255,255,255,0.3);color:#fff;font-size:14px;font-weight:700;cursor:pointer;touch-action:manipulation;margin-top:8px">Start Workout</button>' +
+          '<button type="button" onclick="confirmSkipToday()" style="width:100%;padding:8px;border-radius:12px;background:transparent;border:none;color:rgba(255,255,255,0.65);font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;margin-top:6px">Can\'t train today?</button>';
     const startQuickAction = isRestDay
       ? '<button type="button" onclick="go(\'recovery-debt\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
-        '<span style="font-size:26px">🛌</span>' +
+        '<span style="color:var(--c4);display:flex">' + icon('bed', 26) + '</span>' +
         '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Recovery</span>' +
         '</button>'
       : '<button type="button" onclick="startWorkout&&startWorkout()" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
-        '<span style="font-size:26px">💪</span>' +
+        '<span style="color:var(--c1);display:flex">' + icon('dumbbell', 26) + '</span>' +
         '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Start</span>' +
         '</button>';
     const heroCard = '<div onclick="go(\'' + heroTap + '\')" class="card-press" style="margin:0 16px 20px;border-radius:16px;background:' + heroGrad + ';border:1px solid var(--border);padding:22px 20px;cursor:pointer;touch-action:manipulation;box-shadow:var(--ds2)">' +
       '<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:16px">' +
-      '<div style="font-size:52px;line-height:1;flex-shrink:0">' + (dd ? dd.emoji : '💪') + '</div>' +
+      ((dd && dd.ic) ? iconTile(dd.ic, dd.tint || 'c1', 56) : '<div style="font-size:52px;line-height:1;flex-shrink:0">' + (dd ? dd.emoji : '💪') + '</div>') +
       '<div style="flex:1;min-width:0">' +
       '<div style="font-size:22px;font-weight:800;color:var(--txt);line-height:1.25;letter-spacing:-0.4px">' + esc(dd ? dd.title : (plan ? splitDay.n || 'Ready to Train' : 'Ready to Train')) + '</div>' +
       '<div style="font-size:13px;color:var(--txt2);margin-top:8px;line-height:1.5">' + esc(plan ? plan.message : (dd ? (dd.reason || (dd.actions && dd.actions[0]) || '') : 'Tap to see your recommendation')) + '</div>' +
@@ -121,15 +123,15 @@ reg('dashboard', function() {
     const quickActions = '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:0 16px;margin-bottom:20px">' +
       startQuickAction +
       '<button type="button" onclick="go(\'recovery\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
-      '<span style="font-size:26px">📊</span>' +
+      '<span style="color:var(--c3);display:flex">' + icon('chart', 26) + '</span>' +
       '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Check In</span>' +
       '</button>' +
       '<button type="button" onclick="go(\'assistant\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
-      '<span style="font-size:26px">🤖</span>' +
+      '<span style="color:var(--c2);display:flex">' + icon('sparkles', 26) + '</span>' +
       '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Smart Coach</span>' +
       '</button>' +
       '<button type="button" onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
-      '<span style="font-size:26px">🔍</span>' +
+      '<span style="color:var(--txt2);display:flex">' + icon('search', 26) + '</span>' +
       '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Search</span>' +
       '</button>' +
       '</div>';
@@ -140,6 +142,12 @@ reg('dashboard', function() {
       '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.7);margin-bottom:4px">' + sessionHeader + '</div>' +
       '<div style="font-size:18px;font-weight:800;color:#fff;margin-bottom:2px">' + sessionTitle + '</div>' +
       '<div style="font-size:12px;color:rgba(255,255,255,0.7);margin-bottom:12px">' + sessionSub + '</div>' +
+      (function() {
+        const injSwaps = (splitDay._swaps || []).filter(function(s){ return s.injury; });
+        if (!injSwaps.length || isRestDay) return '';
+        const parts = injSwaps.map(function(s){ return s.injury; }).filter(function(v,i,a){ return a.indexOf(v)===i; });
+        return '<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:10px;padding:5px 10px;margin-bottom:12px;font-size:11px;font-weight:700;color:#fff">🩹 Modified for ' + esc(parts.join(', ')) + '</div>';
+      })() +
       (typeof renderSplitDayPicker === 'function' && !isRestDay ? renderSplitDayPicker({ compact: true }).replace(/var\(--txt3\)/g, 'rgba(255,255,255,0.55)').replace(/var\(--border\)/g, 'rgba(255,255,255,0.25)').replace(/var\(--bg3\)/g, 'rgba(255,255,255,0.08)').replace(/var\(--c1\)/g, '#fff').replace(/rgba\(0,213,255,0\.12\)/g, 'rgba(255,255,255,0.2)') : '') +
       sessionBtn +
       '</div>';
@@ -237,7 +245,7 @@ reg('dashboard', function() {
     /* ── Morning briefing (optional card, not full-screen intercept) ── */
     const briefingCard = (function() {
       if (S.g('settings.dailyBriefing') === false) return '';
-      const todayStr = new Date().toISOString().slice(0, 10);
+      const todayStr = localISO(new Date());
       if (S.g('settings.lastBriefingDate') === todayStr) return '';
       const coachMsg = ReadinessEngine.coachQuote(score, user.coachPersonality || 'maya');
       return '<div style="margin:0 16px 14px;border-radius:18px;padding:14px 16px;' +
@@ -254,7 +262,7 @@ reg('dashboard', function() {
     })();
 
     const firstWorkoutEmpty = !ws.length ?
-      emptyState('💪', 'First workout', 'Your split is ready — one tap to start logging sets.', '▶ Start Workout', 'startWorkout&&startWorkout()') : '';
+      emptyState(icon('dumbbell', 40), 'Day one', 'Your plan\'s built. The first session is the hardest button you\'ll ever press.', 'Start Workout', 'startWorkout&&startWorkout()') : '';
 
     const moreRow = '<div style="margin:0 16px 14px">' +
       '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Browse</div>' +
@@ -263,16 +271,54 @@ reg('dashboard', function() {
       '<button type="button" onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 10px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left">🔍 Search</button>' +
       '</div></div>';
 
-    const todayWt = (S.g('bodyStats') || []).find(b => b.date === new Date().toISOString().slice(0, 10));
+    const todayWt = (S.g('bodyStats') || []).find(b => b.date === localISO(new Date()));
     const weightPrompt = !todayWt ?
       '<div style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px">' +
-      '<div><div style="font-size:13px;font-weight:700;color:var(--txt)">⚖️ Weigh in today?</div>' +
-      '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Fasted morning weight tracks best</div></div>' +
+      iconTile('scale', 'c1') +
+      '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">Step on the scale?</div>' +
+      '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Morning, before breakfast — that\'s the honest number</div></div>' +
       '<button type="button" class="btn btn-primary btn-sm" style="width:auto;padding:10px 16px;min-height:auto" onclick="showLogWeight()">Log</button></div>' : '';
 
+    /* Weekly recap — Sunday evening through Monday */
+    const recap = (typeof RecapEngine !== 'undefined' && RecapEngine.shouldShow()) ? RecapEngine.weekStats() : null;
+    const recapCard = recap ?
+      '<div style="margin:0 16px 14px;border-radius:16px;padding:18px;background:linear-gradient(135deg,rgba(123,95,255,0.18),rgba(0,213,255,0.10));border:1px solid rgba(123,95,255,0.3);position:relative">' +
+      '<button type="button" onclick="dismissRecap()" aria-label="Dismiss" style="position:absolute;top:10px;right:12px;background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;padding:4px;touch-action:manipulation">✕</button>' +
+      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--c2);margin-bottom:6px">Your week</div>' +
+      '<div style="font-size:17px;font-weight:800;color:var(--txt);margin-bottom:12px">' +
+      (recap.sessions === 0 ? 'Quiet week. This one\'s a fresh start.'
+        : recap.sessions >= 4 ? recap.sessions + ' sessions. That\'s a real week of work.'
+        : recap.sessions + ' session' + (recap.sessions > 1 ? 's' : '') + ' banked.') + '</div>' +
+      '<div style="display:flex;gap:8px">' +
+      '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--txt)">' + (Math.round(recap.volume / 100) / 10) + 't</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">Volume</div></div>' +
+      '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--c5)">' + recap.prs + '</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">PRs</div></div>' +
+      '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--c1)">' + recap.streak + '🔥</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">Streak</div></div>' +
+      (recap.weightDelta !== null ? '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--txt)">' + (recap.weightDelta > 0 ? '+' : '') + recap.weightDelta + '</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">kg</div></div>' : '') +
+      '</div></div>' : '';
+
+    /* Morning check-in ritual — 30 seconds, feeds readiness */
+    const checkedInToday = (function() {
+      try { const r = S.g('recovery') || {}; return r.date === localISO(new Date()); } catch(e) { return false; }
+    })();
+    const checkinCard = (!checkedInToday && hr < 12) ?
+      '<div onclick="go(\'recovery\')" style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;touch-action:manipulation">' +
+      iconTile('sun', 'c5') +
+      '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">30-second check-in</div>' +
+      '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Sleep, soreness, mood — then I\'ll shape your day around it</div></div>' +
+      '<span style="color:var(--c1);font-size:18px">›</span></div>' : '';
+
+    const dueSupps = typeof SupplementEngine !== 'undefined' ? SupplementEngine.getDueNow() : [];
+    const suppPrompt = dueSupps.length ?
+      '<div onclick="go(\'nutrition\')" style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;touch-action:manipulation">' +
+      iconTile('pill', 'c2') +
+      '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">' + dueSupps.length + ' supplement' + (dueSupps.length > 1 ? 's' : '') + ' due</div>' +
+      '<div style="font-size:11px;color:var(--txt3);margin-top:2px">' + esc(dueSupps.slice(0, 3).map(function(s){ return s.name; }).join(', ')) + '</div></div>' +
+      '<span style="color:var(--c1);font-size:18px">›</span></div>' : '';
+
     const setupBanner = (S.g('settings.equipmentSetupPending') || !S.g('user.equipmentConfigured')) ?
-      '<div onclick="go(\'equipment-setup\')" style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:rgba(0,213,255,0.08);border:1px solid rgba(0,213,255,0.2);display:flex;align-items:center;justify-content:space-between;cursor:pointer;touch-action:manipulation">' +
-      '<div><div style="font-size:13px;font-weight:700;color:var(--c1)">🏋️ Set up your equipment</div>' +
+      '<div onclick="go(\'equipment-setup\')" style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:rgba(0,213,255,0.08);border:1px solid rgba(0,213,255,0.2);display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;touch-action:manipulation">' +
+      iconTile('dumbbell', 'c1') +
+      '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--c1)">Set up your equipment</div>' +
       '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Home, gym, Life Fitness machines — get matched workouts</div></div>' +
       '<span style="color:var(--c1);font-size:18px">›</span></div>' : '';
 
@@ -306,7 +352,7 @@ reg('dashboard', function() {
 
     /* P5 first paint: 5-tab shell + ≤3 cards (hero, session, optional empty-state). Rest behind disclosure. */
     return demoBanner + topbar +
-      (weightPrompt || '') + (injuryBanner || '') + (setupBanner || '') + (splitBanner || '') +
+      (recapCard || '') + (checkinCard || '') + (weightPrompt || '') + (suppPrompt || '') + (injuryBanner || '') + (setupBanner || '') + (splitBanner || '') +
       heroCard +
       todayWorkout +
       (firstWorkoutEmpty || '') +
@@ -324,7 +370,7 @@ reg('dashboard', function() {
 
 window._nextTheme = _nextTheme;
 window.openMorningBriefing = function() {
-  S.set('settings.lastBriefingDate', new Date().toISOString().slice(0, 10));
+  S.set('settings.lastBriefingDate', localISO(new Date()));
   go('briefing');
 };
 

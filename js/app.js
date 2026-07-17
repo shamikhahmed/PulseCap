@@ -43,16 +43,80 @@ const NAV_PARENT = {
   bodymap: 'bodymap', physique: 'bodymap', 'physique-archetype': 'bodymap',
   'physique-timeline': 'bodymap', recovery: 'bodymap', 'recovery-debt': 'bodymap',
   nutrition: 'bodymap', rehab: 'bodymap', 'injury-risk': 'bodymap',
-  'body-intelligence': 'bodymap',
+  'body-intelligence': 'bodymap', photos: 'bodymap',
   hub: 'hub', search: 'hub', encyclopedia: 'hub', anatomy: 'hub', academy: 'hub',
   calculators: 'hub', visualizations: 'hub', assistant: 'hub', coach: 'hub',
-  settings: 'settings', profiles: 'settings', 'equipment-setup': 'settings'
+  settings: 'settings', profiles: 'settings', 'equipment-setup': 'settings', 'split-builder': 'settings'
 };
 window.NAV_PARENT = NAV_PARENT;
 
 function reg(id, fn) { _screens[id] = fn; }
 window.reg = reg;
 window.listScreens = function() { return Object.keys(_screens).sort(); };
+window.currentScreenId = function() { return _currentScreen; };
+
+/* ── Icon system: minimalist stroke icons (SF-symbol flavor) ──
+   Chrome/actions use these, not emoji. Emoji stays only in celebratory or
+   content contexts. icon(name, size?, color?) → inline SVG string. */
+const _ICONS = {
+  scale:    'M12 3v3M6 6l-2 6a3 3 0 006 0L8 6m8 0l-2 6a3 3 0 006 0l-2-6M4 6h16M12 6v13m-4 2h8',
+  pill:     'M10.5 3.5a5 5 0 017 7l-7 7a5 5 0 01-7-7zM7 7l7 7',
+  dumbbell: 'M7 8v8M4 10v4M17 8v8M20 10v4M7 12h10',
+  bandage:  'M8 5L5 8l11 11 3-3zM5 8l-1.5 1.5a2 2 0 000 3L8 17m8-14l1.5 1.5a2 2 0 010 3L16 9M11 11l.01.01M13 13l.01.01',
+  leaf:     'M6 15C6 9 10 5 19 5c0 9-4 13-10 13-1.5 0-3-.5-3-3zM6 15l-2 4M6 15c2-1 5-3 7-6',
+  calendar: 'M5 6h14a1 1 0 011 1v12a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1zM8 3v5M16 3v5M4 11h16',
+  camera:   'M4 8h3l2-2h6l2 2h3a1 1 0 011 1v10a1 1 0 01-1 1H4a1 1 0 01-1-1V9a1 1 0 011-1zM12 17a4 4 0 100-8 4 4 0 000 8z',
+  heart:    'M12 20s-7-4.5-9-9c-1.2-2.8.5-6 3.5-6 2 0 3.5 1 4.5 3 1-2 2.5-3 4.5-3 3 0 4.7 3.2 3.5 6-2 4.5-7 9-7 9z',
+  apple:    'M12 7c-3 0-6 2-6 6 0 3.5 2.5 7 5 7 .8 0 1.2-.4 2-.4s1.2.4 2 .4c2.5 0 5-3.5 5-7 0-4-3-6-6-6-.7 0-1.3.2-2 .2S12.7 7 12 7zM12 7c0-2 1-3.5 3-4',
+  ruler:    'M3 17L17 3l4 4L7 21zM8 16l1.5 1.5M11 13l1.5 1.5M14 10l1.5 1.5M17 7l1.5 1.5',
+  dna:      'M7 3c0 6 10 6 10 12M17 3c0 6-10 6-10 12M7 15c0 3 2 6 5 6M17 15c0 3-2 6-5 6M8 7h8M8 17h8',
+  alert:    'M12 4l9 16H3zM12 10v5M12 18v.5',
+  calc:     'M6 3h12a1 1 0 011 1v16a1 1 0 01-1 1H6a1 1 0 01-1-1V4a1 1 0 011-1zM8 7h8M8 12h.01M12 12h.01M16 12h.01M8 16h.01M12 16h.01M16 16h.01',
+  search:   'M10.5 17a6.5 6.5 0 100-13 6.5 6.5 0 000 13zM15.5 15.5L21 21',
+  chart:    'M4 20V10M10 20V4M16 20v-8M4 20h17',
+  flame:    'M12 3c1 3 4 5 4 9a4 4 0 11-8 0c0-2 1-3 1-3s0 2 2 2c0-3-1-5 1-8z',
+  sun:      'M12 17a5 5 0 100-10 5 5 0 000 10zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',
+  sparkles: 'M12 4l1.5 4.5L18 10l-4.5 1.5L12 16l-1.5-4.5L6 10l4.5-1.5zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8zM5 16l.6 1.6L7 18l-1.4.6L5 20l-.6-1.4L3 18l1.4-.4z',
+  play:     'M8 5l11 7-11 7z',
+  bed:      'M3 7v11M3 14h18v4M3 11h8v3M13 11h6a2 2 0 012 2v1',
+  walk:     'M13 5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM13 7l-2 5 3 3v6M11 12l-3 2-1 5M13 7l3 2 3 1M11 12l2-5',
+  trendDown:'M4 7l6 6 4-4 6 6M14 15h6v-6',
+  refresh:  'M20 8A8 8 0 106.3 18.7M20 8V3M20 8h-5',
+  run:      'M14 5a1.5 1.5 0 100-3 1.5 1.5 0 000 3zM4 21l5-4 1-5-2-3 5-2 2 3 4 1M10 7l-4 3M13 12l2 4 4 2',
+  check:    'M5 13l4 4L19 7',
+  moon:     'M20 14A8 8 0 1110 4a6.5 6.5 0 0010 10z',
+  book:     'M5 4h6a2 2 0 012 2v14a2 2 0 00-2-2H5zM19 4h-6a2 2 0 00-2 2v14a2 2 0 012-2h6z',
+  gradcap:  'M12 4L2 9l10 5 10-5zM6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6',
+  target:   'M12 21a9 9 0 100-18 9 9 0 000 18zM12 17a5 5 0 100-10 5 5 0 000 10zM12 13a1 1 0 100-2 1 1 0 000 2z',
+  clock:    'M12 21a9 9 0 100-18 9 9 0 000 18zM12 7v5l3 3'
+};
+function icon(name, size, color) {
+  const d = _ICONS[name];
+  if (!d) return '';
+  return '<svg width="' + (size || 20) + '" height="' + (size || 20) + '" viewBox="0 0 24 24" fill="none" ' +
+    'stroke="' + (color || 'currentColor') + '" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" ' +
+    'aria-hidden="true" style="flex-shrink:0">' + '<path d="' + d + '"/></svg>';
+}
+window.icon = icon;
+/* Icon in a tinted rounded square — the Apple "settings row" look */
+window.iconTile = function(name, tint, size) {
+  const s = size || 34;
+  return '<div style="width:' + s + 'px;height:' + s + 'px;border-radius:' + Math.round(s * 0.3) + 'px;' +
+    'background:rgba(var(--' + (tint || 'c1') + '-rgb),0.14);color:var(--' + (tint || 'c1') + ');' +
+    'display:flex;align-items:center;justify-content:center;flex-shrink:0">' +
+    icon(name, Math.round(s * 0.55)) + '</div>';
+};
+
+/* 'upper_chest' → 'Upper Chest' — raw data ids must never reach the UI */
+function prettyMuscle(m) {
+  return String(m || '').split('_').map(function(w) {
+    return w.charAt(0).toUpperCase() + w.slice(1);
+  }).join(' ');
+}
+window.prettyMuscle = prettyMuscle;
+window.prettyMuscles = function(arr, max) {
+  return (arr || []).slice(0, max || 99).map(prettyMuscle).join(' · ');
+};
 
 function go(id, data) {
   try {
@@ -136,7 +200,16 @@ function esc(s) {
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
 function isoNow() { return new Date().toISOString(); }
-function today() { return new Date().toISOString().slice(0,10); }
+/* LOCAL calendar date — never toISOString (that's UTC and breaks evenings
+   for anyone east of Greenwich: wrong "today", broken streaks, wrong weekday). */
+function localISO(d) {
+  d = d || new Date();
+  return d.getFullYear() + '-' +
+    String(d.getMonth() + 1).padStart(2, '0') + '-' +
+    String(d.getDate()).padStart(2, '0');
+}
+window.localISO = localISO;
+function today() { return localISO(new Date()); }
 function fmtDate(d) { try { return new Date(d).toLocaleDateString('en-GB',{weekday:'short',day:'numeric',month:'short'}); } catch(e){return d||'';} }
 function fmtTime(secs) { const m=Math.floor(secs/60),s=secs%60; return (m<10?'0':'')+m+':'+(s<10?'0':'')+s; }
 function fmtMins(mins) { return mins<60?mins+'m':Math.floor(mins/60)+'h '+(mins%60?mins%60+'m':''); }
@@ -218,11 +291,22 @@ function modal(title, bodyHtml, footerHtml) {
   d.className = 'modal-overlay'; d.id = '_modal';
   d.onclick = e => { if(e.target===d) closeModal(); };
   d.innerHTML = '<div class="modal-sheet"><div class="modal-handle"></div>' +
+    '<button type="button" class="modal-close" aria-label="Close" onclick="closeModal()">✕</button>' +
     (title?'<div class="modal-title">'+esc(title)+'</div>':'') +
     bodyHtml + (footerHtml||'') + '</div>';
   document.body.appendChild(d);
+  /* Lock the page behind the sheet so iOS keyboard focus-scroll can't yank it */
+  const v = document.getElementById('view');
+  if (v) { d._viewScroll = v.scrollTop; v.style.overflow = 'hidden'; }
 }
-function closeModal() { const m = document.getElementById('_modal'); if(m) m.remove(); }
+function closeModal() {
+  const m = document.getElementById('_modal');
+  if (m) {
+    const v = document.getElementById('view');
+    if (v) { v.style.overflow = ''; if (m._viewScroll != null) v.scrollTop = m._viewScroll; }
+    m.remove();
+  }
+}
 window.sh=sh;window.emptyState=emptyState;window.modal=modal;window.closeModal=closeModal;
 
 /* ══════════════════════════════════════════════════════
@@ -359,14 +443,38 @@ function normalizePulseTheme(id) {
   return id === 'light' ? 'light' : 'dark';
 }
 
-function applyTheme(t) {
+function applyTheme(t, persist) {
   const theme = normalizePulseTheme(t);
   document.documentElement.setAttribute('data-theme', theme);
-  S.set('user.theme', theme);
-  S.set('user.mode', theme);
+  /* Capricorn shared components (premium nav, glass surfaces) read their own
+     attribute — keep both in sync or light mode ships a dark navbar. */
+  document.documentElement.setAttribute('data-cap-theme', theme);
+  if (persist !== false) {
+    S.set('user.theme', theme);
+    S.set('user.mode', theme);
+  }
   if (window._fitnessCanvas && window._fitnessCanvas.refresh) window._fitnessCanvas.refresh();
 }
 window.applyTheme = applyTheme;
+
+/* No pinned theme → follow the device, live. */
+function applySystemTheme() {
+  const mq = window.matchMedia && window.matchMedia('(prefers-color-scheme: light)');
+  applyTheme(mq && mq.matches ? 'light' : 'dark', false);
+}
+window.applySystemTheme = applySystemTheme;
+window.clearThemePref = function() {
+  S.set('user.theme', null);
+  S.set('user.mode', null);
+  applySystemTheme();
+};
+if (window.matchMedia) {
+  try {
+    window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function() {
+      if (!S.g('user.theme')) applySystemTheme();
+    });
+  } catch(e) {}
+}
 
 function applyMode(mode) {
   applyTheme(mode === 'light' ? 'light' : 'dark');
@@ -380,7 +488,13 @@ window.applyMode = applyMode;
 const ReadinessEngine = {
   score() {
     try {
-      const r = S.g('recovery') || {};
+      let r = S.g('recovery') || {};
+      /* Stale check-in (>2 days old) shouldn't keep steering the score —
+         drift inputs back to neutral so old bad days don't haunt the week */
+      if (r.date && r.date !== today()) {
+        const age = daysAgo(r.date);
+        if (age >= 2) r = {};
+      }
       const ws = S.g('workouts') || [];
       let score = 100;
       const sleep = r.sleep || 7.5;
@@ -480,20 +594,34 @@ window.ReadinessEngine = ReadinessEngine;
    ENGINE — STREAK
 ══════════════════════════════════════════════════════ */
 const StreakEngine = {
+  /* Streak counts days you kept the plan: trained, scheduled rest, or a
+     deliberate skip. One free "freeze" per counted week covers a missed
+     gym day — a 3-day/week lifter shouldn't lose a streak to Tuesday. */
   get() {
     try {
       const ws = S.g('workouts') || [];
       if (!ws.length) return 0;
-      const dates = [...new Set(ws.map(w => w.date.slice(0,10)))].sort().reverse();
-      let streak = 0;
-      for (let i=0; i<dates.length; i++) {
-        const diff = Math.round((Date.now() - new Date(dates[i])) / 864e5);
-        if (diff === i || diff === i+1) streak++;
-        else break;
+      const recent = ws.some(w => (Date.now() - new Date(w.date)) < 7 * 864e5);
+      if (!recent) return 0;
+      const done = new Set(ws.map(w => (w.date || '').slice(0, 10)));
+      const gymDays = S.g('user.gymDays') || [];
+      const skips = new Set((S.g('skippedDays') || []).map(s => s.date));
+      const names = ['sun','mon','tue','wed','thu','fri','sat'];
+      let streak = 0, freezesUsed = 0;
+      for (let i = 0; i < 365; i++) {
+        const d = new Date(Date.now() - i * 864e5);
+        const iso = localISO(d);
+        const isGymDay = !gymDays.length || gymDays.includes(names[d.getDay()]);
+        if (done.has(iso)) { streak++; continue; }
+        if (!isGymDay || skips.has(iso)) { streak++; continue; }
+        if (i === 0) continue;                    /* today isn't over yet */
+        if (freezesUsed < 1 + Math.floor(streak / 7)) { freezesUsed++; streak++; continue; }
+        break;
       }
       return streak;
     } catch(e) { return 0; }
   },
+  MILESTONES: [7, 30, 100, 365],
   weekWorkouts() {
     const ws = S.g('workouts') || [];
     const cutoff = Date.now() - 7*864e5;
@@ -502,11 +630,150 @@ const StreakEngine = {
   totalVolume() { return (S.g('workouts')||[]).reduce((a,w)=>a+(w.totalVol||0),0); },
   weekVolume() { return this.weekWorkouts().reduce((a,w)=>a+(w.totalVol||0),0); }
 };
+
+/* ── Weekly recap (Sunday-evening comeback hook) ── */
+const RecapEngine = {
+  /* ISO week id like 2026-W29 — used for dismissal + archive keys */
+  weekId(d) {
+    d = d ? new Date(d) : new Date();
+    const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+    t.setUTCDate(t.getUTCDate() + 4 - (t.getUTCDay() || 7));
+    const y = t.getUTCFullYear();
+    const w = Math.ceil((((t - Date.UTC(y, 0, 1)) / 864e5) + 1) / 7);
+    return y + '-W' + (w < 10 ? '0' : '') + w;
+  },
+  /* Stats for the 7 days ending `end` (default: now) */
+  weekStats(end) {
+    const endT = end ? new Date(end).getTime() : Date.now();
+    const startT = endT - 7 * 864e5;
+    const ws = (S.g('workouts') || []).filter(w => {
+      const t = new Date(w.date).getTime();
+      return t >= startT && t <= endT;
+    });
+    const vol = ws.reduce((a, w) => a + (w.totalVol || 0), 0);
+    const prs = ws.reduce((a, w) => a + (w.exercises || []).reduce((b, ex) =>
+      b + (ex.sets || []).filter(s => s._isPR).length, 0), 0);
+    const stats = S.g('bodyStats') || [];
+    const inWeek = stats.filter(s => { const t = new Date(s.date).getTime(); return t >= startT && t <= endT; });
+    const weightDelta = inWeek.length >= 2
+      ? Math.round((inWeek[inWeek.length - 1].weight - inWeek[0].weight) * 10) / 10 : null;
+    return { sessions: ws.length, volume: vol, prs: prs, streak: StreakEngine.get(), weightDelta: weightDelta };
+  },
+  /* Show window: Sunday from 5pm through all of Monday, once per week */
+  shouldShow() {
+    const now = new Date();
+    const inWindow = (now.getDay() === 0 && now.getHours() >= 17) || now.getDay() === 1;
+    if (!inWindow) return false;
+    if ((S.g('workouts') || []).length === 0) return false;
+    return S.g('recapDismissed') !== this.weekId();
+  },
+  dismiss() { S.set('recapDismissed', this.weekId()); }
+};
+window.RecapEngine = RecapEngine;
+window.dismissRecap = function() { RecapEngine.dismiss(); go('dashboard'); };
 window.StreakEngine = StreakEngine;
 
 /* ══════════════════════════════════════════════════════
    ENGINE — PROGRESSION
 ══════════════════════════════════════════════════════ */
+/* ── PROGRAM ENGINE — real progression for the strength programs ──
+   Stronglifts / Starting Strength: linear (+2.5kg on success, 10% deload
+   after 3 fails). 5/3/1: training-max percentage waves, TM bump each cycle.
+   State in S 'programState': { squat:{w,tm,fails,week}, bench:{...}, ... } */
+const ProgramEngine = {
+  MODES: { stronglifts: 'linear', starting_strength: 'linear', str: 'linear', '531': '531' },
+  MAIN: {
+    'Back Squat': 'squat', 'Squat': 'squat', 'Front Squat': 'squat',
+    'Barbell Bench Press': 'bench', 'Bench Press': 'bench', 'Flat Barbell Bench Press': 'bench',
+    'Deadlift': 'deadlift', 'Romanian Deadlift': null,
+    'Overhead Press': 'ohp', 'Barbell Row': 'row', 'Pendlay Row': 'row'
+  },
+  PCT: [[0.65, 0.75, 0.85], [0.70, 0.80, 0.90], [0.75, 0.85, 0.95], [0.40, 0.50, 0.60]],
+  REPS: [[5, 5, 5], [3, 3, 3], [5, 3, 1], [5, 5, 5]],
+  WEEK_NAME: ['Week 1 — 5s', 'Week 2 — 3s', 'Week 3 — 5/3/1', 'Deload week'],
+
+  mode() { return this.MODES[S.g('user.split') || ''] || null; },
+  _key(name) { return this.MAIN.hasOwnProperty(name) ? this.MAIN[name] : null; },
+  _round(w) { return Math.max(20, Math.round(w / 2.5) * 2.5); },
+  _best1RM(name) {
+    let best = 0;
+    (S.g('workouts') || []).forEach(wo => (wo.exercises || []).forEach(ex => {
+      if (ex.name === name) (ex.sets || []).forEach(s => {
+        if (s.done) best = Math.max(best, ProgEngine.epley(s.weight || 0, s.reps || 0));
+      });
+    }));
+    return best;
+  },
+  _lift(name, user) {
+    const key = this._key(name);
+    if (!key) return null;
+    const st = S.g('programState') || {};
+    if (!st[key]) {
+      const base = this._round((WeightEngine.suggest(name, user) || 40) * 0.8);
+      const oneRM = this._best1RM(name) || base * 1.25;
+      st[key] = { w: base, tm: this._round(oneRM * 0.9), fails: 0, week: 0 };
+      S.set('programState', st);
+    }
+    return { key: key, st: st, L: st[key] };
+  },
+  /* Prescribed sets for this exercise under the active program, or null */
+  prescribe(name, user) {
+    const mode = this.mode();
+    if (!mode) return null;
+    const hit = this._lift(name, user);
+    if (!hit) return null;
+    const L = hit.L;
+    if (mode === 'linear') {
+      const isDL = hit.key === 'deadlift';
+      const count = isDL ? 1 : 5;
+      const sets = [];
+      for (let i = 0; i < count; i++) sets.push({ weight: L.w, reps: 5, done: false });
+      return { sets: sets, note: (isDL ? '1×5' : '5×5') + ' @ ' + L.w + 'kg · finish every rep and it goes up 2.5 next time' };
+    }
+    const wk = (L.week || 0) % 4;
+    const sets = this.PCT[wk].map((p, i) => ({ weight: this._round(L.tm * p), reps: this.REPS[wk][i], done: false }));
+    return { sets: sets, note: this.WEEK_NAME[wk] + ' · TM ' + L.tm + 'kg' + (wk === 2 ? ' · last set: as many good reps as you\'ve got' : wk === 3 ? ' · easy on purpose' : ' · last set AMRAP') };
+  },
+  /* Advance state after a saved workout */
+  onFinish(workout) {
+    const mode = this.mode();
+    if (!mode) return null;
+    const st = S.g('programState') || {};
+    const msgs = [];
+    (workout.exercises || []).forEach(ex => {
+      const key = this._key(ex.name);
+      if (!key || !st[key]) return;
+      const planned = ex.sets || [];
+      const done = planned.filter(s => s.done);
+      if (mode === 'linear') {
+        if (planned.length && done.length >= planned.length) {
+          st[key].w = this._round(st[key].w + 2.5);
+          st[key].fails = 0;
+          msgs.push(ex.name + ' → ' + st[key].w + 'kg next time');
+        } else if (done.length) {
+          st[key].fails = (st[key].fails || 0) + 1;
+          if (st[key].fails >= 3) {
+            st[key].w = this._round(st[key].w * 0.9);
+            st[key].fails = 0;
+            msgs.push(ex.name + ' deloads to ' + st[key].w + 'kg — build back stronger');
+          } else {
+            msgs.push(ex.name + ' stays at ' + st[key].w + 'kg (' + st[key].fails + '/3 misses)');
+          }
+        }
+      } else if (done.length) {
+        st[key].week = (st[key].week || 0) + 1;
+        if (st[key].week % 4 === 0) {
+          st[key].tm = this._round(st[key].tm + (key === 'squat' || key === 'deadlift' ? 5 : 2.5));
+          msgs.push(ex.name + ' cycle done → TM ' + st[key].tm + 'kg');
+        }
+      }
+    });
+    S.set('programState', st);
+    return msgs;
+  }
+};
+window.ProgramEngine = ProgramEngine;
+
 const ProgEngine = {
   epley(w, r) { if(!w||!r) return 0; return r===1 ? w : Math.round(w*(1+r/30)); },
   checkPR(name, weight, reps) {
@@ -805,7 +1072,9 @@ const SplitEngine = {
     const swaps = [];
     (names || []).forEach(function(name) {
       const r = SplitEngine.resolveExercise(name);
-      if (r.name) {
+      /* A swap target can collide with an exercise already in the session —
+         drop the duplicate rather than programming the same lift twice */
+      if (r.name && exercises.indexOf(r.name) === -1) {
         exercises.push(r.name);
         if (r.swapped) swaps.push(r);
       }
@@ -825,7 +1094,90 @@ const SplitEngine = {
     const days = this.listSplitDays();
     const n = Math.max(1, Math.min(days.length, parseInt(dayNum, 10) || 1));
     S.set('user.splitDay', n);
+    /* Manual pick also wins over the weekday auto-map, but only for today */
+    S.set('user.splitDayOverride', { date: today(), day: n });
     return n;
+  },
+  /* Weekday → split-day map. Saved user.dayAssignments wins; otherwise
+     auto-assign split days 1..N across gym days in week order (Mon first). */
+  weekdayAssignments() {
+    const user = S.g('user') || {};
+    const saved = user.dayAssignments;
+    if (saved && Object.keys(saved).length) return saved;
+    const gymDays = user.gymDays || [];
+    if (!gymDays.length) return null;
+    const order = ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'];
+    const days = this._getSplitDays(user.split || 'ppl');
+    const map = {};
+    let i = 0;
+    order.forEach(d => {
+      if (gymDays.includes(d)) { map[d] = (i % days.length) + 1; i++; }
+    });
+    return map;
+  },
+  todayWeekdayId() {
+    return ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'][new Date().getDay()];
+  },
+  /* The split-day NUMBER actually shown today (override > weekday map > counter) */
+  todayDayNumber() {
+    const user = S.g('user') || {};
+    const ovr = user.splitDayOverride;
+    if (ovr && ovr.date === today() && ovr.day) return ovr.day;
+    const map = this.weekdayAssignments();
+    if (map && map[this.todayWeekdayId()]) return map[this.todayWeekdayId()];
+    return user.splitDay || 1;
+  },
+  /* Coach call on a skipped day: if the missed muscle group hasn't been hit
+     in ~7 days the whole weekly map shifts forward one gym day, otherwise the
+     schedule holds and the skip costs nothing. Returns {shifted, msg}. */
+  skipToday() {
+    const user = S.g('user') || {};
+    const days = this._getSplitDays(user.split || 'ppl');
+    const map = this.weekdayAssignments() || {};
+    const wd = this.todayWeekdayId();
+    const num = this.todayDayNumber();
+    const missed = days[(num - 1) % days.length] || {};
+    const missedName = missed.n || 'Your session';
+
+    /* Same session done inside the last 7 days? */
+    const ws = S.g('workouts') || [];
+    const cutoff = Date.now() - 7 * 86400000;
+    const prefix = missedName.split('—')[0].trim().toLowerCase();
+    const trainedRecently = ws.some(function(w) {
+      try {
+        if (new Date(w.date).getTime() < cutoff) return false;
+        /* Same session by name prefix OR by recorded split-day number —
+           renamed/custom sessions can't dodge the check */
+        return (prefix && (w.name || '').toLowerCase().indexOf(prefix) === 0) ||
+               (w.splitDay && w.splitDay === num);
+      } catch(e) { return false; }
+    });
+
+    const labels = { mon:'Monday', tue:'Tuesday', wed:'Wednesday', thu:'Thursday', fri:'Friday', sat:'Saturday', sun:'Sunday' };
+    const gymDays = user.gymDays || [];
+    let shifted = false, msg;
+    if (!trainedRecently && gymDays.length) {
+      const order = ['mon','tue','wed','thu','fri','sat','sun'];
+      const todayIdx = order.indexOf(wd);
+      const upcoming = [];
+      for (let i = 1; i <= 7; i++) {
+        const d = order[(todayIdx + i) % 7];
+        if (gymDays.includes(d) && upcoming.indexOf(d) === -1) upcoming.push(d);
+      }
+      const newMap = Object.assign({}, map);
+      upcoming.forEach(function(d, i) { newMap[d] = ((num - 1 + i) % days.length) + 1; });
+      S.set('user.dayAssignments', newMap);
+      shifted = true;
+      msg = missedName + ' moves to ' + labels[upcoming[0]] + '. Nothing lost — the week shifts with you.';
+    } else {
+      const grp = (missed.muscles && missed.muscles[0]) || 'this';
+      msg = trainedRecently
+        ? 'You already hit ' + grp + ' this week — skipping today costs you nothing. Schedule holds.'
+        : 'Schedule holds. Pick it back up ' + (gymDays.length ? 'on your next gym day' : 'tomorrow') + '.';
+    }
+    S.push('skippedDays', { date: today(), day: num, name: missedName, shifted: shifted });
+    S.set('user.splitDayOverride', null);
+    return { shifted: shifted, msg: msg, missed: missedName };
   },
   isScheduledRestDay() {
     const user = S.g('user') || {};
@@ -838,8 +1190,18 @@ const SplitEngine = {
     try {
       const user = S.g('user') || {};
       const split = user.split || 'ppl';
-      const dayIdx = ((user.splitDay || 1) - 1);
       const days = this._getSplitDays(split);
+      let dayIdx = null;
+      /* 1. Today's manual pick beats everything */
+      const ovr = user.splitDayOverride;
+      if (ovr && ovr.date === today() && ovr.day) dayIdx = ovr.day - 1;
+      /* 2. Weekday auto-map (gym days → split days in week order) */
+      if (dayIdx === null) {
+        const map = this.weekdayAssignments();
+        if (map && map[this.todayWeekdayId()]) dayIdx = map[this.todayWeekdayId()] - 1;
+      }
+      /* 3. Legacy rotation counter */
+      if (dayIdx === null) dayIdx = ((user.splitDay || 1) - 1);
       return this._resolveDay(days[dayIdx % days.length] || days[0]);
     } catch(e) { return { n:'Rest Day', muscles:[], exercises:[], warmup:[] }; }
   },
@@ -863,9 +1225,14 @@ const SplitEngine = {
       cardio_strength: this._cardio_strength,
       starting_strength: this._starting_strength, stronglifts: this._stronglifts,
       '531': this._531, upper_lower_fb: this._upper_lower_fb,
-      custom: this._custom
+      custom: this._customDays()
     };
     return m[split] || this._ppl;
+  },
+  /* User-built split (Settings → Training → Build your own) beats the stub */
+  _customDays() {
+    const saved = S.g('user.customSplit');
+    return (saved && saved.length) ? saved : this._custom;
   },
   nextDay() {
     const user = S.g('user') || {};
@@ -876,17 +1243,63 @@ const SplitEngine = {
     return next;
   },
   getSubstitutes(exerciseName, reason) {
+    return this.rankSubstitutes(exerciseName, reason).map(function(r) { return r.name; });
+  },
+  /* Ranked alternatives with a transparent impact score, so the UI can say
+     "this one hits the same muscles 90% as hard, and it's the best pick". */
+  rankSubstitutes(exerciseName, reason) {
     if (typeof ExDB === 'undefined') return [];
     const ex = ExDB.byName(exerciseName);
     if (!ex) return [];
     const self = this;
-    return ExDB.db.filter(function(e) {
+    const injured = typeof MuscleEngine !== 'undefined' ? MuscleEngine.injuredGroups() : {};
+    const injuredJoints = {};
+    try {
+      (S.g('user.injuries') || []).forEach(function(inj) {
+        if (typeof inj !== 'object' || inj.recovered) return;
+        const db = typeof InjuriesDB !== 'undefined' ? InjuriesDB.resolve(inj) : null;
+        const j = (db && db.joint) || inj.joint;
+        if (j) injuredJoints[j] = Math.max(injuredJoints[j] || 0, inj.severity || 1);
+      });
+    } catch(e) {}
+
+    const ranked = ExDB.db.filter(function(e) {
       return e.n !== exerciseName &&
         (e.grp === ex.grp || (ex.pri && e.pri === ex.pri)) &&
         (!reason || !reason.includes('shoulder') || (e.joint && (e.joint.shoulder || 0) < 2)) &&
         self._exerciseAvailable(e.n) &&
         !self._isAvoided(e.n);
-    }).slice(0, 5).map(function(e) { return e.n; });
+    }).map(function(e) {
+      let score = 40;                                     /* same group baseline */
+      const why = [];
+      if (ex.pri && e.pri === ex.pri) { score += 35; why.push('same target: ' + e.pri); }
+      else { why.push('works ' + (e.pri || e.grp)); }
+      const exSec = (ex.sec || '').toLowerCase(), eSec = (e.sec || '').toLowerCase();
+      if (exSec && eSec) {
+        const overlap = exSec.split(',').filter(function(s) { return s.trim() && eSec.includes(s.trim()); }).length;
+        score += Math.min(10, overlap * 5);
+      }
+      if (e.diff === ex.diff) { score += 8; }
+      else if (Math.abs((e.diff || 1) - (ex.diff || 1)) === 1) { score += 4; }
+      /* Joint safety: reward being gentler on injured joints */
+      let safer = false;
+      Object.keys(injuredJoints).forEach(function(j) {
+        const mine = (e.joint && e.joint[j]) || 0;
+        const orig = (ex.joint && ex.joint[j]) || 0;
+        if (mine < orig) { score += 7; safer = true; }
+        if (mine >= 2) score -= 10;
+      });
+      if (safer) why.push('easier on your injury');
+      if (e.bw) why.push('no equipment needed');
+      return { name: e.n, pct: Math.max(35, Math.min(98, score)), why: why.slice(0, 2), diff: e.diff, em: e.em || '💪' };
+    }).sort(function(a, b) { return b.pct - a.pct; })
+      /* Built-in DB + wger import can both carry an exercise — keep the top-scored copy */
+      .filter(function(r, i, arr) {
+        return arr.findIndex(function(x) { return x.name === r.name; }) === i;
+      }).slice(0, 5);
+
+    if (ranked.length) ranked[0].best = true;
+    return ranked;
   }
 };
 window.SplitEngine = SplitEngine;
@@ -898,6 +1311,24 @@ window.pickSplitDay = function(dayNum) {
   if (typeof go === 'function') go(page === 'dashboard' ? 'dashboard' : 'workout');
 };
 
+window.confirmSkipToday = function() {
+  const sd = SplitEngine.getSplitDay();
+  modal('Skip today?',
+    '<div style="font-size:14px;color:var(--txt2);line-height:1.6;margin-bottom:4px">' +
+    'Life happens. I\'ll decide whether <b style="color:var(--txt)">' + esc(sd.n || 'today\'s session') + '</b> ' +
+    'needs to move to your next gym day, or whether the week absorbs it.</div>',
+    '<div style="display:flex;gap:8px;margin-top:12px">' +
+    '<button type="button" class="btn btn-primary" style="flex:1" onclick="doSkipToday()">Skip — you decide, coach</button>' +
+    '<button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>' +
+    '</div>');
+};
+window.doSkipToday = function() {
+  const r = SplitEngine.skipToday();
+  closeModal();
+  toast(r.shifted ? '🗓️ ' + r.msg : '👍 ' + r.msg, 'ok', 5000);
+  go('dashboard');
+};
+
 window.toggleGymDay = function(day) {
   const user = S.g('user') || {};
   const gymDays = (user.gymDays || []).slice();
@@ -905,6 +1336,8 @@ window.toggleGymDay = function(day) {
   if (idx >= 0) gymDays.splice(idx, 1);
   else gymDays.push(day);
   S.set('user.gymDays', gymDays);
+  /* Gym days changed — stale weekday map would point at wrong days */
+  S.set('user.dayAssignments', null);
   if (typeof toast === 'function') toast('Training days updated', 'ok');
   if (typeof go === 'function') go('settings', { tab: 'training' });
 };
@@ -1137,6 +1570,34 @@ window.BodyEngine = BodyEngine;
 ══════════════════════════════════════════════════════ */
 const MuscleEngine = {
   _groups: ['Chest','Back','Shoulders','Quads','Hamstrings','Glutes','Biceps','Triceps','Core','Calves'],
+  /* Which muscle groups an injured joint takes out of play */
+  _jointGroups: {
+    shoulder: ['Shoulders','Chest'],
+    spine:    ['Back','Core'],
+    knee:     ['Quads','Hamstrings'],
+    elbow:    ['Biceps','Triceps'],
+    hip:      ['Glutes','Hamstrings'],
+    wrist:    ['Biceps'],
+    ankle:    ['Calves'],
+    neck:     ['Shoulders']
+  },
+  /* Active injuries → {Group: severity} (highest severity wins per group) */
+  injuredGroups() {
+    const out = {};
+    try {
+      const list = S.g('user.injuries') || [];
+      list.forEach(inj => {
+        if (typeof inj !== 'object' || inj.recovered) return;
+        const db = typeof InjuriesDB !== 'undefined' ? InjuriesDB.resolve(inj) : null;
+        const joint = (db && db.joint) || inj.joint;
+        const sev = inj.severity || 1;
+        (this._jointGroups[joint] || []).forEach(g => {
+          if (!out[g] || out[g].severity < sev) out[g] = { severity: sev, name: inj.bodyPart || (db && db.name) || 'Injury' };
+        });
+      });
+    } catch(e) {}
+    return out;
+  },
   status() {
     try {
       const ws = S.g('workouts') || [];
@@ -1152,7 +1613,21 @@ const MuscleEngine = {
           });
         });
       });
+      const injured = this.injuredGroups();
       return this._groups.map(name => {
+        /* Injury outranks freshness — a fresh muscle behind a bad joint is not "Ready" */
+        const inj = injured[name];
+        if (inj) {
+          const sev = inj.severity;
+          return {
+            name: name,
+            status: 'injured',
+            label: sev >= 3 ? 'Injured — avoid' : sev === 2 ? 'Injured — light only' : 'Injured — caution',
+            pct: sev >= 3 ? 0 : sev === 2 ? 30 : 60,
+            hrs: null, injury: inj.name, severity: sev,
+            color: sev >= 3 ? '#ff453a' : '#ff9f0a'
+          };
+        }
         const hrs = lastTrained[name] || null;
         if (!hrs) return { name, status:'fresh', label:'Ready', pct:100, hrs:null, color:'var(--c1)' };
         if (hrs < 24) return { name, status:'sore', label:'Recovering', pct:Math.round(hrs/48*100), hrs:Math.round(hrs), color:'#ff6b35' };
@@ -1631,7 +2106,9 @@ const PlanEngine = {
       return name + ', readiness is low (' + readiness + '/100). Active recovery or a light session beats forcing it.';
     }
     const session = workout.n || 'today\'s session';
-    const muscles = (workout.muscles || []).slice(0, 2).join(' & ');
+    let muscles = (workout.muscles || []).slice(0, 2).map(prettyMuscle).join(' & ');
+    /* Session names usually already carry the muscles — don't say it twice */
+    if (muscles && session.toLowerCase().includes(muscles.split(' & ')[0].toLowerCase())) muscles = '';
     const cal = ctx.calories || BodyEngine.calorieTarget(user);
     const prot = ctx.protein || BodyEngine.proteinTarget(user);
     if (readiness >= 80) {

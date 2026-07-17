@@ -48,7 +48,7 @@ function _monthlyReport(ws, prs, bodyStats) {
 }
 
 function _periodizationBlock(ws) {
-  const blockStart = S.g('periodization.blockStart') || new Date().toISOString().slice(0, 10);
+  const blockStart = S.g('periodization.blockStart') || localISO(new Date());
   const start = new Date(blockStart + 'T12:00:00');
   const today = new Date();
   const dayMs = 86400000;
@@ -58,7 +58,7 @@ function _periodizationBlock(ws) {
   const weekEnd = new Date(weekStart.getTime() + 6 * dayMs);
   const weekWs = ws.filter(function(w) {
     const d = w.date || '';
-    return d >= weekStart.toISOString().slice(0, 10) && d <= weekEnd.toISOString().slice(0, 10);
+    return d >= localISO(weekStart) && d <= localISO(weekEnd);
   });
   const phases = ['Accumulation', 'Intensification', 'Peak', 'Deload'];
   const phase = phases[week - 1] || 'Deload';

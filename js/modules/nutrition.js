@@ -80,7 +80,7 @@ function _waterSection(current, target) {
 
 function _dueSuppsSection(due) {
   if (!due.length) return '';
-  return sh('Due Now 🔔') +
+  return sh('Due Now') +
     due.map(s =>
       '<div class="supp-card due">' +
       '<div class="supp-icon">💊</div>' +
@@ -201,7 +201,7 @@ function _nutritionStreak(meals) {
   let streak = 0;
   const d = new Date();
   while (true) {
-    const ds = d.toISOString().slice(0,10);
+    const ds = localISO(d);
     if (!(meals||[]).some(m => m.date === ds)) break;
     streak++;
     d.setDate(d.getDate() - 1);

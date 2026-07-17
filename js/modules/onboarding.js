@@ -6,51 +6,50 @@ let _introSlide = 0;
 
 const INTRO_SLIDES = [
   {
-    emoji: '⚡',
+    mark: true,
     grad: 'linear-gradient(135deg, #00d5ff, #6b5fff)',
     title: 'PulseCap',
-    sub: 'A full performance system — training, recovery, and coaching — that lives on your phone.',
+    sub: 'Your coach. In your pocket.',
     bullets: [
-      '💪 300+ exercises with full coaching cues',
-      '📊 Daily readiness score based on your recovery',
-      '🧠 Smart Coach adapts your plan to how you feel',
-      '🔒 100% offline — your data never leaves your phone'
+      'A plan for every day — built around your week, not someone else\'s',
+      'It watches your recovery and adjusts before you overdo it',
+      'Everything stays on your phone. No account, no cloud, no ads'
     ]
   },
   {
-    emoji: '🏆',
+    emoji: '🧠',
     grad: 'linear-gradient(135deg, #6b5fff, #ff6bff)',
-    title: 'Smarter than a tracker',
-    sub: 'PulseCap doesn\'t just log reps — it helps you train better.',
+    title: 'It thinks like a trainer',
+    sub: 'Not a logbook. A coach that makes calls.',
     bullets: [
-      '😴 Adjusts intensity when your sleep or stress is high',
-      '🏆 Detects personal records on every single set',
-      '⚠️ Injury guard filters exercises for your weak points',
-      '📈 Auto-progression signals when to add weight'
+      'Slept badly? It lightens the day before you burn out',
+      'Tweaked a shoulder? It swaps the risky lifts automatically',
+      'Miss a day? It reshuffles your week — nothing gets lost',
+      'Hit a real PR and it\'ll be the first to tell you'
     ]
   },
   {
-    emoji: '🏋️',
+    emoji: '⚡',
     grad: 'linear-gradient(135deg, #00ff88, #00d5ff)',
-    title: 'Elite Workout Logger',
-    sub: 'The fastest gym logging experience. Built for one-handed iPhone use.',
+    title: 'Logging that keeps up',
+    sub: 'Made for one hand, mid-set, between breaths.',
     bullets: [
-      '⚡ Today\'s Smart Coach workout ready in one tap',
-      '⏱️ Rest timer with haptic vibration when done',
-      '🔄 PPL, Upper/Lower, Bro Split and 4 more splits',
-      '🎯 5 coach personalities from drill sergeant to zen master'
+      'Today\'s workout is one tap away, every morning',
+      'Rest timer runs itself — with a buzz when you\'re up',
+      '18 proven splits, from PPL to 5/3/1, scheduled to your week',
+      '300+ exercises with real form cues, not filler text'
     ]
   },
   {
     emoji: '🎯',
     grad: 'linear-gradient(135deg, #ff6b6b, #ffb347)',
-    title: 'Built For Your Goals',
-    sub: 'Every feature personalised to your body, goals, and schedule.',
+    title: 'Cutting, bulking, or both',
+    sub: 'Tell it the goal. It handles the math.',
     bullets: [
-      '📏 Body stats, measurements, and progress tracking',
-      '💊 Supplement stack with timing reminders',
-      '😴 Recovery hub with personalised readiness score',
-      '🌙 Dark & light modes — switch anytime in Settings'
+      'Calories, protein, BMI, TDEE — worked out for your body',
+      'Weigh-ins get a straight answer: on track or fix this',
+      'Measurements, photos, and PRs in one progress timeline',
+      'Supplement stack with reminders that actually show up'
     ]
   }
 ];
@@ -60,7 +59,7 @@ function _renderIntro(idx) {
   const isLast = idx === INTRO_SLIDES.length - 1;
   const dots = INTRO_SLIDES.map(function(_, i) {
     return '<div style="width:' + (i===idx?'22':'8') + 'px;height:8px;border-radius:4px;' +
-      'background:' + (i===idx?'var(--c1)':'rgba(255,255,255,0.2)') + ';' +
+      'background:' + (i===idx?'var(--c1)':'var(--border2)') + ';' +
       'transition:all 0.3s var(--spring)"></div>';
   }).join('');
 
@@ -70,8 +69,8 @@ function _renderIntro(idx) {
     '<div style="display:flex;justify-content:flex-end;padding:8px 20px">' +
     (idx < INTRO_SLIDES.length - 1 ?
       '<button type="button" onclick="introQuickStart()" style="background:none;border:none;' +
-      'color:rgba(255,255,255,0.4);font-size:14px;font-weight:600;cursor:pointer;' +
-      'touch-action:manipulation;padding:8px 4px;min-height:44px">Skip setup</button>'
+      'color:var(--txt3);font-size:14px;font-weight:600;cursor:pointer;' +
+      'touch-action:manipulation;padding:8px 4px;min-height:44px">Skip — explore first</button>'
       : '<div style="height:44px"></div>') +
     '</div>' +
 
@@ -82,7 +81,12 @@ function _renderIntro(idx) {
     'background:' + slide.grad + ';display:flex;align-items:center;' +
     'justify-content:center;font-size:46px;margin-bottom:28px;' +
     'box-shadow:0 20px 60px rgba(0,0,0,0.3);' +
-    'animation:breathe 3s ease-in-out infinite">' + slide.emoji + '</div>' +
+    'animation:breathe 3s ease-in-out infinite">' +
+    (slide.mark ?
+      '<svg width="52" height="52" viewBox="0 0 512 512" fill="none" aria-hidden="true">' +
+      '<path d="M96 256 H176 L208 208 L256 304 L304 176 L352 256 H416" stroke="#fff" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>' +
+      '<circle cx="256" cy="256" r="18" fill="#fff"/></svg>'
+      : slide.emoji) + '</div>' +
 
     '<div style="font-size:30px;font-weight:900;letter-spacing:-1.5px;' +
     'color:var(--txt);margin-bottom:12px;line-height:1.15">' + esc(slide.title) + '</div>' +
@@ -93,8 +97,8 @@ function _renderIntro(idx) {
     '<div style="width:100%;max-width:340px;text-align:left">' +
     slide.bullets.map(function(b) {
       return '<div style="display:flex;align-items:flex-start;gap:12px;padding:11px 14px;' +
-        'background:rgba(255,255,255,0.05);border-radius:12px;margin-bottom:8px;' +
-        'border:1px solid rgba(255,255,255,0.08)">' +
+        'background:var(--bg3);border-radius:12px;margin-bottom:8px;' +
+        'border:1px solid var(--border)">' +
         '<div style="font-size:14px;color:var(--txt);font-weight:500;line-height:1.45">' +
         esc(b) + '</div></div>';
     }).join('') +
@@ -351,7 +355,7 @@ const OB_STEPS = {
       '<div class="field-row">' +
       '<div class="field-wrap"><label class="field-label">'+gwLabel+'</label>' +
       '<input class="field" type="number" placeholder="'+(u?'155':'70')+'" value="'+(_obData.goalWeight||'')+'" oninput="_obData.goalWeight=this.value" style="font-size:18px"></div>' +
-      '<div class="field-wrap"><label class="field-label">Body Fat % <span style="color:rgba(255,255,255,0.4);font-weight:400">(optional)</span></label>' +
+      '<div class="field-wrap"><label class="field-label">Body Fat % <span style="color:var(--txt3);font-weight:400">(optional)</span></label>' +
       '<input class="field" type="number" placeholder="15" min="3" max="50" value="'+(_obData.targetBodyFat||'')+'" oninput="_obData.targetBodyFat=this.value" style="font-size:18px"></div>' +
       '</div>' +
       '</div>' + _footer(5) + '</div>';
@@ -390,7 +394,7 @@ const OB_STEPS = {
       '<div style="text-align:center;padding:24px 0 20px">' +
       '<div style="font-size:64px;margin-bottom:16px">📋</div>' +
       '<div style="font-size:28px;font-weight:900;color:#fff;letter-spacing:-1px">Your Plan</div>' +
-      '<div style="font-size:15px;color:rgba(255,255,255,0.65);margin-top:8px">Ready, '+esc(name)+' — here\'s your starting point.</div>' +
+      '<div style="font-size:15px;color:var(--txt2);margin-top:8px">Ready, '+esc(name)+' — here\'s your starting point.</div>' +
       '</div>' +
       '<div class="card card-solid" style="margin:0 0 14px">' +
       _summaryRow('🎯','Goal', goals[u.goal||'hypertrophy'] || '—') +

@@ -22,7 +22,7 @@ const RecoveryDebtEngine = {
     let consecutive = 0;
     for (let i = 0; i < 14; i++) {
       const d = new Date(); d.setDate(d.getDate() - i);
-      if (ws.some(w => w.date === d.toISOString().slice(0, 10))) consecutive++;
+      if (ws.some(w => w.date === localISO(d))) consecutive++;
       else break;
     }
     debt += Math.min(consecutive * 5, 25);
@@ -65,7 +65,7 @@ const RecoveryDebtEngine = {
     const result = [];
     for (let i = 13; i >= 0; i--) {
       const d = new Date(); d.setDate(d.getDate() - i);
-      const ds = d.toISOString().slice(0, 10);
+      const ds = localISO(d);
       const dayWs = ws.filter(w => w.date === ds);
       result.push({ date: ds, vol: dayWs.reduce((a, w) => a + (w.totalVol || 0), 0), trained: dayWs.length > 0 });
     }
@@ -95,7 +95,7 @@ const FatigueForecast = {
       projectedDebt = Math.max(0, Math.min(100, projectedDebt + (isTrainingDay ? 8 : -12)));
       const label = RecoveryDebtEngine.label(projectedDebt);
       result.push({
-        date: d.toISOString().slice(0, 10),
+        date: localISO(d),
         day: i,
         debt: Math.round(projectedDebt),
         readiness: Math.round(Math.max(20, Math.min(100, 100 - projectedDebt * 0.7))),
@@ -127,7 +127,7 @@ const FatigueForecast = {
     let consecutive = 0;
     for (let i = 0; i < 14; i++) {
       const d = new Date(); d.setDate(d.getDate() - i);
-      if (ws.some(w => w.date === d.toISOString().slice(0, 10))) consecutive++;
+      if (ws.some(w => w.date === localISO(d))) consecutive++;
       else break;
     }
     let risk = 0;
@@ -151,52 +151,81 @@ const DailyDecision = {
     const streak = typeof StreakEngine !== 'undefined' ? StreakEngine.get() : 0;
     const plateauRisk = FatigueForecast.plateauRisk();
 
+    /* Severe injury outranks everything — lifting waits, walking doesn't */
+    const injury = typeof InjuriesDB !== 'undefined' ? InjuriesDB.assessActive() : { shouldRest: false, messages: [], count: 0 };
+    if (injury.shouldRest) return {
+      decision: 'rest', title: 'Injury Recovery', emoji: '🩹', ic: 'bandage', tint: 'c4', color: '#ff453a',
+      reason: (injury.messages[0] || 'A severe injury is flagged') + '. Skip lifting today — a 20-30 min walk keeps blood flowing without loading the injury.',
+      actions: ['Walk 20-30 min at easy pace','Follow your rehab protocol (Body → Rehab)','Ice/elevate if swollen, heat if stiff','Log pain level changes in Rehab'],
+      confidence: 96
+    };
+
+    /* Day skipped by the user — engine already rescheduled */
+    const skips = S.g('skippedDays') || [];
+    const lastSkip = skips[skips.length - 1];
+    if (lastSkip && lastSkip.date === today()) return {
+      decision: 'rest', allowTrain: true, title: 'Day Skipped', emoji: '🗓️', ic: 'calendar', tint: 'c2', color: '#8e8e93',
+      reason: lastSkip.shifted
+        ? lastSkip.name + ' moved to your next gym day. The week shifts with you — nothing lost.'
+        : 'Schedule holds. A short walk today keeps the habit alive.',
+      actions: ['Walk 15-20 min if you can','Hit your protein target anyway','Back at it next gym day'],
+      confidence: 90
+    };
+
+    /* Scheduled rest day (gym days in Settings → Training) */
+    if (typeof SplitEngine !== 'undefined' && SplitEngine.isScheduledRestDay()) return {
+      decision: 'rest', allowTrain: true, title: 'Scheduled Rest Day', emoji: '🌿', ic: 'leaf', tint: 'c3', color: '#30d158',
+      reason: 'Today isn\'t one of your gym days. Active recovery beats the couch — but the gym is open if you feel great.',
+      actions: ['20-30 min walk or easy cycle','10 min stretching or mobility','Hit your protein target anyway','Sleep 8+ hours tonight'],
+      confidence: 90
+    };
+
     if (debt >= 80 || readiness < 30) return {
-      decision: 'rest', title: 'Recovery Priority', emoji: '🛌', color: '#ff453a',
-      reason: 'Recovery debt critical (' + debt + '/100). Favor rest or very light movement today — you can still open a session if you choose.',
-      actions: ['Sleep 8+ hours tonight','Light walk only (20 min max)','Prioritise nutrition and hydration','Foam roll or gentle stretching'],
+      decision: 'rest', title: 'Take the Day', emoji: '🛌', ic: 'bed', tint: 'c4', color: '#ff453a',
+      reason: 'Your body\'s deep in the red (' + debt + '/100 debt). Training through this buys nothing. Rest is the workout today.',
+      actions: ['Sleep 8+ hours tonight','A short walk is fine — nothing more','Eat properly, drink water','Foam roll if you\'re restless'],
       confidence: 95
     };
 
     if (debt >= 60 || readiness < 45) return {
-      decision: 'light', title: 'Light Session Only', emoji: '🚶', color: '#ff9f0a',
-      reason: 'High recovery debt (' + debt + '/100). A light session will maintain momentum without digging deeper.',
-      actions: ['Reduce all weights by 30-40%','Cut sets by 30%','Focus on technique and mind-muscle','No failure sets today'],
+      decision: 'light', title: 'Go Light Today', emoji: '🚶', ic: 'walk', tint: 'c5', color: '#ff9f0a',
+      reason: 'Recovery\'s behind (' + debt + '/100). Show up, move well, leave wanting more.',
+      actions: ['Drop weights 30-40%','Cut a set from everything','Slow reps, perfect form','Nothing to failure today'],
       confidence: 88
     };
 
     if (RecoveryDebtEngine.deloadRecommended() || streak >= 21) return {
-      decision: 'deload', title: 'Deload Week', emoji: '📉', color: '#f5c842',
-      reason: 'Accumulated training stress detected. A planned deload will supercompensate and drive next phase of gains.',
-      actions: ['Keep frequency the same','Reduce volume by 40-50%','Keep intensity at 60-70% of max','Focus on movement quality'],
+      decision: 'deload', title: 'Deload Week', emoji: '📉', ic: 'trendDown', tint: 'c5', color: '#f5c842',
+      reason: 'You\'ve stacked serious training stress. Back off now and you\'ll come back stronger — that\'s how it works.',
+      actions: ['Same days, same lifts','Half the volume','60-70% of your usual weight','Make every rep look perfect'],
       confidence: 82
     };
 
     if (plateauRisk >= 70) return {
-      decision: 'variation', title: 'Introduce Variation', emoji: '🔄', color: '#af52de',
-      reason: 'Plateau risk elevated (' + plateauRisk + '%). Time to change exercises, rep ranges, or training approach.',
-      actions: ['Swap 1-2 primary exercises for alternatives','Change rep range (e.g. strength block 3-5 reps)','Try superset or drop set techniques','Add weak-point accessory work'],
+      decision: 'variation', title: 'Shake It Up', emoji: '🔄', ic: 'refresh', tint: 'c2', color: '#af52de',
+      reason: 'Progress is flattening (' + plateauRisk + '% plateau risk). Same stimulus, same body. Change something.',
+      actions: ['Swap one or two main lifts','Change rep range — try 3-5 heavy','Add a superset or drop set','Hit your weak point first'],
       confidence: 76
     };
 
     if (readiness >= 85 && debt < 20) return {
-      decision: 'push', title: 'Peak Performance Day', emoji: '🚀', color: '#30d158',
-      reason: 'Readiness ' + readiness + '/100. Recovery debt minimal. Ideal day for PRs and maximum effort.',
-      actions: ['Attempt PR on main compound lift','Push all sets to 1-2 reps from failure','Add an extra set per exercise','Maximum focus and intensity'],
+      decision: 'push', title: 'Green Light — Send It', emoji: '🚀', ic: 'flame', tint: 'c3', color: '#30d158',
+      reason: 'Readiness ' + readiness + '/100 and fully recovered. Days like this are for PRs.',
+      actions: ['Go for the PR on your main lift','Take sets 1-2 reps from failure','One extra set if you\'ve got it','Warm up properly first'],
       confidence: 91
     };
 
     if (debt < 30 && readiness >= 70) return {
-      decision: 'cardio', title: 'Consider Cardio Focus', emoji: '🏃', color: '#00c7ff',
-      reason: 'Good recovery status. Today could benefit from zone 2 cardio or conditioning work.',
-      actions: ['20-30 min zone 2 cardio','Low intensity steady state','Maintain heart rate 130-150 bpm','Pair with mobility work'],
+      decision: 'cardio', title: 'Good Day for Cardio', emoji: '🏃', ic: 'run', tint: 'c1', color: '#00c7ff',
+      reason: 'You\'re recovered and fresh. Some easy cardio today pays off in every session this week.',
+      actions: ['20-30 min at conversation pace','Heart rate 130-150','Bike, incline walk, or row','Stretch after while you\'re warm'],
       confidence: 65
     };
 
     return {
-      decision: 'train', title: 'Train Normally', emoji: '💪', color: 'var(--c1)',
-      reason: 'Readiness ' + readiness + '/100. Recovery debt ' + debt + '/100. Solid training day.',
-      actions: ['Follow your planned split','Progressive overload where possible','Complete all planned sets','Log weights for progression tracking'],
+      decision: 'train', title: 'Train As Planned', emoji: '💪', ic: 'dumbbell', tint: 'c1', color: 'var(--c1)',
+      reason: 'Readiness ' + readiness + '/100, recovery on track. Normal day — go do the work.',
+      actions: ['Run your split as written','Add weight where last week felt easy','Finish every planned set','Log it all — the data is the coach'],
       confidence: 84
     };
   },

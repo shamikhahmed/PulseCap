@@ -13,24 +13,33 @@ reg('bodymap', function() {
   const prevMeas = measurements.length > 1 ? measurements[measurements.length-2] : null;
   _measUnit = user.measureUnit || 'cm';
 
+  var tool = function(screen, ic, label, tint) {
+    return '<button type="button" onclick="go(\'' + screen + '\')" class="press" ' +
+      'style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:5px">' +
+      '<span style="color:var(--' + (tint || 'c1') + ');display:flex">' + icon(ic, 20) + '</span>' +
+      '<span style="font-size:10px;font-weight:700;color:var(--txt2);letter-spacing:0.02em">' + label + '</span></button>';
+  };
+
   return '<div class="topbar">' +
     '<div><div class="topbar-title">Body</div>' +
-    '<div class="topbar-date">Map · recovery · measurements</div></div>' +
+    '<div class="topbar-date">Recovery · measurements · rehab</div></div>' +
     '</div>' +
 
-    '<div style="padding:12px 16px 8px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px">' +
-    '<button type="button" onclick="go(\'recovery\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 4px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">💚 Recover</button>' +
-    '<button type="button" onclick="go(\'nutrition\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 4px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🍎 Fuel</button>' +
-    '<button type="button" onclick="go(\'physique\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 4px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">📐 Physique</button>' +
-    '<button type="button" onclick="go(\'rehab\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 4px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation">🩹 Rehab</button>' +
-    '</div>' +
-    '<div style="padding:0 16px 14px;display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
-    '<button type="button" onclick="go(\'body-intelligence\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 8px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left">🧬 Body Intel</button>' +
-    '<button type="button" onclick="go(\'injury-risk\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:10px 8px;font-size:11px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left">⚠️ Injury Risk</button>' +
-    '</div>' +
-
-    _bodyMapSection(muscleColors) +
+    _bodyMapSection(muscleColors, user) +
     _muscleStatusGrid(muscleStatus) +
+
+    sh('Tools') +
+    '<div style="padding:0 16px 14px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px">' +
+    tool('recovery', 'heart', 'Recover', 'c3') +
+    tool('nutrition', 'apple', 'Fuel', 'c3') +
+    tool('rehab', 'bandage', 'Rehab', 'c4') +
+    tool('photos', 'camera', 'Photos', 'c2') +
+    tool('physique', 'ruler', 'Physique', 'c1') +
+    tool('body-intelligence', 'dna', 'Body Intel', 'c2') +
+    tool('injury-risk', 'alert', 'Injury Risk', 'c5') +
+    tool('calculators', 'calc', 'Calculators', 'c1') +
+    '</div>' +
+
     _measurementsSection(latestMeas, prevMeas, user) +
     _bodyStatsSection(user) +
     '<div style="height:20px"></div>';
@@ -39,89 +48,145 @@ reg('bodymap', function() {
 /* ════════════════════════════════════
    BODY MAP SVG — FIXED FRONT + BACK
 ════════════════════════════════════ */
-function _bodyMapSection(colors) {
+function _bodyMapSection(colors, user) {
+  user = user || S.g('user') || {};
   var c = function(key) { return colors[key.toLowerCase()] || 'rgba(255,255,255,0.06)'; };
 
-  var frontSVG = '<svg viewBox="0 0 200 420" width="160" height="336" xmlns="http://www.w3.org/2000/svg">' +
-    '<!-- Head -->' +
-    '<ellipse cx="100" cy="32" rx="22" ry="26" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>' +
-    '<!-- Neck -->' +
-    '<rect x="90" y="56" width="20" height="16" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>' +
-    '<!-- Traps -->' +
-    '<path d="M68 70 Q100 65 132 70 L136 88 Q100 85 64 88 Z" fill="'+c('Back')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Traps\')" style="cursor:pointer"/>' +
-    '<!-- Chest left -->' +
-    '<path d="M72 88 L100 90 L100 118 Q80 120 68 112 Z" fill="'+c('Chest')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Chest\')" style="cursor:pointer"/>' +
-    '<!-- Chest right -->' +
-    '<path d="M128 88 L100 90 L100 118 Q120 120 132 112 Z" fill="'+c('Chest')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Chest\')" style="cursor:pointer"/>' +
-    '<!-- Front delt left -->' +
-    '<ellipse cx="58" cy="96" rx="12" ry="16" fill="'+c('Shoulders')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Shoulders\')" style="cursor:pointer"/>' +
-    '<!-- Front delt right -->' +
-    '<ellipse cx="142" cy="96" rx="12" ry="16" fill="'+c('Shoulders')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Shoulders\')" style="cursor:pointer"/>' +
-    '<!-- Bicep left -->' +
-    '<path d="M46 112 Q38 128 40 148 L54 148 Q56 128 62 112 Z" fill="'+c('Biceps')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Biceps\')" style="cursor:pointer"/>' +
-    '<!-- Bicep right -->' +
-    '<path d="M154 112 Q162 128 160 148 L146 148 Q144 128 138 112 Z" fill="'+c('Biceps')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Biceps\')" style="cursor:pointer"/>' +
-    '<!-- Forearm left -->' +
-    '<path d="M40 148 Q36 168 40 184 L52 184 Q56 168 54 148 Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>' +
-    '<!-- Forearm right -->' +
-    '<path d="M160 148 Q164 168 160 184 L148 184 Q144 168 146 148 Z" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>' +
-    '<!-- Abs top -->' +
-    '<path d="M80 118 L100 120 L120 118 L118 142 L100 144 L82 142 Z" fill="'+c('Core')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Core\')" style="cursor:pointer"/>' +
-    '<!-- Abs bottom -->' +
-    '<path d="M82 142 L100 144 L118 142 L116 165 L100 167 L84 165 Z" fill="'+c('Core')+'" stroke="rgba(255,255,255,0.08)" stroke-width="1" onclick="showMuscleInfo(\'Core\')" style="cursor:pointer"/>' +
-    '<!-- Oblique left -->' +
-    '<path d="M80 118 L82 165 L68 160 L66 120 Z" fill="'+c('Core')+'" stroke="rgba(255,255,255,0.08)" stroke-width="1" onclick="showMuscleInfo(\'Core\')" style="cursor:pointer"/>' +
-    '<!-- Oblique right -->' +
-    '<path d="M120 118 L118 165 L132 160 L134 120 Z" fill="'+c('Core')+'" stroke="rgba(255,255,255,0.08)" stroke-width="1" onclick="showMuscleInfo(\'Core\')" style="cursor:pointer"/>' +
-    '<!-- Quad left -->' +
-    '<path d="M78 170 L100 172 L100 248 L76 246 Z" fill="'+c('Quads')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Quads\')" style="cursor:pointer"/>' +
-    '<!-- Quad right -->' +
-    '<path d="M100 172 L122 170 L124 246 L100 248 Z" fill="'+c('Quads')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Quads\')" style="cursor:pointer"/>' +
-    '<!-- Knee area -->' +
-    '<ellipse cx="88" cy="256" rx="10" ry="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>' +
-    '<ellipse cx="112" cy="256" rx="10" ry="8" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>' +
-    '<!-- Calves left -->' +
-    '<path d="M76 265 Q72 288 76 315 L90 315 Q94 288 98 265 Z" fill="'+c('Calves')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Calves\')" style="cursor:pointer"/>' +
-    '<!-- Calves right -->' +
-    '<path d="M102 265 Q106 288 110 315 L124 315 Q128 288 124 265 Z" fill="'+c('Calves')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Calves\')" style="cursor:pointer"/>' +
-    '</svg>';
+  /* Figure proportions from the user's profile — the map is THEIR body.
+     Factors are clamped tight so muscles always stay inside the silhouette. */
+  function _bodyFactors(user) {
+    var h = user.height || 175, w = user.weight || 75;
+    var female = user.gender === 'female';
+    var bmi = w / Math.pow(h / 100, 2);
+    var bf = parseFloat(user.bodyFat);
+    if (isNaN(bf)) bf = female ? 28 : 20;
+    var ffmi = (w * (1 - bf / 100)) / Math.pow(h / 100, 2);
+    var muscle = Math.max(-0.06, Math.min(0.12, (ffmi - (female ? 15 : 19)) * 0.02));
+    var fat = Math.max(-0.08, Math.min(0.18, (bmi - 22) * 0.022 + (bf - (female ? 28 : 20)) * 0.004));
+    var shoulder = Math.max(0.86, Math.min(1.16, (female ? 0.92 : 1.02) + muscle + fat * 0.3));
+    var waist = Math.max(0.88, Math.min(1.22, 1 + fat));
+    var hip = Math.max(0.90, Math.min(1.20, (female ? 1.08 : 0.98) + fat * 0.8 + muscle * 0.3));
+    var body = shoulder * 0.4 + waist * 0.3 + hip * 0.3;
+    var rel = function(f) { return Math.max(0.94, Math.min(1.06, f / body)); };
+    return {
+      body: body,
+      height: Math.max(0.94, Math.min(1.06, h / 175)),
+      shoulderRel: rel(shoulder), waistRel: rel(waist), hipRel: rel(hip),
+      caption: h + 'cm · ' + w + 'kg · ' + (female ? '♀' : '♂') + ' · ~' + Math.round(bf) + '% BF'
+    };
+  }
 
-  var backSVG = '<svg viewBox="0 0 200 420" width="160" height="336" xmlns="http://www.w3.org/2000/svg">' +
-    '<!-- Head -->' +
-    '<ellipse cx="100" cy="32" rx="22" ry="26" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.15)" stroke-width="1.5"/>' +
-    '<!-- Neck -->' +
-    '<rect x="90" y="56" width="20" height="16" rx="4" fill="rgba(255,255,255,0.06)" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>' +
-    '<!-- Traps -->' +
-    '<path d="M68 70 Q100 64 132 70 L136 90 Q100 86 64 90 Z" fill="'+c('Back')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Traps\')" style="cursor:pointer"/>' +
-    '<!-- Rear delt left -->' +
-    '<ellipse cx="57" cy="96" rx="12" ry="16" fill="'+c('Shoulders')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Shoulders\')" style="cursor:pointer"/>' +
-    '<!-- Rear delt right -->' +
-    '<ellipse cx="143" cy="96" rx="12" ry="16" fill="'+c('Shoulders')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Shoulders\')" style="cursor:pointer"/>' +
-    '<!-- Upper back / rhomboids -->' +
-    '<path d="M70 88 L100 90 L130 88 L128 118 L100 120 L72 118 Z" fill="'+c('Back')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Back\')" style="cursor:pointer"/>' +
-    '<!-- Lats left -->' +
-    '<path d="M64 108 L78 108 L76 165 L60 160 Z" fill="'+c('Back')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Back\')" style="cursor:pointer"/>' +
-    '<!-- Lats right -->' +
-    '<path d="M122 108 L136 108 L140 160 L124 165 Z" fill="'+c('Back')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Back\')" style="cursor:pointer"/>' +
-    '<!-- Tricep left -->' +
-    '<path d="M46 112 Q38 130 40 150 L54 150 Q56 130 62 112 Z" fill="'+c('Triceps')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Triceps\')" style="cursor:pointer"/>' +
-    '<!-- Tricep right -->' +
-    '<path d="M154 112 Q162 130 160 150 L146 150 Q144 130 138 112 Z" fill="'+c('Triceps')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Triceps\')" style="cursor:pointer"/>' +
-    '<!-- Lower back -->' +
-    '<path d="M80 120 L120 120 L118 162 L100 165 L82 162 Z" fill="'+c('Back')+'" stroke="rgba(255,255,255,0.08)" stroke-width="1" onclick="showMuscleInfo(\'Back\')" style="cursor:pointer"/>' +
-    '<!-- Glutes left -->' +
-    '<path d="M78 165 L100 167 L100 210 L76 208 Z" fill="'+c('Glutes')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Glutes\')" style="cursor:pointer"/>' +
-    '<!-- Glutes right -->' +
-    '<path d="M100 167 L122 165 L124 208 L100 210 Z" fill="'+c('Glutes')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Glutes\')" style="cursor:pointer"/>' +
-    '<!-- Hamstring left -->' +
-    '<path d="M76 210 L100 212 L100 248 L76 246 Z" fill="'+c('Hamstrings')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Hamstrings\')" style="cursor:pointer"/>' +
-    '<!-- Hamstring right -->' +
-    '<path d="M100 212 L124 210 L124 246 L100 248 Z" fill="'+c('Hamstrings')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Hamstrings\')" style="cursor:pointer"/>' +
-    '<!-- Calves left -->' +
-    '<path d="M76 265 Q72 288 76 315 L90 315 Q94 288 98 265 Z" fill="'+c('Calves')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Calves\')" style="cursor:pointer"/>' +
-    '<!-- Calves right -->' +
-    '<path d="M102 265 Q106 288 110 315 L124 315 Q128 288 124 265 Z" fill="'+c('Calves')+'" stroke="rgba(255,255,255,0.1)" stroke-width="1" onclick="showMuscleInfo(\'Calves\')" style="cursor:pointer"/>' +
-    '</svg>';
+  /* HD anatomical map: bezier muscle shapes, one side authored, mirrored
+     with an SVG transform; decor lines add definition without capturing taps. */
+  function mus(d, grp) {
+    return '<path d="' + d + '" fill="' + c(grp) + '" fill-opacity="0.92" ' +
+      'stroke="rgba(0,0,0,0.30)" stroke-width="0.8" stroke-linejoin="round" ' +
+      'onclick="showMuscleInfo(\'' + grp + '\')" style="cursor:pointer"/>';
+  }
+  function dec(d) {
+    return '<path d="' + d + '" fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="0.8" pointer-events="none" stroke-linecap="round"/>';
+  }
+  function neutral(d) {
+    return '<path d="' + d + '" fill="var(--bg5)" stroke="var(--border2)" stroke-width="0.8"/>';
+  }
+  var silhouette =
+    '<path d="M100,4 C89,4 82,13 82,27 C82,37 85,45 91,50 L91,60 C73,64 58,71 50,84 ' +
+    'C42,97 38,114 36,134 C34,154 32,172 34,192 C35,201 38,207 44,208 C50,207 53,200 54,192 ' +
+    'C56,175 57,158 60,144 L62,150 C60,172 62,188 66,200 C70,216 72,234 70,254 ' +
+    'C68,276 70,300 74,320 C76,332 77,344 77,356 C77,364 82,368 89,368 C95,368 98,363 98,356 ' +
+    'L98,262 L100,258 L102,262 L102,356 C102,363 105,368 111,368 C118,368 123,364 123,356 ' +
+    'C123,344 124,332 126,320 C130,300 132,276 130,254 C128,234 130,216 134,200 ' +
+    'C138,188 140,172 138,150 L140,144 C143,158 144,175 146,192 C147,200 150,207 156,208 ' +
+    'C162,207 165,201 166,192 C168,172 166,154 164,134 C162,114 158,97 150,84 ' +
+    'C142,71 127,64 109,60 L109,50 C115,45 118,37 118,27 C118,13 111,4 100,4 Z" ' +
+    'fill="var(--bg4)" stroke="var(--border2)" stroke-width="1.2"/>';
+
+  /* ── FRONT: left-side muscles by body band (mirrored for right) ── */
+  var fUpperSide =
+    mus('M72,82 C63,84 55,90 51,100 C48,108 50,115 56,117 C63,114 68,105 71,95 C72,90 73,85 72,82 Z', 'Shoulders') +   /* front delt */
+    mus('M74,86 C86,86 96,88 97,92 L97,124 C88,128 76,126 69,117 C64,108 66,94 74,86 Z', 'Chest') +                     /* pec */
+    mus('M52,118 C47,128 44,140 44,152 C44,158 48,161 53,159 C58,152 61,138 61,126 C61,120 57,117 52,118 Z', 'Biceps') + /* bicep */
+    neutral('M45,160 C41,172 40,184 42,194 C45,199 50,198 53,193 C56,182 57,170 56,161 C52,158 48,158 45,160 Z') +       /* forearm */
+    neutral('M42,196 C40,204 41,210 45,213 C49,215 53,212 53,206 C53,200 51,196 48,195 Z') +                             /* hand */
+    dec('M97,92 L97,122');                                                                                               /* pec centerline */
+  var fCoreSide =
+    mus('M76,126 C71,142 71,160 75,176 L83,179 C80,162 81,142 84,127 C81,125 78,125 76,126 Z', 'Core');                  /* oblique */
+  var fLowerSide =
+    mus('M79,198 C73,220 72,244 76,262 C81,268 89,268 93,262 C96,244 97,220 96,202 C91,197 84,196 79,198 Z', 'Quads') +  /* quad */
+    dec('M84,240 C86,230 86,215 85,205') +                                                                               /* quad separation */
+    neutral('M80,264 C78,270 80,275 86,276 C92,275 94,270 92,264 C88,262 83,262 80,264 Z') +                             /* knee */
+    mus('M80,280 C76,298 76,314 80,330 C84,335 90,334 92,329 C94,312 93,296 90,281 C87,278 83,278 80,280 Z', 'Calves') + /* calf/tib */
+    neutral('M79,338 C77,348 78,354 84,356 C91,357 95,353 94,346 L92,338 C88,335 82,335 79,338 Z');                      /* foot */
+
+  var fUpperCtr = mus('M83,74 C94,70 106,70 117,74 L121,83 C107,79 93,79 79,83 Z', 'Back');                               /* traps */
+  var fCoreCtr =
+    mus('M86,126 L114,126 C116,143 116,161 113,178 C109,183 91,183 87,178 C84,161 84,143 86,126 Z', 'Core') +             /* rectus */
+    dec('M100,128 L100,178') + dec('M87,142 L113,142') + dec('M87,157 L113,157');                                         /* six-pack lines */
+  var fLowerCtr = neutral('M87,182 C95,188 105,188 113,182 L110,198 C104,203 96,203 90,198 Z');                           /* pelvis */
+
+  /* ── BACK: left-side muscles by band ── */
+  var bUpperSide =
+    mus('M71,82 C62,84 54,90 50,100 C47,108 50,115 56,117 C63,113 68,104 71,94 Z', 'Shoulders') +                        /* rear delt */
+    mus('M52,118 C47,130 45,142 45,154 C46,160 50,162 54,159 C59,150 61,136 60,124 C58,118 55,116 52,118 Z', 'Triceps') + /* tricep */
+    neutral('M46,161 C42,172 41,184 43,194 C46,199 51,198 54,193 C57,182 57,170 56,162 C52,159 49,159 46,161 Z') +
+    neutral('M43,196 C41,204 42,210 46,213 C50,215 54,212 54,206 C54,200 52,196 49,195 Z') +
+    mus('M63,106 C61,124 62,146 68,166 L80,172 C76,150 76,126 78,110 C73,106 67,105 63,106 Z', 'Back');                   /* lat wing */
+  var bCoreSide = '';
+  var bLowerSide =
+    mus('M77,168 C71,178 69,192 71,206 C77,213 88,214 95,208 C97,196 97,182 95,172 C89,167 82,166 77,168 Z', 'Glutes') +  /* glute */
+    mus('M74,212 C71,230 71,248 75,262 C80,267 88,267 92,262 C95,246 95,228 93,214 C86,209 79,209 74,212 Z', 'Hamstrings') +
+    neutral('M79,264 C77,270 79,275 85,276 C91,275 93,270 91,264 C87,262 82,262 79,264 Z') +
+    mus('M79,280 C75,296 75,312 79,328 C83,334 90,333 92,328 C95,311 94,295 91,281 C87,277 82,277 79,280 Z', 'Calves') +
+    dec('M85,282 C85,292 85,300 85,306') +                                                                                /* gastroc split */
+    neutral('M78,338 C76,348 77,354 83,356 C90,357 94,353 93,346 L91,338 C87,335 81,335 78,338 Z');
+
+  var bUpperCtr =
+    mus('M80,72 C93,66 107,66 120,72 C124,84 118,100 100,112 C82,100 76,84 80,72 Z', 'Back') +                            /* trap diamond */
+    mus('M84,108 L116,108 C118,120 117,132 114,140 L86,140 C83,132 82,120 84,108 Z', 'Back') +                            /* rhomboids */
+    dec('M100,72 L100,110');
+  var bCoreCtr =
+    mus('M90,142 L110,142 C112,156 112,170 110,180 C104,184 96,184 90,180 C88,170 88,156 90,142 Z', 'Back') +             /* erectors */
+    dec('M100,144 L100,180');
+  var bLowerCtr = dec('M100,186 L100,206');                                                                               /* glute split */
+
+  var F = _bodyFactors(user);
+  function mirror(s) { return '<g transform="translate(200,0) scale(-1,1)">' + s + '</g>'; }
+  function band(content, f) {
+    return '<g transform="translate(100,0) scale(' + f.toFixed(3) + ',1) translate(-100,0)">' + content + '</g>';
+  }
+  function bodySVG(upSide, upCtr, coreSide, coreCtr, lowSide, lowCtr) {
+    var up = '<g>' + upSide + '</g>' + mirror(upSide) + upCtr;
+    var core = (coreSide ? '<g>' + coreSide + '</g>' + mirror(coreSide) : '') + coreCtr;
+    var low = '<g>' + lowSide + '</g>' + mirror(lowSide) + lowCtr;
+    /* Soft top-light sheen re-uses the silhouette path for depth */
+    var sheen = silhouette.replace(
+      'fill="var(--bg4)" stroke="var(--border2)" stroke-width="1.2"',
+      'fill="url(#bodySheen)" stroke="none" pointer-events="none"');
+    return '<svg viewBox="0 0 200 420" width="220" height="462" xmlns="http://www.w3.org/2000/svg" style="max-width:64vw;height:auto">' +
+      '<defs>' +
+      '<linearGradient id="bodySheen" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>' +
+      '<stop offset="35%" stop-color="#ffffff" stop-opacity="0.05"/>' +
+      '<stop offset="100%" stop-color="#000000" stop-opacity="0.10"/>' +
+      '</linearGradient>' +
+      '<radialGradient id="bodyGlow" cx="0.5" cy="0.35" r="0.65">' +
+      '<stop offset="0%" stop-color="rgba(0,213,255,0.10)"/>' +
+      '<stop offset="100%" stop-color="rgba(0,213,255,0)"/>' +
+      '</radialGradient>' +
+      '</defs>' +
+      '<rect x="0" y="0" width="200" height="420" fill="url(#bodyGlow)"/>' +
+      /* whole figure scales to body mass + height; bands add shoulder/waist/hip shape */
+      '<g transform="translate(100,210) scale(' + F.body.toFixed(3) + ',' + F.height.toFixed(3) + ') translate(-100,-210)">' +
+      silhouette +
+      band(up, F.shoulderRel) +
+      band(core, F.waistRel) +
+      band(low, F.hipRel) +
+      sheen +
+      '</g></svg>';
+  }
+
+  var frontSVG = bodySVG(fUpperSide, fUpperCtr, fCoreSide, fCoreCtr, fLowerSide, fLowerCtr);
+  var backSVG = bodySVG(bUpperSide, bUpperCtr, bCoreSide, bCoreCtr, bLowerSide, bLowerCtr);
 
   var isBack = _bodyView === 'back';
 
@@ -145,6 +210,7 @@ function _bodyMapSection(colors) {
     (isBack ? backSVG : frontSVG) +
     '</div>' +
     '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-top:10px">Tap any muscle to see recovery status</div>' +
+    '<div style="font-size:11px;color:var(--txt3);text-align:center;margin-top:4px;opacity:0.8">Scaled to you: ' + esc(F.caption) + '</div>' +
     '</div>';
 }
 
@@ -183,19 +249,33 @@ window.showMuscleInfo = function(groupName) {
    MUSCLE STATUS GRID
 ════════════════════════════════════ */
 function _muscleStatusGrid(muscleStatus) {
+  var injured = muscleStatus.filter(function(m) { return m.status === 'injured'; });
+
+  var banner = injured.length ?
+    '<div onclick="go(\'rehab\')" style="margin:0 16px 10px;padding:12px 14px;border-radius:14px;background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.25);display:flex;align-items:center;gap:10px;cursor:pointer;touch-action:manipulation">' +
+    '<span style="color:#ff453a;display:flex">' + icon('bandage', 20) + '</span>' +
+    '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:#ff453a">' +
+    injured.map(function(m){ return m.name; }).join(', ') + ' held back by injury</div>' +
+    '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Recovery here follows your rehab, not the clock · Rehab →</div></div>' +
+    '<span style="color:#ff453a;font-size:16px">›</span></div>' : '';
+
   var chips = muscleStatus.map(function(m) {
-    return '<div onclick="showMuscleInfo(\''+esc(m.name)+'\')" ' +
-      'style="background:var(--bg4);border-radius:12px;padding:10px;text-align:center;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);transition:transform 0.12s" ' +
-      'onmousedown="this.style.transform=\'scale(0.95)\'" onmouseup="this.style.transform=\'scale(1)\'">' +
-      '<div style="font-size:18px;font-weight:800;color:'+m.color+'">'+m.pct+'%</div>' +
-      '<div style="font-size:10px;color:var(--txt3);margin-top:3px;font-weight:600">'+esc(m.name)+'</div>' +
-      '<div style="margin-top:4px;height:3px;background:var(--bg3);border-radius:2px;overflow:hidden">' +
+    var isInjured = m.status === 'injured';
+    var big = isInjured ? icon('bandage', 16) : m.pct + '%';
+    return '<div onclick="' + (isInjured ? 'go(\'rehab\')' : 'showMuscleInfo(\''+esc(m.name)+'\')') + '" class="press" ' +
+      'style="background:var(--bg3);border-radius:14px;padding:12px;cursor:pointer;touch-action:manipulation;border:1px solid ' + (isInjured ? 'rgba(255,69,58,0.35)' : 'var(--border)') + '">' +
+      '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">' +
+      '<div style="font-size:13px;font-weight:700;color:var(--txt)">'+esc(m.name)+'</div>' +
+      '<div style="font-size:15px;font-weight:800;color:'+m.color+'">'+big+'</div>' +
+      '</div>' +
+      '<div style="font-size:10px;color:'+(isInjured ? m.color : 'var(--txt3)')+';margin-top:2px;font-weight:600">'+esc(m.label)+(m.hrs ? ' · '+m.hrs+'h ago' : '')+'</div>' +
+      '<div style="margin-top:8px;height:4px;background:var(--bg4);border-radius:2px;overflow:hidden">' +
       '<div style="width:'+m.pct+'%;height:100%;background:'+m.color+';transition:width 0.6s ease"></div>' +
       '</div></div>';
   }).join('');
 
-  return sh('Muscle Recovery') +
-    '<div style="display:grid;grid-template-columns:repeat(5,1fr);gap:8px;padding:0 16px 14px">' +
+  return sh('Muscle Recovery') + banner +
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 16px 14px">' +
     chips + '</div>';
 }
 
@@ -451,9 +531,52 @@ window.saveWeight = function() {
   if (!raw) { toast('Enter a weight', 'warn'); return; }
   var kg = isImperial ? Math.round(raw / 2.205 * 10) / 10 : raw;
   var fasted = window._weightFasted !== false;
+  var stats = S.g('bodyStats') || [];
+  var prev = stats.length ? stats[stats.length - 1] : null;
   S.set('user.weight', kg);
   S.push('bodyStats', { date: today(), weight: kg, fasted: fasted });
   closeModal();
-  toast('Weight logged: '+kg+'kg'+(fasted?' (fasted)':' (fed)'), 'ok');
-  go('bodymap');
+  /* Coach reaction — goal-aware, not just a receipt */
+  var react = _weighInReaction(kg, prev, user);
+  if (react) toast(react.emoji + ' ' + react.msg, react.tone, 5500);
+  else toast('Logged: ' + kg + 'kg', 'ok');
+  /* Callable from dashboard/settings too — re-render whichever screen is open */
+  go((typeof currentScreenId === 'function' && currentScreenId()) || 'bodymap');
 };
+
+/* What a decent coach would actually say after a weigh-in. */
+function _weighInReaction(kg, prevEntry, user) {
+  if (!prevEntry || !prevEntry.weight) {
+    return { emoji: '📍', msg: 'Baseline set: ' + kg + 'kg. Weigh in weekly — trends beat single days.', tone: 'ok' };
+  }
+  var delta = Math.round((kg - prevEntry.weight) * 10) / 10;
+  var goal = user.goal || 'hypertrophy';
+  var wantsLoss = goal === 'fat_loss';
+  var wantsGain = goal === 'hypertrophy' || goal === 'strength' || goal === 'athletic';
+  var goalW = user.goalWeight;
+
+  /* Crossed the goal line */
+  if (goalW && prevEntry.weight !== kg) {
+    var crossedDown = prevEntry.weight > goalW && kg <= goalW;
+    var crossedUp = prevEntry.weight < goalW && kg >= goalW;
+    if (crossedDown || crossedUp) {
+      if (typeof celebrate === 'function') celebrate('🏁', 'Goal weight', kg + 'kg — you did the boring work. It paid.', 2600);
+      return { emoji: '🏁', msg: 'Goal weight hit: ' + kg + 'kg. Time to set the next target in Settings.', tone: 'pr' };
+    }
+  }
+
+  if (Math.abs(delta) < 0.2) {
+    if (wantsGain) return { emoji: '⚖️', msg: 'Scale\'s flat. Add ~200 kcal/day, keep protein high, give it a week.', tone: 'info' };
+    if (wantsLoss) return { emoji: '⚖️', msg: 'Holding steady. If this repeats next week, trim ~200 kcal or add a walk.', tone: 'info' };
+    return { emoji: '⚖️', msg: 'Steady at ' + kg + 'kg. That\'s maintenance done right.', tone: 'ok' };
+  }
+  if (delta < 0) {
+    if (wantsLoss) return { emoji: '📉', msg: 'Down ' + Math.abs(delta) + 'kg. That\'s the pace that sticks — keep doing exactly this.', tone: 'pr' };
+    if (wantsGain) return { emoji: '📉', msg: 'Down ' + Math.abs(delta) + 'kg while trying to build — eat more. Protein first, then carbs around training.', tone: 'warn' };
+    return { emoji: '📉', msg: 'Down ' + Math.abs(delta) + 'kg.', tone: 'info' };
+  }
+  /* delta > 0 */
+  if (wantsGain) return { emoji: '📈', msg: 'Up ' + delta + 'kg. Good gaining — if it\'s over ~0.5kg/week, ease the surplus so it stays muscle.', tone: 'pr' };
+  if (wantsLoss) return { emoji: '📈', msg: 'Up ' + delta + 'kg. One weigh-in means nothing — but watch the weekend calories and check again in 3 days.', tone: 'warn' };
+  return { emoji: '📈', msg: 'Up ' + delta + 'kg.', tone: 'info' };
+}

@@ -246,13 +246,17 @@ var INJURY_DB = {
 /* ── REHAB SCREEN ── */
 reg('rehab', function() {
   var injuries = S.g('user.injuries') || [];
-  var activeInjuries = injuries.filter(function(i) { return !i.recovered; });
+  var activeInjuries = [];
+  injuries.forEach(function(i, idx) {
+    if (i && typeof i === 'object' && !i.recovered) activeInjuries.push({ inj: i, idx: idx });
+  });
 
   var activeSection = '';
   if (activeInjuries.length) {
     activeSection = sh('Active Injuries') +
       '<div style="padding:0 16px">' +
-      activeInjuries.map(function(inj) {
+      activeInjuries.map(function(item) {
+        var inj = item.inj;
         var protocol = INJURY_DB[inj.id];
         if (!protocol) {
           var k = Object.keys(INJURY_DB).find(function(key) {
@@ -278,6 +282,12 @@ reg('rehab', function() {
           '<div style="padding:3px 10px;border-radius:10px;background:' + phaseColor + '22;border:1px solid ' + phaseColor + '44;font-size:11px;font-weight:700;color:' + phaseColor + '">' + phaseLabel + '</div>' +
           '</div>' +
           '<div style="font-size:12px;color:var(--txt3);margin-bottom:10px">Day ' + daysSince + ' of recovery · Week ' + weeksSince + '</div>' +
+          '<div style="display:flex;gap:6px;margin-bottom:10px">' +
+          [1,2,3].map(function(s) {
+            var sev = inj.severity || 1;
+            var lbl = typeof InjuriesDB !== 'undefined' ? (InjuriesDB.severities.find(function(x){return x.id===s;})||{}).label : s;
+            return '<button type="button" onclick="setInjurySeverity(' + item.idx + ',' + s + ')" style="flex:1;padding:6px;border-radius:8px;font-size:11px;font-weight:600;border:1px solid ' + (sev===s?'var(--c1)':'var(--border)') + ';background:' + (sev===s?'rgba(var(--c1-rgb),0.15)':'transparent') + ';color:var(--txt);cursor:pointer;touch-action:manipulation">' + lbl + '</button>';
+          }).join('') + '</div>' +
           (phaseData ? '<div style="font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:6px">' + phaseData.do.slice(0, 2).map(function(d) { return '✅ ' + d; }).join('<br>') + '</div>' +
             '<div style="font-size:12px;color:#ff453a;line-height:1.6;margin-bottom:10px">' + phaseData.avoid.slice(0, 2).map(function(d) { return '❌ ' + d; }).join('<br>') + '</div>' : '') +
           '<div style="display:flex;gap:8px">' +
@@ -342,10 +352,22 @@ window.showInjuryProtocol = function(id) {
     '</div>' +
     '<div style="font-size:10px;color:var(--txt3);font-style:italic">' + inj.evidence_source + '</div>',
     '<div style="display:flex;gap:8px">' +
-    '<button type="button" class="btn btn-primary" style="flex:1" onclick="logThisInjury(\'' + id + '\');closeModal()">Log This Injury</button>' +
+    '<button type="button" class="btn btn-primary" style="flex:1" onclick="logThisInjury(\'' + id + '\')">Log This Injury</button>' +
     '<button type="button" class="btn btn-ghost" onclick="closeModal()">Close</button>' +
     '</div>'
   );
+};
+
+/* INJURY_DB condition → joint, so InjuriesDB (severity / exercise filtering)
+   understands rehab-logged injuries too. */
+var REHAB_JOINT = {
+  shoulder_dislocation:'shoulder', rotator_cuff_tear:'shoulder', shoulder_impingement:'shoulder',
+  ankle_sprain_mild:'ankle', ankle_sprain_severe:'ankle', achilles_tendinopathy:'ankle', shin_splints:'ankle',
+  herniated_disc:'spine', lower_back_strain:'spine',
+  patellar_tendinitis:'knee', acl_tear:'knee', meniscus_tear:'knee', quad_strain:'knee',
+  tennis_elbow:'elbow', golfers_elbow:'elbow', bicep_tendon_tear:'elbow',
+  hamstring_strain:'hip', hip_flexor_strain:'hip', groin_strain:'hip',
+  wrist_sprain:'wrist'
 };
 
 window.logThisInjury = function(injuryId) {
@@ -355,9 +377,30 @@ window.logThisInjury = function(injuryId) {
   if (injuries.find(function(i) { return i.id === injuryId && !i.recovered; })) {
     toast('Already logged', 'warn'); return;
   }
-  injuries.push({ id: injuryId, bodyPart: inj.name, date: new Date().toISOString(), recovered: false });
+  /* Severity drives rest advice + exercise filtering — ask before saving */
+  var sevBtns = (typeof InjuriesDB !== 'undefined' ? InjuriesDB.severities : [
+    {id:1,label:'Mild',desc:''},{id:2,label:'Moderate',desc:''},{id:3,label:'Severe',desc:''}
+  ]).map(function(s) {
+    return '<button type="button" onclick="_confirmLogInjury(\'' + injuryId + '\',' + s.id + ')" ' +
+      'style="width:100%;text-align:left;padding:12px 14px;border-radius:12px;margin-bottom:8px;border:1px solid var(--border);background:var(--bg3);cursor:pointer;touch-action:manipulation">' +
+      '<div style="font-size:14px;font-weight:700;color:var(--txt)">' + s.label + '</div>' +
+      '<div style="font-size:11px;color:var(--txt3);margin-top:2px">' + esc(s.desc || '') + '</div></button>';
+  }).join('');
+  modal(inj.icon + ' How bad is it?', sevBtns,
+    '<button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>');
+};
+
+window._confirmLogInjury = function(injuryId, severity) {
+  var inj = INJURY_DB[injuryId];
+  if (!inj) return;
+  var injuries = S.g('user.injuries') || [];
+  injuries.push({
+    id: injuryId, bodyPart: inj.name, joint: REHAB_JOINT[injuryId] || null,
+    severity: severity || 2, date: new Date().toISOString(), addedAt: today(), recovered: false
+  });
   S.set('user.injuries', injuries);
-  toast('Injury logged — rehab protocol active', 'ok');
+  closeModal();
+  toast('Injury logged — rehab protocol active, workouts will adapt', 'ok');
   go('rehab');
 };
 
@@ -366,7 +409,7 @@ window.showLogInjuryModal = function() {
     '<div style="font-size:13px;color:var(--txt2);margin-bottom:12px">Select your injury to get a personalised rehab protocol:</div>' +
     '<div style="max-height:60vh;overflow-y:auto">' +
     Object.values(INJURY_DB).map(function(inj) {
-      return '<div onclick="logThisInjury(\'' + inj.id + '\');closeModal()" style="display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);margin-bottom:8px;cursor:pointer;touch-action:manipulation">' +
+      return '<div onclick="logThisInjury(\'' + inj.id + '\')" style="display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:var(--bg3);border:1px solid var(--border);margin-bottom:8px;cursor:pointer;touch-action:manipulation">' +
         '<div style="font-size:22px">' + inj.icon + '</div>' +
         '<div><div style="font-size:14px;font-weight:600;color:var(--txt)">' + inj.name + '</div>' +
         '<div style="font-size:11px;color:var(--txt3)">Typical return: ' + inj.return_to_gym_weeks.typical + ' weeks</div></div>' +

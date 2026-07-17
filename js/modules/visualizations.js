@@ -69,7 +69,7 @@ function _fatigueMap() {
   const last7 = [];
   for (let i = 6; i >= 0; i--) {
     const d = new Date(); d.setDate(d.getDate() - i);
-    const ds = d.toISOString().slice(0, 10);
+    const ds = localISO(d);
     const dayLabel = i === 0 ? 'Today' : i === 1 ? 'Yday' : d.toLocaleDateString('en', { weekday: 'short' });
     const dayWs = ws.filter(w => w.date === ds);
     const muscleLoad = {};

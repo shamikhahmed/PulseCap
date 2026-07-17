@@ -437,7 +437,31 @@ const ExDB = {
     {n:'Shoulder Abduction Raise',em:'🙆',grp:'shoulders',diff:1,bw:true,eq:[],pri:'Lateral Delt',sec:'',cues:'Arms out to sides 90°, hold for shoulder stability and endurance',setup:'Standing, arms at sides',breathing:'Steady',mistakes:'Shrugging, forward lean',joint:{shoulder:2,elbow:0,knee:0,spine:0,hip:0},cns:1,muscles:{primary:['lateral_delt'],secondary:[]},regressions:['DB Lateral Raise'],progressions:['Weighted Raises'],met:3.0,tempoRec:'hold'},
     {n:'Plyometric Push-Up',em:'💥',grp:'fullbody',diff:2,bw:true,eq:[],pri:'Chest Power',sec:'Triceps, Core',cues:'Lower to ground, explode upward so hands leave floor, land softly',setup:'Push-up position, hard flat surface',breathing:'Exhale explosive push',mistakes:'Short descent, wrists on landing',joint:{shoulder:2,elbow:2,knee:0,spine:1,hip:0},cns:3,muscles:{primary:['chest'],secondary:['triceps','core']},regressions:['Push-Up'],progressions:['Clapping Push-Up'],met:6.0,tempoRec:'explosive'}
   ],
-  byName(name) { return this.db.find(e => e.n === name) || null; },
+  /* Split plans use a few shorthand names — resolve them to real DB entries
+     so cues, joint stress, injury filtering and media always work. */
+  ALIASES: {
+    'Cable Row': 'Seated Cable Row',
+    'Calf Raise': 'Standing Calf Raise',
+    'Close-Grip Bench': 'Close-Grip Bench Press',
+    'Core Work': 'Plank',
+    'Dumbbell Press': 'Dumbbell Bench Press',
+    'Flat Barbell Bench Press': 'Barbell Bench Press',
+    'Incline Dumbbell Fly': 'Dumbbell Fly',
+    'Incline Walk 30min': 'Treadmill Incline Walk',
+    'Jump Rope': 'Skip / Jump Rope',
+    'Pike Push-Ups': 'Push-Ups',
+    'Plank 60s': 'Plank',
+    'Pull-Up': 'Pull-Ups',
+    'Rowing Machine 20min': 'Rowing Machine',
+    'Russian Twists': 'Russian Twist',
+    'Steady Bike 25min': 'Stationary Bike',
+    'Weighted Pull-Up': 'Pull-Ups'
+  },
+  byName(name) {
+    return this.db.find(e => e.n === name) ||
+      (this.ALIASES[name] ? this.db.find(e => e.n === this.ALIASES[name]) : null) ||
+      null;
+  },
   byGroup(grp) { return this.db.filter(e => e.grp === grp); },
   search(q) { const s = q.toLowerCase(); return this.db.filter(e => e.n.toLowerCase().includes(s) || (e.pri||'').toLowerCase().includes(s)); }
 };
@@ -766,12 +790,12 @@ reg('workout', function() {
 
   return '<div class="topbar">' +
     '<div><div class="topbar-title">Train</div><div class="topbar-date">'+esc(new Date().toLocaleDateString('en-GB',{weekday:'long',month:'short',day:'numeric'}))+'</div></div>' +
-    '<div class="topbar-right"><button type="button" class="topbar-icon" onclick="go(\'workout\',{search:true})" aria-label="Exercise search">🔍</button></div></div>' +
+    '<div class="topbar-right"><button type="button" class="topbar-icon" onclick="go(\'workout\',{search:true})" aria-label="Exercise search" style="display:flex;align-items:center;justify-content:center">' + icon('search', 18) + '</button></div></div>' +
     '<div class="mod-chip-row">' +
-    '<button type="button" onclick="go(\'progress\')" class="press mod-chip">📈 Progress</button>' +
-    '<button type="button" onclick="go(\'cardio\')" class="press mod-chip">❤️ Cardio</button>' +
-    '<button type="button" onclick="go(\'calisthenics\')" class="press mod-chip">🤸 Skills</button>' +
-    '<button type="button" onclick="go(\'training-intel\')" class="press mod-chip">🧠 Intel</button>' +
+    '<button type="button" onclick="go(\'progress\')" class="press mod-chip" style="display:inline-flex;align-items:center;gap:6px">' + icon('chart', 15) + 'Progress</button>' +
+    '<button type="button" onclick="go(\'cardio\')" class="press mod-chip" style="display:inline-flex;align-items:center;gap:6px">' + icon('heart', 15) + 'Cardio</button>' +
+    '<button type="button" onclick="go(\'calisthenics\')" class="press mod-chip" style="display:inline-flex;align-items:center;gap:6px">' + icon('run', 15) + 'Skills</button>' +
+    '<button type="button" onclick="go(\'training-intel\')" class="press mod-chip" style="display:inline-flex;align-items:center;gap:6px">' + icon('sparkles', 15) + 'Intel</button>' +
     '</div>' +
 
     '<div style="padding:0 16px 14px">' +
@@ -782,7 +806,13 @@ reg('workout', function() {
     (typeof renderSplitDayPicker === 'function' ? renderSplitDayPicker() : '') +
     '<div class="card card-solid">' +
     '<div style="font-size:18px;font-weight:800;color:var(--txt);margin-bottom:4px">'+esc(splitDay.n||'Rest Day')+'</div>' +
-    '<div style="font-size:13px;color:var(--txt3);margin-bottom:16px">'+esc((splitDay.muscles||[]).join(', '))+'</div>' +
+    '<div style="font-size:13px;color:var(--txt3);margin-bottom:16px">'+esc(prettyMuscles(splitDay.muscles))+'</div>' +
+    (function() {
+      const injSwaps = (splitDay._swaps || []).filter(function(s){ return s.injury; });
+      if (!injSwaps.length) return '';
+      const parts = injSwaps.map(function(s){ return s.injury; }).filter(function(v,i,a){ return a.indexOf(v)===i; });
+      return '<div onclick="go(\'rehab\')" style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,159,10,0.12);border:1px solid rgba(255,159,10,0.3);border-radius:10px;padding:6px 12px;margin-bottom:14px;font-size:12px;font-weight:700;color:var(--c5);cursor:pointer;touch-action:manipulation">🩹 Modified for ' + esc(parts.join(', ')) + ' · Rehab →</div>';
+    })() +
     exPreviews + '</div>' +
 
     (splitDay.warmup&&splitDay.warmup.length?
@@ -800,8 +830,8 @@ reg('workout', function() {
     '<div style="padding:16px 16px 0">' +
     '<button type="button" class="btn btn-primary" onclick="startWorkout()">Start Workout 💪</button>' +
     '<button type="button" class="btn btn-secondary" style="margin-top:10px" onclick="startQuickWorkout()">⚡ Quick Workout (20 min)</button>' +
-    '<button type="button" class="btn btn-secondary" style="margin-top:10px" onclick="showBrowseExercises()">🔍 Browse All Exercises</button>' +
-    '<button type="button" class="btn" style="margin-top:10px;background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);color:#ff453a;font-weight:700" onclick="go(\'cardio\')">❤️ Cardio Protocols</button>' +
+    '<button type="button" class="btn btn-secondary" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="showBrowseExercises()">' + icon('search', 16) + 'Browse All Exercises</button>' +
+    '<button type="button" class="btn" style="margin-top:10px;background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);color:#ff453a;font-weight:700" onclick="go(\'cardio\')">Cardio Protocols</button>' +
     '<button type="button" class="btn" style="margin-top:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);color:var(--c1)" onclick="showAddCustomExercise()">+ Add Custom Exercise</button>' +
     '</div>' +
     '<div style="height:20px"></div>';
@@ -876,7 +906,7 @@ reg('active', function() {
     '<div style="font-size:22px;font-weight:900;color:var(--c1);font-variant-numeric:tabular-nums" id="wkt-timer-display">'+fmtTime(_wktElapsed)+'</div>' +
     '</div>' +
     '<div style="text-align:center">' +
-    '<div style="font-size:18px;font-weight:800;color:var(--txt)">'+doneSets+'/'+totalSets+'</div>' +
+    '<div style="font-size:18px;font-weight:800;color:var(--txt)" id="wkt-count">'+doneSets+'/'+totalSets+'</div>' +
     '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em">Sets Done</div>' +
     '</div>' +
     '<div style="display:flex;gap:8px">' +
@@ -944,7 +974,8 @@ reg('active', function() {
       (!_focusMode ? '<button type="button" onclick="swapExercise('+exIdx+')" style="padding:4px 7px;border-radius:8px;background:var(--bg4);border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--txt3);cursor:pointer;touch-action:manipulation;white-space:nowrap">⇄ Swap</button>' : '') +
       '</div>' +
       '</div>' +
-      (suggest && !_focusMode ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(48,209,88,0.12);color:#30d158;padding:4px 10px;border-radius:10px">Try '+suggest+'kg ↑</span></div>' : '') +
+      (ex.rxNote ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(var(--c1-rgb),0.12);color:var(--c1);padding:4px 10px;border-radius:10px">'+esc(ex.rxNote)+'</span></div>' :
+       (suggest && !_focusMode ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(48,209,88,0.12);color:#30d158;padding:4px 10px;border-radius:10px">Try '+suggest+'kg ↑</span></div>' : '')) +
       '<div style="display:grid;grid-template-columns:28px 1fr 36px;gap:8px;padding:8px 16px 4px;border-bottom:1px solid var(--border)">' +
       '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">SET</div>' +
       '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">WEIGHT × REPS</div>' +
@@ -1062,6 +1093,8 @@ function _updateProgress() {
   const pct = totalSets > 0 ? Math.round((doneSets/totalSets)*100) : 0;
   const pb = document.getElementById('wkt-pb');
   if (pb) pb.style.width = pct + '%';
+  const count = document.getElementById('wkt-count');
+  if (count) count.textContent = doneSets + '/' + totalSets;
 }
 
 window._addSet = function(exIdx) {
@@ -1101,12 +1134,37 @@ window.toggleFocusMode = function() {
 window.swapExercise = function(exIdx) {
   if (!_wkt || !_wkt.exercises[exIdx]) return;
   const name = _wkt.exercises[exIdx].name;
-  const subs = SplitEngine.getSubstitutes(name, '');
-  if (!subs.length) { toast('No substitutes available', 'warn'); return; }
-  const body = subs.map(function(s, i) {
-    return '<button type="button" class="btn btn-secondary" style="margin-bottom:10px;text-align:left" onclick="_wkt.exercises['+exIdx+'].name=\''+esc(s)+'\';closeModal();go(\'active\')">'+esc(s)+'</button>';
-  }).join('');
+  const subs = SplitEngine.rankSubstitutes(name, '');
+  if (!subs.length) { toast('No good substitute for this one — machine or bodyweight options may need equipment setup', 'warn'); return; }
+  const body =
+    '<div style="font-size:12px;color:var(--txt3);margin-bottom:12px">Ranked by how closely each one matches ' + esc(name) + ' — muscles hit, difficulty, and your injuries.</div>' +
+    subs.map(function(s) {
+      const barColor = s.pct >= 80 ? 'var(--c3)' : s.pct >= 60 ? 'var(--c1)' : 'var(--c5)';
+      return '<div onclick="_doSwapExercise(' + exIdx + ',\'' + esc(s.name) + '\')" ' +
+        'style="padding:12px 14px;border-radius:14px;margin-bottom:8px;cursor:pointer;touch-action:manipulation;' +
+        'background:var(--bg3);border:1.5px solid ' + (s.best ? 'var(--c1)' : 'var(--border)') + '">' +
+        '<div style="display:flex;align-items:center;gap:8px">' +
+        '<div style="font-size:18px">' + s.em + '</div>' +
+        '<div style="flex:1;font-size:14px;font-weight:700;color:var(--txt)">' + esc(s.name) + '</div>' +
+        (s.best ? '<span style="font-size:10px;font-weight:800;background:rgba(var(--c1-rgb),0.15);color:var(--c1);padding:3px 8px;border-radius:8px;letter-spacing:0.04em">BEST SWAP</span>' : '') +
+        '</div>' +
+        '<div style="display:flex;align-items:center;gap:10px;margin-top:8px">' +
+        '<div style="flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden">' +
+        '<div style="width:' + s.pct + '%;height:100%;background:' + barColor + '"></div></div>' +
+        '<div style="font-size:12px;font-weight:800;color:' + barColor + ';min-width:56px;text-align:right">' + s.pct + '% match</div>' +
+        '</div>' +
+        (s.why.length ? '<div style="font-size:11px;color:var(--txt3);margin-top:5px">' + esc(s.why.join(' · ')) + '</div>' : '') +
+        '</div>';
+    }).join('');
   modal('Swap: ' + name, body, '<button type="button" class="btn btn-ghost" onclick="closeModal()" style="margin-top:8px">Keep original</button>');
+};
+
+window._doSwapExercise = function(exIdx, newName) {
+  if (!_wkt || !_wkt.exercises[exIdx]) return;
+  _wkt.exercises[exIdx].name = newName;
+  closeModal();
+  toast('Swapped in ' + newName, 'ok');
+  go('active');
 };
 
 window.confirmFinishWorkout = function() {
@@ -1161,9 +1219,14 @@ window.saveWorkout = function() {
     exercises: _wkt.exercises,
     notes: finalNote,
     exerciseNotes: Object.assign({}, _wktNotes),
-    splitDay: S.g('user.splitDay') || 1
+    splitDay: SplitEngine.todayDayNumber()
   };
   S.push('workouts', workout);
+  /* Strength programs: advance working weights / training max */
+  const progMsgs = typeof ProgramEngine !== 'undefined' ? ProgramEngine.onFinish(workout) : null;
+  if (progMsgs && progMsgs.length) {
+    setTimeout(function() { toast(progMsgs[0], 'ok', 5000); }, 1800);
+  }
   SplitEngine.nextDay();
   AchEngine.check();
   _wkt = null;
@@ -1174,7 +1237,14 @@ window.saveWorkout = function() {
   const prCount = workout.exercises.reduce(function(a,ex){
     return a + (ex.sets||[]).filter(function(s){return s._isPR;}).length;
   },0);
-  toast('Workout saved! 💪' + (prCount>0?' '+prCount+' PRs!':''), 'ok', 4000);
+  toast('In the books.' + (prCount>0?' '+prCount+' PR'+(prCount>1?'s':'')+' today 🏆':' 💪'), 'ok', 4000);
+  /* Streak milestone? */
+  const streakNow = StreakEngine.get();
+  if (StreakEngine.MILESTONES.indexOf(streakNow) !== -1 && typeof celebrate === 'function') {
+    setTimeout(function() {
+      celebrate('🔥', streakNow + '-day streak', 'Most people quit by now. You didn\'t.', 2600);
+    }, 900);
+  }
   go('dashboard');
 };
 
@@ -1198,6 +1268,9 @@ window.startWorkout = function(templateName) {
 
   const exercises = (splitDay.exercises || []).map(function(name) {
     const ex = ExDB.byName(name);
+    /* Strength programs (Stronglifts / SS / 5/3/1) prescribe exact sets */
+    const rx = typeof ProgramEngine !== 'undefined' ? ProgramEngine.prescribe(name, user) : null;
+    if (rx) return { name: name, sets: rx.sets, rxNote: rx.note, muscles: ex ? ex.muscles : { primary:[], secondary:[] } };
     const sets = [];
     for (var i = 0; i < defaultSets; i++) {
       const suggest = WeightEngine.suggest(name, user);

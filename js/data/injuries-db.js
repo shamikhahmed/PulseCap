@@ -33,6 +33,14 @@ window.InjuriesDB = {
 
   byId(id) { return this.injuries.find(i => i.id === id); },
 
+  /* Resolve any logged injury (Rehab conditions carry a `joint`, legacy
+     entries carry a body-part id) to an avoid/modify entry. */
+  resolve(inj) {
+    if (!inj || typeof inj !== 'object') return null;
+    return this.byId(inj.id || inj.bodyPart) ||
+      (inj.joint ? this.injuries.find(i => i.joint === inj.joint) : null);
+  },
+
   assessActive() {
     const list = S.g('user.injuries') || [];
     let shouldRest = false;
@@ -42,12 +50,12 @@ window.InjuriesDB = {
     list.forEach(inj => {
       if (typeof inj === 'string') return;
       if (inj.recovered) return;
-      const db = this.byId(inj.id || inj.bodyPart);
+      const db = this.resolve(inj);
       const sev = inj.severity || 1;
       const sevData = this.severities.find(s => s.id === sev) || this.severities[0];
       if (sev >= 3) shouldRest = true;
       maxRest = Math.max(maxRest, sevData.restDays);
-      const name = db ? db.name : (inj.bodyPart || 'Injury');
+      const name = inj.bodyPart || (db ? db.name : 'Injury');
       if (sev >= 2) {
         messages.push(name + ': ' + (sev >= 3 ? 'Consider rest day for this area' : 'Train light, avoid aggravating movements'));
       }
@@ -61,10 +69,21 @@ window.InjuriesDB = {
     for (let i = 0; i < list.length; i++) {
       const inj = list[i];
       if (typeof inj !== 'object' || inj.recovered) continue;
-      const db = this.byId(inj.id || inj.bodyPart);
+      const db = this.resolve(inj);
       if (!db) continue;
-      if ((inj.severity || 1) >= 2 && db.avoid.some(a => exName.toLowerCase().includes(a.toLowerCase().split(' ')[0]))) {
-        return { avoid: true, reason: db.modify, injury: db.name };
+      const sev = inj.severity || 1;
+      if (sev >= 2 && db.avoid.some(a => exName.toLowerCase().includes(a.toLowerCase().split(' ')[0]))) {
+        return { avoid: true, reason: db.modify, injury: inj.bodyPart || db.name };
+      }
+      /* Joint-stress check: the exercise library rates each movement 0-3 per
+         joint — high stress on an injured joint gets swapped out too. */
+      if (sev >= 2 && typeof ExDB !== 'undefined') {
+        const ex = ExDB.byName(exName);
+        const joint = db.joint || inj.joint;
+        const stress = ex && ex.joint && joint ? (ex.joint[joint] || 0) : 0;
+        if (stress >= 3 || (sev >= 3 && stress >= 2)) {
+          return { avoid: true, reason: db.modify || ('High ' + joint + ' stress'), injury: inj.bodyPart || db.name };
+        }
       }
     }
     return { avoid: false };

@@ -106,29 +106,16 @@ function _tabProfile(u) {
 
     _sectionTitle('Injuries & Pain') +
     '<div style="margin-bottom:14px">' +
-    '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.5">Add injuries anytime. Severity affects rest suggestions and exercise filtering.</div>' +
     (function() {
-      const injuries = S.g('user.injuries') || [];
+      const injuries = (S.g('user.injuries') || []).filter(function(i){ return i && typeof i === 'object'; });
+      const active = injuries.filter(function(i){ return !i.recovered; });
       const assess = typeof InjuriesDB !== 'undefined' ? InjuriesDB.assessActive() : { messages: [], shouldRest: false };
       let html = '';
       if (assess.shouldRest) html += '<div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);border-radius:12px;padding:12px;margin-bottom:12px;font-size:13px;color:#ff453a">⚠️ Consider a rest day — severe injury flagged</div>';
-      if (!injuries.length) html += '<div style="font-size:14px;color:var(--txt3);padding:10px 0">No injuries logged.</div>';
-      html += injuries.map(function(inj, i) {
-        if (typeof inj === 'string') inj = { id: inj, severity: 1, recovered: false };
-        const db = typeof InjuriesDB !== 'undefined' ? InjuriesDB.byId(inj.id || inj.bodyPart) : null;
-        const name = db ? db.name : (inj.bodyPart || inj.id || 'Unknown').replace(/_/g,' ');
-        const sev = inj.severity || 1;
-        const sevLabel = typeof InjuriesDB !== 'undefined' ? (InjuriesDB.severities.find(s=>s.id===sev)||{}).label : 'Mild';
-        const recovered = inj.recovered;
-        return '<div style="padding:12px 0;border-bottom:1px solid var(--border)">' +
-          '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
-          '<div><div style="font-size:14px;font-weight:600;color:var(--txt)">'+esc(name)+(recovered?' ✓':'')+'</div>' +
-          '<div style="font-size:12px;color:var(--txt3)">'+(recovered?'Recovered':sevLabel+' — '+(db?db.modify:''))+'</div></div>' +
-          '<button type="button" onclick="toggleInjuryRecovered('+i+')" style="padding:6px 12px;border-radius:20px;font-size:11px;font-weight:600;cursor:pointer;border:1px solid var(--border);background:var(--bg4);color:var(--txt3)">'+(recovered?'Re-activate':'Recovered')+'</button></div>' +
-          (recovered ? '' : '<div style="display:flex;gap:6px">'+[1,2,3].map(s=>'<button type="button" onclick="setInjurySeverity('+i+','+s+')" style="flex:1;padding:6px;border-radius:8px;font-size:11px;font-weight:600;border:1px solid '+(sev===s?'var(--c1)':'var(--border)')+';background:'+(sev===s?'rgba(var(--c1-rgb),0.15)':'transparent')+';color:var(--txt);cursor:pointer">'+(typeof InjuriesDB!=='undefined'?InjuriesDB.severities.find(x=>x.id===s).label:s)+'</button>').join('')+'</div>') +
-          '</div>';
-      }).join('');
-      html += '<button type="button" class="btn btn-secondary btn-sm" onclick="showAddInjury()" style="width:100%;margin-top:10px">+ Add Injury</button>';
+      html += active.length
+        ? '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.5">' + active.length + ' active ' + (active.length === 1 ? 'injury' : 'injuries') + ': ' + esc(active.map(function(i){ return i.bodyPart || i.id; }).join(', ')) + '</div>'
+        : '<div style="font-size:13px;color:var(--txt3);margin-bottom:10px">No active injuries — workouts unrestricted.</div>';
+      html += '<button type="button" class="btn btn-secondary btn-sm" onclick="go(\'rehab\')" style="width:100%">🩹 Manage injuries in Rehab →</button>';
       return html;
     })() +
     '</div>' +
@@ -154,6 +141,10 @@ function _tabTraining(u) {
     _sectionTitle('Training Split') +
     _selectWrap('Active Split', 'user.split', u.split||'ppl', splitOpts) +
 
+    (u.split === 'custom' || (S.g('user.customSplit') || []).length ?
+      '<button type="button" class="btn btn-secondary btn-sm" style="width:100%;margin-bottom:14px" onclick="go(\'split-builder\')">Edit your custom split →</button>' :
+      '<button type="button" class="btn btn-secondary btn-sm" style="width:100%;margin-bottom:14px" onclick="go(\'split-builder\')">Build your own split →</button>') +
+
     _sectionTitle('Today\'s Session') +
     (typeof renderSplitDayPicker === 'function' ? renderSplitDayPicker() : '') +
 
@@ -165,6 +156,9 @@ function _tabTraining(u) {
       return '<button type="button" onclick="toggleGymDay(\''+d.id+'\')" style="min-width:44px;padding:10px 12px;border-radius:12px;border:1.5px solid '+(on?'var(--c1)':'var(--border)')+';background:'+(on?'rgba(0,213,255,0.12)':'var(--bg3)')+';color:'+(on?'var(--c1)':'var(--txt3)')+';font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">'+d.l+'</button>';
     }).join('') +
     '</div>' +
+
+    _sectionTitle('Weekly Schedule') +
+    _renderWeekSchedule(u) +
 
     _sectionTitle('My Equipment') +
     '<button type="button" class="btn btn-primary" onclick="go(\'equipment-setup\')" style="width:100%;margin-bottom:8px">🏋️ Configure Equipment</button>' +
@@ -180,6 +174,53 @@ function _tabTraining(u) {
     _toggle('Deload Reminders', 'user.deloadReminder', u.deloadReminder!==false) +
     '</div>';
 }
+
+function _renderWeekSchedule(u) {
+  const gymDays = u.gymDays || [];
+  if (!gymDays.length) {
+    return '<div style="font-size:12px;color:var(--txt3);margin-bottom:14px;line-height:1.45">Pick your gym days above first — then each weekday gets a split day automatically, and you can change any of them here.</div>';
+  }
+  const map = SplitEngine.weekdayAssignments() || {};
+  const splitDays = SplitEngine.listSplitDays();
+  const labels = { mon:'Monday', tue:'Tuesday', wed:'Wednesday', thu:'Thursday', fri:'Friday', sat:'Saturday', sun:'Sunday' };
+  const order = ['mon','tue','wed','thu','fri','sat','sun'];
+  const todayId = SplitEngine.todayWeekdayId();
+  let html = '<div style="font-size:12px;color:var(--txt3);margin-bottom:10px;line-height:1.45">Which workout lands on which day. Today\'s pick on the dashboard overrides this for one day only.</div>';
+  html += order.map(function(d) {
+    const isGym = gymDays.includes(d);
+    const isToday = d === todayId;
+    const rowStyle = 'display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 12px;border-radius:12px;margin-bottom:6px;border:1px solid ' + (isToday ? 'var(--c1)' : 'var(--border)') + ';background:var(--bg3)';
+    if (!isGym) {
+      return '<div style="' + rowStyle + ';opacity:0.55">' +
+        '<div style="font-size:13px;font-weight:700;color:var(--txt3)">' + labels[d] + (isToday ? ' · today' : '') + '</div>' +
+        '<div style="font-size:12px;color:var(--txt3)">🌿 Rest</div></div>';
+    }
+    const sel = '<select class="field" style="width:auto;min-width:150px;padding:8px 10px;font-size:13px" onchange="setDayAssignment(\'' + d + '\', parseInt(this.value))">' +
+      splitDays.map(function(sd, i) {
+        const num = i + 1;
+        return '<option value="' + num + '"' + (map[d] === num ? ' selected' : '') + '>' + esc(sd.n || ('Day ' + num)) + '</option>';
+      }).join('') + '</select>';
+    return '<div style="' + rowStyle + '">' +
+      '<div style="font-size:13px;font-weight:700;color:var(--txt)">' + labels[d] + (isToday ? ' · today' : '') + '</div>' + sel + '</div>';
+  }).join('');
+  html += '<button type="button" class="btn btn-secondary btn-sm" style="width:100%;margin:4px 0 14px" onclick="resetDayAssignments()">↺ Reset to automatic order</button>';
+  return html;
+}
+
+window.setDayAssignment = function(weekday, dayNum) {
+  const map = Object.assign({}, SplitEngine.weekdayAssignments() || {});
+  map[weekday] = dayNum;
+  S.set('user.dayAssignments', map);
+  toast('Schedule updated', 'ok');
+  go('settings', { tab: 'training' });
+};
+
+window.resetDayAssignments = function() {
+  S.set('user.dayAssignments', null);
+  S.set('user.splitDayOverride', null);
+  toast('Schedule reset to automatic', 'ok');
+  go('settings', { tab: 'training' });
+};
 
 function _tabSupplements() {
   const userSupps = S.g('supplements') || [];
@@ -212,19 +253,15 @@ function _tabNutrition(u) {
     _fieldWrap('Water (glasses)', '<input class="field" type="number" value="'+(u.waterTarget||8)+'" min="4" max="20" oninput="_setSetting(\'user.waterTarget\',parseInt(this.value))">') +
     '</div>' +
     _sectionTitle('Macro Presets') +
-    '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">' +
-    ['hypertrophy','fat_loss','strength','maintenance','athletic'].map(g =>
-      '<button type="button" class="btn btn-secondary btn-sm" onclick="applyMacroPreset(\''+g+'\')" style="flex:1;min-width:100px">'+esc(g.replace('_',' '))+'</button>'
+    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">' +
+    [['hypertrophy','💪 Muscle'],['fat_loss','🔥 Fat loss'],['strength','🏋️ Strength'],['maintenance','⚖️ Maintain'],['athletic','⚡ Athletic']].map(g =>
+      '<button type="button" class="btn btn-secondary btn-sm" onclick="applyMacroPreset(\''+g[0]+'\')" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:11px 8px">'+g[1]+'</button>'
     ).join('') + '</div>' +
     '<div style="padding:12px 0;font-size:13px;color:var(--txt3)">Calculated TDEE: '+tdee+' kcal/day</div>' +
     '</div>';
 }
 
 function _tabAppearance(u) {
-  const modes = [
-    {id:'dark', label:'Dark', grad:'linear-gradient(135deg,#0a0a0f,#18181f)'},
-    {id:'light', label:'Light', grad:'linear-gradient(135deg,#f2f2f7,#ffffff)'}
-  ];
   const coaches = [
     {id:'alex',e:'🔥',n:'Alex — Drill Sergeant'},
     {id:'maya',e:'🧪',n:'Maya — Sports Scientist'},
@@ -232,28 +269,41 @@ function _tabAppearance(u) {
     {id:'zen',e:'🧘',n:'Zen — Mindful Coach'},
     {id:'rex',e:'💪',n:'Rex — The Powerlifter'}
   ];
-  const cur = (u.theme === 'light' || u.mode === 'light') ? 'light' : 'dark';
+  const pinned = u.theme || u.mode;               /* null = following device */
+  const cur = pinned ? (pinned === 'light' ? 'light' : 'dark') : 'auto';
   const curCoach = u.coachPersonality || 'maya';
+
+  const seg = function(id, emoji, label, onclick) {
+    const on = cur === id;
+    return '<button type="button" onclick="' + onclick + '" ' +
+      'style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;border-radius:12px;cursor:pointer;touch-action:manipulation;' +
+      'border:1.5px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';' +
+      'background:' + (on ? 'rgba(var(--c1-rgb),0.10)' : 'var(--bg3)') + '">' +
+      '<span style="font-size:20px">' + emoji + '</span>' +
+      '<span style="font-size:12px;font-weight:700;color:' + (on ? 'var(--c1)' : 'var(--txt2)') + '">' + label + '</span>' +
+      '</button>';
+  };
 
   return '<div style="padding:16px">' +
     _sectionTitle('Appearance') +
-    '<div class="theme-swatches">' +
-    modes.map(t =>
-      '<div class="theme-item" onclick="applyTheme(\''+t.id+'\');_setSetting(\'user.theme\',\''+t.id+'\');go(\'settings\',{tab:\'appearance\'})">' +
-      '<div class="theme-swatch'+(cur===t.id?' on':'')+'" style="background:'+t.grad+'"></div>' +
-      '<div class="theme-label">'+esc(t.label)+'</div>' +
-      '</div>'
-    ).join('') + '</div>' +
+    '<div style="display:flex;gap:8px;margin-bottom:8px">' +
+    seg('auto', '📱', 'Auto', 'clearThemePref();go(\'settings\',{tab:\'appearance\'})') +
+    seg('dark', '🌙', 'Dark', 'applyTheme(\'dark\');go(\'settings\',{tab:\'appearance\'})') +
+    seg('light', '☀️', 'Light', 'applyTheme(\'light\');go(\'settings\',{tab:\'appearance\'})') +
+    '</div>' +
+    '<div style="font-size:12px;color:var(--txt3);margin:0 0 16px">' + (cur==='auto' ? 'Follows your phone\'s setting.' : 'Pinned — ignores your phone\'s setting.') + '</div>' +
 
     _sectionTitle('Coach Personality') +
     coaches.map(c =>
-      '<div class="toggle-row card-tap" onclick="_setSetting(\'user.coachPersonality\',\''+c.id+'\');go(\'settings\',{tab:\'appearance\'})" style="cursor:pointer">' +
-      '<div class="toggle-info">' +
-      '<div style="font-size:18px;margin-bottom:2px">'+c.e+'</div>' +
-      '<div class="toggle-label">'+esc(c.n)+'</div>' +
-      '</div>' +
-      '<div style="font-size:18px">'+(curCoach===c.id?'✅':'○')+'</div>' +
-      '</div>'
+      '<div onclick="_setSetting(\'user.coachPersonality\',\''+c.id+'\');go(\'settings\',{tab:\'appearance\'})" ' +
+      'style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;margin-bottom:8px;cursor:pointer;touch-action:manipulation;' +
+      'background:var(--bg3);border:1.5px solid ' + (curCoach===c.id ? 'var(--c1)' : 'var(--border)') + '">' +
+      '<div style="width:38px;height:38px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">'+c.e+'</div>' +
+      '<div style="flex:1;font-size:14px;font-weight:600;color:var(--txt)">'+esc(c.n)+'</div>' +
+      '<div style="width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;' +
+      'border:2px solid ' + (curCoach===c.id ? 'var(--c1)' : 'var(--border2)') + ';background:' + (curCoach===c.id ? 'var(--c1)' : 'transparent') + '">' +
+      (curCoach===c.id ? '<span style="color:#fff;font-size:11px;font-weight:800">✓</span>' : '') +
+      '</div></div>'
     ).join('') +
 
     _sectionTitle('Coach Tone') +
@@ -265,10 +315,19 @@ function _tabAppearance(u) {
         scientific:'"Deltoid recovery index: 92%. Optimal training window active."',
         hardcore:'"Shoulders are ready. No excuses. Get in there."'
       };
-      return '<div style="display:flex;gap:8px;margin-bottom:8px">' +
-        tones.map(t=>'<button type="button" class="btn btn-'+(curTone===t.v?'primary':'secondary')+' btn-sm" style="flex:1" onclick="_setSetting(\'settings.coachTone\',\''+t.v+'\');go(\'settings\',{tab:\'appearance\'})">'+esc(t.l)+'</button>').join('') +
+      return '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">' +
+        tones.map(t => {
+          const on = curTone === t.v;
+          const parts = t.l.split(' ');
+          return '<button type="button" onclick="_setSetting(\'settings.coachTone\',\''+t.v+'\');go(\'settings\',{tab:\'appearance\'})" ' +
+            'style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:11px 4px;border-radius:12px;cursor:pointer;touch-action:manipulation;' +
+            'border:1.5px solid '+(on?'var(--c1)':'var(--border)')+';background:'+(on?'rgba(var(--c1-rgb),0.10)':'var(--bg3)')+'">' +
+            '<span style="font-size:18px">'+parts[0]+'</span>' +
+            '<span style="font-size:11px;font-weight:700;color:'+(on?'var(--c1)':'var(--txt2)')+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">'+parts.slice(1).join(' ')+'</span>' +
+            '</button>';
+        }).join('') +
         '</div>' +
-        '<div style="font-size:13px;color:var(--txt3);font-style:italic;padding:8px 12px;background:var(--bg3);border-radius:8px;margin-bottom:4px">'+esc(examples[curTone]||examples.motivational)+'</div>';
+        '<div style="font-size:13px;color:var(--txt3);font-style:italic;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;margin-bottom:4px">'+esc(examples[curTone]||examples.motivational)+'</div>';
     })() +
 
     _sectionTitle('Units') +
@@ -386,6 +445,11 @@ function _infoStat(label, val, sub) {
 /* ── Actions ── */
 window._setSetting = function(key, val) {
   S.set(key, val);
+  if (key === 'user.split') {
+    /* New split — old weekday map points at day numbers that no longer match */
+    S.set('user.dayAssignments', null);
+    S.set('user.splitDayOverride', null);
+  }
   if (key === 'user.coachPersonality') {
     S.setGlobalCoach(val);
   }
@@ -406,7 +470,9 @@ window.toggleInjuryRecovered = function(idx) {
     injuries[idx] = Object.assign({}, inj, { recovered: !inj.recovered });
   }
   S.set('user.injuries', injuries);
-  go('settings', { tab: 'profile' });
+  const curScr = typeof currentScreenId === 'function' && currentScreenId();
+  if (curScr === 'settings') go('settings', { tab: 'profile' });
+  else go(curScr || 'rehab');
 };
 
 window.setInjurySeverity = function(idx, severity) {
@@ -415,28 +481,92 @@ window.setInjurySeverity = function(idx, severity) {
   if (!inj) return;
   injuries[idx] = Object.assign({}, typeof inj === 'string' ? { id: inj, bodyPart: inj } : inj, { severity: severity, recovered: false });
   S.set('user.injuries', injuries);
-  go('settings', { tab: 'profile' });
+  /* Callable from Rehab or Settings — stay where the user is */
+  const cur = typeof currentScreenId === 'function' && currentScreenId();
+  if (cur === 'settings') go('settings', { tab: 'profile' });
+  else go(cur || 'rehab');
 };
 
-window.showAddInjury = function() {
-  if (typeof InjuriesDB === 'undefined') return;
-  const opts = InjuriesDB.injuries.map(i =>
-    '<button type="button" class="btn btn-secondary btn-sm" style="width:100%;margin-bottom:6px;text-align:left" onclick="addInjury(\''+i.id+'\')">'+esc(i.name)+'</button>'
-  ).join('');
-  modal('Add Injury', '<div style="max-height:50vh;overflow-y:auto">'+opts+'</div>', '');
-};
+/* ── Custom split builder ── */
+let _sbDays = null;
 
-window.addInjury = function(id) {
-  const injuries = S.g('user.injuries') || [];
-  if (injuries.some(i => (typeof i === 'object' ? i.id : i) === id)) {
-    toast('Already logged', 'warn'); closeModal(); return;
+reg('split-builder', function() {
+  if (!_sbDays) {
+    const saved = S.g('user.customSplit');
+    _sbDays = saved && saved.length ? JSON.parse(JSON.stringify(saved)) : [{ n: 'Day 1', muscles: [], exercises: [] }];
   }
-  injuries.push({ id: id, bodyPart: id, severity: 1, recovered: false, addedAt: today() });
-  S.set('user.injuries', injuries);
-  closeModal();
-  toast('Injury added — exercises will adapt', 'ok');
-  go('settings', { tab: 'profile' });
+  const days = _sbDays.map(function(d, di) {
+    const exRows = (d.exercises || []).map(function(name, ei) {
+      const ex = ExDB.byName(name);
+      return '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)">' +
+        '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(name) + '</div>' +
+        (ex ? '<div style="font-size:11px;color:var(--txt3)">' + esc(ex.pri || ex.grp || '') + '</div>' : '') + '</div>' +
+        '<button type="button" onclick="sbRemove(' + di + ',' + ei + ')" aria-label="Remove" style="background:var(--bg4);border:1px solid var(--border);border-radius:8px;color:var(--txt3);font-size:12px;padding:5px 9px;cursor:pointer;touch-action:manipulation">✕</button></div>';
+    }).join('');
+    return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;margin:0 16px 12px">' +
+      '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">' +
+      '<input class="field" value="' + esc(d.n || '') + '" placeholder="Day name (e.g. Push)" style="flex:1;font-size:14px;font-weight:700;padding:9px 12px" oninput="sbRename(' + di + ', this.value)">' +
+      (_sbDays.length > 1 ? '<button type="button" onclick="sbDelDay(' + di + ')" style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.25);border-radius:10px;color:#ff453a;font-size:12px;font-weight:600;padding:9px 12px;cursor:pointer;touch-action:manipulation">Delete</button>' : '') +
+      '</div>' +
+      exRows +
+      ((d.exercises || []).length === 0 ? '<div style="font-size:12px;color:var(--txt3);padding:8px 0">No exercises yet — search below.</div>' : '') +
+      '<input class="field" placeholder="Search 300+ exercises…" style="margin-top:10px;font-size:13px;padding:10px 12px" oninput="sbSearch(this, ' + di + ')">' +
+      '<div id="sb-sug-' + di + '"></div>' +
+      '</div>';
+  }).join('');
+
+  return moduleTopbar('Custom Split', 'Your plan, your days', { backScreen: 'settings' }) +
+    days +
+    '<div style="padding:0 16px 8px;display:flex;gap:8px">' +
+    '<button type="button" class="btn btn-secondary" style="flex:1" onclick="sbAddDay()">+ Add day</button>' +
+    '<button type="button" class="btn btn-primary" style="flex:1" onclick="sbSave()">Save split</button>' +
+    '</div>' +
+    '<div style="font-size:12px;color:var(--txt3);text-align:center;padding:0 24px 20px">Saving makes this your active split. It plugs into the weekly schedule, injuries, and equipment filtering like any other.</div>';
+});
+
+window.sbAddDay = function() { _sbDays.push({ n: 'Day ' + (_sbDays.length + 1), muscles: [], exercises: [] }); go('split-builder'); };
+window.sbDelDay = function(i) { _sbDays.splice(i, 1); go('split-builder'); };
+window.sbRename = function(i, v) { if (_sbDays[i]) _sbDays[i].n = v; };
+window.sbRemove = function(i, ei) { _sbDays[i].exercises.splice(ei, 1); go('split-builder'); };
+window.sbSearch = function(inp, di) {
+  const box = document.getElementById('sb-sug-' + di);
+  if (!box) return;
+  const q = (inp.value || '').trim();
+  if (q.length < 2) { box.innerHTML = ''; return; }
+  const hits = ExDB.search(q).slice(0, 6);
+  box.innerHTML = hits.map(function(e) {
+    return '<div onclick="sbAdd(' + di + ',\'' + esc(e.n) + '\')" style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);margin-top:6px;cursor:pointer;touch-action:manipulation">' +
+      '<div style="font-size:13px;font-weight:600;color:var(--txt)">' + esc(e.n) + '</div>' +
+      '<div style="font-size:11px;color:var(--c1);font-weight:700">+ Add</div></div>';
+  }).join('') || '<div style="font-size:12px;color:var(--txt3);padding:8px 4px">Nothing matches.</div>';
 };
+window.sbAdd = function(di, name) {
+  if (_sbDays[di].exercises.indexOf(name) === -1) _sbDays[di].exercises.push(name);
+  go('split-builder');
+};
+window.sbSave = function() {
+  const days = _sbDays.filter(function(d) { return (d.exercises || []).length; });
+  if (!days.length) { toast('Add at least one exercise first', 'warn'); return; }
+  days.forEach(function(d) {
+    if (!d.n || !d.n.trim()) d.n = 'Training Day';
+    const prim = {};
+    d.exercises.forEach(function(n) {
+      const ex = ExDB.byName(n);
+      ((ex && ex.muscles && ex.muscles.primary) || []).forEach(function(m) { prim[m] = 1; });
+    });
+    d.muscles = Object.keys(prim);
+    d.warmup = d.warmup || ['5 min light cardio', 'Joint circles head to toe', '2 warm-up sets on your first lift'];
+  });
+  S.set('user.customSplit', days);
+  S.set('user.split', 'custom');
+  S.set('user.dayAssignments', null);
+  S.set('user.splitDayOverride', null);
+  _sbDays = null;
+  toast('Custom split saved — it\'s live', 'ok');
+  go('settings', { tab: 'training' });
+};
+
+/* Injury logging moved to Rehab (js/modules/rehab.js) — single source of truth. */
 
 window.toggleSetting = function(key) {
   const cur = S.g(key);
@@ -461,22 +591,8 @@ window.applyMacroPreset = function(goal) {
   go('settings', { tab: 'nutrition' });
 };
 
-window.showLogWeight = function() {
-  modal('Log Weight',
-    '<div class="field-wrap"><label class="field-label">Weight (kg)</label>' +
-    '<input id="wt-inp" class="field" type="number" step="0.1" placeholder="'+(S.g('user.weight')||75)+'" style="font-size:22px;font-weight:700"></div>',
-    '<button type="button" class="btn btn-primary" onclick="saveWeight()" style="margin-top:12px">Save</button>'
-  );
-};
-
-window.saveWeight = function() {
-  const w = parseFloat(document.getElementById('wt-inp')?.value);
-  if (!w) { toast('Enter a weight', 'warn'); return; }
-  S.set('user.weight', w);
-  S.push('bodyStats', { date: today(), weight: w });
-  closeModal();
-  toast('Weight logged: '+w+'kg', 'ok');
-};
+/* showLogWeight / saveWeight live in bodymap.js — settings.js loads later,
+   so redefining them here would clobber the unit- and fasted-aware versions. */
 
 window.exportData = function() {
   const data = JSON.stringify(S.d, null, 2);

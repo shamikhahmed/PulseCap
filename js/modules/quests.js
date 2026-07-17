@@ -192,7 +192,7 @@ const QuestEngine = {
       goals: template.goals.map(g => ({ ...g, progress: 0, completed: false })),
       reward: template.reward,
       startDate: today(),
-      dueDate: (() => { const d = new Date(); d.setDate(d.getDate() + template.duration_weeks * 7); return d.toISOString().slice(0, 10); })(),
+      dueDate: (() => { const d = new Date(); d.setDate(d.getDate() + template.duration_weeks * 7); return localISO(d); })(),
       status: 'active',
     };
 

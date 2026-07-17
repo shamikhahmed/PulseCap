@@ -57,7 +57,7 @@ reg('briefing', function() {
     '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">' +
     '<div style="font-size:28px">🏋️</div>' +
     '<div><div style="font-size:16px;font-weight:800;color:var(--txt)">'+esc(splitDay.n||'Rest Day')+'</div>' +
-    '<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+esc((splitDay.muscles||[]).join(', '))+'</div></div>' +
+    '<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+esc(prettyMuscles(splitDay.muscles))+'</div></div>' +
     '</div>' +
     '<div style="display:flex;gap:10px">' +
     '<button type="button" class="btn btn-primary" style="flex:1" onclick="startWorkout&&startWorkout()">▶ Start Workout</button>' +
@@ -213,7 +213,7 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
     '<div class="warmup-card"><div class="warmup-title">Warm-Up Protocol</div>'+warmupItems+'</div>' +
     '<div class="card card-solid" style="margin-bottom:14px">' +
     '<div style="font-size:16px;font-weight:800;color:var(--txt);margin-bottom:4px">'+esc(splitDay.n||'Rest Day')+'</div>' +
-    '<div style="font-size:12px;color:var(--txt3);margin-bottom:12px">'+esc((splitDay.muscles||[]).join(', '))+'</div>' +
+    '<div style="font-size:12px;color:var(--txt3);margin-bottom:12px">'+esc(prettyMuscles(splitDay.muscles))+'</div>' +
     mainExercises + '</div>' +
     '<div class="warmup-card">' +
     '<div class="warmup-title">Cardio Recommendation</div>' +

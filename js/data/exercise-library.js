@@ -4,7 +4,7 @@
 const ExerciseLibrary = (() => {
   const CACHE_KEY = 'exerciseLibrary.wger';
   const MEDIA_KEY = 'exerciseLibrary.media';
-  const CACHE_VER = 2;
+  const CACHE_VER = 3; /* v3: inferred joint-stress on imported exercises */
   const MEDIA_VER = 1;
   const WGER_BASE = 'https://wger.de/api/v2';
 
@@ -32,6 +32,27 @@ const ExerciseLibrary = (() => {
     if (/tricep/.test(m)) return 'triceps';
     if (/ab|core|oblique/.test(m)) return 'core';
     return 'fullbody';
+  }
+
+  /* Imported exercises get joint stress inferred from name + muscle group,
+     so injury filtering works on the whole library, not just the built-ins. */
+  function _inferJoint(name, grp) {
+    const n = (name || '').toLowerCase();
+    const j = { shoulder: 0, elbow: 0, knee: 0, spine: 0, hip: 0 };
+    if (/overhead|press behind|upright row|snatch|jerk|handstand/.test(n)) j.shoulder = 3;
+    else if (/press|fly|dip|push|raise|pull-?up|pulldown|row/.test(n)) j.shoulder = 2;
+    else if (grp === 'chest' || grp === 'shoulders' || grp === 'back') j.shoulder = 1;
+    if (/curl|extension|skull|pushdown|close-?grip|dip/.test(n)) j.elbow = 2;
+    else if (/press|row|pull/.test(n)) j.elbow = 1;
+    if (/pistol|jump|lunge|sissy|deep squat/.test(n)) j.knee = 3;
+    else if (/squat|leg press|leg extension|step-?up|split squat/.test(n)) j.knee = 2;
+    else if (grp === 'legs' || /calf|hamstring|glute/.test(n)) j.knee = 1;
+    if (/deadlift|good morning|hyperextension|clean|snatch|bent-?over/.test(n)) j.spine = 3;
+    else if (/row|squat|carry|swing/.test(n)) j.spine = 2;
+    else if (grp === 'back' || grp === 'core') j.spine = 1;
+    if (/deadlift|squat|thrust|swing|lunge|sumo/.test(n)) j.hip = 2;
+    else if (grp === 'legs') j.hip = 1;
+    return j;
   }
 
   function _eqFromInfo(info) {
@@ -73,7 +94,7 @@ const ExerciseLibrary = (() => {
       setup: '',
       breathing: '',
       mistakes: '',
-      joint: { shoulder: 1, elbow: 1, knee: 1, spine: 1, hip: 1 },
+      joint: _inferJoint(en.name, grp),
       cns: 1,
       muscles: { primary: [grp], secondary: [] },
       regressions: [],

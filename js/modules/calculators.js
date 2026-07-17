@@ -2,7 +2,8 @@
 /* ── PulseCap v4.4 — Body Calculators ── */
 
 const _CAL_STATUS_COLORS = {
-  healthy: '#30d158', athletic: '#00d5ff', elite: '#6b5fff',
+  /* var(--c1)/var(--c2) so light theme gets its darker accessible accents */
+  healthy: '#30d158', athletic: 'var(--c1)', elite: 'var(--c2)',
   average: '#f5c842', elevated: '#ff9f0a', high: '#ff453a',
   low: '#ff9f0a', needs_data: 'var(--txt3)'
 };
