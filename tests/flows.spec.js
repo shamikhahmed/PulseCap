@@ -104,4 +104,98 @@ test.describe('PulseCap flows', () => {
     });
     expect(problems).toEqual([]);
   });
+
+  test('plate calculator splits load per side', async ({ page }) => {
+    const out = await page.evaluate(() => {
+      // @ts-ignore
+      const r = window.PlateEngine.calc(100);
+      return { bar: r.bar, label: r.label, plates: r.perSide, rem: r.remainder };
+    });
+    expect(out.bar).toBe(20);
+    // 100 − 20 bar = 80 → 40/side → 25 + 15
+    expect(out.plates).toEqual([{ w: 25, n: 1 }, { w: 15, n: 1 }]);
+    expect(out.rem).toBeLessThan(0.1);
+  });
+
+  test('weekly coach report flags weak muscles', async ({ page }) => {
+    const out = await page.evaluate(() => {
+      // @ts-ignore
+      const w = window;
+      w.S.set('workouts', [{
+        date: new Date().toISOString(),
+        totalVol: 5000,
+        exercises: [{
+          name: 'Barbell Bench Press',
+          sets: [{ weight: 80, reps: 5, done: true }, { weight: 80, reps: 5, done: true }]
+        }]
+      }]);
+      const report = w.RecapEngine.coachReport();
+      return {
+        hasChest: report.rows.some(r => r.muscle === 'chest' && r.sets >= 2),
+        advice: report.advice[0] || '',
+        weakLen: report.weak.length
+      };
+    });
+    expect(out.hasChest).toBeTruthy();
+    expect(out.advice.length).toBeGreaterThan(5);
+    expect(out.weakLen).toBeGreaterThan(0);
+  });
+
+  test('warmup ramp inserts sets ahead of working sets', async ({ page }) => {
+    const out = await page.evaluate(() => {
+      // @ts-ignore
+      const w = window;
+      w.startWorkout();
+      const ex = w.getActiveWorkout().exercises[0];
+      ex.sets = [{ weight: 100, reps: 5, done: false }];
+      w.insertWarmupSets(0);
+      const sets = w.getActiveWorkout().exercises[0].sets;
+      return {
+        n: sets.length,
+        firstWarm: !!sets[0]._warmup,
+        lastWork: sets[sets.length - 1].weight === 100,
+        ramp: w.WeightEngine.warmupSets(100).length
+      };
+    });
+    expect(out.ramp).toBe(3);
+    expect(out.n).toBe(4);
+    expect(out.firstWarm).toBeTruthy();
+    expect(out.lastWork).toBeTruthy();
+  });
+
+  test('form loops cover top compounds offline', async ({ page }) => {
+    const out = await page.evaluate(() => {
+      // @ts-ignore
+      const fl = window.FormLoops;
+      const squat = fl.forExercise('Back Squat');
+      const html = fl.cardHTML('Deadlift');
+      return { count: fl.count, hasSvg: !!(squat && squat.svg), htmlHasOffline: /offline/i.test(html) };
+    });
+    expect(out.count).toBeGreaterThanOrEqual(45);
+    expect(out.hasSvg).toBeTruthy();
+    expect(out.htmlHasOffline).toBeTruthy();
+  });
+
+  test('settings version matches APP_VERSION (not stale 4.7.4)', async ({ page }) => {
+    const out = await page.evaluate(() => {
+      // @ts-ignore
+      const w = window;
+      w.go('settings', { tab: 'data' });
+      const text = document.getElementById('view').innerText;
+      return { ver: w.APP_VERSION, text: text };
+    });
+    expect(out.ver).toMatch(/^5\./);
+    expect(out.text).toContain('v' + out.ver);
+    expect(out.text).not.toContain('v4.7.4');
+  });
+
+  test('skip link is visually hidden until focused', async ({ page }) => {
+    const hidden = await page.evaluate(() => {
+      const el = document.querySelector('.cap-skip-link');
+      if (!el) return false;
+      const cs = getComputedStyle(el);
+      return cs.clipPath.includes('inset') || cs.width === '1px' || cs.clip === 'rect(0px, 0px, 0px, 0px)';
+    });
+    expect(hidden).toBeTruthy();
+  });
 });

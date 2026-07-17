@@ -935,6 +935,8 @@ reg('active', function() {
         '<input type="number" class="set-inp" placeholder="'+(suggest||0)+'" value="'+(set.weight||'')+'" ' +
         'onchange="_setVal('+exIdx+','+sIdx+',\'weight\',parseFloat(this.value)||0)" ' +
         'inputmode="decimal" style="width:64px">' +
+        (set.weight && sIdx === 0 ?
+          '<button type="button" onclick="event.stopPropagation();showPlateCalc('+set.weight+')" style="margin-top:4px;font-size:9px;font-weight:700;color:var(--c1);background:none;border:none;cursor:pointer;padding:0;touch-action:manipulation">plates</button>' : '') +
         '</div>' +
         '<div style="font-size:16px;color:var(--txt3);margin:0 4px">×</div>' +
         '<div style="display:flex;flex-direction:column;align-items:center">' +
@@ -952,6 +954,18 @@ reg('active', function() {
     }).join('');
 
     const noteVal = _wktNotes[ex.name] || '';
+    const workW = (ex.sets && ex.sets[0] && ex.sets[0].weight) || suggest || 0;
+    const warmups = (workW >= 40 && typeof WeightEngine !== 'undefined') ? WeightEngine.warmupSets(workW) : [];
+    const warmupHTML = (!_focusMode && warmups.length) ?
+      '<div style="padding:0 16px 10px">' +
+      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
+      '<div style="font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em">Warm-up ramp</div>' +
+      '<button type="button" onclick="insertWarmupSets('+exIdx+')" style="font-size:11px;font-weight:700;color:var(--c1);background:none;border:none;cursor:pointer;padding:4px;touch-action:manipulation">Add to logger</button></div>' +
+      '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
+      warmups.map(function(w) {
+        return '<span style="padding:6px 10px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);font-size:12px;color:var(--txt2)">' +
+          esc(w.label) + ' · <strong style="color:var(--txt)">' + w.weight + '×' + w.reps + '</strong></span>';
+      }).join('') + '</div></div>' : '';
 
     const mediaThumb = (typeof ExerciseLibrary !== 'undefined' ? ExerciseLibrary.getMedia(exData || ex.name).thumb : null);
 
@@ -976,6 +990,7 @@ reg('active', function() {
       '</div>' +
       (ex.rxNote ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(var(--c1-rgb),0.12);color:var(--c1);padding:4px 10px;border-radius:10px">'+esc(ex.rxNote)+'</span></div>' :
        (suggest && !_focusMode ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(48,209,88,0.12);color:#30d158;padding:4px 10px;border-radius:10px">Try '+suggest+'kg ↑</span></div>' : '')) +
+      warmupHTML +
       '<div style="display:grid;grid-template-columns:28px 1fr 36px;gap:8px;padding:8px 16px 4px;border-bottom:1px solid var(--border)">' +
       '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">SET</div>' +
       '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">WEIGHT × REPS</div>' +
@@ -1021,6 +1036,7 @@ reg('active', function() {
 });
 
 /* ── Workout control functions ── */
+window.getActiveWorkout = function() { return _wkt; };
 window._setVal = function(exIdx, sIdx, field, val) {
   if (!_wkt || !_wkt.exercises[exIdx]) return;
   if (!_wkt.exercises[exIdx].sets[sIdx]) return;
@@ -1316,6 +1332,7 @@ window.startRestTimer = function(secs) {
   const sheet = document.getElementById('rest-sheet');
   if (sheet) sheet.style.transform = 'translateY(0)';
   const circ = 276.5;
+  if (typeof RestNotify !== 'undefined') RestNotify.start(secs);
 
   _restInterval = setInterval(function() {
     _restRemaining--;
@@ -1337,6 +1354,7 @@ window.startRestTimer = function(secs) {
 
 window.skipRest = function() {
   clearInterval(_restInterval);
+  if (typeof RestNotify !== 'undefined') RestNotify.stop();
   const sheet = document.getElementById('rest-sheet');
   if (sheet) sheet.style.transform = 'translateY(100%)';
 };
@@ -1350,6 +1368,22 @@ window.addRestTime = function(secs) {
 window.stopRestTimer = function() {
   clearInterval(_restInterval);
   _restInterval = null;
+  if (typeof RestNotify !== 'undefined') RestNotify.stop();
+};
+
+window.insertWarmupSets = function(exIdx) {
+  if (!_wkt || !_wkt.exercises[exIdx]) return;
+  const ex = _wkt.exercises[exIdx];
+  const workW = (ex.sets && ex.sets[0] && ex.sets[0].weight) || WeightEngine.suggest(ex.name, S.g('user') || {}) || 60;
+  const warmups = WeightEngine.warmupSets(workW);
+  if (ex._warmupsInserted) { toast('Warm-ups already added', 'info'); return; }
+  const wuSets = warmups.map(function(w) {
+    return { weight: w.weight, reps: w.reps, done: false, _warmup: true };
+  });
+  ex.sets = wuSets.concat(ex.sets || []);
+  ex._warmupsInserted = true;
+  toast('Warm-up ramp loaded', 'ok');
+  go('active');
 };
 
 window.toggleExInfo = function(exIdx) {

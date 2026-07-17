@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "5.0.0",
-  "generated": "2026-07-11T17:29:05.860Z",
+  "version": "5.4.0",
+  "generated": "2026-07-17T10:59:43.905Z",
   "shots": [
     {
       "file": "desktop-01-dashboard.png",
@@ -196,6 +196,18 @@
       "viewport": "desktop"
     },
     {
+      "file": "desktop-33-split-builder.png",
+      "label": "Split Builder",
+      "route": "go('split-builder')",
+      "viewport": "desktop"
+    },
+    {
+      "file": "desktop-34-photos.png",
+      "label": "Photos",
+      "route": "go('photos')",
+      "viewport": "desktop"
+    },
+    {
       "file": "mobile-01-dashboard.png",
       "label": "Dashboard",
       "route": "go('dashboard')",
@@ -385,6 +397,18 @@
       "file": "mobile-32-onboarding.png",
       "label": "Onboarding",
       "route": "go('onboarding')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-33-split-builder.png",
+      "label": "Split Builder",
+      "route": "go('split-builder')",
+      "viewport": "mobile"
+    },
+    {
+      "file": "mobile-34-photos.png",
+      "label": "Photos",
+      "route": "go('photos')",
       "viewport": "mobile"
     }
   ]

@@ -181,6 +181,7 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
   <script src="js/modules/dashboard.js"></script>
   <script src="js/modules/workout.js"></script>
   <script src="js/data/exercise-library.js"></script>
+  <script src="js/data/form-loops.js"></script>
   <script src="js/modules/bodymap.js"></script>
   <script src="js/modules/calculators.js"></script>
   <script src="js/modules/coach.js"></script>
@@ -230,6 +231,7 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
     } else {
       go('dashboard');
     }
+    if (typeof bootDeepLink === 'function') bootDeepLink();
     var _deferredInstallPrompt = null;
     window.addEventListener('beforeinstallprompt', function(e) {
       e.preventDefault();

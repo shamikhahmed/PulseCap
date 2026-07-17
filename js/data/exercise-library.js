@@ -157,6 +157,9 @@ const ExerciseLibrary = (() => {
           '<div style="font-size:10px;color:var(--txt3);padding:6px 10px;text-align:center">wger exercise image · cached offline</div>' : '') +
         '</div>';
     }
+    if (typeof FormLoops !== 'undefined' && FormLoops.forExercise(name)) {
+      return FormLoops.cardHTML(name, { height: h });
+    }
     return '<div style="margin-bottom:14px;border-radius:16px;padding:14px;background:var(--bg4);border:1px solid var(--border);display:flex;align-items:center;gap:12px">' +
       '<div style="font-size:32px">🎬</div>' +
       '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:4px">Form guide</div>' +
@@ -321,7 +324,14 @@ window.syncExerciseLibrary = async function(force) {
     toast(r.fromCache ? 'Library loaded from phone (' + r.fetched + ' exercises)' : 'Downloaded ' + r.fetched + ' exercises (' + r.added + ' new)', 'ok', 4000);
     if (btn) btn.textContent = '✓ Library synced';
   } catch (e) {
-    toast(e.message || 'Sync failed', 'err');
-    if (btn) { btn.disabled = false; btn.textContent = '↻ Download Exercise Library'; }
+    const raw = (e && e.message) ? String(e.message) : '';
+    const offline = typeof navigator !== 'undefined' && navigator.onLine === false;
+    const msg = offline
+      ? 'You\'re offline — connect once to download the library'
+      : (/load failed|failed to fetch|networkerror|network request failed/i.test(raw)
+        ? 'Couldn\'t reach wger.de — check connection and try again'
+        : (raw || 'Sync failed'));
+    toast(msg, 'err', 4500);
+    if (btn) { btn.disabled = false; btn.textContent = 'Download Exercise Library'; }
   }
 };

@@ -11,8 +11,8 @@
       --border: #2a2a32;
       --text: #f4f4f6;
       --muted: #9a9aa8;
-      --accent: #7b5fff;
-      --accent-dim: rgba(123, 95, 255, 0.15);
+      --accent: #00d5ff;
+      --accent-dim: rgba(0, 213, 255, 0.15);
     }
     * { box-sizing: border-box; }
     body {
@@ -43,106 +43,256 @@
       font-size: 0.85rem;
       cursor: pointer;
     }
+    .btn:hover { border-color: var(--accent); }
     .btn.active { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
-    main { padding: 20px; }
+    .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .pill {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      padding: 6px 12px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+    .pill:hover { border-color: var(--accent); }
+    .pill.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+    main { padding: 20px; max-width: 1400px; margin: 0 auto; }
+    .section { margin-bottom: 36px; scroll-margin-top: 140px; }
+    .section h2 {
+      font-size: 1rem; font-weight: 600; margin: 0 0 14px;
+      padding-bottom: 8px; border-bottom: 1px solid var(--border);
+    }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
       gap: 16px;
     }
-    .grid.desktop-view { grid-template-columns: repeat(auto-fill, minmax(420px, 1fr)); }
-    figure {
-      margin: 0;
+    .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
       overflow: hidden;
-      cursor: zoom-in;
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
     }
-    figure img { width: 100%; display: block; }
-    figcaption { padding: 10px 12px; font-size: 0.8rem; }
-    figcaption .route { color: var(--muted); font-family: ui-monospace, monospace; font-size: 0.72rem; }
+    .card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+    .card img {
+      width: 100%;
+      aspect-ratio: 9 / 19.5;
+      object-fit: cover;
+      object-position: top;
+      display: block;
+      background: #000;
+    }
+    body.viewport-desktop .card img { aspect-ratio: 16 / 10; object-fit: contain; background: #0a0a0c; }
+    .meta { padding: 10px 12px; }
+    .label { font-size: 0.82rem; font-weight: 500; }
+    .tag { font-size: 0.7rem; color: var(--muted); margin-top: 2px; font-family: ui-monospace, monospace; }
+    .empty { color: var(--muted); padding: 40px; text-align: center; }
+    .err { color: #f87171; padding: 20px; }
     #lightbox {
-      position: fixed; inset: 0; z-index: 200;
+      position: fixed; inset: 0; z-index: 1000;
       background: rgba(0, 0, 0, 0.92);
-      display: none; align-items: center; justify-content: center;
-      cursor: zoom-out;
+      display: none; flex-direction: column;
+      align-items: center; justify-content: center; padding: 20px;
     }
     #lightbox.open { display: flex; }
-    #lightbox img { max-width: 94vw; max-height: 94vh; border-radius: 8px; }
-    .empty { color: var(--muted); padding: 40px; text-align: center; }
+    #lightbox img {
+      max-width: min(420px, 90vw); max-height: 80vh;
+      object-fit: contain; border-radius: 12px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    }
+    body.viewport-desktop #lightbox img { max-width: min(960px, 94vw); }
+    #lb-caption { color: #fff; margin-top: 12px; font-size: 0.9rem; text-align: center; }
+    .lb-btn {
+      position: absolute; background: rgba(255,255,255,0.1); border: none; color: #fff;
+      font-size: 1.5rem; width: 48px; height: 48px; border-radius: 50%; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+    }
+    #lb-close { top: 16px; right: 16px; font-size: 1.8rem; }
+    #lb-prev { left: 16px; top: 50%; transform: translateY(-50%); }
+    #lb-next { right: 16px; top: 50%; transform: translateY(-50%); }
   </style>
 </head>
 <body>
   <header>
     <h1>PulseCap — Screen Gallery</h1>
     <p class="sub" id="meta">Loading manifest…</p>
-    <div class="toolbar" id="filters"></div>
-  </header>
-  <main>
-    <div class="grid" id="grid"></div>
-    <div class="empty" id="empty" hidden>
-      No screenshots yet. Run <code>npm run gallery</code> first.
+    <div class="toolbar">
+      <button type="button" class="btn active" id="btnMobile">Mobile</button>
+      <button type="button" class="btn" id="btnDesktop">Desktop</button>
+      <a class="btn" href="docs/screenshots/gallery/gallery-manifest.json" target="_blank" rel="noopener">Manifest</a>
+      <span style="color:var(--muted);font-size:0.8rem">Regen: <code>npm run gallery</code></span>
     </div>
-  </main>
-  <div id="lightbox"><img alt="" /></div>
+    <div class="pills" id="pills" role="toolbar" aria-label="Section filters"></div>
+  </header>
+  <main id="gallery"></main>
+
+  <div id="lightbox" role="dialog" aria-modal="true" aria-label="Screenshot preview">
+    <button type="button" class="lb-btn" id="lb-close" aria-label="Close">×</button>
+    <button type="button" class="lb-btn" id="lb-prev" aria-label="Previous">‹</button>
+    <button type="button" class="lb-btn" id="lb-next" aria-label="Next">›</button>
+    <img id="lb-img" alt="" />
+    <p id="lb-caption"></p>
+  </div>
+
   <script>
-    const DIR = 'docs/screenshots/gallery/';
-    const grid = document.getElementById('grid');
-    const filters = document.getElementById('filters');
-    const meta = document.getElementById('meta');
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = lightbox.querySelector('img');
-    let shots = [];
-    let viewport = 'mobile';
+    const SECTION_MAP = {
+      dashboard: 'Today', hub: 'Learn', workout: 'Train', quests: 'Train', progress: 'Train',
+      nutrition: 'Body', coach: 'Learn', recovery: 'Body', 'recovery-debt': 'Body', anatomy: 'Body',
+      bodymap: 'Body', encyclopedia: 'Learn', search: 'Learn', calculators: 'Body',
+      calisthenics: 'Train', cardio: 'Train', academy: 'Learn', assistant: 'Learn', briefing: 'Today',
+      'body-intelligence': 'Body', 'equipment-setup': 'Me', 'injury-risk': 'Body', physique: 'Body',
+      'physique-archetype': 'Body', 'physique-timeline': 'Body', profiles: 'Me', rehab: 'Body',
+      settings: 'Me', 'training-intel': 'Train', 'training-style': 'Train', visualizations: 'Learn',
+      onboarding: 'Onboarding', 'split-builder': 'Me', photos: 'Body'
+    };
+
+    const state = {
+      manifest: null,
+      viewport: 'mobile',
+      section: '',
+      flat: [],
+      entries: [],
+      lbIndex: -1
+    };
+
+    const $ = (s) => document.querySelector(s);
+
+    function sectionFor(shot) {
+      const id = (shot.route || '').match(/go\('([^']+)'\)/)?.[1]
+        || (shot.file || '').replace(/^(mobile|desktop)-\d+-/, '').replace(/\.png$/, '');
+      return SECTION_MAP[id] || 'Other';
+    }
+
+    function buildFlat() {
+      state.flat = (state.manifest.shots || []).map((s) => ({
+        ...s,
+        section: sectionFor(s),
+        screenId: (s.file || '').replace(/^(mobile|desktop)-\d+-/, '').replace(/\.png$/, '')
+      }));
+    }
+
+    function visible() {
+      return state.flat.filter((s) =>
+        s.viewport === state.viewport && (!state.section || s.section === state.section)
+      );
+    }
+
+    function sectionsPresent() {
+      const set = new Set(state.flat.filter((s) => s.viewport === state.viewport).map((s) => s.section));
+      const order = ['Today', 'Train', 'Body', 'Learn', 'Me', 'Onboarding', 'Other'];
+      return order.filter((o) => set.has(o));
+    }
+
+    function renderPills() {
+      const pills = $('#pills');
+      pills.innerHTML = '';
+      const all = document.createElement('button');
+      all.type = 'button';
+      all.className = 'pill' + (!state.section ? ' active' : '');
+      all.textContent = 'All';
+      all.onclick = () => { state.section = ''; render(); };
+      pills.appendChild(all);
+      sectionsPresent().forEach((sec) => {
+        const n = state.flat.filter((s) => s.viewport === state.viewport && s.section === sec).length;
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'pill' + (state.section === sec ? ' active' : '');
+        b.textContent = sec + ': ' + n;
+        b.onclick = () => { state.section = sec; render(); };
+        pills.appendChild(b);
+      });
+    }
 
     function render() {
-      grid.className = 'grid' + (viewport === 'desktop' ? ' desktop-view' : '');
-      grid.innerHTML = '';
-      const visible = shots.filter((s) => s.viewport === viewport);
-      document.getElementById('empty').hidden = visible.length > 0;
-      for (const s of visible) {
-        const fig = document.createElement('figure');
-        const img = document.createElement('img');
-        img.loading = 'lazy';
-        img.src = DIR + s.file;
-        img.alt = s.label;
-        const cap = document.createElement('figcaption');
-        cap.innerHTML = `<strong>${s.label}</strong><br /><span class="route">${s.route}</span>`;
-        fig.append(img, cap);
-        fig.addEventListener('click', () => {
-          lightboxImg.src = img.src;
-          lightbox.classList.add('open');
+      document.body.classList.toggle('viewport-desktop', state.viewport === 'desktop');
+      $('#btnMobile').classList.toggle('active', state.viewport === 'mobile');
+      $('#btnDesktop').classList.toggle('active', state.viewport === 'desktop');
+      renderPills();
+
+      const shots = visible();
+      state.entries = shots;
+      const gallery = $('#gallery');
+      if (!shots.length) {
+        gallery.innerHTML = '<p class="empty">No shots for this filter. Run <code>npm run gallery</code>.</p>';
+        return;
+      }
+
+      const bySec = new Map();
+      shots.forEach((s) => {
+        if (!bySec.has(s.section)) bySec.set(s.section, []);
+        bySec.get(s.section).push(s);
+      });
+
+      let html = '';
+      sectionsPresent().forEach((sec) => {
+        const items = bySec.get(sec);
+        if (!items) return;
+        html += '<section class="section"><h2>' + sec + '</h2><div class="grid">';
+        items.forEach((s) => {
+          const idx = state.entries.indexOf(s);
+          html += '<article class="card" tabindex="0" role="button" data-idx="' + idx + '">' +
+            '<img src="docs/screenshots/gallery/' + s.file + '" alt="' + s.label + '" loading="lazy" />' +
+            '<div class="meta"><div class="label">' + s.label + '</div>' +
+            '<div class="tag">' + (s.route || '') + '</div></div></article>';
         });
-        grid.append(fig);
-      }
+        html += '</div></section>';
+      });
+      gallery.innerHTML = html;
+      gallery.querySelectorAll('.card').forEach((card) => {
+        const open = () => openLb(+card.dataset.idx);
+        card.addEventListener('click', open);
+        card.addEventListener('keydown', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
+        });
+      });
     }
 
-    function renderFilters() {
-      filters.innerHTML = '';
-      for (const v of ['mobile', 'desktop']) {
-        const btn = document.createElement('button');
-        btn.className = 'btn' + (v === viewport ? ' active' : '');
-        btn.textContent = v[0].toUpperCase() + v.slice(1);
-        btn.addEventListener('click', () => { viewport = v; renderFilters(); render(); });
-        filters.append(btn);
-      }
+    function openLb(i) {
+      if (i < 0 || i >= state.entries.length) return;
+      state.lbIndex = i;
+      const s = state.entries[i];
+      $('#lb-img').src = 'docs/screenshots/gallery/' + s.file;
+      $('#lb-img').alt = s.label;
+      $('#lb-caption').textContent = s.label + ' · ' + s.section + ' · ' + (s.route || '');
+      $('#lightbox').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLb() {
+      $('#lightbox').classList.remove('open');
+      document.body.style.overflow = '';
+      state.lbIndex = -1;
     }
 
-    lightbox.addEventListener('click', () => lightbox.classList.remove('open'));
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') lightbox.classList.remove('open'); });
+    $('#btnMobile').onclick = () => { state.viewport = 'mobile'; render(); };
+    $('#btnDesktop').onclick = () => { state.viewport = 'desktop'; render(); };
+    $('#lb-close').onclick = closeLb;
+    $('#lb-prev').onclick = () => openLb(state.lbIndex - 1);
+    $('#lb-next').onclick = () => openLb(state.lbIndex + 1);
+    $('#lightbox').addEventListener('click', (e) => { if (e.target.id === 'lightbox') closeLb(); });
+    document.addEventListener('keydown', (e) => {
+      if (!$('#lightbox').classList.contains('open')) return;
+      if (e.key === 'Escape') closeLb();
+      if (e.key === 'ArrowLeft') openLb(state.lbIndex - 1);
+      if (e.key === 'ArrowRight') openLb(state.lbIndex + 1);
+    });
 
-    fetch(DIR + 'gallery-manifest.json')
+    fetch('docs/screenshots/gallery/gallery-manifest.json')
       .then((r) => r.json())
       .then((m) => {
-        shots = m.shots;
-        meta.textContent = `v${m.version} · ${m.shots.length} shots · generated ${new Date(m.generated).toLocaleString()}`;
-        renderFilters();
+        state.manifest = m;
+        buildFlat();
+        $('#meta').textContent = m.shots.length + ' shots · v' + (m.version || '?') +
+          ' · generated ' + (m.generated ? new Date(m.generated).toLocaleString() : '—');
         render();
       })
-      .catch(() => {
-        meta.textContent = 'Manifest missing.';
-        document.getElementById('empty').hidden = false;
+      .catch((e) => {
+        $('#gallery').innerHTML = '<p class="err">Failed to load gallery-manifest.json — run <code>npm run gallery</code>. ' + e.message + '</p>';
       });
   </script>
 </body>

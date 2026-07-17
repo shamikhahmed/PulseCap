@@ -322,8 +322,10 @@ const OB_STEPS = {
       '<div class="field-wrap">' +
       '<label class="field-label">Gender</label>' +
       '<div style="display:flex;gap:8px">' +
-      '<button type="button" class="ob-opt'+((_obData.gender||'male')==='male'?' sel':'')+'" data-field="gender" data-val="male" onclick="obSelect(\'gender\',\'male\')" style="flex:1;padding:12px 8px;justify-content:center"><div class="ob-opt-title">♂ Male</div></button>' +
-      '<button type="button" class="ob-opt'+((_obData.gender||'')==='female'?' sel':'')+'" data-field="gender" data-val="female" onclick="obSelect(\'gender\',\'female\')" style="flex:1;padding:12px 8px;justify-content:center"><div class="ob-opt-title">♀ Female</div></button>' +
+      '<button type="button" class="ob-opt'+((_obData.gender||'male')==='male'?' sel':'')+'" data-field="gender" data-val="male" onclick="obSelect(\'gender\',\'male\')" style="flex:1;padding:12px 10px;justify-content:center;gap:8px;align-items:center">' +
+      '<span aria-hidden="true" style="font-size:18px;line-height:1;flex-shrink:0">♂</span><span class="ob-opt-title">Male</span></button>' +
+      '<button type="button" class="ob-opt'+((_obData.gender||'')==='female'?' sel':'')+'" data-field="gender" data-val="female" onclick="obSelect(\'gender\',\'female\')" style="flex:1;padding:12px 10px;justify-content:center;gap:8px;align-items:center">' +
+      '<span aria-hidden="true" style="font-size:18px;line-height:1;flex-shrink:0">♀</span><span class="ob-opt-title">Female</span></button>' +
       '</div></div>' +
       '<div class="field-wrap">' +
       '<label class="field-label">Age</label>' +

@@ -10,8 +10,26 @@
   "orientation": "portrait",
   "categories": ["health", "fitness", "sports"],
   "shortcuts": [
-    { "name": "Log Workout", "short_name": "Log", "url": "./?tab=log", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
-    { "name": "Exercises", "short_name": "Exercises", "url": "./?tab=exercises", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
+    {
+      "name": "Today's workout",
+      "short_name": "Today",
+      "description": "Open today's session and start training",
+      "url": "./?action=today",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Start workout",
+      "short_name": "Start",
+      "description": "Jump straight into the logger",
+      "url": "./?action=start",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Exercises",
+      "short_name": "Library",
+      "url": "./?go=encyclopedia",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
   ],
   "icons": [
     { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },

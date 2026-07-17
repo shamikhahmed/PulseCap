@@ -1,5 +1,8 @@
 'use strict';
 
+/* Keep in sync with VERSION.json — settings/footer read this. */
+window.APP_VERSION = '5.4.0';
+
 /* ══════════════════════════════════════════════════════
    ROUTER
 ══════════════════════════════════════════════════════ */
@@ -191,6 +194,36 @@ function bootDemoIfRequested() {
   return false;
 }
 window.bootDemoIfRequested = bootDemoIfRequested;
+
+/** Home-screen shortcuts / deep links: ?go=screen | ?action=start|today */
+function bootDeepLink() {
+  try {
+    const q = new URLSearchParams(location.search);
+    const action = q.get('action');
+    const goTo = q.get('go') || q.get('tab');
+    if (action === 'start' || goTo === 'log' || goTo === 'workout') {
+      setTimeout(function() {
+        if (typeof startWorkout === 'function' && S.g('onboarded')) startWorkout();
+        else if (typeof go === 'function') go('workout');
+      }, 80);
+      return true;
+    }
+    if (action === 'today' || goTo === 'today' || goTo === 'dashboard') {
+      setTimeout(function() { if (typeof go === 'function') go('dashboard'); }, 40);
+      return true;
+    }
+    if (goTo === 'exercises' || goTo === 'encyclopedia') {
+      setTimeout(function() { if (typeof go === 'function') go('encyclopedia'); }, 40);
+      return true;
+    }
+    if (goTo && typeof go === 'function') {
+      setTimeout(function() { go(goTo); }, 40);
+      return true;
+    }
+  } catch (e) { /* ignore */ }
+  return false;
+}
+window.bootDeepLink = bootDeepLink;
 
 /* ══════════════════════════════════════════════════════
    HELPERS
@@ -642,6 +675,67 @@ const RecapEngine = {
     const w = Math.ceil((((t - Date.UTC(y, 0, 1)) / 864e5) + 1) / 7);
     return y + '-W' + (w < 10 ? '0' : '') + w;
   },
+  /* Hypertrophy-ish weekly set targets by primary muscle */
+  TARGETS: {
+    chest: 12, back: 14, quads: 12, hamstrings: 10, glutes: 10,
+    shoulders: 12, biceps: 8, triceps: 8, core: 6, calves: 6, forearms: 4
+  },
+  _muscleKey(ex) {
+    const db = typeof ExDB !== 'undefined' ? ExDB.byName(ex.name) : null;
+    const pri = (db && db.muscles && db.muscles.primary && db.muscles.primary[0])
+      || (db && db.grp) || 'other';
+    const map = {
+      upper_chest: 'chest', lower_chest: 'chest', mid_chest: 'chest',
+      lats: 'back', traps: 'back', rhomboids: 'back', rear_delts: 'shoulders',
+      front_delts: 'shoulders', side_delts: 'shoulders', lateral_delt: 'shoulders',
+      anterior_delt: 'shoulders', abs: 'core', obliques: 'core'
+    };
+    return map[pri] || pri;
+  },
+  /* Sets per muscle in the last 7 days ending `end` */
+  volumeByMuscle(end) {
+    const endT = end ? new Date(end).getTime() : Date.now();
+    const startT = endT - 7 * 864e5;
+    const counts = {};
+    (S.g('workouts') || []).forEach(w => {
+      const t = new Date(w.date).getTime();
+      if (t < startT || t > endT) return;
+      (w.exercises || []).forEach(ex => {
+        const key = this._muscleKey(ex);
+        const n = (ex.sets || []).filter(s => s.done).length;
+        counts[key] = (counts[key] || 0) + n;
+      });
+    });
+    return counts;
+  },
+  /* Coach report: volume vs target + weak-point flags + next-week advice */
+  coachReport(end) {
+    const vol = this.volumeByMuscle(end);
+    const rows = Object.keys(this.TARGETS).map(m => {
+      const got = vol[m] || 0;
+      const target = this.TARGETS[m];
+      const pct = target ? Math.round((got / target) * 100) : 0;
+      let flag = 'ok';
+      if (got === 0) flag = 'missed';
+      else if (pct < 60) flag = 'weak';
+      else if (pct > 140) flag = 'high';
+      return { muscle: m, sets: got, target: target, pct: pct, flag: flag };
+    }).filter(r => r.sets > 0 || r.flag === 'missed');
+    const weak = rows.filter(r => r.flag === 'weak' || r.flag === 'missed')
+      .sort((a, b) => a.pct - b.pct);
+    const high = rows.filter(r => r.flag === 'high');
+    const advice = [];
+    if (weak.length) {
+      const top = weak.slice(0, 2).map(r => (typeof prettyMuscle === 'function' ? prettyMuscle(r.muscle) : r.muscle));
+      advice.push('Next week: add a set or two for ' + top.join(' + ') + '.');
+    }
+    if (high.length) {
+      advice.push((typeof prettyMuscle === 'function' ? prettyMuscle(high[0].muscle) : high[0].muscle) +
+        ' ran hot (' + high[0].sets + ' sets) — keep intensity, trim junk volume.');
+    }
+    if (!advice.length) advice.push('Volume looks balanced. Keep the same map, chase quality reps.');
+    return { rows: rows, weak: weak, high: high, advice: advice };
+  },
   /* Stats for the 7 days ending `end` (default: now) */
   weekStats(end) {
     const endT = end ? new Date(end).getTime() : Date.now();
@@ -657,7 +751,11 @@ const RecapEngine = {
     const inWeek = stats.filter(s => { const t = new Date(s.date).getTime(); return t >= startT && t <= endT; });
     const weightDelta = inWeek.length >= 2
       ? Math.round((inWeek[inWeek.length - 1].weight - inWeek[0].weight) * 10) / 10 : null;
-    return { sessions: ws.length, volume: vol, prs: prs, streak: StreakEngine.get(), weightDelta: weightDelta };
+    const coach = this.coachReport(end);
+    return {
+      sessions: ws.length, volume: vol, prs: prs, streak: StreakEngine.get(),
+      weightDelta: weightDelta, coach: coach
+    };
   },
   /* Show window: Sunday from 5pm through all of Monday, once per week */
   shouldShow() {
@@ -672,6 +770,128 @@ const RecapEngine = {
 window.RecapEngine = RecapEngine;
 window.dismissRecap = function() { RecapEngine.dismiss(); go('dashboard'); };
 window.StreakEngine = StreakEngine;
+
+/* ── PLATE CALCULATOR — barbell load → plates per side ── */
+const PlateEngine = {
+  KG: [25, 20, 15, 10, 5, 2.5, 1.25],
+  LB: [45, 35, 25, 10, 5, 2.5],
+  barKg(units, user) {
+    const u = user || S.g('user') || {};
+    if (u.barWeight) return parseFloat(u.barWeight) || 20;
+    return (units || u.units) === 'imperial' ? 45 : 20;
+  },
+  /* Returns { perSide:[{w,n}], remainder, total, bar, unit } */
+  calc(total, opts) {
+    opts = opts || {};
+    const user = S.g('user') || {};
+    const imperial = (opts.units || user.units) === 'imperial';
+    const unit = imperial ? 'lb' : 'kg';
+    const bar = opts.bar != null ? opts.bar : this.barKg(imperial ? 'imperial' : 'metric', user);
+    const plates = imperial ? this.LB : this.KG;
+    let load = Math.max(0, (parseFloat(total) || 0) - bar);
+    const perSideTarget = load / 2;
+    let rem = Math.round(perSideTarget * 100) / 100;
+    const perSide = [];
+    plates.forEach(function(w) {
+      const n = Math.floor((rem + 1e-9) / w);
+      if (n > 0) {
+        perSide.push({ w: w, n: n });
+        rem = Math.round((rem - n * w) * 100) / 100;
+      }
+    });
+    return {
+      total: parseFloat(total) || 0,
+      bar: bar,
+      unit: unit,
+      perSide: perSide,
+      remainder: rem,
+      label: perSide.length
+        ? perSide.map(function(p) { return (p.n > 1 ? p.n + '×' : '') + p.w; }).join(' + ') + ' ' + unit + ' / side'
+        : (load <= 0 ? 'Bar only' : 'Odd load — check plates')
+    };
+  },
+  html(total) {
+    const r = this.calc(total);
+    if (!(parseFloat(total) > r.bar)) {
+      return '<div style="font-size:12px;color:var(--txt3)">Enter a weight above the bar (' + r.bar + r.unit + ')</div>';
+    }
+    const chips = r.perSide.map(function(p) {
+      return '<span style="display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);font-size:13px;font-weight:700;color:var(--txt)">' +
+        (p.n > 1 ? '<span style="color:var(--c1)">' + p.n + '×</span>' : '') + p.w + '<span style="font-size:10px;color:var(--txt3);font-weight:600">' + r.unit + '</span></span>';
+    }).join('');
+    return '<div style="font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Plates per side · bar ' + r.bar + r.unit + '</div>' +
+      '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">' + (chips || '<span style="color:var(--txt3);font-size:13px">Bar only</span>') + '</div>' +
+      (r.remainder > 0.01 ? '<div style="font-size:11px;color:#ff9f0a">~' + r.remainder + r.unit + ' leftover per side — microplates or round</div>' : '') +
+      '<div style="font-size:12px;color:var(--c1);font-weight:600;margin-top:4px">' + esc(r.label) + '</div>';
+  }
+};
+window.PlateEngine = PlateEngine;
+window.showPlateCalc = function(weight) {
+  const w = parseFloat(weight) || 0;
+  modal('Plate calculator',
+    '<div style="margin-bottom:12px">' +
+    '<label class="field-label">Barbell total</label>' +
+    '<input id="plate-inp" class="field" type="number" inputmode="decimal" value="' + (w || '') + '" ' +
+    'oninput="var el=document.getElementById(\'plate-out\');if(el)el.innerHTML=PlateEngine.html(this.value)" style="font-size:20px;font-weight:800">' +
+    '</div><div id="plate-out">' + PlateEngine.html(w) + '</div>');
+};
+
+/* ── REST TIMER NOTIFICATIONS (PWA / Dynamic-Island-style banner) ── */
+const RestNotify = {
+  _timer: null,
+  _endAt: 0,
+  ensurePermission() {
+    if (!('Notification' in window)) return Promise.resolve('denied');
+    if (Notification.permission === 'granted') return Promise.resolve('granted');
+    if (Notification.permission === 'denied') return Promise.resolve('denied');
+    return Notification.requestPermission();
+  },
+  _show(title, body, tag) {
+    if (!('Notification' in window) || Notification.permission !== 'granted') return;
+    try {
+      const opts = { body: body, tag: tag || 'pulsecap-rest', silent: false, renotify: true };
+      if (navigator.serviceWorker && navigator.serviceWorker.ready) {
+        navigator.serviceWorker.ready.then(function(reg) {
+          if (reg.showNotification) reg.showNotification(title, opts);
+          else new Notification(title, opts);
+        }).catch(function() { new Notification(title, opts); });
+      } else {
+        new Notification(title, opts);
+      }
+    } catch (e) { /* ignore */ }
+  },
+  start(secs) {
+    const self = this;
+    clearTimeout(this._timer);
+    this._endAt = Date.now() + secs * 1000;
+    this.ensurePermission().then(function(perm) {
+      if (perm !== 'granted') return;
+      if (document.hidden) {
+        self._show('Rest · ' + fmtTime(secs), 'Timer running — tap back when ready', 'pulsecap-rest');
+      }
+      self._timer = setTimeout(function() {
+        self._show('Rest done', 'Next set — load the bar', 'pulsecap-rest-done');
+        haptic([80, 40, 80, 40, 160]);
+      }, Math.max(0, secs * 1000));
+    });
+  },
+  onVisibility() {
+    if (!document.hidden || !this._endAt) return;
+    const left = Math.ceil((this._endAt - Date.now()) / 1000);
+    if (left > 0) this._show('Rest · ' + fmtTime(left), 'Background rest timer', 'pulsecap-rest');
+  },
+  stop() {
+    clearTimeout(this._timer);
+    this._timer = null;
+    this._endAt = 0;
+  }
+};
+window.RestNotify = RestNotify;
+if (typeof document !== 'undefined') {
+  document.addEventListener('visibilitychange', function() {
+    if (typeof RestNotify !== 'undefined') RestNotify.onVisibility();
+  });
+}
 
 /* ══════════════════════════════════════════════════════
    ENGINE — PROGRESSION

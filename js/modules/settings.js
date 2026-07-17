@@ -23,7 +23,7 @@ reg('settings', function(opts) {
   const tabBar = '<div class="cap-tab-bar" role="tablist" aria-label="Settings">' +
     tabList.map(function(t) {
       const active = _settingsTab === t;
-      const labels = {profile:'👤 Profile',training:'🏋️ Training',supplements:'💊 Supps',nutrition:'🥗 Nutrition',appearance:'🎨 Style',notifications:'🔔 Alerts',data:'💾 Data'};
+      const labels = {profile:'Profile',training:'Training',supplements:'Supps',nutrition:'Nutrition',appearance:'Style',notifications:'Alerts',data:'Data'};
       return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" onclick="go(\'settings\',{tab:\''+t+'\'})">' +
         (labels[t]||t) + '</button>';
     }).join('') + '</div>';
@@ -358,6 +358,9 @@ function _tabNotifications(u) {
     _toggle('Streak Alerts', 'user.streakAlerts', u.streakAlerts!==false) +
     _toggle('Caffeine Warning', 'user.caffeineWarning', u.caffeineWarning!==false) +
     _toggle('Daily Morning Briefing', 'settings.dailyBriefing', S.g('settings.dailyBriefing') !== false) +
+    _sectionTitle('Rest timer') +
+    '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.45">When the app is backgrounded, a system banner can show remaining rest (PWA Notification API).</div>' +
+    '<button type="button" class="btn btn-secondary" onclick="RestNotify.ensurePermission().then(function(p){toast(p===\'granted\'?\'Rest notifications on\':\'Permission \'+(p||\'denied\'),p===\'granted\'?\'ok\':\'warn\')})" style="width:100%;margin-bottom:14px">Enable rest notifications</button>' +
     _sectionTitle('Coach Update Frequency') +
     '<div style="display:flex;gap:8px;margin-bottom:4px">' +
     ['daily','weekly'].map(function(freq) {
@@ -379,12 +382,12 @@ function _tabData() {
     '<div style="display:flex;flex-wrap:wrap;gap:12px">' +
     _infoStat('Workouts', String(ws.length), 'logged') +
     _infoStat('Member since', joinDate ? new Date(joinDate).toLocaleDateString('en-GB',{month:'short',year:'numeric'}) : '—', '') +
-    _infoStat('Version', 'v4.7.4', 'PulseCap') +
+    _infoStat('Version', 'v' + (window.APP_VERSION || '5.4.0'), 'PulseCap') +
     '</div></div>' +
 
     _sectionTitle('Profiles') +
-    '<button type="button" class="btn btn-secondary" onclick="go(\'profiles\')" style="margin-bottom:10px">👤 Manage Profiles</button>' +
-    '<button type="button" class="btn btn-danger" onclick="confirmClearData()" style="margin-bottom:10px">🗑️ Reset This Profile</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="go(\'profiles\')" style="margin-bottom:10px">Manage Profiles</button>' +
+    '<button type="button" class="btn btn-danger" onclick="confirmClearData()" style="margin-bottom:10px">Reset This Profile</button>' +
 
     _sectionTitle('Exercise Library') +
     (function() {
@@ -396,21 +399,21 @@ function _tabData() {
         (st.cached ? 'wger cache: <strong style="color:var(--txt)">' + st.count + '</strong>' + (st.mediaCount ? ' · ' + st.mediaCount + ' with images/videos' : '') + ' (offline).' : 'Download wger.de library once while online — exercises, thumbnails & form videos stay on your phone.') +
         '</div>' +
         '<button type="button" id="ex-lib-sync-btn" class="btn btn-secondary" onclick="syncExerciseLibrary(' + (st.cached ? 'true' : 'false') + ')" style="width:100%">' +
-        (st.cached ? '↻ Re-sync Exercise Library' : '↓ Download Exercise Library (wger)') +
+        (st.cached ? 'Re-sync Exercise Library' : 'Download Exercise Library') +
         '</button></div>';
     })() +
 
     _sectionTitle('Export & Import') +
-    '<button type="button" class="btn btn-secondary" onclick="exportData()" style="margin-bottom:10px">📤 Export Backup (JSON)</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="exportData()" style="margin-bottom:10px">Export Backup (JSON)</button>' +
     '<div class="field-wrap">' +
     '<label class="field-label">Import Backup</label>' +
     '<input class="field" type="file" accept=".json" onchange="importData(this)" style="font-size:14px">' +
     '</div>' +
 
     _sectionTitle('Danger Zone') +
-    '<button type="button" class="btn btn-danger" onclick="confirmClearData()">🗑️ Clear All Data</button>' +
+    '<button type="button" class="btn btn-danger" onclick="confirmClearData()">Clear All Data</button>' +
 
-    '<div style="margin-top:32px;text-align:center;color:var(--txt3);font-size:13px">PulseCap v4 · by <strong>Shamikh Ahmed</strong></div>' +
+    '<div style="margin-top:32px;text-align:center;color:var(--txt3);font-size:13px">PulseCap v' + esc(window.APP_VERSION || '5.4.0') + ' · by <strong>Shamikh Ahmed</strong></div>' +
     '</div>';
 }
 

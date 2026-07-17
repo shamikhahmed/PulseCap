@@ -1,5 +1,16 @@
 # Changelog — PulseCap
 
+## 5.4.0 (2026-07-17) — Coach tools + screenshot polish
+- **Screenshot bugs fixed:** skip-to-content link no longer stuck over the iOS status bar (clip/sr-only until focus); gender Male/Female icons spaced so ♀ never clips the label; Settings version reads `APP_VERSION` (was hard-coded **v4.7.4**); Safari's opaque `"Load failed"` network toast mapped to a human offline/wger message.
+- **Weekly coach report:** recap card grows into volume-vs-target per muscle + weak-point flags + "what to change next week" advice (`RecapEngine.coachReport`).
+- **Plate calculator in logger:** tap **plates** under the first set weight → plates-per-side modal (`PlateEngine`).
+- **Warm-up ramp surfaced:** `WeightEngine.warmupSets` shown on active compounds; **Add to logger** prepends the ramp sets.
+- **Rest-timer notifications:** PWA Notification API when backgrounded (`RestNotify`); Settings → Alerts → Enable rest notifications.
+- **Home-screen shortcuts:** Today's workout / Start / Exercises via `manifest.json` + `bootDeepLink(?action=today|start)`.
+- **Offline form loops:** top-50 compounds get animated SVG form cues (`js/data/form-loops.js`) when wger media isn't cached.
+- **Screen gallery:** VaultCap-style browser — section pills (Today/Train/Body/Learn/Me), mobile/desktop toggle, lightbox keyboard nav (`screen-gallery.html`).
+- Settings chrome de-emoji (tabs + data actions). SW `pulsecap-v55`. Flow tests: 24 pass.
+
 ## 5.3.0 (2026-07-17) — Gap punch-down
 - **Timezone correctness:** all "today"/date math now LOCAL (`localISO`, 16 call sites) — was UTC, which broke evenings east of Greenwich: wrong day on streaks, weigh-ins, weekday schedule mismatch.
 - **Real strength programs:** `ProgramEngine` — Stronglifts/Starting Strength get true linear progression (5×5 / 3×5, DL 1×5, +2.5kg on completed sets, 10% deload after 3 misses); 5/3/1 gets training-max waves (65/75/85 → 70/80/90 → 75/85/95 → deload, TM +2.5/+5 per cycle). Prescriptions prefill the logger with a plan chip ("5×5 @ 60kg…"); state advances on save with a coach toast.

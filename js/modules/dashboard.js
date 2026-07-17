@@ -282,19 +282,32 @@ reg('dashboard', function() {
     /* Weekly recap — Sunday evening through Monday */
     const recap = (typeof RecapEngine !== 'undefined' && RecapEngine.shouldShow()) ? RecapEngine.weekStats() : null;
     const recapCard = recap ?
-      '<div style="margin:0 16px 14px;border-radius:16px;padding:18px;background:linear-gradient(135deg,rgba(123,95,255,0.18),rgba(0,213,255,0.10));border:1px solid rgba(123,95,255,0.3);position:relative">' +
+      '<div style="margin:0 16px 14px;border-radius:16px;padding:18px;background:linear-gradient(135deg,rgba(0,213,255,0.14),rgba(48,209,88,0.08));border:1px solid rgba(0,213,255,0.28);position:relative">' +
       '<button type="button" onclick="dismissRecap()" aria-label="Dismiss" style="position:absolute;top:10px;right:12px;background:none;border:none;color:var(--txt3);font-size:16px;cursor:pointer;padding:4px;touch-action:manipulation">✕</button>' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--c2);margin-bottom:6px">Your week</div>' +
+      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--c1);margin-bottom:6px">Weekly coach report</div>' +
       '<div style="font-size:17px;font-weight:800;color:var(--txt);margin-bottom:12px">' +
       (recap.sessions === 0 ? 'Quiet week. This one\'s a fresh start.'
         : recap.sessions >= 4 ? recap.sessions + ' sessions. That\'s a real week of work.'
         : recap.sessions + ' session' + (recap.sessions > 1 ? 's' : '') + ' banked.') + '</div>' +
-      '<div style="display:flex;gap:8px">' +
+      '<div style="display:flex;gap:8px;margin-bottom:12px">' +
       '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--txt)">' + (Math.round(recap.volume / 100) / 10) + 't</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">Volume</div></div>' +
       '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--c5)">' + recap.prs + '</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">PRs</div></div>' +
-      '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--c1)">' + recap.streak + '🔥</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">Streak</div></div>' +
+      '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--c1)">' + recap.streak + '</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">Streak</div></div>' +
       (recap.weightDelta !== null ? '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--txt)">' + (recap.weightDelta > 0 ? '+' : '') + recap.weightDelta + '</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">kg</div></div>' : '') +
-      '</div></div>' : '';
+      '</div>' +
+      (recap.coach && recap.coach.weak && recap.coach.weak.length ?
+        '<div style="margin-bottom:10px">' +
+        recap.coach.weak.slice(0, 3).map(function(r) {
+          const label = typeof prettyMuscle === 'function' ? prettyMuscle(r.muscle) : r.muscle;
+          const col = r.flag === 'missed' ? '#ff453a' : '#ff9f0a';
+          return '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:10px;background:var(--bg3);margin-bottom:6px">' +
+            '<div style="font-size:12px;font-weight:700;color:var(--txt)">' + esc(label) + '</div>' +
+            '<div style="font-size:11px;font-weight:700;color:' + col + '">' + r.sets + '/' + r.target + ' sets</div></div>';
+        }).join('') + '</div>' : '') +
+      (recap.coach && recap.coach.advice && recap.coach.advice.length ?
+        '<div style="font-size:13px;line-height:1.45;color:var(--txt2);border-top:1px solid var(--border);padding-top:10px">' +
+        esc(recap.coach.advice[0]) + '</div>' : '') +
+      '</div>' : '';
 
     /* Morning check-in ritual — 30 seconds, feeds readiness */
     const checkedInToday = (function() {

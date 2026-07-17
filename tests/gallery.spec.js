@@ -16,6 +16,7 @@ const MODULES = [
   'body-intelligence', 'equipment-setup', 'injury-risk', 'physique',
   'physique-archetype', 'physique-timeline', 'profiles', 'rehab', 'settings',
   'training-intel', 'training-style', 'visualizations', 'onboarding',
+  'split-builder', 'photos',
 ];
 
 const VIEWPORTS = {
