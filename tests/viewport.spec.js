@@ -21,9 +21,40 @@ test.describe('PulseCap viewport contract', () => {
     expect(overflow).toBeFalsy();
   });
 
+  test('393px — iPhone 14/15 shell + safe-area padding', async ({ page }) => {
+    await page.setViewportSize({ width: 393, height: 852 });
+    await page.evaluate(() => {
+      document.documentElement.style.setProperty('--safe', '34px');
+      document.documentElement.style.setProperty('--top-safe', '47px');
+    });
+    await assertCapSharedMobile(page, expect);
+    const clearance = await page.evaluate(() => {
+      const view = document.getElementById('view');
+      if (!view) return 0;
+      return parseFloat(getComputedStyle(view).paddingBottom) || 0;
+    });
+    expect(clearance).toBeGreaterThanOrEqual(100);
+  });
+
   test('430px — large phone shell', async ({ page }) => {
     await page.setViewportSize({ width: 430, height: 932 });
     await assertCapSharedMobile(page, expect);
+  });
+
+  test('light theme — secondary text contrast tokens', async ({ page }) => {
+    await page.setViewportSize({ width: 393, height: 852 });
+    await page.evaluate(() => window.applyTheme('light', false));
+    await page.waitForTimeout(100);
+    const ok = await page.evaluate(() => {
+      const cs = getComputedStyle(document.documentElement);
+      const txt3 = cs.getPropertyValue('--txt3').trim();
+      // Must not be the old ultra-faint 0.42 alpha
+      return txt3.includes('0.58') || txt3.includes('0.55') || !txt3.includes('0.42');
+    });
+    expect(ok).toBeTruthy();
+    await page.evaluate(() => window.go('nutrition'));
+    await page.waitForTimeout(300);
+    await expect(page.locator('#view .screen')).toBeVisible();
   });
 
   test('768px — tablet mid breakpoint', async ({ page }) => {

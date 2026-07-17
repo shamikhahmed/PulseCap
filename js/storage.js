@@ -150,7 +150,7 @@ const S = {
     if (!meta.profiles) meta.profiles = [];
     const existing = meta.profiles.find(p => p.id === 'demo');
     if (!existing) {
-      meta.profiles.push({ id:'demo', name:'Demo Mode', avatar:'🤖', created: new Date().toISOString(), isDemo:true });
+      meta.profiles.push({ id:'demo', name:'Demo Mode', avatar:'c1', created: new Date().toISOString(), isDemo:true });
       this.saveMeta(meta);
     }
     const demoKey = this._key + '_demo';
@@ -377,21 +377,21 @@ function _demoWorkouts() {
 ══════════════════════════════════════════════════════ */
 const DEMO_PERSONAS = [
   {
-    id: 'demo_beginner', name: 'Sam · Beginner', avatar: '🌱',
+    id: 'demo_beginner', name: 'Sam · Beginner', avatar: 'c3',
     user: { name: 'Sam', goal: 'fat_loss', exp: 'beginner', gender: 'female', age: 24, units: 'metric',
       height: 165, weight: 72, goalWeight: 62, split: 'fb', weeklyGoal: 3,
       equipment: ['dumbbell','bar','bodyweight'], coachPersonality: 'zen', theme: 'light' },
     level: 0.55, workoutCount: 4, calorieTarget: 1700, proteinTarget: 120, trend: -0.15, injuries: []
   },
   {
-    id: 'demo_strong', name: 'Marcus · Advanced', avatar: '🏆',
+    id: 'demo_strong', name: 'Marcus · Advanced', avatar: 'c1',
     user: { name: 'Marcus', goal: 'strength', exp: 'advanced', gender: 'male', age: 31, units: 'metric',
       height: 183, weight: 92, goalWeight: 95, split: 'ul', weeklyGoal: 5,
       equipment: ['barbell','dumbbell','cables','machine','bar'], coachPersonality: 'rex', theme: 'dark' },
     level: 1.35, workoutCount: 16, calorieTarget: 3200, proteinTarget: 200, trend: 0.05, injuries: []
   },
   {
-    id: 'demo_injured', name: 'Jordan · Rehab', avatar: '🩹',
+    id: 'demo_injured', name: 'Jordan · Rehab', avatar: 'c5',
     user: { name: 'Jordan', goal: 'hypertrophy', exp: 'intermediate', gender: 'male', age: 28, units: 'metric',
       height: 178, weight: 80, goalWeight: 82, split: 'ppl', weeklyGoal: 4,
       equipment: ['barbell','dumbbell','cables','machine','bar'], coachPersonality: 'maya', theme: 'dark' },
@@ -400,14 +400,14 @@ const DEMO_PERSONAS = [
       date: new Date(Date.now() - 12 * 864e5).toISOString(), recovered: false }]
   },
   {
-    id: 'demo_cutter', name: 'Lena · Cutting', avatar: '🔥',
+    id: 'demo_cutter', name: 'Lena · Cutting', avatar: 'c4',
     user: { name: 'Lena', goal: 'fat_loss', exp: 'intermediate', gender: 'female', age: 29, units: 'metric',
       height: 170, weight: 68, goalWeight: 60, split: 'ul', weeklyGoal: 4,
       equipment: ['dumbbell','cables','machine','bar'], coachPersonality: 'sam', theme: 'dark' },
     level: 0.85, workoutCount: 10, calorieTarget: 1600, proteinTarget: 140, trend: -0.2, injuries: []
   },
   {
-    id: 'demo_senior', name: 'Ray · Longevity', avatar: '🧘',
+    id: 'demo_senior', name: 'Ray · Longevity', avatar: 'c2',
     user: { name: 'Ray', goal: 'general_health', exp: 'beginner', gender: 'male', age: 58, units: 'imperial',
       height: 175, weight: 88, goalWeight: 84, split: 'fb', weeklyGoal: 3,
       equipment: ['dumbbell','machine','bodyweight'], coachPersonality: 'zen', theme: 'light' },

@@ -231,7 +231,7 @@ const GrowthSimulator = {
 
   projections() {
     const MUSCLES = ['chest','back','shoulders','biceps','triceps','quads','hamstrings','glutes','calves','core'];
-    const MUSCLE_ICONS = { chest:'🫁', back:'🔵', shoulders:'⭐', biceps:'💪', triceps:'💪', quads:'🦵', hamstrings:'🦵', glutes:'🍑', calves:'🦵', core:'⚡' };
+    const MUSCLE_ICONS = { chest:'heart', back:'target', shoulders:'target', biceps:'dumbbell', triceps:'dumbbell', quads:'walk', hamstrings:'walk', glutes:'walk', calves:'walk', core:'flame' };
     const MUSCLE_LABELS = { chest:'Chest', back:'Back / Lats', shoulders:'Shoulders', biceps:'Biceps', triceps:'Triceps', quads:'Quads', hamstrings:'Hamstrings', glutes:'Glutes', calves:'Calves', core:'Core' };
 
     return MUSCLES.map(muscle => {
@@ -242,7 +242,7 @@ const GrowthSimulator = {
 
       return {
         muscle,
-        icon: MUSCLE_ICONS[muscle] || '💪',
+        icon: MUSCLE_ICONS[muscle] || 'dumbbell',
         label: MUSCLE_LABELS[muscle] || muscle,
         weeklyVol,
         velocity,
@@ -372,12 +372,12 @@ function _physiqueScoreBody() {
     scoreCard('Conditioning', conditioning, 'run') +
     '</div>' +
     '<div  class="mx-card">' +
-    scoreCard('Athleticism', athleticism, '⚡') +
+    scoreCard('Athleticism', athleticism, 'flame') +
     '</div>' +
 
     (symmetry && symmetry.reasons && symmetry.reasons.length ? '<div class="card-block-sm">' +
       '<div  class="section-label-sm">Symmetry Issues</div>' +
-      symmetry.reasons.map(r => '<div style="font-size:13px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span class="c-warn">⚠️</span>' + esc(r) + '</div>').join('') +
+      symmetry.reasons.map(r => '<div style="font-size:13px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:flex-start"><span style="display:flex;color:var(--c5);flex-shrink:0;margin-top:1px">' + icon('alert', 14, '#ff9f0a') + '</span>' + esc(r) + '</div>').join('') +
       '</div>' : '') +
 
     (weak ? '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:16px;padding:14px">' +
@@ -387,11 +387,11 @@ function _physiqueScoreBody() {
       '</div>' : '') +
 
     '<div  class="card-block">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:14px">📉 Muscle Growth Simulator</div>' +
+    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:14px;display:flex;align-items:center;gap:6px">' + icon('chart', 14) + ' Muscle Growth Simulator</div>' +
 
-    (lagging.length ? '<div  class="mb-12"><div style="font-size:12px;font-weight:700;color:#ff9f0a;margin-bottom:8px">⚠️ Lagging Muscles</div>' +
+    (lagging.length ? '<div  class="mb-12"><div style="font-size:12px;font-weight:700;color:#ff9f0a;margin-bottom:8px;display:flex;align-items:center;gap:6px">' + icon('alert', 14, '#ff9f0a') + ' Lagging Muscles</div>' +
       lagging.map(p => '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">' +
-        '<div style="font-size:20px;width:28px;text-align:center">' + p.icon + '</div>' +
+        '<div style="width:28px;display:flex;justify-content:center;color:var(--c1)">' + icon(p.icon, 20) + '</div>' +
         '<div  class="flex-1"><div  class="row-title">' + esc(p.label) + '</div>' +
         '<div  class="muted-11">' + p.weeklyVol + ' sets/wk · ' + esc(p.recommendation) + '</div></div>' +
         '<div class="ta-right"><div style="font-size:12px;font-weight:700;color:#ff9f0a">+' + p.projected8wks + 'cm</div>' +
@@ -401,7 +401,7 @@ function _physiqueScoreBody() {
 
     '<div style="font-size:12px;font-weight:700;color:var(--txt);margin-bottom:10px">All Muscle Groups — 8-Week Projections</div>' +
     projections.map(p => '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">' +
-      '<div style="font-size:18px;width:24px;text-align:center">' + p.icon + '</div>' +
+      '<div style="width:24px;display:flex;justify-content:center;color:var(--c1)">' + icon(p.icon, 18) + '</div>' +
       '<div  class="flex-1"><div  class="row-title">' + esc(p.label) + '</div>' +
       '<div style="font-size:10px;color:' + p.statusColor + '">' + p.weeklyVol + ' sets/wk · ' + esc(p.status) + '</div></div>' +
       '<div class="ta-right">' +

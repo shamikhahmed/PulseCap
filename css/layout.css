@@ -20,7 +20,9 @@
   flex: 1; min-height: 0;
   overflow-y: auto; overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  padding-bottom: 12px;
+  /* Always reserve space for floating bottom nav — never rely only on :has()
+     timing (premium class may attach after first paint). */
+  padding-bottom: calc(108px + var(--safe));
   overscroll-behavior: contain;
   position: relative;
 }
@@ -583,13 +585,14 @@ body[data-cap-app="1"] .topbar {
   border-radius: 0;
   clip-path: none;
 }
-/* Room for the floating pill: pill height (~58px) + its 12px float gap + safe area */
+/* Room for the floating pill: pill height (~58px) + float gap + safe area.
+   Extra buffer so last cards never peek under frosted glass on first paint. */
 body:has(#nav.cap-premium-nav) #view {
-  padding-bottom: calc(84px + var(--safe));
+  padding-bottom: calc(108px + var(--safe));
 }
 /* :has() fallback — premium nav is on for all mobile sessions anyway */
 @supports not selector(body:has(a)) {
-  #view { padding-bottom: calc(84px + var(--safe)); }
+  #view { padding-bottom: calc(108px + var(--safe)); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -660,7 +663,8 @@ textarea:focus-visible,
 .flex-gap-10 { display: flex; gap: 10px; }
 .flex-gap-12 { display: flex; gap: var(--space-3); }
 .flex-col { display: flex; flex-direction: column; }
-.spacer-bottom { height: var(--space-5); }
+/* End-of-screen spacer — must clear floating premium nav (~96px) + safe area */
+.spacer-bottom { height: calc(96px + var(--safe)); min-height: 96px; }
 .stack-2 > * + * { margin-top: var(--space-2); }
 .stack-3 > * + * { margin-top: var(--space-3); }
 .stack-4 > * + * { margin-top: var(--space-4); }

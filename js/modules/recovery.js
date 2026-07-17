@@ -28,7 +28,7 @@ window.renderRecoveryUnified = function(data) {
     _recoveryHistoryChart() +
     _sleepInsights() +
     _recoveryRecs(score) +
-    '<div class="pad-x-16-b16"><button type="button" class="btn btn-secondary w-full" onclick="go(\'body-intelligence\')" >🧬 Body Intelligence →</button></div>' +
+    '<div class="pad-x-16-b16"><button type="button" class="btn btn-secondary w-full" onclick="go(\'body-intelligence\')" style="display:flex;align-items:center;justify-content:center;gap:8px">' + icon('dna', 18) + ' Body Intelligence →</button></div>' +
     '<div  class="spacer-bottom"></div>';
 };
 
@@ -53,32 +53,33 @@ function _readinessSummary(score, rl) {
     '<div class="body-14">'+esc(ReadinessEngine.message(score))+'</div>' +
     '</div></div>' +
     '<div class="readiness-metrics">' +
-    _rm('😴','Sleep') + _rm('💪','Soreness') + _rm('🧠','Stress') + _rm('⚡','Energy') +
+    _rm('bed','Sleep') + _rm('dumbbell','Soreness') + _rm('heart','Stress') + _rm('sun','Energy') +
     '</div></div>';
 }
 
-function _rm(icon, label) {
+function _rm(iconName, label) {
   const r = S.g('recovery') || {};
   const vals = { Sleep:r.sleep||'—', Soreness:r.soreness||'—', Stress:r.stress||'—', Energy:r.energy||'—' };
   return '<div class="readiness-metric">' +
-    '<div class="readiness-metric-v">'+icon+' '+vals[label]+'</div>' +
+    '<div class="readiness-metric-v" style="display:flex;align-items:center;justify-content:center;gap:4px">' +
+    icon(iconName, 16) + ' ' + vals[label] + '</div>' +
     '<div class="readiness-metric-l">'+esc(label)+'</div></div>';
 }
 
 function _checkInForm(rec) {
   const sliders = [
-    { key:'sleep', label:'Sleep Duration', min:0, max:12, step:0.5, unit:'hrs', icon:'😴', def:7.5 },
-    { key:'soreness', label:'Muscle Soreness', min:0, max:10, step:1, unit:'/10', icon:'💪', def:3 },
-    { key:'stress', label:'Stress Level', min:0, max:10, step:1, unit:'/10', icon:'🧠', def:4 },
-    { key:'energy', label:'Energy Level', min:0, max:10, step:1, unit:'/10', icon:'⚡', def:7 },
-    { key:'hydration', label:'Water Intake', min:0, max:5, step:0.5, unit:'L', icon:'💧', def:2.5 }
+    { key:'sleep', label:'Sleep Duration', min:0, max:12, step:0.5, unit:'hrs', icon:'bed', def:7.5 },
+    { key:'soreness', label:'Muscle Soreness', min:0, max:10, step:1, unit:'/10', icon:'dumbbell', def:3 },
+    { key:'stress', label:'Stress Level', min:0, max:10, step:1, unit:'/10', icon:'heart', def:4 },
+    { key:'energy', label:'Energy Level', min:0, max:10, step:1, unit:'/10', icon:'sun', def:7 },
+    { key:'hydration', label:'Water Intake', min:0, max:5, step:0.5, unit:'L', icon:'leaf', def:2.5 }
   ];
 
   const slidersHTML = sliders.map(s => {
     const val = rec[s.key] || s.def;
     return '<div class="slider-wrap">' +
       '<div class="slider-header">' +
-      '<span class="fs-18">'+s.icon+'</span>' +
+      '<span style="display:inline-flex;color:var(--c1)">'+icon(s.icon, 18)+'</span>' +
       '<span class="slider-name">'+esc(s.label)+'</span>' +
       '<span class="slider-val" id="sv-'+s.key+'">'+val+'</span>' +
       '<span class="slider-unit">'+esc(s.unit)+'</span>' +
@@ -103,11 +104,11 @@ function _loggedView(rec) {
   return sh('Today\'s Check-In', 'Edit', 'resetRecovery()') +
     '<div class="card card-solid">' +
     '<div style="display:flex;flex-wrap:wrap;gap:16px">' +
-    _recStat('😴', rec.sleep||'—', 'hrs sleep') +
-    _recStat('💪', rec.soreness||'—', '/10 sore') +
-    _recStat('🧠', rec.stress||'—', '/10 stress') +
-    _recStat('⚡', rec.energy||'—', '/10 energy') +
-    _recStat('💧', rec.hydration||'—', 'L hydration') +
+    _recStat('bed', rec.sleep||'—', 'hrs sleep') +
+    _recStat('dumbbell', rec.soreness||'—', '/10 sore') +
+    _recStat('heart', rec.stress||'—', '/10 stress') +
+    _recStat('sun', rec.energy||'—', '/10 energy') +
+    _recStat('leaf', rec.hydration||'—', 'L hydration') +
     '</div>' +
     '<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">' +
     '<div  class="muted-13">Breakdown:</div>' +
@@ -115,9 +116,9 @@ function _loggedView(rec) {
     '</div></div>';
 }
 
-function _recStat(icon, val, label) {
+function _recStat(iconName, val, label) {
   return '<div style="text-align:center;flex:1;min-width:60px">' +
-    '<div style="font-size:22px">'+icon+'</div>' +
+    '<div style="display:flex;justify-content:center;color:var(--c1);margin-bottom:4px">'+icon(iconName, 22)+'</div>' +
     '<div style="font-size:20px;font-weight:800;color:var(--c1)">'+esc(String(val))+'</div>' +
     '<div  class="muted-10">'+esc(label)+'</div>' +
     '</div>';
@@ -142,32 +143,32 @@ function _sleepInsights() {
     '<div class="card card-solid">' +
     '<div style="font-size:28px;font-weight:900;color:var(--c1)">'+avgSleep+'<span style="font-size:14px;color:var(--txt3);font-weight:500"> hrs avg</span></div>' +
     '<div style="font-size:13px;color:var(--txt2);margin-top:8px;line-height:1.6">' +
-    (parseFloat(avgSleep) >= 8 ? '✅ Excellent sleep average — optimising recovery and performance.' :
-     parseFloat(avgSleep) >= 7 ? '👍 Good sleep average. Aim for 8+ for optimal performance.' :
-     '⚠️ Below recommended. Even 30 more minutes per night makes a significant difference.') +
+    (parseFloat(avgSleep) >= 8 ? '<span style="display:inline-flex;align-items:center;gap:6px;color:#30d158">' + icon('check', 14, '#30d158') + ' Excellent sleep average — optimising recovery and performance.</span>' :
+     parseFloat(avgSleep) >= 7 ? '<span style="display:inline-flex;align-items:center;gap:6px">' + icon('check', 14) + ' Good sleep average. Aim for 8+ for optimal performance.</span>' :
+     '<span style="display:inline-flex;align-items:center;gap:6px;color:var(--c5)">' + icon('alert', 14, 'var(--c5)') + ' Below recommended. Even 30 more minutes per night makes a significant difference.</span>') +
     '</div></div>';
 }
 
 function _recoveryRecs(score) {
   const recs = [];
   if (score < 50) {
-    recs.push({ icon:'🚿', text:'Take a cold shower (3 min cold) — reduces muscle soreness by up to 20%' });
-    recs.push({ icon:'🧘', text:'20 min yoga or light mobility work — enhances circulation and recovery' });
-    recs.push({ icon:'🚶', text:'Light 20 min walk at 5 km/h — active recovery without adding fatigue' });
+    recs.push({ icon:'refresh', text:'Take a cold shower (3 min cold) — reduces muscle soreness by up to 20%' });
+    recs.push({ icon:'leaf', text:'20 min yoga or light mobility work — enhances circulation and recovery' });
+    recs.push({ icon:'walk', text:'Light 20 min walk at 5 km/h — active recovery without adding fatigue' });
   } else if (score < 70) {
-    recs.push({ icon:'🫧', text:'Foam roll legs and back — 10 min thorough rolling session' });
-    recs.push({ icon:'😴', text:'Aim for 8+ hrs tonight — get to bed 30 min earlier' });
-    recs.push({ icon:'💧', text:'Drink 500ml water in the next 30 min' });
+    recs.push({ icon:'bandage', text:'Foam roll legs and back — 10 min thorough rolling session' });
+    recs.push({ icon:'bed', text:'Aim for 8+ hrs tonight — get to bed 30 min earlier' });
+    recs.push({ icon:'leaf', text:'Drink 500ml water in the next 30 min' });
   } else {
-    recs.push({ icon:'💪', text:'You\'re ready to train hard — execute your planned workout' });
-    recs.push({ icon:'🥩', text:'Hit protein target post-workout for optimal muscle protein synthesis' });
-    recs.push({ icon:'⚡', text:'Consider a 10 min dynamic warm-up to prime your CNS' });
+    recs.push({ icon:'dumbbell', text:'You\'re ready to train hard — execute your planned workout' });
+    recs.push({ icon:'apple', text:'Hit protein target post-workout for optimal muscle protein synthesis' });
+    recs.push({ icon:'run', text:'Consider a 10 min dynamic warm-up to prime your CNS' });
   }
   return sh('Recommendations') +
     '<div  class="pad-x-16">' +
     recs.map(r =>
       '<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">' +
-      '<div style="font-size:24px;flex-shrink:0">'+r.icon+'</div>' +
+      '<div style="color:var(--c1);flex-shrink:0;display:flex">'+icon(r.icon, 22)+'</div>' +
       '<div style="font-size:14px;color:var(--txt2);line-height:1.5">'+esc(r.text)+'</div>' +
       '</div>'
     ).join('') + '</div>';

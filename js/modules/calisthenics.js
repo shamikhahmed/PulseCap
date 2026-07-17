@@ -3,7 +3,7 @@
 
 var CALIS_SKILLS = {
   pullup: {
-    id:'pullup', name:'Pull-Up', icon:'🏋️',
+    id:'pullup', name:'Pull-Up', icon:'dumbbell',
     description:'The foundation of upper body pulling strength. Progress from zero to 20 reps through a systematic dead hang, assisted, and loaded progression.',
     prerequisites:'None. Start from scratch with dead hangs.',
     muscles:['Latissimus dorsi','Biceps brachii','Posterior deltoid','Rhomboids','Teres major'],
@@ -21,7 +21,7 @@ var CALIS_SKILLS = {
     ]
   },
   muscleup: {
-    id:'muscleup', name:'Muscle-Up', icon:'🤸',
+    id:'muscleup', name:'Muscle-Up', icon:'run',
     description:'The muscle-up combines a pull-up with a dip transition above the bar. Requires explosive pulling strength and precise technique. One of calisthenics most coveted skills.',
     prerequisites:'10+ strict pull-ups, 10+ parallel bar dips.',
     muscles:['Latissimus dorsi','Biceps brachii','Triceps brachii','Anterior deltoid','Core stabilisers'],
@@ -38,7 +38,7 @@ var CALIS_SKILLS = {
     ]
   },
   handstand: {
-    id:'handstand', name:'Handstand', icon:'🙆',
+    id:'handstand', name:'Handstand', icon:'target',
     description:'The handstand develops total body pressing strength, balance, and spatial awareness. Progress from wall-supported holds to freestanding balance.',
     prerequisites:'Good wrist mobility and shoulder stability. Wrist conditioning essential before starting.',
     muscles:['Anterior deltoid','Triceps brachii','Serratus anterior','Core (transverse abdominis)','Wrist extensors'],
@@ -56,7 +56,7 @@ var CALIS_SKILLS = {
     ]
   },
   lsit: {
-    id:'lsit', name:'L-Sit', icon:'💺',
+    id:'lsit', name:'L-Sit', icon:'ruler',
     description:'The L-sit builds extraordinary hip flexor strength and compression. Performed on parallettes, rings, or floor. Develops the core and hip flexors needed for more advanced skills.',
     prerequisites:'Hip flexor and core strength. Begin with seated leg raises to build compression strength.',
     muscles:['Psoas major','Iliacus','Rectus femoris','Rectus abdominis','Transverse abdominis','Triceps (for support)'],
@@ -72,7 +72,7 @@ var CALIS_SKILLS = {
     ]
   },
   front_lever: {
-    id:'front_lever', name:'Front Lever', icon:'🤼',
+    id:'front_lever', name:'Front Lever', icon:'dna',
     description:'The front lever is a horizontal hold from a bar with body completely straight and parallel to the floor. Demands exceptional lat and core strength. A true calisthenics elite skill.',
     prerequisites:'12+ pull-ups and good straight-arm strength required. Not recommended for beginners.',
     muscles:['Latissimus dorsi','Teres major','Serratus anterior','Core (rectus abdominis)','Posterior deltoid'],
@@ -88,7 +88,7 @@ var CALIS_SKILLS = {
     ]
   },
   planche: {
-    id:'planche', name:'Planche', icon:'✈️',
+    id:'planche', name:'Planche', icon:'target',
     description:'The planche is a horizontal push hold where the body is parallel to the floor supported by straight arms only. The hardest static pushing skill in calisthenics. Requires years of training.',
     prerequisites:'Strong pushing base (20+ push-ups, dips), extensive wrist conditioning, serratus anterior strength.',
     muscles:['Anterior deltoid','Serratus anterior','Transverse abdominis','Wrist flexors','Pectoralis major','Triceps'],
@@ -103,7 +103,7 @@ var CALIS_SKILLS = {
     ]
   },
   pistol_squat: {
-    id:'pistol_squat', name:'Pistol Squat', icon:'🎯',
+    id:'pistol_squat', name:'Pistol Squat', icon:'walk',
     description:'A single-leg squat to full depth with the non-working leg held straight forward. Tests unilateral quad strength, ankle mobility, hip flexor flexibility, and balance simultaneously.',
     prerequisites:'Good ankle dorsiflexion, hip flexor flexibility, and single-leg balance. Address mobility before strength.',
     muscles:['Quadriceps (all heads)','Gluteus maximus','Gluteus medius','Tibialis anterior','Hip flexors (for free leg)'],
@@ -118,7 +118,7 @@ var CALIS_SKILLS = {
     ]
   },
   human_flag: {
-    id:'human_flag', name:'Human Flag', icon:'🚩',
+    id:'human_flag', name:'Human Flag', icon:'bandage',
     description:'A lateral hold where the body is horizontal against a vertical pole. Requires extraordinary lateral core, oblique, and lat strength. A true crowd-stopper skill.',
     prerequisites:'Very strong lateral core, obliques, and lat strength. Side planks and lateral carries essential.',
     muscles:['External oblique','Internal oblique','Latissimus dorsi','Quadratus lumborum','Gluteus medius','Serratus anterior'],
@@ -150,12 +150,12 @@ reg('calisthenics', function() {
 
       return '<div onclick="showSkillDetail(\'' + skill.id + '\')" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer;touch-action:manipulation">' +
         '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">' +
-        '<div class="fs-28">' + skill.icon + '</div>' +
+        '<div style="display:flex;color:var(--c1)">' + icon(skill.icon, 28) + '</div>' +
         '<div  class="flex-1">' +
         '<div  class="row-title-15">' + skill.name + '</div>' +
         '<div  class="muted-12">Level ' + userLevel + '/' + totalLevels + ' · ' + pct + '% complete</div>' +
         '</div>' +
-        (pct === 100 ? '<div class="fs-20">🏆</div>' : '<div style="color:var(--txt3);font-size:18px">›</div>') +
+        (pct === 100 ? '<div style="display:flex;color:var(--c1)">' + icon('gradcap', 20) + '</div>' : '<div style="color:var(--txt3);font-size:18px">›</div>') +
         '</div>' +
         '<div style="height:4px;background:var(--bg4);border-radius:2px;margin-bottom:8px;overflow:hidden">' +
         '<div style="width:' + pct + '%;height:100%;background:var(--grad);border-radius:2px;transition:width 0.8s ease"></div>' +
@@ -173,7 +173,7 @@ window.showSkillDetail = function(skillId) {
   var userSkills = S.g('calisthenics') || {};
   var userLevel = userSkills[skillId] || 0;
 
-  modal(skill.icon + ' ' + skill.name,
+  modal('<span style="display:inline-flex;align-items:center;gap:8px">' + icon(skill.icon, 20) + ' ' + esc(skill.name) + '</span>',
     '<div style="font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:12px">' + skill.description + '</div>' +
     '<div  class="type-caption type-caption-mb-xs">Prerequisites</div>' +
     '<div style="font-size:12px;color:var(--txt2);margin-bottom:12px">' + skill.prerequisites + '</div>' +
@@ -195,8 +195,8 @@ window.showSkillDetail = function(skillId) {
     '<div style="margin-top:14px;font-size:10px;color:var(--txt3);font-style:italic">Training tip: ' + skill.tip + '</div>',
     '<div  class="flex-gap-8">' +
     (userLevel < skill.levels.length - 1 ?
-      '<button type="button" class="btn btn-primary flex-1"  onclick="levelUpSkill(\'' + skillId + '\');closeModal()">✅ Level ' + userLevel + ' Complete</button>' :
-      '<button type="button" class="btn btn-primary flex-1"  disabled>🏆 Mastered!</button>') +
+      '<button type="button" class="btn btn-primary flex-1"  onclick="levelUpSkill(\'' + skillId + '\');closeModal()" style="display:flex;align-items:center;justify-content:center;gap:6px">' + icon('check', 16) + ' Level ' + userLevel + ' Complete</button>' :
+      '<button type="button" class="btn btn-primary flex-1"  disabled style="display:flex;align-items:center;justify-content:center;gap:6px">' + icon('gradcap', 16) + ' Mastered!</button>') +
     '<button type="button" class="btn btn-ghost" onclick="closeModal()">Close</button>' +
     '</div>'
   );

@@ -479,7 +479,7 @@ const AchievementEngine2 = {
     { id: 'vol_100k', icon: 'sparkles', title: '100,000 kg Lifted', desc: 'Serious training volume', check: () => { const ws = S.g('workouts')||[]; return ws.reduce((a,w)=>a+(w.totalVol||0),0) >= 100000; } },
     { id: 'vol_500k', icon: 'sparkles', title: '500,000 kg Lifted', desc: 'Elite training volume', check: () => { const ws = S.g('workouts')||[]; return ws.reduce((a,w)=>a+(w.totalVol||0),0) >= 500000; } },
     { id: 'sessions_10', icon: 'flame', title: 'First 10 Sessions', desc: 'Habit forming begins', check: () => (S.g('workouts')||[]).length >= 10 },
-    { id: 'sessions_50', icon: '⚡', title: '50 Sessions', desc: 'Committed to the process', check: () => (S.g('workouts')||[]).length >= 50 },
+      { id: 'sessions_50', icon: 'sparkles', title: '50 Sessions', desc: 'Committed to the process', check: () => (S.g('workouts')||[]).length >= 50 },
     { id: 'sessions_100', icon: 'target', title: '100 Sessions', desc: 'Century milestone', check: () => (S.g('workouts')||[]).length >= 100 },
     { id: 'sessions_365', icon: 'gradcap', title: '365 Sessions', desc: 'A full year of training', check: () => (S.g('workouts')||[]).length >= 365 },
     { id: 'pr_1', icon: 'sparkles', title: 'First PR', desc: 'You got stronger', check: () => (S.g('prs')||[]).length >= 1 },

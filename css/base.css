@@ -40,9 +40,9 @@
 
   /* Text */
   --txt:  #ffffff;
-  --txt2: rgba(255,255,255,0.72);
-  --txt3: rgba(255,255,255,0.42);
-  --txt4: rgba(255,255,255,0.22);
+  --txt2: rgba(255,255,255,0.78);
+  --txt3: rgba(255,255,255,0.55);
+  --txt4: rgba(255,255,255,0.32);
 
   /* Borders */
   --border:  rgba(255,255,255,0.08);
@@ -60,6 +60,11 @@
 [data-theme="light"] {
   color-scheme: light;
 
+  /* Stronger secondary text for WCAG — was 0.42/0.68 (fail on muted captions) */
+  --txt2: rgba(10,10,15,0.78);
+  --txt3: rgba(10,10,15,0.58);
+  --txt4: rgba(10,10,15,0.36);
+
   --bg:   #f2f2f7;
   --bg2:  #ffffff;
   --bg3:  #f8f8fb;
@@ -67,9 +72,6 @@
   --bg5:  #e5e5ea;
 
   --txt:  #0a0a0f;
-  --txt2: rgba(10,10,15,0.68);
-  --txt3: rgba(10,10,15,0.42);
-  --txt4: rgba(10,10,15,0.22);
 
   --border:  rgba(0,0,0,0.08);
   --border2: rgba(0,0,0,0.14);

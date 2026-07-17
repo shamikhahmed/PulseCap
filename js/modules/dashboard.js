@@ -24,7 +24,7 @@ reg('dashboard', function() {
     /* ── DEMO BANNER ── */
     const demoBanner = isDemoMode ?
       '<div style="background:linear-gradient(135deg,rgba(123,95,255,0.15),rgba(0,213,255,0.08));border-bottom:1px solid rgba(123,95,255,0.2);padding:10px 16px;display:flex;align-items:center;justify-content:space-between">' +
-      '<div style="font-size:13px;color:var(--c2);font-weight:600">🤖 Demo Mode</div>' +
+      '<div style="font-size:13px;color:var(--c2);font-weight:600;display:flex;align-items:center;gap:6px"><span style="display:inline-flex;color:var(--c2)">' + icon('sparkles', 14) + '</span>Demo Mode</div>' +
       '<button type="button" onclick="go(\'profiles\')" style="font-size:12px;color:var(--c1);font-weight:600;background:none;border:none;cursor:pointer;touch-action:manipulation">Switch →</button>' +
       '</div>' : '';
 
@@ -113,7 +113,7 @@ reg('dashboard', function() {
       '<div style="font-size:9px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px">Debt</div>' +
       '</div>' +
       '<div style="flex:1;background:rgba(255,255,255,0.06);border-radius:16px;padding:10px;text-align:center">' +
-      '<div style="font-size:14px;font-weight:800;color:var(--c5)">' + streak + ' 🔥</div>' +
+      '<div style="font-size:14px;font-weight:800;color:var(--c5);display:flex;align-items:center;justify-content:center;gap:4px">' + icon('flame', 14, 'var(--c5)') + ' ' + streak + '</div>' +
       '<div style="font-size:9px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px">Streak</div>' +
       '</div>' +
       '</div>' +

@@ -426,12 +426,12 @@ window.renderTrainingIntelBody = function() {
     volRecs.filter(function(r) { return r.status === 'optimal'; }).map(function(r) {
       return '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">' +
         '<div style="font-size:13px;color:var(--txt)">' + esc(r.muscle) + '</div>' +
-        '<div style="font-size:11px;color:#30d158">✓ ' + r.current + ' sets/wk</div></div>';
+        '<div style="font-size:11px;color:#30d158;display:flex;align-items:center;gap:4px">' + icon('check', 12, '#30d158') + ' ' + r.current + ' sets/wk</div></div>';
     }).join('') +
     '</div>' +
 
     (topEx.length ? '<div  class="card-block">' +
-      '<div  class="section-label">🏆 Your Best Exercises</div>' +
+      '<div  class="section-label" style="display:flex;align-items:center;gap:6px">' + icon('gradcap', 14) + ' Your Best Exercises</div>' +
       topEx.map(function(ex, i) {
         return '<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)">' +
           '<div style="font-size:16px;font-weight:900;color:' + ex.color + ';width:24px">' + (i + 1) + '</div>' +
@@ -443,7 +443,7 @@ window.renderTrainingIntelBody = function() {
       '</div>' : '') +
 
     (lowEx.length ? '<div style="margin:0 16px 14px;background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.2);border-radius:20px;padding:16px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#ff9f0a;margin-bottom:12px">⚠️ Consider Replacing</div>' +
+      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#ff9f0a;margin-bottom:12px;display:flex;align-items:center;gap:6px">' + icon('alert', 14, '#ff9f0a') + ' Consider Replacing</div>' +
       lowEx.map(function(ex) {
         return '<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)">' +
           '<div  class="flex-1"><div  class="row-title">' + esc(ex.name) + '</div>' +
@@ -454,12 +454,12 @@ window.renderTrainingIntelBody = function() {
       '</div>' : '') +
 
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(10,132,255,0.1),rgba(0,0,0,0.2));border:1px solid rgba(10,132,255,0.2);border-radius:20px;padding:16px">' +
-    '<div  class="section-label-sm">🎯 Recommended Specialization Block</div>' +
+    '<div  class="section-label-sm" style="display:flex;align-items:center;gap:6px">' + icon('target', 14) + ' Recommended Specialization Block</div>' +
     '<div style="font-size:16px;font-weight:800;color:var(--c1);margin-bottom:4px">' + esc(specRec.block.name) + '</div>' +
     '<div style="font-size:12px;color:var(--txt3);margin-bottom:8px">Why: ' + esc(specRec.reason) + '</div>' +
     '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">' +
-    ['⏱ Duration: ' + specRec.block.duration, '📋 Volume: ' + specRec.block.volume, '🔄 Frequency: ' + specRec.block.frequency, '📈 Expected: ' + specRec.block.expected_gain].map(function(item) {
-      return '<div  class="body-12">' + esc(item) + '</div>';
+    [{ icon: 'clock', text: 'Duration: ' + specRec.block.duration }, { icon: 'book', text: 'Volume: ' + specRec.block.volume }, { icon: 'refresh', text: 'Frequency: ' + specRec.block.frequency }, { icon: 'chart', text: 'Expected: ' + specRec.block.expected_gain }].map(function(item) {
+      return '<div  class="body-12" style="display:flex;align-items:center;gap:6px"><span style="display:flex;color:var(--c1)">' + icon(item.icon, 14) + '</span>' + esc(item.text) + '</div>';
     }).join('') +
     '</div>' +
     '<div style="font-size:12px;color:var(--txt3);font-style:italic;margin-bottom:12px">' + esc(specRec.block.rationale) + '</div>' +

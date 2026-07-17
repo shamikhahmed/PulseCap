@@ -115,6 +115,27 @@ async function waitReady(page) {
   await page.waitForTimeout(300);
 }
 
+/** Visual integrity — more than "element exists". */
+async function assertVisualOk(page, label) {
+  const report = await page.evaluate(() => {
+    const view = document.querySelector('#view');
+    const scr = document.querySelector('#view .screen');
+    const t = (view && view.textContent) || '';
+    const issues = [];
+    if (!scr) issues.push('missing .screen');
+    if (/Screen error:|Could not load screen/.test(t)) issues.push('fatal screen chrome');
+    if ((scr && (scr.textContent || '').trim().length) < 8) issues.push('near-empty screen');
+    // Icon-only / empty chrome buttons without accessible name
+    const badBtns = [...document.querySelectorAll('#view button')].filter((b) => {
+      const label = ((b.getAttribute('aria-label') || '') + (b.textContent || '')).trim();
+      return !label && b.offsetParent !== null;
+    }).length;
+    if (badBtns > 0) issues.push(badBtns + ' unlabeled buttons');
+    return { issues, len: (scr && scr.textContent || '').trim().length };
+  });
+  expect(report.issues, `${label}: ${report.issues.join('; ')}`).toEqual([]);
+}
+
 for (const [viewport, vp] of Object.entries(VIEWPORTS)) {
   test.describe(`Screen gallery — ${viewport}`, () => {
     test.use({ viewport: { width: vp.width, height: vp.height }, deviceScaleFactor: vp.dsf });
@@ -138,8 +159,7 @@ for (const [viewport, vp] of Object.entries(VIEWPORTS)) {
           }, s.go);
           expect(ok, `go('${s.stateId}') should not throw`).toBe(true);
           await waitReady(page);
-          const hasScreen = await page.locator('#view .screen').count();
-          expect(hasScreen, `${s.stateId} should render .screen`).toBeGreaterThan(0);
+          await assertVisualOk(page, `${theme}/${viewport}/${s.stateId}`);
           if (CAPTURE) {
             n += 1;
             const file = `${theme}-${viewport}-${String(n).padStart(3, '0')}-${s.stateId}.png`;

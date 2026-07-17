@@ -118,4 +118,160 @@ test.describe('Functional — every screen as every user type', () => {
 
     expect(errors, 'runtime errors during actions:\n' + errors.join('\n')).toEqual([]);
   });
+
+  test('exhaustive widget battery (demo)', async ({ page }) => {
+    test.setTimeout(180000);
+    const errors = [];
+    let ctx = 'boot';
+    page.on('pageerror', (e) => { if (!IGNORE.test(e.message)) errors.push(ctx + ' :: ' + e.message); });
+    page.on('dialog', (d) => d.accept().catch(() => {}));
+
+    await bootDemo(page);
+
+    const steps = [
+      ['settings-tabs', () => page.evaluate(() => {
+        ['profile', 'training', 'supplements', 'nutrition', 'appearance', 'notifications', 'data']
+          .forEach((t) => window.go('settings', { tab: t }));
+        return true;
+      })],
+      ['theme-cycle', () => page.evaluate(() => {
+        window.applyTheme('light', false);
+        window.applyTheme('dark', false);
+        window.clearThemePref();
+        window.applyTheme('dark', false);
+        return true;
+      })],
+      ['body-weight', () => page.evaluate(() => {
+        window.go('bodymap');
+        if (window.showLogWeight) window.showLogWeight();
+        if (window.saveWeight) {
+          const inp = document.getElementById('weight-input') || document.querySelector('#modal input[type="number"]');
+          if (inp) inp.value = '81.5';
+          window.saveWeight();
+        }
+        return true;
+      })],
+      ['measurements', () => page.evaluate(() => {
+        window.go('bodymap');
+        if (window.showLogMeasurements) window.showLogMeasurements();
+        if (window.saveMeasurements) window.saveMeasurements();
+        return true;
+      })],
+      ['search', () => page.evaluate(() => {
+        window.go('search');
+        if (window._searchRun) window._searchRun('bench');
+        return true;
+      })],
+      ['calculators', () => page.evaluate(() => {
+        window.go('calculators');
+        if (window.recalcCalculators) window.recalcCalculators();
+        return true;
+      })],
+      ['assistant', () => page.evaluate(() => {
+        window.go('assistant');
+        if (window.askAssistant) window.askAssistant('How much protein do I need?');
+        return true;
+      })],
+      ['rehab-protocol', () => page.evaluate(() => {
+        window.go('rehab');
+        if (window.showInjuryProtocol) window.showInjuryProtocol('shoulder_impingement');
+        return true;
+      })],
+      ['anatomy-detail', () => page.evaluate(() => {
+        window.go('anatomy');
+        if (window.showMuscleDetail) {
+          const first = Object.keys(window.MUSCLE_DB || {})[0] || 'pec_major';
+          window.showMuscleDetail(first);
+        }
+        return true;
+      })],
+      ['quests', () => page.evaluate(() => {
+        window.go('quests');
+        return !!(document.querySelector('#view .screen'));
+      })],
+      ['profiles-seed', () => page.evaluate(() => {
+        window.go('profiles');
+        if (window.loadSamplePersonas) window.loadSamplePersonas();
+        return (window.S.profiles() || []).length >= 5;
+      })],
+      ['split-picker', () => page.evaluate(() => {
+        window.go('workout');
+        if (window.pickSplitDay) window.pickSplitDay(0);
+        return true;
+      })],
+      ['quick-workout', () => page.evaluate(() => {
+        window.S.set('programWeightsConfirmed', true);
+        if (window.startQuickWorkout) window.startQuickWorkout();
+        return !!document.getElementById('wkt-header') || !!document.querySelector('#view .screen');
+      })],
+      ['cardio', () => page.evaluate(() => {
+        window.go('cardio');
+        if (window.showLogCardio) window.showLogCardio();
+        return true;
+      })],
+      ['equipment', () => page.evaluate(() => {
+        window.go('equipment-setup');
+        if (window.selectEquipmentPreset) window.selectEquipmentPreset('gym');
+        return true;
+      })],
+      ['export', () => page.evaluate(() => {
+        if (window.exportData) window.exportData();
+        return true;
+      })],
+      ['coach-settings', () => page.evaluate(() => {
+        window.go('settings', { tab: 'appearance' });
+        window._setSetting('user.coachPersonality', 'maya');
+        window._setSetting('settings.coachTone', 'scientific');
+        return true;
+      })],
+      ['physique-tabs', () => page.evaluate(() => {
+        window.go('physique', { tab: 'score' });
+        window.go('physique', { tab: 'archetype' });
+        window.go('physique', { tab: 'timeline' });
+        return true;
+      })],
+      ['recovery-tabs', () => page.evaluate(() => {
+        window.go('recovery', { tab: 'checkin' });
+        window.go('recovery', { tab: 'debt' });
+        return true;
+      })],
+      ['training-intel-tabs', () => page.evaluate(() => {
+        window.go('training-intel', { tab: 'intel' });
+        window.go('training-intel', { tab: 'style' });
+        return true;
+      })],
+      ['briefing', () => page.evaluate(() => {
+        window.go('briefing');
+        if (window.openMorningBriefing) window.openMorningBriefing();
+        return true;
+      })],
+      ['supp-mark', () => page.evaluate(() => {
+        window.go('nutrition');
+        const supps = window.S.g('supplements') || [];
+        if (supps[0] && window.SupplementEngine && window.SupplementEngine.markTaken) {
+          window.SupplementEngine.markTaken(supps[0].id);
+        }
+        return true;
+      })],
+      ['modal-close', () => page.evaluate(() => {
+        if (window.closeModal) window.closeModal();
+        return true;
+      })],
+    ];
+
+    for (const [name, fn] of steps) {
+      ctx = name;
+      const ok = await fn();
+      expect(ok, name + ' failed').toBeTruthy();
+      await page.waitForTimeout(80);
+    }
+
+    // Visual integrity: no fatal screen error chrome after battery
+    const fatal = await page.evaluate(() => {
+      const t = (document.querySelector('#view') || {}).textContent || '';
+      return /Screen error:|Could not load screen/.test(t);
+    });
+    expect(fatal).toBe(false);
+    expect(errors, 'runtime errors during widget battery:\n' + errors.join('\n')).toEqual([]);
+  });
 });

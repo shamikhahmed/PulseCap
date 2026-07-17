@@ -121,15 +121,15 @@ const BodyResponseModel = {
 
   _generateInsights(learned, volPref, slowRecovery, fastRecovery) {
     const insights = [];
-    if (volPref === 'high') insights.push({ icon: '📈', text: 'You respond best to higher training volume — aim for 16-20+ sets per muscle per week', type: 'positive' });
-    if (volPref === 'low') insights.push({ icon: '📉', text: 'You respond well to lower volume with higher intensity — quality over quantity', type: 'positive' });
-    if (volPref === 'moderate') insights.push({ icon: '⚖️', text: 'You show balanced response — 12-16 sets per muscle per week is your sweet spot', type: 'positive' });
-    if (slowRecovery.length) insights.push({ icon: '⏱️', text: slowRecovery.join(', ') + ' recover slower than average — train these muscle groups less frequently', type: 'warning' });
-    if (fastRecovery.length) insights.push({ icon: '⚡', text: fastRecovery.join(', ') + ' recover faster than average — you can train these more frequently', type: 'positive' });
+    if (volPref === 'high') insights.push({ icon: 'chart', text: 'You respond best to higher training volume — aim for 16-20+ sets per muscle per week', type: 'positive' });
+    if (volPref === 'low') insights.push({ icon: 'trendDown', text: 'You respond well to lower volume with higher intensity — quality over quantity', type: 'positive' });
+    if (volPref === 'moderate') insights.push({ icon: 'scale', text: 'You show balanced response — 12-16 sets per muscle per week is your sweet spot', type: 'positive' });
+    if (slowRecovery.length) insights.push({ icon: 'clock', text: slowRecovery.join(', ') + ' recover slower than average — train these muscle groups less frequently', type: 'warning' });
+    if (fastRecovery.length) insights.push({ icon: 'flame', text: fastRecovery.join(', ') + ' recover faster than average — you can train these more frequently', type: 'positive' });
 
     const bestMuscles = learned.filter(l => l.volResponse === (volPref === 'high' ? 'high_volume' : volPref === 'low' ? 'low_volume' : 'moderate_volume')).map(l => l.muscle);
     if (bestMuscles.length >= 2) {
-      insights.push({ icon: '🏆', text: 'Strongest adaptation response: ' + bestMuscles.slice(0,3).join(', '), type: 'positive' });
+      insights.push({ icon: 'gradcap', text: 'Strongest adaptation response: ' + bestMuscles.slice(0,3).join(', '), type: 'positive' });
     }
 
     return insights;
@@ -284,11 +284,11 @@ const MuscleRecoveryTimeline = {
   },
 
   status(pct) {
-    if (pct >= 95) return { label: 'Ready', color: '#30d158', emoji: '✅', canTrain: true };
-    if (pct >= 80) return { label: 'Almost Ready', color: '#30d158', emoji: '🟢', canTrain: true };
-    if (pct >= 60) return { label: 'Recovering', color: '#f5c842', emoji: '🟡', canTrain: false };
-    if (pct >= 40) return { label: 'Fatigued', color: '#ff9f0a', emoji: '🟠', canTrain: false };
-    return { label: 'Rest', color: '#ff453a', emoji: '🔴', canTrain: false };
+    if (pct >= 95) return { label: 'Ready', color: '#30d158', statusIcon: 'check', canTrain: true };
+    if (pct >= 80) return { label: 'Almost Ready', color: '#30d158', statusIcon: 'check', canTrain: true };
+    if (pct >= 60) return { label: 'Recovering', color: '#f5c842', statusIcon: 'clock', canTrain: false };
+    if (pct >= 40) return { label: 'Fatigued', color: '#ff9f0a', statusIcon: 'alert', canTrain: false };
+    return { label: 'Rest', color: '#ff453a', statusIcon: 'alert', canTrain: false };
   },
 
   fullTimeline() {
@@ -299,8 +299,8 @@ const MuscleRecoveryTimeline = {
       glutes:'Glutes', calves:'Calves', core:'Core'
     };
     const MUSCLE_ICONS = {
-      chest:'🫁', back:'🔵', shoulders:'⭐', biceps:'💪', triceps:'💪',
-      quads:'🦵', hamstrings:'🦵', glutes:'🍑', calves:'🦵', core:'⚡'
+      chest:'heart', back:'target', shoulders:'target', biceps:'dumbbell', triceps:'dumbbell',
+      quads:'walk', hamstrings:'walk', glutes:'walk', calves:'walk', core:'flame'
     };
 
     return muscles.map(m => {
@@ -312,7 +312,7 @@ const MuscleRecoveryTimeline = {
       return {
         muscle: m,
         label: MUSCLE_LABELS[m] || m,
-        icon: MUSCLE_ICONS[m] || '💪',
+        icon: MUSCLE_ICONS[m] || 'dumbbell',
         pct,
         hoursLeft,
         hoursSince: hours === 9999 ? null : hours,
@@ -339,13 +339,13 @@ const JointHealthEngine = {
   JOINTS: ['shoulder','elbow','knee','lower_back','hip','wrist','ankle'],
 
   JOINT_META: {
-    shoulder: { label: 'Shoulders', icon: '🦾', type: 'push_pull' },
-    elbow: { label: 'Elbows', icon: '💪', type: 'push_pull' },
-    knee: { label: 'Knees', icon: '🦵', type: 'quad_ham' },
-    lower_back: { label: 'Lower Back', icon: '🔩', type: 'volume' },
-    hip: { label: 'Hips', icon: '🦴', type: 'volume' },
-    wrist: { label: 'Wrists', icon: '✋', type: 'volume' },
-    ankle: { label: 'Ankles', icon: '🦶', type: 'volume' },
+    shoulder: { label: 'Shoulders', icon: 'bandage', type: 'push_pull' },
+    elbow: { label: 'Elbows', icon: 'dumbbell', type: 'push_pull' },
+    knee: { label: 'Knees', icon: 'walk', type: 'quad_ham' },
+    lower_back: { label: 'Lower Back', icon: 'alert', type: 'volume' },
+    hip: { label: 'Hips', icon: 'walk', type: 'volume' },
+    wrist: { label: 'Wrists', icon: 'ruler', type: 'volume' },
+    ankle: { label: 'Ankles', icon: 'walk', type: 'volume' },
   },
 
   JOINT_EXERCISES: {
@@ -429,9 +429,7 @@ const JointHealthEngine = {
     score = Math.max(0, Math.min(100, score));
     const label = score >= 85 ? 'Excellent' : score >= 70 ? 'Good' : score >= 55 ? 'Moderate' : score >= 40 ? 'Elevated Risk' : 'High Risk';
     const color = score >= 70 ? '#30d158' : score >= 55 ? '#f5c842' : score >= 40 ? '#ff9f0a' : '#ff453a';
-    const emoji = score >= 70 ? '🟢' : score >= 55 ? '🟡' : score >= 40 ? '🟠' : '🔴';
-
-    return { joint, score, label, color, emoji, warnings, risks, weekSets, meta };
+    return { joint, score, label, color, warnings, risks, weekSets, meta };
   },
 
   allScores() {
@@ -470,29 +468,29 @@ const RecoveryRecommendations = {
     const recs = [];
 
     const sleep = parseInt(rec.sleep) || 5;
-    if (sleep < 4) recs.push({ priority: 'critical', icon: '😴', category: 'Sleep', title: 'Critical Sleep Deficit', detail: 'You rated sleep ' + sleep + '/10. Sleep is when muscle protein synthesis peaks. Aim for 8 hours tonight.', action: 'Sleep 8+ hours tonight' });
-    else if (sleep < 6) recs.push({ priority: 'high', icon: '😴', category: 'Sleep', title: 'Insufficient Sleep', detail: 'Sleep rated ' + sleep + '/10. You need 7-9 hours for optimal recovery and testosterone production.', action: 'Target 7-9 hours' });
+    if (sleep < 4) recs.push({ priority: 'critical', icon: 'bed', category: 'Sleep', title: 'Critical Sleep Deficit', detail: 'You rated sleep ' + sleep + '/10. Sleep is when muscle protein synthesis peaks. Aim for 8 hours tonight.', action: 'Sleep 8+ hours tonight' });
+    else if (sleep < 6) recs.push({ priority: 'high', icon: 'bed', category: 'Sleep', title: 'Insufficient Sleep', detail: 'Sleep rated ' + sleep + '/10. You need 7-9 hours for optimal recovery and testosterone production.', action: 'Target 7-9 hours' });
 
-    if (readiness < 60) recs.push({ priority: 'high', icon: '🥩', category: 'Nutrition', title: 'Prioritise Protein Today', detail: 'Low readiness suggests under-recovery. Ensure 1.8-2.2g protein per kg bodyweight today. Focus on leucine-rich sources (chicken, eggs, whey).', action: 'Hit protein target today' });
+    if (readiness < 60) recs.push({ priority: 'high', icon: 'apple', category: 'Nutrition', title: 'Prioritise Protein Today', detail: 'Low readiness suggests under-recovery. Ensure 1.8-2.2g protein per kg bodyweight today. Focus on leucine-rich sources (chicken, eggs, whey).', action: 'Hit protein target today' });
 
-    recs.push({ priority: 'low', icon: '💧', category: 'Hydration', title: 'Pre-Training Hydration', detail: 'Drink 500ml water 60-90 min before training. Even 2% dehydration reduces strength output by 5-8%.', action: 'Drink 500ml before training' });
+    recs.push({ priority: 'low', icon: 'leaf', category: 'Hydration', title: 'Pre-Training Hydration', detail: 'Drink 500ml water 60-90 min before training. Even 2% dehydration reduces strength output by 5-8%.', action: 'Drink 500ml before training' });
 
     joints.filter(j => j.score < 60).forEach(j => {
-      recs.push({ priority: j.score < 40 ? 'critical' : 'high', icon: j.emoji, category: 'Joint Health', title: j.label + ' Recovery Protocol', detail: j.risks.concat(j.warnings).slice(0, 2).join('. ') || 'Elevated joint stress detected.', action: j.score < 40 ? 'Rest this joint today' : 'Reduce ' + j.label.toLowerCase() + ' loading by 30%' });
+      recs.push({ priority: j.score < 40 ? 'critical' : 'high', icon: (j.meta && j.meta.icon) || 'alert', category: 'Joint Health', title: j.label + ' Recovery Protocol', detail: j.risks.concat(j.warnings).slice(0, 2).join('. ') || 'Elevated joint stress detected.', action: j.score < 40 ? 'Rest this joint today' : 'Reduce ' + j.label.toLowerCase() + ' loading by 30%' });
     });
 
     const veryFatigued = muscles.filter(m => m.pct < 40 && m.hoursSince !== null);
-    if (veryFatigued.length >= 3) recs.push({ priority: 'high', icon: '💪', category: 'Muscle Recovery', title: 'Multiple Muscles Still Recovering', detail: veryFatigued.map(m => m.label).join(', ') + ' are below 40% recovery. Today\'s session should avoid these muscle groups.', action: 'Train different muscle groups today' });
+    if (veryFatigued.length >= 3) recs.push({ priority: 'high', icon: 'dumbbell', category: 'Muscle Recovery', title: 'Multiple Muscles Still Recovering', detail: veryFatigued.map(m => m.label).join(', ') + ' are below 40% recovery. Today\'s session should avoid these muscle groups.', action: 'Train different muscle groups today' });
 
-    if (debt >= 70) recs.push({ priority: 'critical', icon: '🔴', category: 'Recovery Debt', title: 'High Cumulative Fatigue', detail: 'Recovery debt at ' + debt + '/100. Accumulated fatigue from training, sleep, and stress. Risk of performance plateau and injury increases significantly above 70.', action: 'Full rest day or deload week' });
-    else if (debt >= 50) recs.push({ priority: 'high', icon: '🟠', category: 'Recovery Debt', title: 'Moderate Recovery Debt', detail: 'Recovery debt at ' + debt + '/100. Consider reducing volume by 25% today and prioritise 8 hours sleep.', action: 'Reduce today\'s volume by 25%' });
+    if (debt >= 70) recs.push({ priority: 'critical', icon: 'alert', category: 'Recovery Debt', title: 'High Cumulative Fatigue', detail: 'Recovery debt at ' + debt + '/100. Accumulated fatigue from training, sleep, and stress. Risk of performance plateau and injury increases significantly above 70.', action: 'Full rest day or deload week' });
+    else if (debt >= 50) recs.push({ priority: 'high', icon: 'alert', category: 'Recovery Debt', title: 'Moderate Recovery Debt', detail: 'Recovery debt at ' + debt + '/100. Consider reducing volume by 25% today and prioritise 8 hours sleep.', action: 'Reduce today\'s volume by 25%' });
 
     if (debt >= 40 || readiness < 65) {
-      recs.push({ priority: 'medium', icon: '🧘', category: 'Active Recovery', title: 'Active Recovery Session', detail: 'Light movement enhances blood flow and reduces DOMS faster than complete rest. Options: 20-min walk, yoga, foam rolling, light cycling.', action: '20 min light activity + mobility work' });
+      recs.push({ priority: 'medium', icon: 'walk', category: 'Active Recovery', title: 'Active Recovery Session', detail: 'Light movement enhances blood flow and reduces DOMS faster than complete rest. Options: 20-min walk, yoga, foam rolling, light cycling.', action: '20 min light activity + mobility work' });
     }
 
     if (recs.filter(r => r.priority === 'critical' || r.priority === 'high').length === 0) {
-      recs.push({ priority: 'positive', icon: '✅', category: 'Status', title: 'Recovery Status Optimal', detail: 'All systems within normal range. You\'re primed for a strong training session. Focus on progressive overload and full effort sets.', action: 'Train with maximum intensity today' });
+      recs.push({ priority: 'positive', icon: 'check', category: 'Status', title: 'Recovery Status Optimal', detail: 'All systems within normal range. You\'re primed for a strong training session. Focus on progressive overload and full effort sets.', action: 'Train with maximum intensity today' });
     }
 
     return recs.sort((a, b) => {
@@ -523,13 +521,13 @@ reg('body-intelligence', function() {
   return moduleBackTopbar('Body Intelligence') +
 
     '<div  class="card-block">' +
-    '<div  class="section-label">🎯 Today\'s Recovery Plan</div>' +
+    '<div  class="section-label" style="display:flex;align-items:center;gap:6px">' + icon('target', 14) + ' Today\'s Recovery Plan</div>' +
     recs.slice(0, 4).map(r => {
       const bg = r.priority === 'critical' ? 'rgba(255,69,58,0.08)' : r.priority === 'high' ? 'rgba(255,159,10,0.08)' : r.priority === 'positive' ? 'rgba(48,209,88,0.08)' : 'rgba(255,255,255,0.03)';
       const border = r.priority === 'critical' ? 'rgba(255,69,58,0.3)' : r.priority === 'high' ? 'rgba(255,159,10,0.3)' : r.priority === 'positive' ? 'rgba(48,209,88,0.3)' : 'var(--border)';
       return '<div style="background:' + bg + ';border:1px solid ' + border + ';border-radius:14px;padding:12px;margin-bottom:8px">' +
         '<div style="display:flex;align-items:flex-start;gap:10px">' +
-        '<div style="font-size:22px;flex-shrink:0">' + r.icon + '</div>' +
+        '<div style="flex-shrink:0;display:flex;color:var(--c1)">' + icon(r.icon, 22) + '</div>' +
         '<div  class="flex-1"><div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:3px">' + esc(r.title) + '</div>' +
         '<div style="font-size:11px;color:var(--txt2);line-height:1.5;margin-bottom:6px">' + esc(r.detail) + '</div>' +
         '<div style="font-size:11px;font-weight:700;color:var(--c1)">→ ' + esc(r.action) + '</div>' +
@@ -538,13 +536,13 @@ reg('body-intelligence', function() {
     '</div>' +
 
     '<div  class="card-block">' +
-    '<div  class="section-label">⏱️ Muscle Recovery Timeline</div>' +
+    '<div  class="section-label" style="display:flex;align-items:center;gap:6px">' + icon('clock', 14) + ' Muscle Recovery Timeline</div>' +
     timeline.map(m => '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">' +
-      '<div style="font-size:16px;width:22px;text-align:center">' + m.icon + '</div>' +
+      '<div style="width:22px;display:flex;justify-content:center;color:var(--c1)">' + icon(m.icon, 16) + '</div>' +
       '<div  class="flex-1">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">' +
       '<div class="row-title-12">' + esc(m.label) + '</div>' +
-      '<div style="font-size:11px;font-weight:700;color:' + m.color + '">' + m.emoji + ' ' + m.pct + '%</div>' +
+      '<div style="font-size:11px;font-weight:700;color:' + m.color + ';display:flex;align-items:center;gap:4px">' + icon(m.statusIcon, 12, m.color) + ' ' + m.pct + '%</div>' +
       '</div>' +
       '<div style="width:100%;height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + m.pct + '%;height:5px;border-radius:3px;background:' + m.color + ';transition:width 0.6s ease"></div></div>' +
       (m.hoursLeft > 0 ? '<div style="font-size:10px;color:var(--txt3);margin-top:3px">' + Math.round(m.hoursLeft) + 'h until ready</div>' : '<div style="font-size:10px;color:#30d158;margin-top:3px">Ready to train ✓</div>') +
@@ -554,22 +552,22 @@ reg('body-intelligence', function() {
 
     '<div  class="card-block">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3)">🦴 Joint Health</div>' +
+    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);display:flex;align-items:center;gap:6px">' + icon('bandage', 14) + ' Joint Health</div>' +
     '<div style="font-size:22px;font-weight:900;color:' + jColor + '">' + jointHealth + '/100</div>' +
     '</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
     joints.map(j => '<div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:10px">' +
       '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">' +
-      '<span style="font-size:16px">' + j.icon + '</span>' +
+      '<span style="display:flex;color:var(--c1)">' + icon(j.icon, 16) + '</span>' +
       '<span class="row-title-12">' + esc(j.label) + '</span>' +
-      '<span style="font-size:12px;margin-left:auto">' + j.emoji + '</span>' +
+      '<span style="margin-left:auto;width:10px;height:10px;border-radius:50%;background:' + j.color + ';flex-shrink:0"></span>' +
       '</div>' +
       miniGauge(j.score, j.color) +
       '<div style="display:flex;justify-content:space-between;margin-top:4px">' +
       '<span style="font-size:10px;color:' + j.color + ';font-weight:600">' + j.score + '</span>' +
       '<span  class="muted-10">' + esc(j.label) + '</span>' +
       '</div>' +
-      (j.warnings && j.warnings.length ? '<div style="font-size:9px;color:#ff9f0a;margin-top:4px">⚠ ' + esc(j.warnings[0]) + '</div>' : '') +
+      (j.warnings && j.warnings.length ? '<div style="font-size:9px;color:#ff9f0a;margin-top:4px;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 10, '#ff9f0a') + '</span>' + esc(j.warnings[0]) + '</div>' : '') +
       '</div>'
     ).join('') +
     '</div>' +
@@ -577,10 +575,10 @@ reg('body-intelligence', function() {
     '</div>' +
 
     '<div  class="card-block">' +
-    '<div  class="section-label">🧬 Body Response Model</div>' +
+    '<div  class="section-label" style="display:flex;align-items:center;gap:6px">' + icon('dna', 14) + ' Body Response Model</div>' +
     (!profile.ready ?
       '<div style="text-align:center;padding:20px 0">' +
-      '<div style="font-size:40px;margin-bottom:10px">🧬</div>' +
+      '<div style="display:flex;justify-content:center;color:var(--c1);margin-bottom:10px">' + icon('dna', 40) + '</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--txt);margin-bottom:6px">Learning Your Body</div>' +
       '<div style="font-size:12px;color:var(--txt3);line-height:1.6">Complete ' + (profile.sessionsNeeded || 25) + ' more workouts for personalized insights</div>' +
       '<div style="margin-top:14px;width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px">' +
@@ -588,7 +586,7 @@ reg('body-intelligence', function() {
       '</div>' :
       '<div  class="mb-12"><div style="font-size:12px;color:var(--txt3);margin-bottom:8px">Based on ' + profile.sessions + ' training sessions</div>' +
       (profile.insights || []).map(ins => '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">' +
-        '<div style="font-size:18px;flex-shrink:0">' + ins.icon + '</div>' +
+        '<div style="flex-shrink:0;display:flex;color:var(--c1)">' + icon(ins.icon, 18) + '</div>' +
         '<div class="body-12-lh">' + esc(ins.text) + '</div>' +
         '</div>').join('') +
       '</div>'
@@ -597,7 +595,7 @@ reg('body-intelligence', function() {
 
     (Object.keys(dna).length > 0 ?
       '<div  class="card-block">' +
-      '<div  class="section-label">🧬 Exercise DNA Profile</div>' +
+      '<div  class="section-label" style="display:flex;align-items:center;gap:6px">' + icon('dna', 14) + ' Exercise DNA Profile</div>' +
       Object.entries(dna).slice(0, 4).map(([group, exercises]) => '<div  class="mb-12">' +
         '<div style="font-size:12px;font-weight:700;color:var(--txt);margin-bottom:6px">' + esc(group) + '</div>' +
         exercises.slice(0, 3).map((ex, i) => '<div style="display:flex;align-items:center;gap:8px;padding:5px 0">' +

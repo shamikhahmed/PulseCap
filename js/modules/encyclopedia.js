@@ -6,7 +6,7 @@
 ══════════════════════════════════════════════════════ */
 const MobilityDB = {
   ankle: {
-    name: 'Ankle', icon: '🦶',
+    name: 'Ankle', icon: 'walk',
     assessment: 'Wall ankle test: stand 10cm from wall, touch knee to wall without heel lifting. Normal = pass. Fail = restricted dorsiflexion.',
     restrictions: ['Limited dorsiflexion affects squat depth','Tight calves compensate with heel rise','Hip internal rotation compensates for ankle restriction'],
     drills: [
@@ -20,7 +20,7 @@ const MobilityDB = {
     frequency: 'Daily for restriction. 3x/week for maintenance.'
   },
   hip: {
-    name: 'Hip', icon: '🦴',
+    name: 'Hip', icon: 'walk',
     assessment: 'FABER test: lie on back, cross ankle over opposite knee, let knee fall open. Tight = hip external rotation restriction. Hip 90-90 test for internal/external rotation.',
     restrictions: ['Hip flexor tightness from sitting','Limited internal rotation causes lumbar compensation','Anterior pelvic tilt from weak glutes + tight hip flexors'],
     drills: [
@@ -35,7 +35,7 @@ const MobilityDB = {
     frequency: 'Daily for athletes. 3-4x/week minimum.'
   },
   shoulder: {
-    name: 'Shoulder', icon: '🦾',
+    name: 'Shoulder', icon: 'bandage',
     assessment: 'Overhead reach: arms straight overhead against wall. Good = no rib flare, full overhead. Sleeper stretch test for internal rotation. Apley scratch test for combined ROM.',
     restrictions: ['Lat and pec tightness limit overhead ROM','Posterior capsule tightness limits internal rotation','Thoracic kyphosis limits true shoulder flexion'],
     drills: [
@@ -50,7 +50,7 @@ const MobilityDB = {
     frequency: '4-5x/week for overhead athletes. Daily for desk workers.'
   },
   spine: {
-    name: 'Thoracic Spine', icon: '🔩',
+    name: 'Thoracic Spine', icon: 'dna',
     assessment: 'Seated rotation test: sit cross-legged, arms across chest, rotate. Normal = 45+ degrees each side. Limited = thoracic restriction.',
     restrictions: ['Desk work causes thoracic kyphosis','Limits overhead pressing and rowing','Causes compensatory lumbar extension under load'],
     drills: [
@@ -64,7 +64,7 @@ const MobilityDB = {
     frequency: 'Daily. Especially before pressing and rowing sessions.'
   },
   knee: {
-    name: 'Knee', icon: '🦵',
+    name: 'Knee', icon: 'walk',
     assessment: 'Knee tracking test: squat single-leg, observe knee tracking. Should track over 2nd toe. Inward collapse = valgus, hip weakness. Outward = varus, limited ankle/hip mobility.',
     restrictions: ['Quad tightness limits flexion ROM','IT band tightness causes lateral pain','Knee valgus from hip weakness not knee problem'],
     drills: [
@@ -78,7 +78,7 @@ const MobilityDB = {
     frequency: '3-4x/week. Always before leg sessions.'
   },
   wrist: {
-    name: 'Wrist', icon: '✋',
+    name: 'Wrist', icon: 'ruler',
     assessment: 'Wrist extension test: hands flat on floor (table-top position), fingers forward. Normal = 90 degrees without pain. Front rack test for front squat grip.',
     restrictions: ['Limits front squat rack position','Causes pain in push-ups and overhead press','Desk work causes flexor tightness'],
     drills: [
@@ -99,7 +99,7 @@ window.MobilityDB = MobilityDB;
 ══════════════════════════════════════════════════════ */
 const StretchDB = {
   chest: {
-    name: 'Chest', icon: '🫁',
+    name: 'Chest', icon: 'heart',
     stretches: [
       { name: 'Doorway Chest Stretch', duration: '30-45s each arm', type: 'static', cue: 'Three positions: arm low (lower chest), arm mid (sternum), arm high (clavicular head). Feel tension across chest.', contraindications: ['Shoulder dislocation (acute)','Pec major tear (acute)'] },
       { name: 'Foam Roller Chest Opener', duration: '60s', type: 'passive', cue: 'Foam roller along spine vertically. Arms out to sides, let gravity open chest. Deep breathing enhances stretch.' },
@@ -107,7 +107,7 @@ const StretchDB = {
     ]
   },
   lats: {
-    name: 'Lats / Back', icon: '🔵',
+    name: 'Lats / Back', icon: 'dumbbell',
     stretches: [
       { name: 'Doorway Lat Stretch', duration: '45s each side', type: 'static', cue: 'Hold door frame at hip height, sit back into stretch, feel lat stretch from armpit to hip.' },
       { name: "Child's Pose (Lat Focus)", duration: '60s', type: 'static', cue: 'Arms extended forward, walk hands to one side for unilateral lat stretch. Breathe into stretch.' },
@@ -116,7 +116,7 @@ const StretchDB = {
     ]
   },
   hip_flexors: {
-    name: 'Hip Flexors', icon: '🦴',
+    name: 'Hip Flexors', icon: 'walk',
     stretches: [
       { name: 'Kneeling Hip Flexor Stretch', duration: '45-60s each', type: 'static', cue: 'Back knee down, front foot forward. Posterior pelvic tilt (tuck pelvis), reach arm up. Feel front of rear hip.' },
       { name: 'Standing Hip Flexor Stretch', duration: '30s each', type: 'static', cue: 'Stand upright, pull one ankle to glute, keep knees together, push hip forward gently.' },
@@ -125,7 +125,7 @@ const StretchDB = {
     ]
   },
   hamstrings: {
-    name: 'Hamstrings', icon: '🦵',
+    name: 'Hamstrings', icon: 'walk',
     stretches: [
       { name: 'Standing Hamstring Stretch', duration: '30-45s each', type: 'static', cue: 'Foot up on bench, hinge from hip (not round back), reach toward foot.' },
       { name: 'Seated Forward Fold', duration: '60s', type: 'static', cue: 'Legs straight, hinge from hips. Keep spine long. Strap or towel around feet if needed.' },
@@ -134,7 +134,7 @@ const StretchDB = {
     ]
   },
   quads: {
-    name: 'Quadriceps', icon: '🦵',
+    name: 'Quadriceps', icon: 'walk',
     stretches: [
       { name: 'Standing Quad Stretch', duration: '30-45s each', type: 'static', cue: 'Pull ankle to glute, keep knees together, stand tall. Use wall for balance.' },
       { name: 'Lying Quad Stretch', duration: '45s each', type: 'static', cue: 'Side lying, pull ankle to glute. Add posterior pelvic tilt to increase rectus femoris stretch.' },
@@ -143,7 +143,7 @@ const StretchDB = {
     ]
   },
   calves: {
-    name: 'Calves', icon: '🦵',
+    name: 'Calves', icon: 'walk',
     stretches: [
       { name: 'Wall Calf Stretch (Gastrocnemius)', duration: '30-45s each', type: 'static', cue: 'Leg straight, heel down, lean into wall. Straight knee targets gastrocnemius.' },
       { name: 'Bent Knee Calf Stretch (Soleus)', duration: '30-45s each', type: 'static', cue: 'Knee bent version of calf stretch. Bent knee targets soleus. Critical for squat depth.' },
@@ -152,7 +152,7 @@ const StretchDB = {
     ]
   },
   shoulders: {
-    name: 'Shoulders', icon: '🦾',
+    name: 'Shoulders', icon: 'bandage',
     stretches: [
       { name: 'Cross-Body Shoulder Stretch', duration: '30s each', type: 'static', cue: 'Pull arm across chest at shoulder height. Feel posterior shoulder and rear delt.' },
       { name: 'Overhead Shoulder Stretch', duration: '30s each', type: 'static', cue: 'Arm overhead, bend elbow, pull with other hand. Feel tricep and shoulder.' },
@@ -161,7 +161,7 @@ const StretchDB = {
     ]
   },
   glutes: {
-    name: 'Glutes', icon: '🍑',
+    name: 'Glutes', icon: 'walk',
     stretches: [
       { name: 'Pigeon Pose', duration: '60s each side', type: 'static', cue: 'Front shin parallel to mat. Square hips. Breathe into the glute. Most effective glute stretch.' },
       { name: 'Seated Glute Stretch (Figure-4)', duration: '45s each', type: 'static', cue: 'Seated, ankle over opposite knee, lean forward gently. Chair-friendly version of pigeon.' },
@@ -170,7 +170,7 @@ const StretchDB = {
     ]
   },
   lower_back: {
-    name: 'Lower Back', icon: '🔩',
+    name: 'Lower Back', icon: 'alert',
     stretches: [
       { name: "Child's Pose", duration: '60-90s', type: 'static', cue: 'Arms extended forward, sit back toward heels, breathe deeply. Most gentle lower back stretch.' },
       { name: 'Knee-to-Chest Stretch', duration: '30s each + both together', type: 'static', cue: 'Lying on back, pull one knee to chest. Then both knees. Gentle lumbar decompression.' },
@@ -325,7 +325,7 @@ window.CooldownDB = CooldownDB;
 ══════════════════════════════════════════════════════ */
 const SportsDB = {
   cricket: {
-    name: 'Cricket', icon: '🏏', positions: ['Batsman','Bowler','Wicketkeeper','All-Rounder'],
+    name: 'Cricket', icon: 'run', positions: ['Batsman','Bowler','Wicketkeeper','All-Rounder'],
     key_demands: ['Rotational power for batting','Shoulder endurance for bowling','Explosive acceleration for running between wickets','Core stability for bowling action'],
     strength_training: {
       frequency: '3-4x per week in off-season, 2x in season',
@@ -338,7 +338,7 @@ const SportsDB = {
     periodization: 'Peak for season. Build base in off-season. Deload 2 weeks before season start.'
   },
   football: {
-    name: 'Football / Soccer', icon: '⚽', positions: ['Striker','Midfielder','Defender','Goalkeeper'],
+    name: 'Football / Soccer', icon: 'run', positions: ['Striker','Midfielder','Defender','Goalkeeper'],
     key_demands: ['Speed and acceleration','Jumping ability','90-minute aerobic endurance','Kicking power and accuracy','Change of direction'],
     strength_training: {
       frequency: '2-3x in season, 3-4x off-season',
@@ -351,7 +351,7 @@ const SportsDB = {
     periodization: 'Pre-season: 6-8 weeks strength + conditioning base. In-season: maintain 2x/week. Post-season: recovery 2-3 weeks then strength rebuild.'
   },
   mma: {
-    name: 'MMA / Combat Sports', icon: '🥊', positions: ['Striker','Grappler','All-Rounder'],
+    name: 'MMA / Combat Sports', icon: 'bandage', positions: ['Striker','Grappler','All-Rounder'],
     key_demands: ['Explosive power for strikes','Grappling strength (grip, neck, core)','Anaerobic capacity for rounds','Injury resilience'],
     strength_training: {
       frequency: '3-4x per week, periodized around camp',
@@ -364,7 +364,7 @@ const SportsDB = {
     periodization: '12-week fight camp. Weeks 1-4: strength base. Weeks 5-8: power + conditioning. Weeks 9-12: sport-specific + taper.'
   },
   basketball: {
-    name: 'Basketball', icon: '🏀', positions: ['Point Guard','Shooting Guard','Small Forward','Power Forward','Center'],
+    name: 'Basketball', icon: 'run', positions: ['Point Guard','Shooting Guard','Small Forward','Power Forward','Center'],
     key_demands: ['Vertical jump height','Lateral quickness','Anaerobic conditioning (repeated sprints)','Upper body strength for physicality'],
     strength_training: {
       frequency: '2-3x in season, 3-4x off-season',
@@ -377,7 +377,7 @@ const SportsDB = {
     periodization: 'Off-season: 16-week strength and power block. Pre-season: conditioning. In-season: maintain.'
   },
   sprinting: {
-    name: 'Track & Sprinting', icon: '🏃', positions: ['Sprinter','Middle Distance','Jumper'],
+    name: 'Track & Sprinting', icon: 'run', positions: ['Sprinter','Middle Distance','Jumper'],
     key_demands: ['Max velocity sprinting mechanics','Explosive start power','Stride frequency and length','Posterior chain power'],
     strength_training: {
       frequency: '3-4x off-season, 2-3x in season',
@@ -390,7 +390,7 @@ const SportsDB = {
     periodization: 'General prep (strength): 12-16 weeks. Specific prep (speed): 8-12 weeks. Competition: maintain.'
   },
   tennis: {
-    name: 'Tennis', icon: '🎾', positions: ['Baseline Player','Serve-Volley','All-Court'],
+    name: 'Tennis', icon: 'run', positions: ['Baseline Player','Serve-Volley','All-Court'],
     key_demands: ['Rotational power for groundstrokes','Shoulder endurance for serving','Lateral agility and change of direction','Wrist and forearm strength'],
     strength_training: {
       frequency: '2-3x in season, 3x off-season',
@@ -403,7 +403,7 @@ const SportsDB = {
     periodization: 'Match play: prioritize recovery and maintenance. Off-season: 8-12 weeks strength and conditioning block.'
   },
   rugby: {
-    name: 'Rugby', icon: '🏉', positions: ['Forward','Back','Scrum-Half'],
+    name: 'Rugby', icon: 'run', positions: ['Forward','Back','Scrum-Half'],
     key_demands: ['High-impact collision strength','Tackling and scrummaging power','Aerobic and anaerobic capacity','Neck and upper body strength'],
     strength_training: {
       frequency: '3-4x in pre-season, 2-3x in season',
@@ -432,23 +432,24 @@ reg('encyclopedia', function(data) {
   if (section === 'search') return _encyclopediaSearch(data && data.query);
 
   return '<div class="topbar"><div class="topbar-title">Encyclopedia</div>' +
-    '<button type="button" onclick="go(\'encyclopedia\',{section:\'search\'})" style="background:none;border:none;color:var(--txt3);font-size:14px;cursor:pointer;padding:0 16px">🔍</button>' +
+    '<button type="button" onclick="go(\'encyclopedia\',{section:\'search\'})" aria-label="Search encyclopedia" style="background:none;border:none;color:var(--txt3);font-size:14px;cursor:pointer;padding:0 16px;display:flex;align-items:center">' + icon('search', 18) + '</button>' +
     '</div>' +
 
     '<div  class="pad-16">' +
-    '<div style="margin-bottom:16px">' +
-    '<input id="enc-search" class="field" placeholder="🔍 Search encyclopedia..." oninput="if(this.value.length>1)go(\'encyclopedia\',{section:\'search\',query:this.value})" style="width:100%;box-sizing:border-box">' +
+    '<div style="margin-bottom:16px;position:relative">' +
+    '<span style="position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--txt3);display:flex;pointer-events:none">' + icon('search', 16) + '</span>' +
+    '<input id="enc-search" class="field" placeholder="Search encyclopedia..." oninput="if(this.value.length>1)go(\'encyclopedia\',{section:\'search\',query:this.value})" style="width:100%;box-sizing:border-box;padding-left:38px">' +
     '</div>' +
 
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">' +
     [
-      { section:'mobility', icon:'🦶', title:'Mobility', sub:'6 joints · Drills & assessments' },
-      { section:'stretching', icon:'🧘', title:'Stretching', sub:'9 muscle groups · Static & PNF' },
-      { section:'warmup', icon:'🔥', title:'Warmups', sub:'6 workout types · Step-by-step' },
-      { section:'cooldown', icon:'❄️', title:'Cooldowns', sub:'4 types · Full protocols' },
-      { section:'sports', icon:'⚽', title:'Sports Performance', sub:'7 sports · Training systems' },
+      { section:'mobility', icon:'walk', title:'Mobility', sub:'6 joints · Drills & assessments' },
+      { section:'stretching', icon:'leaf', title:'Stretching', sub:'9 muscle groups · Static & PNF' },
+      { section:'warmup', icon:'flame', title:'Warmups', sub:'6 workout types · Step-by-step' },
+      { section:'cooldown', icon:'moon', title:'Cooldowns', sub:'4 types · Full protocols' },
+      { section:'sports', icon:'run', title:'Sports Performance', sub:'7 sports · Training systems' },
     ].map(s => '<div onclick="go(\'encyclopedia\',{section:\'' + s.section + '\'})" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:16px;cursor:pointer;touch-action:manipulation">' +
-      '<div style="font-size:32px;margin-bottom:8px">' + s.icon + '</div>' +
+      '<div style="margin-bottom:8px;display:flex;color:var(--c1)">' + icon(s.icon, 32) + '</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--txt);margin-bottom:4px">' + esc(s.title) + '</div>' +
       '<div  class="muted-11">' + esc(s.sub) + '</div>' +
       '</div>'
@@ -462,7 +463,7 @@ function _mobilityScreen() {
     Object.values(MobilityDB).map(joint =>
       '<div  class="card-block">' +
       '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">' +
-      '<div class="fs-28">' + joint.icon + '</div>' +
+      '<div style="display:flex;color:var(--c1)">' + icon(joint.icon, 28) + '</div>' +
       '<div><div  class="row-title-16">' + esc(joint.name) + '</div>' +
       '<div  class="muted-11">' + esc(joint.frequency) + '</div></div>' +
       '</div>' +
@@ -481,7 +482,7 @@ function _stretchingScreen() {
   return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')"  class="back-chip">←</button><div class="topbar-title">Stretching Encyclopedia</div></div>' +
     Object.values(StretchDB).map(group =>
       '<div  class="card-block">' +
-      '<div style="font-size:16px;font-weight:800;color:var(--txt);margin-bottom:12px">' + group.icon + ' ' + esc(group.name) + '</div>' +
+      '<div style="font-size:16px;font-weight:800;color:var(--txt);margin-bottom:12px;display:flex;align-items:center;gap:8px">' + icon(group.icon, 20) + ' ' + esc(group.name) + '</div>' +
       group.stretches.map(s => '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
         '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">' +
         '<div  class="row-title">' + esc(s.name) + '</div>' +
@@ -489,7 +490,7 @@ function _stretchingScreen() {
         '</div>' +
         '<div style="font-size:11px;color:var(--c1);margin-bottom:4px">' + esc(s.duration) + '</div>' +
         '<div  class="muted-11">' + esc(s.cue) + '</div>' +
-        (s.contraindications ? '<div style="font-size:10px;color:#ff9f0a;margin-top:4px">⚠️ Avoid if: ' + s.contraindications.join(', ') + '</div>' : '') +
+        (s.contraindications ? '<div style="font-size:10px;color:#ff9f0a;margin-top:4px;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, '#ff9f0a') + '</span>Avoid if: ' + s.contraindications.join(', ') + '</div>' : '') +
         '</div>').join('') +
       '</div>'
     ).join('') +
@@ -501,7 +502,7 @@ function _warmupScreen() {
     Object.values(WarmupDB).map(w =>
       '<div  class="card-block">' +
       '<div class="row-between mb-12">' +
-      '<div  class="row-title-16">🔥 ' + esc(w.name) + '</div>' +
+      '<div  class="row-title-16" style="display:flex;align-items:center;gap:8px">' + icon('flame', 18, 'var(--c5)') + ' ' + esc(w.name) + '</div>' +
       '<span style="font-size:11px;color:var(--c1);font-weight:600">' + esc(w.duration) + '</span>' +
       '</div>' +
       w.steps.map((step, i) => '<div style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">' +
@@ -518,7 +519,7 @@ function _cooldownScreen() {
     Object.values(CooldownDB).map(c =>
       '<div  class="card-block">' +
       '<div class="row-between mb-12">' +
-      '<div  class="row-title-16">❄️ ' + esc(c.name) + '</div>' +
+      '<div  class="row-title-16" style="display:flex;align-items:center;gap:8px">' + icon('moon', 18) + ' ' + esc(c.name) + '</div>' +
       '<span style="font-size:11px;color:var(--c1);font-weight:600">' + esc(c.duration) + '</span>' +
       '</div>' +
       c.steps.map((step, i) => '<div style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">' +
@@ -535,7 +536,7 @@ function _sportsScreen() {
     Object.values(SportsDB).map(sport =>
       '<div  class="card-block">' +
       '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">' +
-      '<div style="font-size:32px">' + sport.icon + '</div>' +
+      '<div style="display:flex;color:var(--c1)">' + icon(sport.icon, 32) + '</div>' +
       '<div><div  class="row-title-16">' + esc(sport.name) + '</div>' +
       '<div  class="muted-11">' + esc(sport.positions.join(' · ')) + '</div></div>' +
       '</div>' +
@@ -546,7 +547,7 @@ function _sportsScreen() {
       '<div style="font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 6px">Conditioning</div>' +
       '<div  class="body-12">' + esc(sport.conditioning) + '</div>' +
       '<div style="font-size:11px;font-weight:700;color:#ff453a;text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 6px">Injury Risks</div>' +
-      sport.injury_risks.map(r => '<div style="font-size:12px;color:#ff9f0a;padding:2px 0">⚠️ ' + esc(r) + '</div>').join('') +
+      sport.injury_risks.map(r => '<div style="font-size:12px;color:#ff9f0a;padding:2px 0;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, '#ff9f0a') + '</span>' + esc(r) + '</div>').join('') +
       '</div>'
     ).join('') +
     '<div  class="spacer-bottom"></div>';
@@ -581,7 +582,7 @@ function _encyclopediaSearch(query) {
 
   Object.entries(WarmupDB).forEach(([key, w]) => {
     if (w.name.toLowerCase().includes(q) || w.steps.some(s => s.toLowerCase().includes(q))) {
-      results.push({ type: 'Warmup', icon: '🔥', title: w.name, sub: w.duration, action: "go('encyclopedia',{section:'warmup'})" });
+      results.push({ type: 'Warmup', icon: 'flame', title: w.name, sub: w.duration, action: "go('encyclopedia',{section:'warmup'})" });
     }
   });
 
@@ -590,7 +591,7 @@ function _encyclopediaSearch(query) {
     (!results.length ? '<div style="padding:40px 20px;text-align:center;color:var(--txt3)">No results for "' + esc(query) + '"<br><span style="font-size:12px">Try: shoulder, cricket, hamstring, warmup</span></div>' :
       '<div style="font-size:12px;color:var(--txt3);padding:0 16px 10px">' + results.length + ' results</div>' +
       results.map(r => '<div onclick="' + r.action + '" style="margin:0 16px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;gap:12px">' +
-        '<div class="fs-28">' + r.icon + '</div>' +
+        '<div style="display:flex;color:var(--c1)">' + icon(r.icon, 28) + '</div>' +
         '<div  class="flex-1"><div  class="row-title">' + esc(r.title) + '</div>' +
         '<div  class="muted-11">' + esc(r.type) + ' · ' + esc(r.sub) + '</div></div>' +
         '<div style="font-size:16px;color:var(--txt3)">›</div>' +

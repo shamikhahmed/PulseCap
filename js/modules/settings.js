@@ -433,7 +433,7 @@ function _selectWrap(label, key, current, opts) {
 function _toggle(label, key, current) {
   return '<div class="toggle-row">' +
     '<div class="toggle-info"><div class="toggle-label">'+esc(label)+'</div></div>' +
-    '<button type="button" class="toggle'+(current?' on':'')+'" onclick="toggleSetting(\''+key+'\')"></button>' +
+    '<button type="button" class="toggle'+(current?' on':'')+'" role="switch" aria-checked="'+(current?'true':'false')+'" aria-label="'+esc(label)+'" onclick="toggleSetting(\''+key+'\')"></button>' +
     '</div>';
 }
 function _infoStat(label, val, sub) {

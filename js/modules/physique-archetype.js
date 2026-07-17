@@ -8,7 +8,7 @@ const PhysiqueArchetypes = {
 
   ARCHETYPES: {
     classic_bodybuilder: {
-      id: 'classic_bodybuilder', name: 'Classic Bodybuilder', icon: '🏆',
+      id: 'classic_bodybuilder', name: 'Classic Bodybuilder', icon: 'gradcap',
       description: 'Balanced mass with classic proportions. Chest, shoulders, arms, and legs all developed. Waist kept tight.',
       color: '#f5c842',
       targets: {
@@ -30,7 +30,7 @@ const PhysiqueArchetypes = {
       weak_point_priority: ['rear delts', 'calves', 'upper chest'],
     },
     mens_physique: {
-      id: 'mens_physique', name: "Men's Physique", icon: '🌊',
+      id: 'mens_physique', name: "Men's Physique", icon: 'heart',
       description: 'Upper body dominant. Wide shoulders, narrow waist, capped delts. Less emphasis on leg mass.',
       color: '#00c7ff',
       targets: {
@@ -50,7 +50,7 @@ const PhysiqueArchetypes = {
       weak_point_priority: ['side delts', 'rear delts', 'upper chest', 'serratus'],
     },
     athletic: {
-      id: 'athletic', name: 'Athletic / Functional', icon: '⚡',
+      id: 'athletic', name: 'Athletic / Functional', icon: 'run',
       description: 'Performance-based physique. Strong, explosive, capable. Think sprinter or NBA player body.',
       color: '#30d158',
       targets: {
@@ -71,7 +71,7 @@ const PhysiqueArchetypes = {
       weak_point_priority: ['glutes', 'hamstrings', 'calves', 'rotator cuff'],
     },
     v_taper: {
-      id: 'v_taper', name: 'V-Taper', icon: '🔱',
+      id: 'v_taper', name: 'V-Taper', icon: 'target',
       description: 'Maximum width-to-waist contrast. Wide lats, capped shoulders, tiny waist. The ultimate taper.',
       color: '#af52de',
       targets: {
@@ -91,7 +91,7 @@ const PhysiqueArchetypes = {
       weak_point_priority: ['lats', 'side delts', 'serratus anterior'],
     },
     strength_athlete: {
-      id: 'strength_athlete', name: 'Strength Athlete', icon: '🏋️',
+      id: 'strength_athlete', name: 'Strength Athlete', icon: 'dumbbell',
       description: 'Raw strength and power. Think powerlifter. Functional mass, not aesthetic focus.',
       color: '#ff453a',
       targets: {
@@ -111,7 +111,7 @@ const PhysiqueArchetypes = {
       weak_point_priority: ['posterior chain', 'upper back', 'core'],
     },
     lean_functional: {
-      id: 'lean_functional', name: 'Lean & Functional', icon: '🎯',
+      id: 'lean_functional', name: 'Lean & Functional', icon: 'target',
       description: 'Low body fat, visible abs, capable. Crossfit/triathlete aesthetic.',
       color: '#ff9f0a',
       targets: {
@@ -219,7 +219,7 @@ const ProportionAnalyzer = {
       var target = 1.618;
       var pct = Math.min(100, Math.round((r / target) * 100));
       var status = r >= 1.6 ? 'excellent' : r >= 1.5 ? 'good' : r >= 1.4 ? 'average' : 'below';
-      ratios.push({ name: 'Shoulder-to-Waist', value: r.toFixed(2), target: target.toFixed(2), pct: pct, status: status, icon: '📐', tip: r < 1.5 ? 'Increase lateral delt work and/or tighten waist through nutrition' : 'Golden ratio achieved ✓' });
+      ratios.push({ name: 'Shoulder-to-Waist', value: r.toFixed(2), target: target.toFixed(2), pct: pct, status: status, icon: 'ruler', tip: r < 1.5 ? 'Increase lateral delt work and/or tighten waist through nutrition' : 'Golden ratio achieved ✓' });
       if (r < 1.45) weakPoints.push('V-taper underdeveloped — prioritise side delts and lat width');
       if (r >= 1.6) strengths.push('Excellent shoulder-to-waist ratio');
     }
@@ -228,7 +228,7 @@ const ProportionAnalyzer = {
       var armToHeight = (m.arms / height) * 100;
       var armTarget = 36;
       var armPct = Math.min(100, Math.round((armToHeight / armTarget) * 100));
-      ratios.push({ name: 'Arm Development', value: m.arms + 'cm', target: Math.round(height * 0.36) + 'cm', pct: armPct, status: armToHeight >= 36 ? 'excellent' : armToHeight >= 33 ? 'good' : 'developing', icon: '💪', tip: armToHeight < 33 ? 'Direct arm work 2-3x/week: curls + tricep extensions' : 'Good arm development' });
+      ratios.push({ name: 'Arm Development', value: m.arms + 'cm', target: Math.round(height * 0.36) + 'cm', pct: armPct, status: armToHeight >= 36 ? 'excellent' : armToHeight >= 33 ? 'good' : 'developing', icon: 'dumbbell', tip: armToHeight < 33 ? 'Direct arm work 2-3x/week: curls + tricep extensions' : 'Good arm development' });
       if (armToHeight < 32) weakPoints.push('Arms underdeveloped relative to height — add arm specialization');
       if (armToHeight >= 36) strengths.push('Strong arm development for height');
     }
@@ -236,14 +236,14 @@ const ProportionAnalyzer = {
     if (m.chest && m.waist) {
       var cr = m.chest / m.waist;
       var cPct = Math.min(100, Math.round((cr / 1.35) * 100));
-      ratios.push({ name: 'Chest-to-Waist', value: cr.toFixed(2), target: '1.35', pct: cPct, status: cr >= 1.33 ? 'excellent' : cr >= 1.25 ? 'good' : 'developing', icon: '🫁', tip: cr < 1.25 ? 'Increase chest volume or reduce waist circumference' : 'Good chest proportion' });
+      ratios.push({ name: 'Chest-to-Waist', value: cr.toFixed(2), target: '1.35', pct: cPct, status: cr >= 1.33 ? 'excellent' : cr >= 1.25 ? 'good' : 'developing', icon: 'heart', tip: cr < 1.25 ? 'Increase chest volume or reduce waist circumference' : 'Good chest proportion' });
     }
 
     if (m.thighs && m.calves) {
       var tr = m.thighs / m.calves;
       var tTarget = 1.75;
       var tPct = Math.min(100, Math.round(100 - Math.abs(tr - tTarget) / tTarget * 100));
-      ratios.push({ name: 'Thigh-to-Calf', value: tr.toFixed(2), target: tTarget.toFixed(2), pct: tPct, status: Math.abs(tr - tTarget) < 0.15 ? 'excellent' : Math.abs(tr - tTarget) < 0.3 ? 'good' : 'developing', icon: '🦵', tip: tr > 2.0 ? 'Calves lagging — add calf specialization block' : tr < 1.5 ? 'Thighs underdeveloped relative to calves' : 'Good lower body proportion' });
+      ratios.push({ name: 'Thigh-to-Calf', value: tr.toFixed(2), target: tTarget.toFixed(2), pct: tPct, status: Math.abs(tr - tTarget) < 0.15 ? 'excellent' : Math.abs(tr - tTarget) < 0.3 ? 'good' : 'developing', icon: 'walk', tip: tr > 2.0 ? 'Calves lagging — add calf specialization block' : tr < 1.5 ? 'Thighs underdeveloped relative to calves' : 'Good lower body proportion' });
       if (tr > 2.1) weakPoints.push('Calves significantly lagging — classic proportion weakness');
     }
 
@@ -354,11 +354,11 @@ const PhysiquePreview = {
     var photo = S.g('physiqueProgressPhoto');
     var photoHtml = photo ?
       '<div style="width:72px;height:96px;border-radius:12px;overflow:hidden;border:1px solid var(--border);flex-shrink:0"><img src="' + photo + '" alt="Progress" style="width:100%;height:100%;object-fit:cover"/></div>' :
-      '<button type="button" onclick="PhysiquePreview.uploadPhoto()" style="width:72px;height:96px;border-radius:12px;border:1px dashed var(--border2);background:var(--bg4);color:var(--txt3);font-size:10px;font-weight:600;cursor:pointer;touch-action:manipulation">📷 Add photo</button>';
+      '<button type="button" onclick="PhysiquePreview.uploadPhoto()" style="width:72px;height:96px;border-radius:12px;border:1px dashed var(--border2);background:var(--bg4);color:var(--txt3);font-size:10px;font-weight:600;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">' + icon('camera', 18) + ' Add photo</button>';
 
     return '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--ds1)">' +
       '<div class="row-between mb-12">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3)">🪞 Physique Preview</div>' +
+      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);display:flex;align-items:center;gap:6px">' + icon('scale', 14) + ' Physique Preview</div>' +
       '<div  class="muted-10">' + (m ? 'From Body Map data' : 'Add measurements for accuracy') + '</div></div>' +
       '<div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">' + photoHtml +
       '<div style="flex:1;font-size:12px;color:var(--txt2);line-height:1.55">' +
@@ -424,11 +424,11 @@ window.renderPhysiqueArchetypeBody = function(data) {
 
     return '<div class="topbar">' +
       '<button type="button" onclick="PhysiqueArchetypes.setUserArchetype(null);go(\'physique-archetype\')"  class="back-chip">←</button>' +
-      '<div class="topbar-title">' + arch.icon + ' ' + esc(arch.name) + '</div>' +
+      '<div class="topbar-title" style="display:flex;align-items:center;gap:8px">' + icon(arch.icon, 18, arch.color) + esc(arch.name) + '</div>' +
       '</div>' +
 
       '<div style="padding:20px 16px 14px;text-align:center;background:linear-gradient(180deg,rgba(0,0,0,0.3),transparent)">' +
-      '<div style="font-size:56px;margin-bottom:8px">' + arch.icon + '</div>' +
+      '<div style="display:flex;justify-content:center;color:' + arch.color + ';margin-bottom:8px">' + icon(arch.icon, 56, arch.color) + '</div>' +
       '<div style="font-size:20px;font-weight:900;color:' + arch.color + ';margin-bottom:6px">' + esc(arch.name) + '</div>' +
       '<div style="font-size:13px;color:var(--txt2);max-width:280px;margin:0 auto;line-height:1.6">' + esc(arch.description) + '</div>' +
       (comp ? '<div style="margin-top:14px;display:inline-block;background:rgba(255,255,255,0.08);border-radius:16px;padding:8px 20px">' +
@@ -440,7 +440,7 @@ window.renderPhysiqueArchetypeBody = function(data) {
 
       (comp && comp.measurements.some(function(m) { return m.current; }) ?
         '<div  class="card-block">' +
-        '<div  class="section-label">📏 Current vs Target</div>' +
+        '<div  class="section-label" style="display:flex;align-items:center;gap:6px">' + icon('ruler', 14) + ' Current vs Target</div>' +
         comp.measurements.map(function(m) {
           return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
             '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
@@ -458,7 +458,7 @@ window.renderPhysiqueArchetypeBody = function(data) {
 
       (comp && comp.ratios.length ?
         '<div  class="card-block">' +
-        '<div  class="section-label">📐 Key Ratios</div>' +
+        '<div  class="section-label" style="display:flex;align-items:center;gap:6px">' + icon('ruler', 14) + ' Key Ratios</div>' +
         comp.ratios.map(function(r) {
           return '<div style="padding:8px 0;border-bottom:1px solid var(--border)">' +
             '<div style="display:flex;justify-content:space-between;margin-bottom:6px">' +
@@ -471,7 +471,7 @@ window.renderPhysiqueArchetypeBody = function(data) {
         '</div>' : '') +
 
       '<div  class="card-block">' +
-      '<div  class="section-label-sm">🎯 Training Focus</div>' +
+      '<div  class="section-label-sm" style="display:flex;align-items:center;gap:6px">' + icon('target', 14) + ' Training Focus</div>' +
       arch.training_focus.map(function(f) {
         return '<div style="font-size:13px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:' + arch.color + '">→</span>' + esc(f) + '</div>';
       }).join('') +
@@ -489,21 +489,21 @@ window.renderPhysiqueArchetypeBody = function(data) {
 
     (proportion && proportion.hasMeasurements ?
       '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--ds1)">' +
-      '<div  class="section-label-sm">📐 Your Current Proportions</div>' +
+      '<div  class="section-label-sm" style="display:flex;align-items:center;gap:6px">' + icon('ruler', 14) + ' Your Current Proportions</div>' +
       proportion.ratios.map(function(r) {
         return '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border)">' +
-          '<div style="font-size:16px">' + r.icon + '</div>' +
+          '<div style="display:flex;color:var(--c1)">' + icon(r.icon, 16) + '</div>' +
           '<div  class="flex-1"><div style="font-size:12px;font-weight:600;color:var(--txt)">' + esc(r.name) + '</div>' +
           '<div  class="muted-11">' + esc(r.tip) + '</div></div>' +
           '<div style="font-size:13px;font-weight:700;color:' + (r.status === 'excellent' ? '#30d158' : r.status === 'good' ? 'var(--c1)' : '#f5c842') + '">' + r.value + '</div>' +
           '</div>';
       }).join('') +
-      (proportion.weakPoints.length ? '<div style="margin-top:10px">' + proportion.weakPoints.map(function(w) { return '<div style="font-size:11px;color:#ff9f0a;padding:3px 0">⚠️ ' + esc(w) + '</div>'; }).join('') + '</div>' : '') +
+      (proportion.weakPoints.length ? '<div style="margin-top:10px">' + proportion.weakPoints.map(function(w) { return '<div style="font-size:11px;color:#ff9f0a;padding:3px 0;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, '#ff9f0a') + '</span>' + esc(w) + '</div>'; }).join('') + '</div>' : '') +
       '</div>' : '') +
 
     Object.values(archetypes).map(function(a) {
       return '<div onclick="PhysiqueArchetypes.setUserArchetype(\'' + a.id + '\');go(\'physique-archetype\',{id:\'' + a.id + '\'})" style="margin:0 16px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:16px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;gap:14px">' +
-        '<div style="font-size:36px;flex-shrink:0">' + a.icon + '</div>' +
+        '<div style="flex-shrink:0;display:flex;color:' + a.color + '">' + icon(a.icon, 36, a.color) + '</div>' +
         '<div  class="flex-1">' +
         '<div style="font-size:15px;font-weight:800;color:' + a.color + ';margin-bottom:4px">' + esc(a.name) + '</div>' +
         '<div class="body-12-lh">' + esc(a.description) + '</div>' +

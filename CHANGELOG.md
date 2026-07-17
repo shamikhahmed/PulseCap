@@ -1,5 +1,16 @@
 # Changelog — PulseCap
 
+## 5.6.4 (2026-07-17) — Close the honesty gaps
+- **Exhaustive widgets:** `tests/functional.spec.js` battery covers settings tabs, theme cycle, weight/meals, recovery, workout, search, calculators, assistant, rehab, anatomy, quests, profiles, cardio, equipment, export, physique/recovery/intel tabs.
+- **Nav clearance:** `#view` always reserves `108px + safe` bottom padding (not only after premium-nav class attaches); `.spacer-bottom` matches.
+- **De-emoji wave 2:** bodymap, injury-risk, profiles (letter/color avatars), recovery, photos, physique, archetype, body-intelligence, progress, encyclopedia, search, training-style, calisthenics, rehab chrome, training-intel, dashboard demo/streak.
+- **Visual QA:** gallery walk asserts no fatal chrome, no empty screens, zero unlabeled visible buttons.
+- **iPhone soak:** CI automates 393 safe-area clearance + light-theme contrast tokens; `docs/IPHONE-SOAK.md` splits automated vs manual.
+- **Light + dark contrast:** `--txt2/--txt3` alpha raised (light 0.78/0.58, dark 0.78/0.55).
+- **a11y:** settings toggles get `role=switch` + `aria-label`; encyclopedia search button labeled.
+- **Personas:** demo avatars use color keys `c1`–`c6` (no emoji).
+- SW `pulsecap-v63`.
+
 ## 5.6.3 (2026-07-17) — Sample personas + functional QA
 - **Sample athletes:** `S.seedPersonas()` seeds 5 distinct demo profiles — Beginner (Sam), Advanced (Marcus), Rehab/injured (Jordan), Cutting (Lena), Longevity (Ray) — each with its own goal, split, equipment, coach, theme, workouts, PRs, body/meal/recovery history. "Load sample athletes" button in Profiles.
 - **Functional QA:** `tests/functional.spec.js` switches through every profile (demo + 5 personas), visits **every registered screen**, and runs a core-action battery (log water, quick-add meal, recovery check-in, start→log set→save workout) asserting zero runtime errors.

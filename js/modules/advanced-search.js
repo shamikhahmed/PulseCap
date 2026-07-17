@@ -28,7 +28,7 @@ const FitnessSearch = {
         if (this.fuzzyMatch(name, q)) {
           const node = EKG.get(name);
           results.push({
-            type: 'exercise', icon: '💪', title: name,
+            type: 'exercise', icon: 'dumbbell', title: name,
             sub: node ? 'Pattern: ' + node.pattern + ' · Fatigue: ' + node.fatigueScore + '/10' : 'Exercise',
             action: "go('workout')",
             tags: node ? [...(node.muscles.primary || []), node.pattern] : [],
@@ -43,7 +43,7 @@ const FitnessSearch = {
       Object.values(MUSCLE_DB).forEach(m => {
         if (this.fuzzyMatch(m.name, q) || this.fuzzyMatch(m.region, q) || this.fuzzyMatch(m.group, q)) {
           results.push({
-            type: 'muscle', icon: '🔬', title: m.name,
+            type: 'muscle', icon: 'dna', title: m.name,
             sub: m.region + ' · ' + m.group,
             action: "go('anatomy')",
             tags: [m.region, m.group],
@@ -52,7 +52,7 @@ const FitnessSearch = {
         }
         if ((m.exercises || []).some(e => this.fuzzyMatch(e, q))) {
           results.push({
-            type: 'muscle', icon: '🔬', title: m.name + ' (worked by ' + q + ')',
+            type: 'muscle', icon: 'dna', title: m.name + ' (worked by ' + q + ')',
             sub: 'Anatomy · ' + m.region,
             action: "go('anatomy')",
             tags: [m.region],
@@ -67,7 +67,7 @@ const FitnessSearch = {
       Object.values(INJURY_DB).forEach(inj => {
         if (this.fuzzyMatch(inj.name, q) || this.fuzzyMatch(inj.anatomy || '', q) || this.fuzzyMatch(inj.mechanism || '', q)) {
           results.push({
-            type: 'rehab', icon: '🩹', title: inj.name,
+            type: 'rehab', icon: 'bandage', title: inj.name,
             sub: 'Severity: ' + inj.severity + ' · Return: ' + inj.return_to_gym_weeks.typical + ' weeks',
             action: "go('rehab')",
             tags: ['injury', 'rehab', inj.severity],
@@ -82,7 +82,7 @@ const FitnessSearch = {
       Object.values(MobilityDB).forEach(joint => {
         if (this.fuzzyMatch(joint.name, q) || joint.drills.some(d => this.fuzzyMatch(d.name, q))) {
           results.push({
-            type: 'mobility', icon: '🦶', title: joint.name + ' Mobility',
+            type: 'mobility', icon: 'walk', title: joint.name + ' Mobility',
             sub: joint.drills.length + ' drills · ' + joint.frequency,
             action: "go('encyclopedia',{section:'mobility'})",
             tags: ['mobility', 'flexibility'],
@@ -97,7 +97,7 @@ const FitnessSearch = {
       Object.values(StretchDB).forEach(group => {
         if (this.fuzzyMatch(group.name, q) || group.stretches.some(s => this.fuzzyMatch(s.name, q))) {
           results.push({
-            type: 'stretch', icon: '🧘', title: group.name + ' Stretches',
+            type: 'stretch', icon: 'leaf', title: group.name + ' Stretches',
             sub: group.stretches.length + ' stretches',
             action: "go('encyclopedia',{section:'stretching'})",
             tags: ['stretch', 'flexibility', 'cooldown'],
@@ -133,7 +133,7 @@ const FitnessSearch = {
           seenEx.add(ex.name);
           const best = (ex.sets || []).filter(s => s.done && s.weight > 0).reduce((m, s) => Math.max(m, s.weight || 0), 0);
           results.push({
-            type: 'history', icon: '📋', title: ex.name,
+            type: 'history', icon: 'chart', title: ex.name,
             sub: 'In your history' + (best ? ' · Best: ' + best + 'kg' : ''),
             action: "go('progress')",
             tags: ['history', 'logged'],
@@ -148,7 +148,7 @@ const FitnessSearch = {
       (CALISTHENICS_SKILLS || []).forEach(skill => {
         if (this.fuzzyMatch(skill.name || '', q) || this.fuzzyMatch(skill.category || '', q)) {
           results.push({
-            type: 'skill', icon: '🤸', title: skill.name,
+            type: 'skill', icon: 'run', title: skill.name,
             sub: 'Calisthenics · ' + (skill.category || ''),
             action: "go('calisthenics')",
             tags: ['calisthenics', 'skill'],
@@ -180,7 +180,7 @@ const FitnessSearch = {
       const hay = s.title + ' ' + s.sub + ' ' + (s.tags || []).join(' ');
       if (FitnessSearch.fuzzyMatch(hay, q)) {
         results.push({
-          type: 'screen', icon: '📱', title: s.title, sub: s.sub,
+          type: 'screen', icon: 'book', title: s.title, sub: s.sub,
           action: s.action, tags: s.tags, relevance: 3
         });
       }
@@ -285,7 +285,7 @@ reg('search', function(data) {
     } else {
       content =
         '<div style="padding:48px 20px 20px;text-align:center">' +
-        '<div style="font-size:52px;margin-bottom:16px">🔍</div>' +
+        '<div style="margin-bottom:16px;display:flex;justify-content:center;color:var(--c1)">' + icon('search', 52) + '</div>' +
         '<div style="font-size:17px;font-weight:800;color:var(--txt);margin-bottom:8px">Search Everything</div>' +
         '<div style="font-size:13px;color:var(--txt3);line-height:1.8;margin-bottom:24px">Exercises · Muscles · Injuries<br>Mobility · Sports · Your History</div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center">' +
@@ -297,12 +297,12 @@ reg('search', function(data) {
   } else if (results.length === 0) {
     content =
       '<div style="padding:48px 20px;text-align:center">' +
-      '<div style="font-size:48px;margin-bottom:14px">😕</div>' +
+      '<div style="margin-bottom:14px;display:flex;justify-content:center;color:var(--txt3)">' + icon('search', 48) + '</div>' +
       '<div style="font-size:16px;font-weight:700;color:var(--txt);margin-bottom:6px">No results for "' + qEsc + '"</div>' +
       '<div style="font-size:13px;color:var(--txt3);margin-bottom:20px">Try a different word or filter</div>' +
       '<div style="display:flex;flex-direction:column;gap:8px;max-width:280px;margin:0 auto">' +
       ['Bench Press', 'Shoulder pain', 'Hamstring stretch', 'Cricket training', 'Lower back'].map(function(s) {
-        return '<button type="button" onclick="_searchRun(\'' + s + '\')" style="padding:11px 16px;border-radius:14px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:var(--bg3);color:var(--txt2);text-align:left">🔍 ' + s + '</button>';
+        return '<button type="button" onclick="_searchRun(\'' + s + '\')" style="padding:11px 16px;border-radius:14px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:var(--bg3);color:var(--txt2);text-align:left;display:flex;align-items:center;gap:8px">' + icon('search', 14) + ' ' + s + '</button>';
       }).join('') +
       '</div></div>';
   } else {
@@ -313,7 +313,7 @@ reg('search', function(data) {
         const badgeColor = TYPE_COLORS[r.type] || 'var(--txt3)';
         const badgeLabel = TYPE_BADGE[r.type] || r.type;
         return '<button type="button" class="list-row" onclick="_doSearchResult(' + idx + ')" aria-label="' + esc(r.title) + '">' +
-          '<span class="list-row__icon" aria-hidden="true">' + r.icon + '</span>' +
+          '<span class="list-row__icon" aria-hidden="true">' + icon(r.icon, 20) + '</span>' +
           '<span class="list-row__body">' +
           '<span class="list-row__title">' + esc(r.title) + '</span>' +
           '<span class="list-row__sub">' + esc(r.sub) + '</span>' +

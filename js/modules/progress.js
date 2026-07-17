@@ -22,7 +22,7 @@ reg('progress', function() {
     _strengthCharts(ws, prs) +
     _bodyStatsChart(bodyStats, S.g('user')) +
     _achievementWall(earned) +
-    '<div class="pad-x-16-b16"><button type="button" class="btn btn-secondary w-full" onclick="go(\'physique\')" >📊 Physique Analysis & Growth Simulator →</button></div>' +
+    '<div class="pad-x-16-b16"><button type="button" class="btn btn-secondary w-full" onclick="go(\'physique\')" style="display:flex;align-items:center;justify-content:center;gap:8px">' + icon('chart', 18) + ' Physique Analysis & Growth Simulator →</button></div>' +
     '<div  class="spacer-bottom"></div>';
 });
 
@@ -39,9 +39,9 @@ function _monthlyReport(ws, prs, bodyStats) {
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--c2);margin-bottom:4px">Monthly Report</div>' +
     '<div style="font-size:15px;font-weight:800;color:var(--txt);margin-bottom:12px">'+esc(monthName)+'</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">' +
-    _pStat(monthWs.length, 'Sessions', '📅') +
-    _pStat(Math.round(monthVol / 1000) + 'k', 'Volume kg', '🏋️') +
-    _pStat(monthPRs, 'PRs', '🏆') +
+    _pStat(monthWs.length, 'Sessions', 'calendar') +
+    _pStat(Math.round(monthVol / 1000) + 'k', 'Volume kg', 'dumbbell') +
+    _pStat(monthPRs, 'PRs', 'gradcap') +
     '</div>' +
     (weightChange !== null ? '<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--txt3)">Weight this month: <span style="color:'+(parseFloat(weightChange)<=0?'var(--c3)':'var(--c5)')+';font-weight:700">'+(parseFloat(weightChange)>0?'+':'')+weightChange+' kg</span></div>' : '') +
     '</div>';
@@ -89,16 +89,16 @@ function _weeklySummary(ws, prs) {
   return '<div  class="card-block">' +
     '<div  class="section-label">This Week</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">' +
-    _pStat(thisCount, 'Sessions', '📅') +
-    _pStat(Math.round(thisVol)+'kg', 'Volume', '🏋️') +
-    _pStat(newPRs, 'New PRs', '🏆') +
+    _pStat(thisCount, 'Sessions', 'calendar') +
+    _pStat(Math.round(thisVol)+'kg', 'Volume', 'dumbbell') +
+    _pStat(newPRs, 'New PRs', 'gradcap') +
     '</div>' +
     (lastVol > 0 ? '<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--txt3)">vs last week: <span style="color:'+(volChange>=0?'var(--c3)':'var(--c4)')+';font-weight:700">'+(volChange>=0?'+':'')+volChange+'% volume</span></div>' : '') +
     '</div>';
 }
-function _pStat(val, label, icon) {
+function _pStat(val, label, iconName) {
   return '<div style="text-align:center;background:var(--bg4);border-radius:12px;padding:10px">' +
-    '<div style="font-size:16px;margin-bottom:4px">'+icon+'</div>' +
+    '<div style="margin-bottom:4px;display:flex;justify-content:center;color:var(--c1)">'+icon(iconName, 18)+'</div>' +
     '<div  class="row-title-16">'+esc(String(val))+'</div>' +
     '<div style="font-size:10px;color:var(--txt3);margin-top:2px">'+esc(label)+'</div>' +
     '</div>';
@@ -234,7 +234,7 @@ function _heroStats(ws, prs, streak, totalVol) {
   return '<div class="stats-row">' +
     '<div class="stat stat-accent"><div class="stat-v">'+ws.length+'</div><div class="stat-l">Workouts</div></div>' +
     '<div class="stat"><div class="stat-v">'+esc(volDisplay)+'</div><div class="stat-l">Total Vol</div></div>' +
-    '<div class="stat stat-accent"><div class="stat-v">'+streak+'🔥</div><div class="stat-l">Streak</div></div>' +
+    '<div class="stat stat-accent"><div class="stat-v" style="display:flex;align-items:center;justify-content:center;gap:4px">'+streak+' <span style="display:inline-flex;color:var(--c5)">'+icon('flame', 14, 'var(--c5)')+'</span></div><div class="stat-l">Streak</div></div>' +
     '<div class="stat"><div class="stat-v">'+prs.length+'</div><div class="stat-l">PRs</div></div>' +
     '</div>';
 }
@@ -266,7 +266,7 @@ function _workoutCalendar(ws) {
 
 function _workoutHistory(ws) {
   if (!ws.length) {
-    return emptyState('💪', 'No workouts yet', 'Start your first session — your split is ready.', '▶ Start Workout', 'startWorkout&&startWorkout()');
+    return emptyState(icon('dumbbell', 40), 'No workouts yet', 'Start your first session — your split is ready.', 'Start Workout', 'startWorkout&&startWorkout()');
   }
   const recent = ws.slice().reverse().slice(0, 20);
   return sh('Workout History') +
@@ -287,7 +287,7 @@ function _workoutHistory(ws) {
         '</div>' +
         '<div style="text-align:right;flex-shrink:0">' +
         '<div  class="muted-12">'+esc(fmtDate(w.date))+'</div>' +
-        '<div  class="muted-11 mt-2">'+[vol,dur].filter(Boolean).join(' · ')+(prs?' · 🏆'+prs+' PR':'')+'</div>' +
+        '<div  class="muted-11 mt-2" style="display:flex;align-items:center;justify-content:flex-end;gap:4px;flex-wrap:wrap">'+[vol,dur].filter(Boolean).join(' · ')+(prs?' · <span style="display:inline-flex;align-items:center;gap:3px">'+icon('gradcap',12)+' '+prs+' PR</span>':'')+'</div>' +
         '</div>' +
         '<div style="color:var(--txt3);font-size:16px;margin-left:8px">›</div>' +
         '</div>';
@@ -321,17 +321,17 @@ function _volumeChart(ws) {
 function _prBoard(prs) {
   if (!prs.length) return sh('Personal Records') +
     '<div style="text-align:center;padding:40px 24px">' +
-    '<div style="font-size:56px;margin-bottom:12px;animation:fadeUp 0.4s both">🏆</div>' +
+    '<div style="margin-bottom:12px;animation:fadeUp 0.4s both;display:flex;justify-content:center;color:var(--c1)">'+icon('gradcap', 56)+'</div>' +
     '<div style="font-size:19px;font-weight:900;color:var(--txt);margin-bottom:6px;animation:fadeUp 0.4s 0.08s both">No PRs yet</div>' +
     '<div style="font-size:13px;color:var(--txt3);line-height:1.6;max-width:220px;margin:0 auto 20px;animation:fadeUp 0.4s 0.16s both">Hit a heavy set in your next workout to set your first personal record.</div>' +
-    '<button type="button" onclick="go(\'workout\')" class="btn btn-primary" style="animation:fadeUp 0.4s 0.24s both;animation-fill-mode:both">▶ Start Workout</button>' +
+    '<button type="button" onclick="go(\'workout\')" class="btn btn-primary" style="animation:fadeUp 0.4s 0.24s both;animation-fill-mode:both;display:inline-flex;align-items:center;gap:8px">'+icon('play', 16)+' Start Workout</button>' +
     '</div>';
   const sorted = [...prs].sort((a,b) => new Date(b.date)-new Date(a.date));
   return sh('Personal Records') +
     '<div  class="pad-x-16">' +
     sorted.slice(0,8).map(p =>
       '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">' +
-      '<div style="font-size:22px">🏆</div>' +
+      '<div style="display:flex;color:var(--c1)">'+icon('gradcap', 22)+'</div>' +
       '<div  class="flex-1"><div  class="row-title-14">'+esc(p.exercise)+'</div>' +
       '<div  class="muted-12">'+fmtDate(p.date)+'</div></div>' +
       '<div class="ta-right"><div style="font-size:15px;font-weight:800;color:var(--c1)">'+p.weight+'kg × '+p.reps+'</div>' +
@@ -369,10 +369,10 @@ function _strengthCharts(ws, prs) {
 function _bodyStatsChart(bodyStats, user) {
   if (!bodyStats || !bodyStats.length) return sh('Weight Trend') +
     '<div style="text-align:center;padding:40px 24px">' +
-    '<div style="font-size:56px;margin-bottom:12px;animation:fadeUp 0.4s both">⚖️</div>' +
+    '<div style="margin-bottom:12px;animation:fadeUp 0.4s both;display:flex;justify-content:center;color:var(--c2)">'+icon('scale', 56)+'</div>' +
     '<div style="font-size:19px;font-weight:900;color:var(--txt);margin-bottom:6px;animation:fadeUp 0.4s 0.08s both">No weight data</div>' +
     '<div style="font-size:13px;color:var(--txt3);line-height:1.6;max-width:220px;margin:0 auto 20px;animation:fadeUp 0.4s 0.16s both">Track your body weight to see trends and physique progress.</div>' +
-    '<button type="button" onclick="go(\'bodymap\')" class="btn btn-secondary" style="animation:fadeUp 0.4s 0.24s both;animation-fill-mode:both">📍 Open Body Map</button>' +
+    '<button type="button" onclick="go(\'bodymap\')" class="btn btn-secondary" style="animation:fadeUp 0.4s 0.24s both;animation-fill-mode:both;display:inline-flex;align-items:center;gap:8px">'+icon('dna', 16)+' Open Body Map</button>' +
     '</div>';
   var isImperial = (user||{}).units === 'imperial';
   var pts = bodyStats.slice(-12);
@@ -456,7 +456,7 @@ window.showDayWorkouts = function(dateStr) {
         const bestSet = doneSets.slice().sort(function(a,b){return ProgEngine.epley(b.weight||0,b.reps||1)-ProgEngine.epley(a.weight||0,a.reps||1);})[0];
         return '<div style="padding:6px 0;display:flex;justify-content:space-between;align-items:center">' +
           '<div  class="body-13">'+esc(ex.name)+'</div>' +
-          '<div  class="muted-12">'+doneSets.length+' sets · Best: '+(bestSet.weight||0)+'kg×'+(bestSet.reps||0)+(bestSet.isPR?'  🏆':'')+'</div>' +
+          '<div  class="muted-12">'+doneSets.length+' sets · Best: '+(bestSet.weight||0)+'kg×'+(bestSet.reps||0)+(bestSet.isPR?'  '+icon('gradcap',12):'')+'</div>' +
           '</div>';
       }).join('') +
       '</div>';

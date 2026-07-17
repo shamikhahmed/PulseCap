@@ -1,6 +1,18 @@
 'use strict';
 /* ── PulseCap v4 — Profile Switcher ── */
 
+const _AVATAR_COLORS = ['c1','c2','c3','c4','c5','c6','c3','c4'];
+
+function _profileAvatarHtml(p) {
+  const letter = (p.name || 'A').charAt(0).toUpperCase();
+  const av = String(p.avatar || '');
+  const base = 'width:52px;height:52px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:800;flex-shrink:0';
+  if (/^c[1-6]$/.test(av)) {
+    return '<div style="' + base + ';background:rgba(var(--' + av + '-rgb),0.25);color:var(--' + av + ')">' + esc(letter) + '</div>';
+  }
+  return '<div style="' + base + ';background:var(--grad);color:#fff">' + esc(letter) + '</div>';
+}
+
 reg('profiles', function() {
   const profs = S.profiles();
   const activeId = S.activeId();
@@ -12,13 +24,13 @@ reg('profiles', function() {
       (isActive ? 'border-color:var(--c1);background:rgba(var(--c1-rgb),0.06)' : '') +
       '" onclick="switchToProfile(\''+p.id+'\')">' +
       '<div style="display:flex;align-items:center;gap:16px">' +
-      '<div style="width:52px;height:52px;border-radius:16px;' +
-      'background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:24px">' +
-      p.avatar + '</div>' +
+      _profileAvatarHtml(p) +
       '<div  class="flex-1">' +
       '<div style="font-size:16px;font-weight:700;color:var(--txt)">' + esc(p.name) + '</div>' +
       '<div  class="muted-12 mt-2">' +
-      (isDemo ? '🤖 Demo data' : isActive ? '✅ Active profile' : 'Tap to switch') +
+      (isDemo ? '<span style="display:inline-flex;align-items:center;gap:6px">' + icon('sparkles', 14) + ' Demo data</span>' :
+        isActive ? '<span style="display:inline-flex;align-items:center;gap:6px">' + icon('check', 14, '#30d158') + ' Active profile</span>' :
+        'Tap to switch') +
       '</div></div>' +
       (isActive ? '<div style="color:var(--c1);font-size:20px">●</div>' :
         (!isDemo ? '<button type="button" onclick="event.stopPropagation();deleteProfile(\''+p.id+'\')" style="color:var(--c4);font-size:13px;font-weight:600;padding:8px;background:none;border:none;cursor:pointer;touch-action:manipulation">Delete</button>' : '')) +
@@ -36,7 +48,7 @@ reg('profiles', function() {
     '<button type="button" class="btn btn-secondary mb-10"  onclick="showCreateProfile()">+ New Profile</button>' +
     '<button type="button" class="btn btn-secondary mb-10" onclick="loadSamplePersonas()">Load sample athletes</button>' +
     (activeId === 'demo' ? '' :
-      '<button type="button" class="btn" style="background:rgba(123,95,255,0.1);border:1px solid rgba(123,95,255,0.25);color:#7b5fff;margin-bottom:10px" onclick="openDemoProfile()">🤖 Open demo profile</button>' +
+      '<button type="button" class="btn" style="background:rgba(123,95,255,0.1);border:1px solid rgba(123,95,255,0.25);color:#7b5fff;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="openDemoProfile()">' + icon('sparkles', 16, '#7b5fff') + ' Open demo profile</button>' +
       '<a href="?demo=1" class="btn btn-secondary" style="display:block;text-align:center;text-decoration:none;margin-bottom:0">Fresh demo snapshot ↗</a>') +
     '</div>' +
 
@@ -94,43 +106,61 @@ window.confirmOpenDemoProfile = function() {
   closeModal();
   S.openDemoProfile();
   applyTheme(S.g('user.theme') || S.g('user.mode') || 'dark');
-  toast('🤖 Demo profile — switch back in Profiles anytime', 'ok', 4000);
+  toast('Demo profile — switch back in Profiles anytime', 'ok', 4000);
   go('dashboard');
 };
 
 window.showCreateProfile = function() {
-  const avatars = ['💪','🏋️','🔥','⚡','🎯','🧠','🏆','🤖','👑','🦁','🐺','🚀'];
-  const avatarBtns = avatars.map(function(a) {
-    return '<button type="button" onclick="selectAvatar(\''+a+'\')" id="av-btn-'+a.codePointAt(0)+'" '+
-      'style="font-size:28px;padding:8px;background:var(--bg3);border:2px solid var(--border);border-radius:12px;cursor:pointer;touch-action:manipulation;transition:border-color 0.15s" class="av-btn">'+a+'</button>';
+  const avatarBtns = _AVATAR_COLORS.map(function(c, i) {
+    return '<button type="button" onclick="selectAvatar(\'' + c + '\',' + i + ')" id="av-btn-' + c + '-' + i + '" ' +
+      'style="padding:6px;background:var(--bg3);border:2px solid var(--border);border-radius:12px;cursor:pointer;touch-action:manipulation;transition:border-color 0.15s" class="av-btn">' +
+      '<div class="av-letter" style="width:36px;height:36px;border-radius:10px;background:rgba(var(--' + c + '-rgb),0.25);color:var(--' + c + ');font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center">A</div>' +
+      '</button>';
   }).join('');
 
   modal('Create Profile',
     '<div style="margin-bottom:16px">' +
     '<label class="field-label">Name</label>' +
-    '<input id="new-prof-name" class="field" type="text" placeholder="Enter name" maxlength="20">' +
+    '<input id="new-prof-name" class="field" type="text" placeholder="Enter name" maxlength="20" oninput="updateAvatarPreview()">' +
     '</div>' +
-    '<label class="field-label">Avatar</label>' +
+    '<label class="field-label">Color</label>' +
     '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:4px">' + avatarBtns + '</div>' +
-    '<div id="av-preview" style="margin-top:12px;font-size:13px;color:var(--txt3)">Selected: 💪</div>',
+    '<div id="av-preview" style="margin-top:12px;display:flex;align-items:center;gap:10px;font-size:13px;color:var(--txt3)">' +
+    '<div id="av-preview-circle" style="width:36px;height:36px;border-radius:10px;background:rgba(var(--c1-rgb),0.25);color:var(--c1);font-weight:800;font-size:16px;display:flex;align-items:center;justify-content:center">A</div>' +
+    '<span>Initial from your name</span></div>',
     '<button type="button" class="btn btn-primary" onclick="createNewProfile()" style="margin-top:16px">Create Profile</button>'
   );
-  window._selectedAvatar = '💪';
+  window._selectedAvatar = 'c1';
+  setTimeout(function() { updateAvatarPreview(); selectAvatar('c1', 0); }, 0);
 };
 
-window.selectAvatar = function(a) {
-  window._selectedAvatar = a;
+window.updateAvatarPreview = function() {
+  const name = (document.getElementById('new-prof-name') || {}).value || '';
+  const letter = (name.trim() || 'A').charAt(0).toUpperCase();
+  const c = window._selectedAvatar || 'c1';
+  document.querySelectorAll('.av-letter').forEach(function(el) { el.textContent = letter; });
+  const prev = document.getElementById('av-preview-circle');
+  if (prev) {
+    prev.textContent = letter;
+    prev.style.background = 'rgba(var(--' + c + '-rgb),0.25)';
+    prev.style.color = 'var(--' + c + ')';
+  }
+};
+
+window.selectAvatar = function(c, idx) {
+  window._selectedAvatar = c;
   document.querySelectorAll('.av-btn').forEach(function(b) {
     b.style.borderColor = 'var(--border)';
   });
-  const preview = document.getElementById('av-preview');
-  if (preview) preview.textContent = 'Selected: ' + a;
+  const btn = document.getElementById('av-btn-' + c + '-' + idx);
+  if (btn) btn.style.borderColor = 'var(--c1)';
+  updateAvatarPreview();
 };
 
 window.createNewProfile = function() {
   const name = (document.getElementById('new-prof-name')||{}).value || '';
   if (!name.trim()) { toast('Enter a name', 'warn'); return; }
-  const id = S.createProfile(name.trim(), window._selectedAvatar || '💪');
+  const id = S.createProfile(name.trim(), window._selectedAvatar || 'c1');
   closeModal();
   toast('Profile created!', 'ok');
   go('onboarding');

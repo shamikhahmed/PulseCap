@@ -230,7 +230,7 @@ window.showMuscleInfo = function(groupName) {
 
   modal(groupName + ' Status',
     '<div style="text-align:center;padding:8px 0 16px">' +
-    '<div style="font-size:48px;margin-bottom:10px">💪</div>' +
+    '<div style="display:flex;justify-content:center;margin-bottom:10px;color:var(--c1)">' + icon('dumbbell', 48) + '</div>' +
     '<div style="font-size:40px;font-weight:900;color:'+statusColor+';margin-bottom:4px">'+group.pct+'%</div>' +
     '<div style="font-size:14px;font-weight:700;color:'+statusColor+';margin-bottom:4px">'+group.label+'</div>' +
     '<div style="font-size:13px;color:var(--txt3);margin-bottom:8px">'+pctText+'</div>' +
@@ -300,17 +300,17 @@ function _measurementsSection(latest, prev, user) {
   }
 
   var fields = [
-    { key:'neck',       label:'Neck',         icon:'🦒' },
-    { key:'shoulders',  label:'Shoulders',    icon:'💪' },
-    { key:'chest',      label:'Chest',        icon:'🫀' },
-    { key:'leftBicep',  label:'L Bicep',      icon:'💪' },
-    { key:'rightBicep', label:'R Bicep',      icon:'💪' },
-    { key:'waist',      label:'Waist',        icon:'📏' },
-    { key:'hips',       label:'Hips',         icon:'🍑' },
-    { key:'leftThigh',  label:'L Thigh',      icon:'🦵' },
-    { key:'rightThigh', label:'R Thigh',      icon:'🦵' },
-    { key:'leftCalf',   label:'L Calf',       icon:'🦶' },
-    { key:'rightCalf',  label:'R Calf',       icon:'🦶' }
+    { key:'neck',       label:'Neck',         ic:'target' },
+    { key:'shoulders',  label:'Shoulders',    ic:'dumbbell' },
+    { key:'chest',      label:'Chest',        ic:'heart' },
+    { key:'leftBicep',  label:'L Bicep',      ic:'dumbbell' },
+    { key:'rightBicep', label:'R Bicep',      ic:'dumbbell' },
+    { key:'waist',      label:'Waist',        ic:'ruler' },
+    { key:'hips',       label:'Hips',         ic:'walk' },
+    { key:'leftThigh',  label:'L Thigh',      ic:'walk' },
+    { key:'rightThigh', label:'R Thigh',      ic:'walk' },
+    { key:'leftCalf',   label:'L Calf',       ic:'run' },
+    { key:'rightCalf',  label:'R Calf',       ic:'run' }
   ];
 
   var rows = fields.map(function(f) {
@@ -318,7 +318,7 @@ function _measurementsSection(latest, prev, user) {
     var pval = prev ? prev[f.key] : null;
     return '<div class="list-divider-row">' +
       '<div style="display:flex;align-items:center;gap:10px">' +
-      '<span style="font-size:16px;width:24px;text-align:center">'+f.icon+'</span>' +
+      '<span style="width:24px;display:flex;align-items:center;justify-content:center;color:var(--c1)">'+icon(f.ic, 16)+'</span>' +
       '<div  class="row-strong">'+esc(f.label)+'</div>' +
       '</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--c1)">'+cvt(val)+diff(val,pval)+'</div>' +
@@ -415,7 +415,7 @@ window.saveMeasurements = function() {
   });
   S.push('measurements', entry);
   closeModal();
-  toast('Measurements saved! 📏', 'ok');
+  toast('Measurements saved', 'ok');
   go('bodymap');
 };
 
@@ -464,12 +464,12 @@ function _bodyStatsSection(user) {
   return sh('Body Stats', '+ Log Weight', 'showLogWeight()') +
     '<div class="card card-solid mx-card" >' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">' +
-    _bStat('⚖️','Weight',weightDisplay+(changeStr||''),'Current') +
-    _bStat('📏','Height',heightDisplay,'') +
-    _bStat('🧮','BMI','<span style="color:'+bmiColor+'">'+bmiData.bmi+'</span>',bmiData.cat) +
-    _bStat('🔥','BMR',bmr+' kcal','At rest') +
-    _bStat('⚡','TDEE',tdee+' kcal','Daily need') +
-    _bStat('🎯','Healthy',healthyRange.min+'–'+healthyRange.max+'kg','Range') +
+    _bStat('scale','Weight',weightDisplay+(changeStr||''),'Current') +
+    _bStat('ruler','Height',heightDisplay,'') +
+    _bStat('calc','BMI','<span style="color:'+bmiColor+'">'+bmiData.bmi+'</span>',bmiData.cat) +
+    _bStat('flame','BMR',bmr+' kcal','At rest') +
+    _bStat('sparkles','TDEE',tdee+' kcal','Daily need') +
+    _bStat('target','Healthy',healthyRange.min+'–'+healthyRange.max+'kg','Range') +
     '</div>' +
     '<div style="border-top:1px solid var(--border);padding-top:12px">' +
     '<div style="font-size:11px;color:var(--txt3);font-weight:700;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Height Display</div>' +
@@ -477,9 +477,9 @@ function _bodyStatsSection(user) {
     '</div></div>';
 }
 
-function _bStat(icon, label, val, sub) {
+function _bStat(ic, label, val, sub) {
   return '<div style="background:var(--bg4);border-radius:12px;padding:12px">' +
-    '<div  class="micro-label mb-6">'+icon+' '+esc(label)+'</div>' +
+    '<div class="micro-label mb-6" style="display:flex;align-items:center;gap:6px">'+icon(ic, 14)+esc(label)+'</div>' +
     '<div  class="row-title-16">'+val+'</div>' +
     (sub ? '<div  class="muted-11 mt-2">'+esc(sub)+'</div>' : '') +
     '</div>';
@@ -505,8 +505,8 @@ window.showLogWeight = function() {
     '<div class="mt-14">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:8px">Measured</div>' +
     '<div  class="flex-gap-8">' +
-    '<button type="button" id="wt-fasted" class="btn btn-primary btn-sm flex-1"  onclick="setWeightFasted(true)">🌅 Fasted</button>' +
-    '<button type="button" id="wt-fed" class="btn btn-secondary btn-sm flex-1"  onclick="setWeightFasted(false)">🍽 After eating</button>' +
+    '<button type="button" id="wt-fasted" class="btn btn-primary btn-sm flex-1" style="display:flex;align-items:center;justify-content:center;gap:6px" onclick="setWeightFasted(true)">'+icon('sun', 14)+' Fasted</button>' +
+    '<button type="button" id="wt-fed" class="btn btn-secondary btn-sm flex-1" style="display:flex;align-items:center;justify-content:center;gap:6px" onclick="setWeightFasted(false)">'+icon('apple', 14)+' After eating</button>' +
     '</div></div>' +
     '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-top:12px;line-height:1.45">' +
     'Fasted morning weight is most consistent for tracking.<br>Goal: '+(isImperial ? Math.round(goalKg*2.205)+' lb' : goalKg+' kg') +
@@ -539,7 +539,7 @@ window.saveWeight = function() {
   closeModal();
   /* Coach reaction — goal-aware, not just a receipt */
   var react = _weighInReaction(kg, prev, user);
-  if (react) toast(react.emoji + ' ' + react.msg, react.tone, 5500);
+  if (react) toast(react.msg, react.tone, 5500);
   else toast('Logged: ' + kg + 'kg', 'ok');
   /* Callable from dashboard/settings too — re-render whichever screen is open */
   go((typeof currentScreenId === 'function' && currentScreenId()) || 'bodymap');
@@ -548,7 +548,7 @@ window.saveWeight = function() {
 /* What a decent coach would actually say after a weigh-in. */
 function _weighInReaction(kg, prevEntry, user) {
   if (!prevEntry || !prevEntry.weight) {
-    return { emoji: '📍', msg: 'Baseline set: ' + kg + 'kg. Weigh in weekly — trends beat single days.', tone: 'ok' };
+    return { msg: 'Baseline set: ' + kg + 'kg. Weigh in weekly — trends beat single days.', tone: 'ok' };
   }
   var delta = Math.round((kg - prevEntry.weight) * 10) / 10;
   var goal = user.goal || 'hypertrophy';
@@ -562,22 +562,22 @@ function _weighInReaction(kg, prevEntry, user) {
     var crossedUp = prevEntry.weight < goalW && kg >= goalW;
     if (crossedDown || crossedUp) {
       if (typeof celebrate === 'function') celebrate('🏁', 'Goal weight', kg + 'kg — you did the boring work. It paid.', 2600);
-      return { emoji: '🏁', msg: 'Goal weight hit: ' + kg + 'kg. Time to set the next target in Settings.', tone: 'pr' };
+      return { msg: 'Goal weight hit: ' + kg + 'kg. Time to set the next target in Settings.', tone: 'pr' };
     }
   }
 
   if (Math.abs(delta) < 0.2) {
-    if (wantsGain) return { emoji: '⚖️', msg: 'Scale\'s flat. Add ~200 kcal/day, keep protein high, give it a week.', tone: 'info' };
-    if (wantsLoss) return { emoji: '⚖️', msg: 'Holding steady. If this repeats next week, trim ~200 kcal or add a walk.', tone: 'info' };
-    return { emoji: '⚖️', msg: 'Steady at ' + kg + 'kg. That\'s maintenance done right.', tone: 'ok' };
+    if (wantsGain) return { msg: 'Scale\'s flat. Add ~200 kcal/day, keep protein high, give it a week.', tone: 'info' };
+    if (wantsLoss) return { msg: 'Holding steady. If this repeats next week, trim ~200 kcal or add a walk.', tone: 'info' };
+    return { msg: 'Steady at ' + kg + 'kg. That\'s maintenance done right.', tone: 'ok' };
   }
   if (delta < 0) {
-    if (wantsLoss) return { emoji: '📉', msg: 'Down ' + Math.abs(delta) + 'kg. That\'s the pace that sticks — keep doing exactly this.', tone: 'pr' };
-    if (wantsGain) return { emoji: '📉', msg: 'Down ' + Math.abs(delta) + 'kg while trying to build — eat more. Protein first, then carbs around training.', tone: 'warn' };
-    return { emoji: '📉', msg: 'Down ' + Math.abs(delta) + 'kg.', tone: 'info' };
+    if (wantsLoss) return { msg: 'Down ' + Math.abs(delta) + 'kg. That\'s the pace that sticks — keep doing exactly this.', tone: 'pr' };
+    if (wantsGain) return { msg: 'Down ' + Math.abs(delta) + 'kg while trying to build — eat more. Protein first, then carbs around training.', tone: 'warn' };
+    return { msg: 'Down ' + Math.abs(delta) + 'kg.', tone: 'info' };
   }
   /* delta > 0 */
-  if (wantsGain) return { emoji: '📈', msg: 'Up ' + delta + 'kg. Good gaining — if it\'s over ~0.5kg/week, ease the surplus so it stays muscle.', tone: 'pr' };
-  if (wantsLoss) return { emoji: '📈', msg: 'Up ' + delta + 'kg. One weigh-in means nothing — but watch the weekend calories and check again in 3 days.', tone: 'warn' };
-  return { emoji: '📈', msg: 'Up ' + delta + 'kg.', tone: 'info' };
+  if (wantsGain) return { msg: 'Up ' + delta + 'kg. Good gaining — if it\'s over ~0.5kg/week, ease the surplus so it stays muscle.', tone: 'pr' };
+  if (wantsLoss) return { msg: 'Up ' + delta + 'kg. One weigh-in means nothing — but watch the weekend calories and check again in 3 days.', tone: 'warn' };
+  return { msg: 'Up ' + delta + 'kg.', tone: 'info' };
 }

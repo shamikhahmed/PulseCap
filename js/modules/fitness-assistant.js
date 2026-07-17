@@ -79,7 +79,7 @@ const FitnessAssistant = {
 
     return {
       type: 'warning',
-      icon: '⚠️',
+      icon: 'alert',
       title: bodyPart ? (bodyPart.charAt(0).toUpperCase() + bodyPart.slice(1)) + ' Pain Analysis' : 'Pain Assessment',
       response: 'Pain during or after training in the ' + part + ' should not be ignored.' + volumeNote + (recs.length ? ' Analysis shows: ' + recs.slice(0, 2).join('. ') + '.' : '') + '\n\nFor acute joint pain: stop the exercise immediately. For muscle soreness (DOMS): light movement accelerates recovery. Never train through sharp or joint pain.',
       actions: ['View Joint Health Monitor', 'View Rehab Protocols'],
@@ -99,7 +99,7 @@ const FitnessAssistant = {
 
     return {
       type: 'analysis',
-      icon: '📊',
+      icon: 'chart',
       title: 'Plateau Analysis',
       response: 'Strength plateaus have specific causes. ' + (causes.length ? 'Based on your data: ' + causes[0] + '.' : 'Common causes include: insufficient recovery, neural adaptation, poor nutrition timing, or need for program variation.') + '\n\nBreaking a plateau requires changing the stimulus: deload first (50% volume for 1 week), then return with a rep range change, exercise variation, or intensity technique (pause reps, drop sets).',
       actions: ['View Training Intelligence', 'View Recovery Debt'],
@@ -135,7 +135,7 @@ const FitnessAssistant = {
 
     return {
       type: 'recommendation',
-      icon: '🏆',
+      icon: 'gradcap',
       title: 'Best ' + (part.charAt(0).toUpperCase() + part.slice(1)) + ' Exercises',
       response: (GENERIC_BEST[part] || 'Compound movements first, isolation second. Progressive overload on all movements.') + personalNote,
       actions: ['View Exercise DNA Profile', 'Start Workout'],
@@ -150,7 +150,7 @@ const FitnessAssistant = {
 
     return {
       type: 'education',
-      icon: '💡',
+      icon: 'sparkles',
       title: 'Understanding Muscle Soreness',
       response: 'DOMS (Delayed Onset Muscle Soreness) peaks 24-72 hours after training and is caused by micro-tears in muscle fibers and inflammatory response — not lactic acid.' + (soreMuscle ? ' Your ' + part + ' is currently at ' + soreMuscle.pct + '% recovery.' : '') + '\n\nDOMS is reduced by: light movement (increases blood flow), protein intake (muscle repair), sleep, massage, and contrast showers. It does NOT indicate a better workout.',
       actions: ['View Muscle Recovery Timeline', 'View Body Intelligence'],
@@ -165,7 +165,7 @@ const FitnessAssistant = {
 
     return {
       type: 'data',
-      icon: '⏱️',
+      icon: 'clock',
       title: 'Your Current Recovery Status',
       response: (ready.length ? 'Ready to train: ' + ready.map(function(m) { return m.label; }).join(', ') + '. ' : 'No muscle groups fully recovered yet. ') + (resting.length ? 'Still recovering: ' + resting.map(function(m) { return m.label + ' (' + m.pct + '%)'; }).join(', ') + '.' : ''),
       actions: ['View Full Recovery Timeline', 'View Recovery Debt'],
@@ -180,7 +180,7 @@ const FitnessAssistant = {
 
     return {
       type: 'education',
-      icon: '📊',
+      icon: 'chart',
       title: 'Training Volume Guidelines',
       response: specific
         ? part + ': Currently ' + specific.current + ' sets/week. ' + specific.action + '.'
@@ -198,7 +198,7 @@ const FitnessAssistant = {
 
     return {
       type: 'education',
-      icon: '🥩',
+      icon: 'apple',
       title: 'Nutrition for Performance',
       response: 'For muscle building: target ' + protein + 'g protein daily (' + weight + 'kg × 2.0g/kg). Calories: +200-300 surplus for lean bulk. \n\nProtein timing: within 2 hours post-workout for muscle protein synthesis. Creatine monohydrate 5g/day is the most evidence-backed supplement. Carbohydrates fuel training performance — don\'t fear them.',
       actions: ['View Nutrition Tracker'],
@@ -209,7 +209,7 @@ const FitnessAssistant = {
   handleSupplements: function(message, bodyPart) {
     return {
       type: 'education',
-      icon: '💊',
+      icon: 'pill',
       title: 'Supplement Guide',
       response: 'Evidence-based supplements (in order of impact): 1. Creatine Monohydrate 5g/day — increases strength 5-15%, well-researched. 2. Protein Powder — convenient protein source, no magic. 3. Caffeine 200-400mg pre-workout — performance enhancer. 4. Vitamin D3 if deficient. \n\nEverything else (BCAAs, fat burners, mass gainers) has weak evidence. Whole foods first, supplements fill gaps.',
       actions: ['View Supplement Tracker'],
@@ -224,7 +224,7 @@ const FitnessAssistant = {
 
     return {
       type: 'recommendation',
-      icon: '📉',
+      icon: 'trendDown',
       title: 'Deload Protocol',
       response: 'Your recovery debt is currently ' + debt + '/100 with ' + weekCount + ' sessions in the last 6 weeks.' + (debt >= 60 ? ' A deload is recommended.' : ' A deload may be beneficial if you feel run down.') + '\n\nProper deload: Keep FREQUENCY the same. Reduce VOLUME by 40-50%. Reduce INTENSITY to 60-70% of normal. Duration: 1 week. Do NOT skip training entirely — this causes more disruption than benefit.',
       actions: ['View Recovery Debt', 'View Recovery'],
@@ -243,7 +243,7 @@ const FitnessAssistant = {
     };
     return {
       type: 'recommendation',
-      icon: '📅',
+      icon: 'calendar',
       title: 'Training Frequency for ' + (age.label || 'You'),
       response: 'Based on your training age (' + (age.label || 'intermediate') + '): ' + (FREQ_BY_AGE[age.tier] || '4-5 days/week') + '. Each muscle group should be trained 2x/week minimum for optimal hypertrophy. More frequency works if volume per session is managed.',
       actions: ['View Training Age'],
@@ -254,7 +254,7 @@ const FitnessAssistant = {
   handleBeginner: function(message, bodyPart) {
     return {
       type: 'recommendation',
-      icon: '🌱',
+      icon: 'leaf',
       title: 'Getting Started Right',
       response: 'As a beginner, you have the most to gain. Focus on: 1. Master the big 5: Squat, Deadlift, Bench Press, Overhead Press, Pull-Ups. 2. Progressive overload — add weight when you hit the top of your rep range. 3. 3-4 sessions/week full body or upper/lower. 4. Sleep 8 hours — this is where growth happens. 5. Eat 1.8-2g protein per kg bodyweight. \n\nAvoid: Program hopping. Excessive isolation work. Skipping legs.',
       actions: ['Start a Workout', 'View Coach'],
@@ -278,7 +278,7 @@ const FitnessAssistant = {
     };
     return {
       type: 'recommendation',
-      icon: '💪',
+      icon: 'dumbbell',
       title: (part.charAt(0).toUpperCase() + part.slice(1)) + ' Training Guide',
       response: GROUP_TIPS[part] || 'Train this muscle group 2-3x/week with 10-20 sets. Progressive overload on compounds, isolation for detail.',
       actions: ['View Encyclopedia', 'Start Workout'],
@@ -289,7 +289,7 @@ const FitnessAssistant = {
   handleWarmup: function(message, bodyPart) {
     return {
       type: 'education',
-      icon: '🔥',
+      icon: 'flame',
       title: 'Warmup Protocol',
       response: 'A proper warmup has 3 phases: 1. General warmup (3-5 min cardio to elevate core temperature). 2. Joint mobility (specific to today\'s session). 3. Specific warmup sets (40-50% × 5, 60-70% × 3, then to working weight). \n\nSkipping warmup increases injury risk and reduces performance. The specific warmup also "primes" the neural pathway for your main lifts.',
       actions: ['View Warmup Protocols'],
@@ -301,7 +301,7 @@ const FitnessAssistant = {
     var part = bodyPart || 'muscle';
     return {
       type: 'education',
-      icon: '🧘',
+      icon: 'leaf',
       title: 'Stretching & Mobility',
       response: 'Static stretching AFTER training (not before — reduces strength 5-8% if done pre-workout). Dynamic mobility BEFORE training. PNF stretching (contract-relax) is most effective for increasing range of motion. Hold static stretches 30-60s minimum. The ' + part + ' requires consistent daily work to improve significantly.',
       actions: ['View Stretching Encyclopedia', 'View Mobility Guide'],
@@ -312,7 +312,7 @@ const FitnessAssistant = {
   handleWeight: function(message, bodyPart) {
     return {
       type: 'education',
-      icon: '⚖️',
+      icon: 'scale',
       title: 'Weight Selection & Progression',
       response: 'Select weight where you reach failure at the TOP of your rep range (e.g., for 8-12 reps, choose weight where rep 12 is very hard). When you can complete all reps with good form, add 2.5kg next session (upper body) or 5kg (lower body). \n\nIf you cannot complete the minimum reps, the weight is too heavy. Ego lifting destroys progress and causes injury.',
       actions: ['Start Workout', 'View Coach'],
@@ -323,7 +323,7 @@ const FitnessAssistant = {
   handleForm: function(message, bodyPart) {
     return {
       type: 'education',
-      icon: '📐',
+      icon: 'ruler',
       title: 'Form & Technique',
       response: 'Good form prioritises: muscle stretch at the bottom (full ROM), controlled eccentric (2-4 seconds down), full contraction at top, neutral spine on all compounds.\n\nIf you cannot maintain form, reduce weight. Video yourself from the side for compound lifts — you cannot self-correct what you cannot see.',
       actions: ['View Exercise Knowledge Graph'],
@@ -334,7 +334,7 @@ const FitnessAssistant = {
   handleUnknown: function(message) {
     return {
       type: 'unknown',
-      icon: '🤔',
+      icon: 'sparkles',
       title: 'Try rephrasing',
       response: 'I didn\'t quite understand that. Try asking about:\n• "Why is my shoulder hurting?"\n• "Best exercise for upper chest"\n• "Why am I plateauing?"\n• "How many sets per week for legs?"\n• "When can I train chest again?"\n• "Should I deload?"',
       actions: [],

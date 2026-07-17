@@ -114,7 +114,7 @@ reg('photos', function() {
         '<div style="position:absolute;bottom:0;left:0;right:0;padding:20px 10px 8px;background:linear-gradient(transparent,rgba(0,0,0,0.75));display:flex;justify-content:space-between;align-items:flex-end">' +
         '<div><div style="font-size:11px;font-weight:700;color:#fff">' + esc(fmtDate(p.date)) + '</div>' +
         (p.weight ? '<div style="font-size:10px;color:rgba(255,255,255,0.75)">' + p.weight + 'kg</div>' : '') + '</div>' +
-        '<button type="button" onclick="deleteProgressPhoto(\'' + p.id + '\')" aria-label="Delete" style="background:rgba(0,0,0,0.45);border:none;border-radius:8px;color:#fff;font-size:12px;padding:5px 8px;cursor:pointer;touch-action:manipulation">🗑</button>' +
+        '<button type="button" onclick="deleteProgressPhoto(\'' + p.id + '\')" aria-label="Delete" style="background:rgba(0,0,0,0.45);border:none;border-radius:8px;color:#fff;padding:5px 8px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center">' + icon('alert', 14, '#fff') + '</button>' +
         '</div></div>';
     }).join('');
   }, 0);
