@@ -23,7 +23,7 @@ test.describe('PulseCap smoke', () => {
     expect(res && res.ok()).toBeTruthy();
     const text = await page.textContent('body');
     expect(text || '').toContain('ASSET_URLS');
-    expect(text || '').toContain('pulsecap-v64');
+    expect(text || '').toContain('pulsecap-v65');
     expect(text || '').toContain('sameOrigin');
   });
 

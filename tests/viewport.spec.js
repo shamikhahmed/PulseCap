@@ -30,10 +30,16 @@ test.describe('PulseCap viewport contract', () => {
     await assertCapSharedMobile(page, expect);
     const clearance = await page.evaluate(() => {
       const view = document.getElementById('view');
-      if (!view) return 0;
-      return parseFloat(getComputedStyle(view).paddingBottom) || 0;
+      if (!view) return { pb: 0, spacer: 0 };
+      const pb = parseFloat(getComputedStyle(view).paddingBottom) || 0;
+      const sp = document.querySelector('.spacer-bottom');
+      const spacer = sp ? (parseFloat(getComputedStyle(sp).height) || 0) : 0;
+      return { pb, spacer };
     });
-    expect(clearance).toBeGreaterThanOrEqual(100);
+    // Must clear floating pill (~60) + safe (34) without double-counting spacer
+    expect(clearance.pb).toBeGreaterThanOrEqual(100);
+    expect(clearance.pb).toBeLessThan(130);
+    expect(clearance.spacer).toBeLessThanOrEqual(16);
   });
 
   test('430px — large phone shell', async ({ page }) => {

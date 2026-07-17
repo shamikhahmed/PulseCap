@@ -1,5 +1,10 @@
 # Changelog — PulseCap
 
+## 5.6.6 (2026-07-17) — Real-iPhone footer blank
+- **Root cause:** `#view` reserved `108px + safe` AND almost every screen also ended with `.spacer-bottom` at `96px + safe` → ~270px empty footer on devices with home-indicator inset.
+- **Fix:** view padding → `72px + max(12px, safe)`; `.spacer-bottom` → 12px breath only (no second safe/nav reserve).
+- SW `pulsecap-v65`.
+
 ## 5.6.5 (2026-07-17) — iPhone 16 Pro Max device audit
 - **Device walk:** simulated iPhone 16 Pro Max (440×956, DPR 3, safe-area top 62 / bottom 34) across every screen + active workout in dark + light; screenshotted and reviewed each, plus per-screen nav-overlap and horizontal-scroll probes.
 - **Physique tabs fixed (bug):** Archetype/Timeline tabs never lazy-loaded their module — Archetype sat on "Archetype loading…" forever. `reg('physique')` now loads the module and re-renders.

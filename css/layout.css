@@ -20,9 +20,9 @@
   flex: 1; min-height: 0;
   overflow-y: auto; overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  /* Always reserve space for floating bottom nav — never rely only on :has()
-     timing (premium class may attach after first paint). */
-  padding-bottom: calc(108px + var(--safe));
+  /* Floating pill sits at bottom:max(12px, safe). Clearance = pill (~60px) +
+     that offset + small buffer. Do NOT also bake safe into .spacer-bottom. */
+  padding-bottom: calc(72px + max(12px, var(--safe)));
   overscroll-behavior: contain;
   position: relative;
 }
@@ -585,14 +585,12 @@ body[data-cap-app="1"] .topbar {
   border-radius: 0;
   clip-path: none;
 }
-/* Room for the floating pill: pill height (~58px) + float gap + safe area.
-   Extra buffer so last cards never peek under frosted glass on first paint. */
+/* Keep in sync with #view base padding — pill + float gap + buffer. */
 body:has(#nav.cap-premium-nav) #view {
-  padding-bottom: calc(108px + var(--safe));
+  padding-bottom: calc(72px + max(12px, var(--safe)));
 }
-/* :has() fallback — premium nav is on for all mobile sessions anyway */
 @supports not selector(body:has(a)) {
-  #view { padding-bottom: calc(108px + var(--safe)); }
+  #view { padding-bottom: calc(72px + max(12px, var(--safe))); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -663,8 +661,9 @@ textarea:focus-visible,
 .flex-gap-10 { display: flex; gap: 10px; }
 .flex-gap-12 { display: flex; gap: var(--space-3); }
 .flex-col { display: flex; flex-direction: column; }
-/* End-of-screen spacer — must clear floating premium nav (~96px) + safe area */
-.spacer-bottom { height: calc(96px + var(--safe)); min-height: 96px; }
+/* Tiny end breath only — #view already clears the floating pill + safe area.
+   Old 96px+safe here stacked with view padding → ~270px blank footer on iPhone. */
+.spacer-bottom { height: 12px; min-height: 12px; }
 .stack-2 > * + * { margin-top: var(--space-2); }
 .stack-3 > * + * { margin-top: var(--space-3); }
 .stack-4 > * + * { margin-top: var(--space-4); }
