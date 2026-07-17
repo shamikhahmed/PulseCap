@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '5.6.0';
+window.APP_VERSION = '5.6.1';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -377,15 +377,35 @@ function moduleTopbar(title, opts) {
     (right ? '<div class="topbar-right">' + right + '</div>' : '') +
     '</div>';
 }
+/** History-aware back chip — preferred for Learn deep-screens. */
+function moduleBackTopbar(title, fallbackScreen) {
+  const fb = fallbackScreen || 'hub';
+  return '<div class="topbar"><button type="button" class="back-chip" onclick="history.length>1?history.back():go(\'' + fb + '\')" aria-label="Back">←</button>' +
+    '<div class="topbar-title">' + esc(title) + '</div></div>';
+}
 function moduleLede(text) {
   return '<p class="mod-lede">' + esc(text) + '</p>';
 }
 function moduleChip(label, screen, on) {
   return '<button type="button" onclick="go(\'' + screen + '\')" class="press mod-chip' + (on ? ' on' : '') + '">' + esc(label) + '</button>';
 }
+/** Prefer these over raw style= chrome when building screens. */
+function uiCard(innerHtml, cls) {
+  return '<div class="' + (cls || 'card-block') + '">' + (innerHtml || '') + '</div>';
+}
+function uiSection(label) {
+  return '<div class="section-label">' + esc(label) + '</div>';
+}
+function uiSpacer() {
+  return '<div class="spacer-bottom" aria-hidden="true"></div>';
+}
 window.moduleTopbar = moduleTopbar;
+window.moduleBackTopbar = moduleBackTopbar;
 window.moduleLede = moduleLede;
 window.moduleChip = moduleChip;
+window.uiCard = uiCard;
+window.uiSection = uiSection;
+window.uiSpacer = uiSpacer;
 function modal(title, bodyHtml, footerHtml) {
   closeModal();
   const d = document.createElement('div');

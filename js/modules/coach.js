@@ -35,7 +35,7 @@ reg('briefing', function() {
     '<div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);border-radius:14px;padding:14px;margin:0 16px 14px;display:flex;gap:12px">' +
     '<span style="flex-shrink:0;color:#ff453a">' + icon('alert', 20) + '</span>' +
     '<div><div style="font-size:13px;font-weight:700;color:#ff453a;margin-bottom:4px">'+injuries.length+' Active Injur'+(injuries.length>1?'ies':'y')+'</div>' +
-    '<div style="font-size:12px;color:var(--txt2);line-height:1.5">Some exercises have been flagged. Check coach screen for modifications.</div>' +
+    '<div class="body-12-lh">Some exercises have been flagged. Check coach screen for modifications.</div>' +
     '<button type="button" onclick="go(\'settings\',{tab:\'profile\'})" style="margin-top:8px;font-size:12px;color:var(--c1);font-weight:600;background:none;border:none;cursor:pointer;touch-action:manipulation">Manage injuries →</button>' +
     '</div></div>' : '';
 
@@ -48,46 +48,46 @@ reg('briefing', function() {
     'text-transform:uppercase;letter-spacing:0.06em;background:rgba(var(--c1-rgb),0.12);color:var(--c1);margin-bottom:10px">'+rl.l+'</div>' +
     '<div style="font-size:14px;color:var(--txt2);line-height:1.6;max-width:300px;margin:0 auto">'+esc(coachMsg)+'</div>' +
     '<div style="display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px">' +
-    '<div style="display:flex">' + iconTile(cm.ic || 'sparkles', 'c1', 28) + '</div>' +
-    '<div style="font-size:13px;color:var(--txt3)"><strong style="color:var(--txt)">'+esc(cm.name)+'</strong> · '+esc(cm.title)+'</div>' +
+    '<div class="flex-row">' + iconTile(cm.ic || 'sparkles', 'c1', 28) + '</div>' +
+    '<div  class="muted-13"><strong class="c-txt">'+esc(cm.name)+'</strong> · '+esc(cm.title)+'</div>' +
     '</div></div>' +
 
     sh('Today\'s Plan') +
-    '<div class="card card-grad-border" style="margin:0 16px 14px">' +
+    '<div class="card card-grad-border mx-card" >' +
     '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">' +
-    '<div style="display:flex">' + iconTile('dumbbell', 'c1', 36) + '</div>' +
-    '<div><div style="font-size:16px;font-weight:800;color:var(--txt)">'+esc(splitDay.n||'Rest Day')+'</div>' +
-    '<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+esc(prettyMuscles(splitDay.muscles))+'</div></div>' +
+    '<div class="flex-row">' + iconTile('dumbbell', 'c1', 36) + '</div>' +
+    '<div><div  class="row-title-16">'+esc(splitDay.n||'Rest Day')+'</div>' +
+    '<div  class="muted-12 mt-2">'+esc(prettyMuscles(splitDay.muscles))+'</div></div>' +
     '</div>' +
     '<div style="display:flex;gap:10px">' +
-    '<button type="button" class="btn btn-primary" style="flex:1" onclick="startWorkout&&startWorkout()">▶ Start Workout</button>' +
-    '<button type="button" class="btn btn-secondary" style="flex:1" onclick="go(\'coach\')">Full Plan</button>' +
+    '<button type="button" class="btn btn-primary flex-1"  onclick="startWorkout&&startWorkout()">▶ Start Workout</button>' +
+    '<button type="button" class="btn btn-secondary flex-1"  onclick="go(\'coach\')">Full Plan</button>' +
     '</div></div>' +
 
     injuryAlert +
 
     (function() {
       const lastWkt = (S.g('workouts')||[]).slice(-1)[0];
-      return lastWkt ? '<div style="margin:0 16px 14px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;font-size:13px;color:var(--txt3)">Last session: <strong style="color:var(--txt)">'+esc(lastWkt.name||'Workout')+'</strong> · '+fmtDate(lastWkt.date)+' · '+Math.round(lastWkt.totalVol||0)+'kg volume</div>' : '';
+      return lastWkt ? '<div style="margin:0 16px 14px;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;font-size:13px;color:var(--txt3)">Last session: <strong class="c-txt">'+esc(lastWkt.name||'Workout')+'</strong> · '+fmtDate(lastWkt.date)+' · '+Math.round(lastWkt.totalVol||0)+'kg volume</div>' : '';
     })() +
 
     sh('Today') +
     '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;padding:0 16px 14px">' +
     '<div style="background:var(--bg3);border-radius:14px;padding:12px;text-align:center;border:1px solid var(--border)">' +
     '<div style="font-size:22px;font-weight:800;color:var(--c1)">'+streak+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">Streak</div>' +
+    '<div  class="micro-label type-caption-mt">Streak</div>' +
     '</div>' +
     '<div style="background:var(--bg3);border-radius:14px;padding:12px;text-align:center;border:1px solid var(--border)">' +
     '<div style="font-size:22px;font-weight:800;color:var(--txt)">'+(S.g('workouts')||[]).length+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">Sessions</div>' +
+    '<div  class="micro-label type-caption-mt">Sessions</div>' +
     '</div>' +
     '<div style="background:var(--bg3);border-radius:14px;padding:12px;text-align:center;border:1px solid var(--border)">' +
     '<div style="font-size:22px;font-weight:800;color:#ffd60a">'+(S.g('prs')||[]).length+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">PRs</div>' +
+    '<div  class="micro-label type-caption-mt">PRs</div>' +
     '</div></div>' +
 
     (insights.length ? sh('Coach Insights') +
-    '<div style="padding:0 16px">' +
+    '<div  class="pad-x-16">' +
     insights.slice(0,2).map(function(ins) {
       const col = ins.c || 'var(--c1)';
       return '<div style="border-left:3px solid '+col+';background:rgba(0,0,0,0.15);padding:12px 14px;border-radius:0 10px 10px 0;margin-bottom:10px">' +
@@ -118,14 +118,14 @@ reg('coach', function() {
 
 function _readinessBlock(score, rl, rec) {
   return sh('Readiness Assessment') +
-    '<div style="padding:0 16px 14px">' +
+    '<div  class="pad-x-16-b">' +
     '<div class="readiness-card" style="margin:0">' +
     '<div style="display:flex;align-items:center;gap:20px">' +
     '<div>' +
     '<div class="readiness-score">'+score+'</div>' +
     '<div class="readiness-label '+rl.cls+'">'+rl.l+'</div>' +
     '</div>' +
-    '<div style="flex:1">' +
+    '<div  class="flex-1">' +
     '<div style="font-size:16px;font-weight:700;color:var(--txt);margin-bottom:4px">Today\'s recommendation:</div>' +
     '<div style="font-size:14px;color:var(--c1);font-weight:600;text-transform:capitalize">'+esc(rec)+'</div>' +
     '<div style="font-size:13px;color:var(--txt2);margin-top:6px">'+esc(ReadinessEngine.message(score))+'</div>' +
@@ -150,7 +150,7 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
 
   const deloadBanner = streak >= 5 ?
     '<div class="ai-msg" style="border-left-color:#f5c842;margin:0 16px 12px">' +
-    '<div class="ai-msg-header"><span style="color:#f5c842">' + icon('alert', 16) + '</span><span class="ai-msg-label" style="color:#f5c842">Deload Week Advised</span></div>' +
+    '<div class="ai-msg-header"><span class="c-warn">' + icon('alert', 16) + '</span><span class="ai-msg-label c-warn">Deload Week Advised</span></div>' +
     '<div class="ai-msg-text">'+streak+' consecutive training days detected. Keep the schedule but cut volume 50% — your CNS and connective tissue need systemic recovery.</div></div>' : '';
 
   if (score < 50) {
@@ -163,12 +163,12 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
     return sh('Today\'s Program') + deloadBanner +
       '<div class="card card-solid" style="margin:0 16px 14px;border-left:3px solid #ff6b35">' +
       '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">' +
-      '<div style="display:flex">' + iconTile('bed', 'c4', 40) + '</div>' +
-      '<div><div style="font-size:16px;font-weight:800;color:var(--txt)">Rest or Light Session</div>' +
-      '<div style="font-size:13px;color:var(--txt2)">Readiness '+score+'/100 — body needs recovery</div></div></div>' +
+      '<div class="flex-row">' + iconTile('bed', 'c4', 40) + '</div>' +
+      '<div><div  class="row-title-16">Rest or Light Session</div>' +
+      '<div  class="body-13">Readiness '+score+'/100 — body needs recovery</div></div></div>' +
       lightOpts.map(r=>'<div style="padding:6px 0;font-size:13px;color:var(--txt2);border-bottom:1px solid var(--border)">' + esc(r) + '</div>').join('') +
       '</div>' +
-      '<div style="padding:0 16px 14px"><button type="button" class="btn btn-secondary" onclick="go(\'workout\')">Log Light Session</button></div>';
+      '<div  class="pad-x-16-b"><button type="button" class="btn btn-secondary" onclick="go(\'workout\')">Log Light Session</button></div>';
   }
 
   const warmupItems = (splitDay.warmup||[]).map(w =>
@@ -193,12 +193,12 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
     return '<div style="padding:12px 0;border-bottom:1px solid var(--border)">' +
       '<div style="display:flex;align-items:flex-start;gap:10px">' +
       '<div style="font-size:22px;width:32px">'+(ex && ex.em ? esc(ex.em) : '')+'</div>' +
-      '<div style="flex:1">' +
-      '<div style="font-size:14px;font-weight:700;color:var(--txt)">' +
+      '<div  class="flex-1">' +
+      '<div  class="row-title-14">' +
         (fatiguedMuscle?'<span style="color:#f5c842;font-weight:700">Fatigue · </span>':'') +
         (injWarn?'<span style="color:#ff4444;font-weight:700">Caution · </span>':'') +
         esc(name)+'</div>' +
-      '<div style="font-size:12px;color:var(--txt3)">'+sets+(suggest?' · Try '+(suggest||'—')+'kg':'')+'</div>' +
+      '<div  class="muted-12">'+sets+(suggest?' · Try '+(suggest||'—')+'kg':'')+'</div>' +
       (fatiguedMuscle?'<div style="font-size:11px;color:#f5c842;margin-top:2px">'+fatiguePct+'% recovery — consider reduced volume</div>':'') +
       (injWarn?'<div style="font-size:11px;color:#ff4444;margin-top:2px">Injury caution: '+esc(injWarn)+'</div>':'') +
       (!fatiguedMuscle&&!injWarn&&progNote?'<div style="font-size:11px;color:#10B981;margin-top:2px">'+esc(progNote)+'</div>':'') +
@@ -211,7 +211,7 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
 
   return sh('Today\'s Program') + deloadBanner +
     '<div class="warmup-card"><div class="warmup-title">Warm-Up Protocol</div>'+warmupItems+'</div>' +
-    '<div class="card card-solid" style="margin-bottom:14px">' +
+    '<div class="card card-solid mb-14" >' +
     '<div style="font-size:16px;font-weight:800;color:var(--txt);margin-bottom:4px">'+esc(splitDay.n||'Rest Day')+'</div>' +
     '<div style="font-size:12px;color:var(--txt3);margin-bottom:12px">'+esc(prettyMuscles(splitDay.muscles))+'</div>' +
     mainExercises + '</div>' +
@@ -220,10 +220,10 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
     '<div style="font-size:16px;font-weight:700;color:var(--c1);margin-bottom:4px">'+esc(cardioRec.machine)+'</div>' +
     '<div style="font-size:13px;color:var(--txt2);margin-bottom:4px">'+esc(cardioRec.duration)+'</div>' +
     '<div style="font-size:13px;color:var(--txt3);margin-bottom:12px">'+esc(cardioRec.details)+'</div>' +
-    '<button type="button" class="btn btn-secondary" onclick="showLogCardio()" style="width:100%">Log Cardio</button>' +
+    '<button type="button" class="btn btn-secondary w-full" onclick="showLogCardio()" >Log Cardio</button>' +
     '</div>' +
     '<div class="warmup-card"><div class="warmup-title">Cooldown Stretches</div>'+cooldownItems+'</div>' +
-    '<div style="padding:0 16px 14px"><button type="button" class="btn btn-primary" onclick="go(\'workout\')">Start Workout</button></div>';
+    '<div  class="pad-x-16-b"><button type="button" class="btn btn-primary" onclick="go(\'workout\')">Start Workout</button></div>';
 }
 
 /* ── IMPROVEMENT 2: Progression Analysis per Exercise ── */
@@ -258,19 +258,19 @@ function _progressionAnalysisBlock() {
     const changeLabel = !prog.pctChange ? 'No 4-wk data' : (prog.pctChange > 0 ? '↑' : '↓') + Math.abs(prog.pctChange) + '% vs 4wks';
     return '<div style="padding:14px 0;border-bottom:1px solid var(--border)">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
-      '<div style="font-size:14px;font-weight:700;color:var(--txt)">'+esc(prog.name)+'</div>' +
+      '<div  class="row-title-14">'+esc(prog.name)+'</div>' +
       '<div style="font-size:12px;color:'+changeColor+';font-weight:600">'+esc(changeLabel)+'</div>' +
       '</div>' +
       '<div style="display:flex;gap:10px;margin-bottom:6px">' +
-      '<div style="flex:1">' +
+      '<div  class="flex-1">' +
       '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em">Best set</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--c1)">'+prog.currentWeight+u+' × '+prog.currentReps+'</div>' +
       '</div>' +
-      '<div style="flex:1">' +
+      '<div  class="flex-1">' +
       '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em">Est. 1RM</div>' +
-      '<div style="font-size:14px;font-weight:700;color:var(--txt)">'+prog.currentE1RM+u+'</div>' +
+      '<div  class="row-title-14">'+prog.currentE1RM+u+'</div>' +
       '</div>' +
-      '<div style="flex:1">' +
+      '<div  class="flex-1">' +
       '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em">Next target</div>' +
       '<div style="font-size:14px;font-weight:700;color:'+(prog.plateau?'#f5c842':'#10B981')+'">'+prog.suggestedWeight+u+'</div>' +
       '</div>' +
@@ -280,7 +280,7 @@ function _progressionAnalysisBlock() {
   }).join('');
 
   return sh('Progression Analysis', 'All PRs', 'go(\'progress\')') +
-    '<div class="card card-solid" style="margin:0 16px 14px">'+cardHtml+'</div>';
+    '<div class="card card-solid mx-card" >'+cardHtml+'</div>';
 }
 
 /* ── IMPROVEMENT 3: Weekly Summary Card ── */
@@ -292,38 +292,38 @@ function _weeklySummaryBlock(report) {
   const completionPct = Math.round((report.weekWorkouts / Math.max(report.weeklyGoal,1)) * 100);
 
   return sh('Weekly Summary', 'Full history', 'go(\'progress\')') +
-    '<div class="card card-solid" style="margin:0 16px 14px">' +
+    '<div class="card card-solid mx-card" >' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">' +
-    '<div style="background:var(--bg3);border-radius:12px;padding:12px">' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Volume</div>' +
+    '<div class="tile-12">' +
+    '<div  class="micro-label mb-6">Volume</div>' +
     '<div style="font-size:22px;font-weight:900;color:var(--c1)">'+esc(volLabel)+'</div>' +
     '<div style="font-size:12px;color:'+changeColor+';margin-top:2px">'+esc(changeLabel)+'</div>' +
     '</div>' +
-    '<div style="background:var(--bg3);border-radius:12px;padding:12px">' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Workouts</div>' +
+    '<div class="tile-12">' +
+    '<div  class="micro-label mb-6">Workouts</div>' +
     '<div style="font-size:22px;font-weight:900;color:var(--txt)">'+report.weekWorkouts+'/'+report.weeklyGoal+'</div>' +
     '<div style="font-size:12px;color:'+(completionPct>=100?'#10B981':'var(--txt3)')+';margin-top:2px">'+(completionPct>=100?'Goal hit':completionPct+'% of goal')+'</div>' +
     '</div>' +
     '</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">' +
     (report.bestMuscle ?
-      '<div style="background:var(--bg3);border-radius:12px;padding:12px">' +
-      '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Best Recovered</div>' +
+      '<div class="tile-12">' +
+      '<div  class="micro-label mb-6">Best Recovered</div>' +
       '<div style="font-size:15px;font-weight:800;color:#10B981">'+esc(report.bestMuscle)+'</div>' +
-      '<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+Math.round(report.bestMuscleScore)+'% ready</div>' +
+      '<div  class="muted-12 mt-2">'+Math.round(report.bestMuscleScore)+'% ready</div>' +
       '</div>' : '<div></div>') +
     (report.mostImproved ?
-      '<div style="background:var(--bg3);border-radius:12px;padding:12px">' +
-      '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Most Improved</div>' +
+      '<div class="tile-12">' +
+      '<div  class="micro-label mb-6">Most Improved</div>' +
       '<div style="font-size:14px;font-weight:800;color:var(--c1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(report.mostImproved.name)+'</div>' +
       '<div style="font-size:12px;color:#10B981;margin-top:2px">+'+report.mostImproved.gain+'% 1RM</div>' +
       '</div>' : '<div></div>') +
     '</div>' +
-    '<div style="background:var(--bg3);border-radius:12px;padding:12px">' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">Current Readiness</div>' +
+    '<div class="tile-12">' +
+    '<div  class="micro-label mb-6">Current Readiness</div>' +
     '<div style="display:flex;align-items:center;gap:8px">' +
     '<div style="font-size:22px;font-weight:900;color:'+(report.currentReadiness>=70?'#10B981':report.currentReadiness>=50?'#f5c842':'#ff6b35')+'">'+report.currentReadiness+'</div>' +
-    '<div style="font-size:13px;color:var(--txt3)">/ 100 — '+ReadinessEngine.label(report.currentReadiness).l+'</div>' +
+    '<div  class="muted-13">/ 100 — '+ReadinessEngine.label(report.currentReadiness).l+'</div>' +
     '</div></div>' +
     '</div>';
 }
@@ -355,10 +355,10 @@ function _suppTimingBlock(userSupps, user) {
         SupplementEngine.checkCaffeineWarning(dbEntry, 22) : null;
       return '<div class="supp-time-item">' +
         '<div style="width:32px;display:flex;justify-content:center">' + icon('pill', 22) + '</div>' +
-        '<div style="flex:1">' +
-        '<div style="font-size:14px;font-weight:600;color:var(--txt)">'+esc(s.name)+'</div>' +
-        '<div style="font-size:12px;color:var(--txt3)">'+esc(s.dose||dbEntry.dose||'')+'</div>' +
-        (dbEntry.notes?'<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+esc(dbEntry.notes)+'</div>':'') +
+        '<div  class="flex-1">' +
+        '<div  class="row-strong">'+esc(s.name)+'</div>' +
+        '<div  class="muted-12">'+esc(s.dose||dbEntry.dose||'')+'</div>' +
+        (dbEntry.notes?'<div  class="muted-12 mt-2">'+esc(dbEntry.notes)+'</div>':'') +
         (cafWarn?'<div style="font-size:12px;color:#f5c842;margin-top:4px">'+esc(cafWarn)+'</div>':'') +
         '</div></div>';
     }).join('');
@@ -376,7 +376,7 @@ function _deloadBlock(user) {
   if (!needsDeload) return '';
   return sh('Recovery Alert') +
     '<div class="ai-msg" style="border-left-color:#f5c842">' +
-    '<div class="ai-msg-header"><span style="color:#f5c842">' + icon('alert', 16) + '</span><span class="ai-msg-label" style="color:#f5c842">Deload Recommended</span></div>' +
+    '<div class="ai-msg-header"><span class="c-warn">' + icon('alert', 16) + '</span><span class="ai-msg-label c-warn">Deload Recommended</span></div>' +
     '<div class="ai-msg-text">5+ weeks of progressive training detected. A deload week (50% volume, same frequency) will prevent overtraining and drive adaptation.</div></div>';
 }
 

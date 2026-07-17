@@ -126,5 +126,5 @@ reg('photos', function() {
     '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-top:8px">Same spot, same light, once a week — that\'s where change shows.</div>' +
     '</div>' +
     '<div id="photo-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px"></div>' +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });

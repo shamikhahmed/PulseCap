@@ -56,14 +56,14 @@ reg('calculators', function() {
     right: '<button type="button" class="topbar-icon press" onclick="go(\'bodymap\')" aria-label="Body">🫀</button>'
   }) +
 
-    '<div style="padding:0 16px 14px">' +
+    '<div  class="pad-x-16-b">' +
     '<div style="background:linear-gradient(135deg,rgba(0,213,255,0.1),rgba(123,95,255,0.08));border:1px solid rgba(0,213,255,0.2);border-radius:18px;padding:16px;margin-bottom:14px">' +
     '<div style="font-size:13px;color:var(--txt2);line-height:1.55;margin-bottom:12px">Metrics use your profile, latest measurements, and training goal. Tap recalculate after logging new data.</div>' +
-    '<button type="button" class="btn btn-primary btn-sm" onclick="recalcCalculators()" style="width:100%">↻ Recalculate</button>' +
+    '<button type="button" class="btn btn-primary btn-sm w-full" onclick="recalcCalculators()" >↻ Recalculate</button>' +
     '</div></div>' +
 
     sh('Body Composition') +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px">' +
+    '<div class="grid-2 pad-x-16-b">' +
     _calMetric('Body Fat (Navy)', bfVal, d.bf.label, d.bf.status) +
     _calMetric('Lean Mass', d.lean + ' kg', 'Fat-free mass estimate', d.bf.status === 'needs_data' ? 'needs_data' : 'healthy') +
     _calMetric('Fat Mass', d.fat + ' kg', 'From body fat %', d.bf.status === 'needs_data' ? 'needs_data' : 'average') +
@@ -74,7 +74,7 @@ reg('calculators', function() {
     '</div>' +
 
     sh('Energy') +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px">' +
+    '<div class="grid-2 pad-x-16-b">' +
     _calMetric('BMR', d.bmr + ' kcal', 'At rest', 'average') +
     _calMetric('TDEE', d.tdee + ' kcal', 'Maintenance', 'healthy') +
     _calMetric('Calorie Target', d.cals + ' kcal', (u.goal || 'hypertrophy').replace(/_/g, ' '), 'athletic') +
@@ -82,7 +82,7 @@ reg('calculators', function() {
     '</div>' +
 
     sh('Nutrition') +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px">' +
+    '<div class="grid-2 pad-x-16-b">' +
     _calMetric('Protein', d.protein + ' g/day', '1.6–2.2 g/kg by goal', 'healthy') +
     _calMetric('Carbs', d.macros.carbs + ' g/day', 'Macro split', 'average') +
     _calMetric('Fat', d.macros.fat + ' g/day', 'Macro split', 'average') +
@@ -90,14 +90,14 @@ reg('calculators', function() {
     '</div>' +
 
     sh('Strength') +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px 14px">' +
+    '<div class="grid-2 pad-x-16-b">' +
     strengthSection +
     '</div>' +
 
-    '<div style="padding:0 16px 14px">' +
-    '<button type="button" class="btn btn-secondary" onclick="go(\'bodymap\')" style="width:100%">📏 Log Measurements in Body Tab</button>' +
+    '<div  class="pad-x-16-b">' +
+    '<button type="button" class="btn btn-secondary w-full" onclick="go(\'bodymap\')" >📏 Log Measurements in Body Tab</button>' +
     '</div>' +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });
 
 window.recalcCalculators = function() {

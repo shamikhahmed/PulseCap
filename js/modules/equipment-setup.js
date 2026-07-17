@@ -11,7 +11,7 @@ reg('equipment-setup', function() {
   const brands = EquipmentDB.brands;
 
   const envBtns = EquipmentDB.environments.map(e =>
-    '<button type="button" class="btn btn-' + (env === e.id ? 'primary' : 'secondary') + ' btn-sm" style="flex:1" onclick="setTrainEnv(\'' + e.id + '\')">' + e.icon + ' ' + e.label + '</button>'
+    '<button type="button" class="btn btn-' + (env === e.id ? 'primary' : 'secondary') + ' btn-sm flex-1"  onclick="setTrainEnv(\'' + e.id + '\')">' + e.icon + ' ' + e.label + '</button>'
   ).join('');
 
   const brandOpts = '<option value="">All brands</option>' + brands.map(b =>
@@ -44,8 +44,8 @@ reg('equipment-setup', function() {
       '<span style="display:inline-block;font-size:9px;font-weight:800;padding:2px 7px;border-radius:6px;margin-top:5px;letter-spacing:0.04em;text-transform:uppercase;background:' + (brandColors[item.brand] || 'var(--c1)') + '22;color:' + (brandColors[item.brand] || 'var(--c1)') + ';border:1px solid ' + (brandColors[item.brand] || 'var(--c1)') + '44">' + esc(item.brand) + '</span>' : '';
     return '<div onclick="toggleEquipment(\'' + item.id + '\')" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
       '<div style="width:26px;height:26px;border-radius:8px;border:2px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'var(--c1)' : 'transparent') + ';display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700">' + (on ? '✓' : '') + '</div>' +
-      '<div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:600;color:var(--txt)">' + esc(item.name) + '</div>' +
-      (badge || (item.category ? '<div style="font-size:11px;color:var(--txt3);margin-top:2px">' + esc(item.category.replace('_', ' ')) + '</div>' : '')) +
+      '<div  class="flex-1"><div  class="row-strong">' + esc(item.name) + '</div>' +
+      (badge || (item.category ? '<div  class="muted-11 mt-2">' + esc(item.category.replace('_', ' ')) + '</div>' : '')) +
       '</div></div>';
   }).join('');
 
@@ -53,7 +53,7 @@ reg('equipment-setup', function() {
     left: '<button type="button" class="topbar-icon press" onclick="go(\'settings\',{tab:\'training\'})" aria-label="Back">←</button>'
   }) +
 
-    '<div style="padding:16px">' +
+    '<div  class="pad-16">' +
     '<p class="mod-lede" style="padding:0;margin-bottom:12px">Select everything you have access to. Workouts will only suggest exercises you can actually do.</p>' +
     '<div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">' + envBtns + '</div>' +
     '<div class="field-wrap"><label class="field-label">Filter by brand</label>' +
@@ -68,7 +68,7 @@ reg('equipment-setup', function() {
     '<div style="background:var(--bg3);border-top:1px solid var(--border)">' + rows + '</div>' +
     '<div style="padding:16px calc(16px + var(--safe))">' +
     '<div style="font-size:12px;color:var(--txt3);margin-bottom:10px;text-align:center">' + selected.length + ' items selected</div>' +
-    '<button type="button" class="btn btn-primary" style="width:100%" onclick="saveEquipmentSetup()">Save Equipment</button></div>';
+    '<button type="button" class="btn btn-primary w-full"  onclick="saveEquipmentSetup()">Save Equipment</button></div>';
 });
 
 window.setTrainEnv = function(env) {

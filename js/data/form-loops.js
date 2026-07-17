@@ -75,8 +75,8 @@ const FormLoops = (function() {
       '<div style="font-size:10px;font-weight:700;color:var(--c1);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">' +
       escFn(loop.label) + ' · form cues</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--txt);line-height:1.4;margin-bottom:8px">' + escFn(loop.cue) + '</div>' +
-      (loop.setup ? '<div style="font-size:12px;color:var(--txt2);line-height:1.45;margin-bottom:6px"><strong style="color:var(--txt3)">Setup</strong> — ' + escFn(loop.setup) + '</div>' : '') +
-      (loop.mistakes ? '<div style="font-size:12px;color:var(--txt2);line-height:1.45"><strong style="color:var(--txt3)">Avoid</strong> — ' + escFn(loop.mistakes) + '</div>' : '') +
+      (loop.setup ? '<div style="font-size:12px;color:var(--txt2);line-height:1.45;margin-bottom:6px"><strong class="c-muted">Setup</strong> — ' + escFn(loop.setup) + '</div>' : '') +
+      (loop.mistakes ? '<div style="font-size:12px;color:var(--txt2);line-height:1.45"><strong class="c-muted">Avoid</strong> — ' + escFn(loop.mistakes) + '</div>' : '') +
       '<div style="font-size:11px;color:var(--txt3);margin-top:10px;line-height:1.4">Offline coaching card — not a video. Download the exercise library once for form clips.</div>' +
       '</div>';
   }

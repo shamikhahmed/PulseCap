@@ -357,9 +357,9 @@ const PhysiquePreview = {
       '<button type="button" onclick="PhysiquePreview.uploadPhoto()" style="width:72px;height:96px;border-radius:12px;border:1px dashed var(--border2);background:var(--bg4);color:var(--txt3);font-size:10px;font-weight:600;cursor:pointer;touch-action:manipulation">📷 Add photo</button>';
 
     return '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:16px;box-shadow:var(--ds1)">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
+      '<div class="row-between mb-12">' +
       '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3)">🪞 Physique Preview</div>' +
-      '<div style="font-size:10px;color:var(--txt3)">' + (m ? 'From Body Map data' : 'Add measurements for accuracy') + '</div></div>' +
+      '<div  class="muted-10">' + (m ? 'From Body Map data' : 'Add measurements for accuracy') + '</div></div>' +
       '<div style="display:flex;gap:12px;margin-bottom:14px;align-items:flex-start">' + photoHtml +
       '<div style="flex:1;font-size:12px;color:var(--txt2);line-height:1.55">' +
       (m ? 'Proportions derived from your latest measurements. Drag the slider to morph toward your <strong style="color:' + archetype.color + '">' + esc(archetype.name) + '</strong> target.' :
@@ -423,7 +423,7 @@ window.renderPhysiqueArchetypeBody = function(data) {
     var comp = PhysiqueArchetypes.comparison(selected);
 
     return '<div class="topbar">' +
-      '<button type="button" onclick="PhysiqueArchetypes.setUserArchetype(null);go(\'physique-archetype\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button>' +
+      '<button type="button" onclick="PhysiqueArchetypes.setUserArchetype(null);go(\'physique-archetype\')"  class="back-chip">←</button>' +
       '<div class="topbar-title">' + arch.icon + ' ' + esc(arch.name) + '</div>' +
       '</div>' +
 
@@ -433,20 +433,20 @@ window.renderPhysiqueArchetypeBody = function(data) {
       '<div style="font-size:13px;color:var(--txt2);max-width:280px;margin:0 auto;line-height:1.6">' + esc(arch.description) + '</div>' +
       (comp ? '<div style="margin-top:14px;display:inline-block;background:rgba(255,255,255,0.08);border-radius:16px;padding:8px 20px">' +
         '<div style="font-size:28px;font-weight:900;color:' + arch.color + '">' + comp.overallPct + '%</div>' +
-        '<div style="font-size:11px;color:var(--txt3)">toward target</div></div>' : '') +
+        '<div  class="muted-11">toward target</div></div>' : '') +
       '</div>' +
 
       PhysiquePreview.comparisonPanel(selected) +
 
       (comp && comp.measurements.some(function(m) { return m.current; }) ?
-        '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-        '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">📏 Current vs Target</div>' +
+        '<div  class="card-block">' +
+        '<div  class="section-label">📏 Current vs Target</div>' +
         comp.measurements.map(function(m) {
           return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
             '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px">' +
-            '<div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(m.label) + '</div>' +
-            '<div style="font-size:12px;color:var(--txt3)">' +
-            (m.current ? m.current + 'cm → <span style="color:' + arch.color + ';font-weight:700">' + m.target + 'cm target</span>' : '<span style="color:var(--txt3)">No data — add in Settings</span>') +
+            '<div  class="row-title">' + esc(m.label) + '</div>' +
+            '<div  class="muted-12">' +
+            (m.current ? m.current + 'cm → <span style="color:' + arch.color + ';font-weight:700">' + m.target + 'cm target</span>' : '<span class="c-muted">No data — add in Settings</span>') +
             '</div></div>' +
             (m.current ? '<div style="width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + Math.min(m.pct, 100) + '%;height:6px;border-radius:3px;background:' + arch.color + '"></div></div>' +
             '<div style="font-size:11px;margin-top:4px;color:' + (m.status === 'on_target' ? '#30d158' : m.status === 'below' ? '#ff9f0a' : '#af52de') + '">' +
@@ -457,31 +457,31 @@ window.renderPhysiqueArchetypeBody = function(data) {
         '</div>' : '') +
 
       (comp && comp.ratios.length ?
-        '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-        '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">📐 Key Ratios</div>' +
+        '<div  class="card-block">' +
+        '<div  class="section-label">📐 Key Ratios</div>' +
         comp.ratios.map(function(r) {
           return '<div style="padding:8px 0;border-bottom:1px solid var(--border)">' +
             '<div style="display:flex;justify-content:space-between;margin-bottom:6px">' +
-            '<div style="font-size:13px;font-weight:600;color:var(--txt)">' + esc(r.label) + '</div>' +
-            '<div style="font-size:12px"><span style="color:var(--txt3)">' + r.current + '</span> → <span style="color:' + r.color + ';font-weight:700">' + r.target + '</span></div>' +
+            '<div  class="row-title">' + esc(r.label) + '</div>' +
+            '<div style="font-size:12px"><span class="c-muted">' + r.current + '</span> → <span style="color:' + r.color + ';font-weight:700">' + r.target + '</span></div>' +
             '</div>' +
             '<div style="width:100%;height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + r.pct + '%;height:5px;border-radius:3px;background:' + r.color + '"></div></div>' +
             '</div>';
         }).join('') +
         '</div>' : '') +
 
-      '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">🎯 Training Focus</div>' +
+      '<div  class="card-block">' +
+      '<div  class="section-label-sm">🎯 Training Focus</div>' +
       arch.training_focus.map(function(f) {
         return '<div style="font-size:13px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:' + arch.color + '">→</span>' + esc(f) + '</div>';
       }).join('') +
       '</div>' +
 
-      '<div style="padding:0 16px 16px"><button type="button" onclick="PhysiqueArchetypes.setUserArchetype(null);go(\'physique-archetype\')" style="width:100%;padding:12px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:14px;color:var(--txt3);font-size:13px;cursor:pointer">← Choose Different Archetype</button></div>' +
-      '<div style="height:20px"></div>';
+      '<div class="pad-x-16-b16"><button type="button" onclick="PhysiqueArchetypes.setUserArchetype(null);go(\'physique-archetype\')" style="width:100%;padding:12px;background:rgba(255,255,255,0.06);border:1px solid var(--border);border-radius:14px;color:var(--txt3);font-size:13px;cursor:pointer">← Choose Different Archetype</button></div>' +
+      '<div  class="spacer-bottom"></div>';
   }
 
-  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Physique Archetype</div></div>' +
+  return moduleBackTopbar('Physique Archetype') +
 
     '<div style="padding:16px 16px 8px">' +
     '<div style="font-size:14px;color:var(--txt2);line-height:1.6;margin-bottom:4px">Choose your physique goal. PulseCap will show your current measurements vs target proportions and guide your training.</div>' +
@@ -489,12 +489,12 @@ window.renderPhysiqueArchetypeBody = function(data) {
 
     (proportion && proportion.hasMeasurements ?
       '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;box-shadow:var(--ds1)">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">📐 Your Current Proportions</div>' +
+      '<div  class="section-label-sm">📐 Your Current Proportions</div>' +
       proportion.ratios.map(function(r) {
         return '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--border)">' +
           '<div style="font-size:16px">' + r.icon + '</div>' +
-          '<div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--txt)">' + esc(r.name) + '</div>' +
-          '<div style="font-size:11px;color:var(--txt3)">' + esc(r.tip) + '</div></div>' +
+          '<div  class="flex-1"><div style="font-size:12px;font-weight:600;color:var(--txt)">' + esc(r.name) + '</div>' +
+          '<div  class="muted-11">' + esc(r.tip) + '</div></div>' +
           '<div style="font-size:13px;font-weight:700;color:' + (r.status === 'excellent' ? '#30d158' : r.status === 'good' ? 'var(--c1)' : '#f5c842') + '">' + r.value + '</div>' +
           '</div>';
       }).join('') +
@@ -504,13 +504,13 @@ window.renderPhysiqueArchetypeBody = function(data) {
     Object.values(archetypes).map(function(a) {
       return '<div onclick="PhysiqueArchetypes.setUserArchetype(\'' + a.id + '\');go(\'physique-archetype\',{id:\'' + a.id + '\'})" style="margin:0 16px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:16px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;gap:14px">' +
         '<div style="font-size:36px;flex-shrink:0">' + a.icon + '</div>' +
-        '<div style="flex:1">' +
+        '<div  class="flex-1">' +
         '<div style="font-size:15px;font-weight:800;color:' + a.color + ';margin-bottom:4px">' + esc(a.name) + '</div>' +
-        '<div style="font-size:12px;color:var(--txt2);line-height:1.5">' + esc(a.description) + '</div>' +
+        '<div class="body-12-lh">' + esc(a.description) + '</div>' +
         '</div><div style="font-size:18px;color:var(--txt3)">›</div>' +
         '</div>';
     }).join('') +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 };
 
 reg('physique-archetype', function(data) {

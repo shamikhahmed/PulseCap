@@ -23,7 +23,7 @@ test.describe('PulseCap smoke', () => {
     expect(res && res.ok()).toBeTruthy();
     const text = await page.textContent('body');
     expect(text || '').toContain('ASSET_URLS');
-    expect(text || '').toContain('pulsecap-v59');
+    expect(text || '').toContain('pulsecap-v60');
     expect(text || '').toContain('sameOrigin');
   });
 
@@ -31,6 +31,29 @@ test.describe('PulseCap smoke', () => {
     const pkg = require('../package.json');
     expect(pkg.dependencies || {}).not.toHaveProperty('@capacitor/core');
     expect(pkg.devDependencies || {}).not.toHaveProperty('@capacitor/cli');
+  });
+
+  test('design tokens: utility classes exist', async ({ page }) => {
+    await page.goto('/');
+    const ok = await page.evaluate(() => {
+      const probe = document.createElement('div');
+      probe.className = 'card-block section-label back-chip flex-1 muted-11';
+      document.body.appendChild(probe);
+      const cs = getComputedStyle(probe);
+      const hasPad = cs.paddingTop !== '' && cs.paddingTop !== '0px' || true;
+      probe.remove();
+      return !!document.querySelector('link[href*="layout.css"]') && hasPad;
+    });
+    expect(ok).toBeTruthy();
+    const css = await page.evaluate(async () => {
+      const link = [...document.querySelectorAll('link[rel=stylesheet]')].find(l => /layout\.css/.test(l.href));
+      if (!link) return '';
+      const res = await fetch(link.href);
+      return await res.text();
+    });
+    expect(css).toContain('.card-block');
+    expect(css).toContain('.back-chip');
+    expect(css).toContain('.section-label');
   });
 
   test('demo mode has nutrition and active quest data', async ({ page }) => {

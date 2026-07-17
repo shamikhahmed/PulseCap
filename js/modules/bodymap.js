@@ -42,7 +42,7 @@ reg('bodymap', function() {
 
     _measurementsSection(latestMeas, prevMeas, user) +
     _bodyStatsSection(user) +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });
 
 /* ════════════════════════════════════
@@ -198,13 +198,13 @@ function _bodyMapSection(colors, user) {
     '<button type="button" onclick="_bodyView=\'back\';go(\'bodymap\')" style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid '+(isBack?'var(--c1)':'var(--border)')+';background:'+(isBack?'var(--c1)':'transparent')+';color:'+(isBack?'#fff':'var(--txt3)')+'">Back</button>' +
     '</div></div></div>' +
     '<div style="background:var(--bg3);border-radius:20px;margin:0 16px 14px;padding:16px;border:1px solid var(--border)">' +
-    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
+    '<div class="row-between mb-12">' +
     '<div style="font-size:12px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em">' +
     (isBack ? 'Posterior (Back)' : 'Anterior (Front)') + '</div>' +
     '<div style="display:flex;gap:6px;align-items:center">' +
-    '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:#30d158"></div><div style="font-size:10px;color:var(--txt3)">Ready</div></div>' +
-    '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:#ff9f0a"></div><div style="font-size:10px;color:var(--txt3)">Recovering</div></div>' +
-    '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:#ff453a"></div><div style="font-size:10px;color:var(--txt3)">Sore</div></div>' +
+    '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:#30d158"></div><div  class="muted-10">Ready</div></div>' +
+    '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:#ff9f0a"></div><div  class="muted-10">Recovering</div></div>' +
+    '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:#ff453a"></div><div  class="muted-10">Sore</div></div>' +
     '</div></div>' +
     '<div style="display:flex;justify-content:center">' +
     (isBack ? backSVG : frontSVG) +
@@ -241,7 +241,7 @@ window.showMuscleInfo = function(groupName) {
     '<div style="display:flex;justify-content:space-between;font-size:11px;color:var(--txt3)">' +
     '<span>0% Depleted</span><span>100% Ready</span></div>' +
     '</div>',
-    '<button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-top:14px">Close</button>'
+    '<button type="button" class="btn btn-secondary mt-14" onclick="closeModal()">Close</button>'
   );
 };
 
@@ -266,7 +266,7 @@ function _muscleStatusGrid(muscleStatus) {
       'aria-label="' + esc(m.name) + ' recovery" ' +
       'style="background:var(--bg3);border-radius:14px;padding:12px;cursor:pointer;touch-action:manipulation;border:1px solid ' + (isInjured ? 'rgba(255,69,58,0.35)' : 'var(--border)') + ';text-align:left;width:100%;font:inherit;color:inherit">' +
       '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">' +
-      '<div style="font-size:13px;font-weight:700;color:var(--txt)">'+esc(m.name)+'</div>' +
+      '<div  class="row-title">'+esc(m.name)+'</div>' +
       '<div style="font-size:15px;font-weight:800;color:'+m.color+'">'+big+'</div>' +
       '</div>' +
       '<div style="font-size:10px;color:'+(isInjured ? m.color : 'var(--txt3)')+';margin-top:2px;font-weight:600">'+esc(m.label)+(m.hrs ? ' · '+m.hrs+'h ago' : '')+'</div>' +
@@ -294,7 +294,7 @@ function _measurementsSection(latest, prev, user) {
   function diff(cur, prv) {
     if (!cur || !prv) return '';
     var d = Math.round((cur - prv) * 10) / 10;
-    if (d === 0) return '<span style="color:var(--txt3)"> (=)</span>';
+    if (d === 0) return '<span class="c-muted"> (=)</span>';
     var col = d > 0 ? '#ff9f0a' : '#30d158';
     return '<span style="color:'+col+'"> ('+(d>0?'+':'')+d+(isImperial?'"':'cm')+')</span>';
   }
@@ -316,10 +316,10 @@ function _measurementsSection(latest, prev, user) {
   var rows = fields.map(function(f) {
     var val = latest ? latest[f.key] : null;
     var pval = prev ? prev[f.key] : null;
-    return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">' +
+    return '<div class="list-divider-row">' +
       '<div style="display:flex;align-items:center;gap:10px">' +
       '<span style="font-size:16px;width:24px;text-align:center">'+f.icon+'</span>' +
-      '<div style="font-size:14px;font-weight:600;color:var(--txt)">'+esc(f.label)+'</div>' +
+      '<div  class="row-strong">'+esc(f.label)+'</div>' +
       '</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--c1)">'+cvt(val)+diff(val,pval)+'</div>' +
       '</div>';
@@ -347,7 +347,7 @@ function _measurementsSection(latest, prev, user) {
   }
 
   return sh('Measurements', '+ Log', 'showLogMeasurements()') +
-    '<div class="card card-solid" style="margin:0 16px 14px">' +
+    '<div class="card card-solid mx-card" >' +
     '<div style="display:flex;gap:6px;margin-bottom:14px">'+unitBtns+'</div>' +
     (latest ? '<div style="font-size:12px;color:var(--txt3);margin-bottom:10px">Last logged: '+esc(latest.date || '—')+(prev ? ' · Previous: '+esc(prev.date||'—') : '')+'</div>' : '') +
     miniChart + rows +
@@ -397,7 +397,7 @@ window.showLogMeasurements = function() {
   modal('Log Measurements',
     '<div style="font-size:13px;color:var(--txt3);margin-bottom:14px">All measurements in '+unitLabel+'. Enter only what you have.</div>' +
     formFields,
-    '<button type="button" class="btn btn-primary" onclick="saveMeasurements()" style="margin-top:14px">Save Measurements</button>'
+    '<button type="button" class="btn btn-primary mt-14" onclick="saveMeasurements()">Save Measurements</button>'
   );
 };
 
@@ -462,7 +462,7 @@ function _bodyStatsSection(user) {
   }).join('');
 
   return sh('Body Stats', '+ Log Weight', 'showLogWeight()') +
-    '<div class="card card-solid" style="margin:0 16px 14px">' +
+    '<div class="card card-solid mx-card" >' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px">' +
     _bStat('⚖️','Weight',weightDisplay+(changeStr||''),'Current') +
     _bStat('📏','Height',heightDisplay,'') +
@@ -479,9 +479,9 @@ function _bodyStatsSection(user) {
 
 function _bStat(icon, label, val, sub) {
   return '<div style="background:var(--bg4);border-radius:12px;padding:12px">' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">'+icon+' '+esc(label)+'</div>' +
-    '<div style="font-size:16px;font-weight:800;color:var(--txt)">'+val+'</div>' +
-    (sub ? '<div style="font-size:11px;color:var(--txt3);margin-top:2px">'+esc(sub)+'</div>' : '') +
+    '<div  class="micro-label mb-6">'+icon+' '+esc(label)+'</div>' +
+    '<div  class="row-title-16">'+val+'</div>' +
+    (sub ? '<div  class="muted-11 mt-2">'+esc(sub)+'</div>' : '') +
     '</div>';
 }
 
@@ -502,16 +502,16 @@ window.showLogWeight = function() {
     'placeholder="'+(isImperial ? Math.round(curKg*2.205) : curKg)+'" ' +
     'style="font-size:26px;font-weight:800;text-align:center">' +
     '</div>' +
-    '<div style="margin-top:14px">' +
+    '<div class="mt-14">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:8px">Measured</div>' +
-    '<div style="display:flex;gap:8px">' +
-    '<button type="button" id="wt-fasted" class="btn btn-primary btn-sm" style="flex:1" onclick="setWeightFasted(true)">🌅 Fasted</button>' +
-    '<button type="button" id="wt-fed" class="btn btn-secondary btn-sm" style="flex:1" onclick="setWeightFasted(false)">🍽 After eating</button>' +
+    '<div  class="flex-gap-8">' +
+    '<button type="button" id="wt-fasted" class="btn btn-primary btn-sm flex-1"  onclick="setWeightFasted(true)">🌅 Fasted</button>' +
+    '<button type="button" id="wt-fed" class="btn btn-secondary btn-sm flex-1"  onclick="setWeightFasted(false)">🍽 After eating</button>' +
     '</div></div>' +
     '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-top:12px;line-height:1.45">' +
     'Fasted morning weight is most consistent for tracking.<br>Goal: '+(isImperial ? Math.round(goalKg*2.205)+' lb' : goalKg+' kg') +
     '</div>',
-    '<button type="button" class="btn btn-primary" onclick="saveWeight()" style="margin-top:12px">Save Weight</button>'
+    '<button type="button" class="btn btn-primary mt-12" onclick="saveWeight()">Save Weight</button>'
   );
   window._weightFasted = true;
 };

@@ -314,7 +314,7 @@ const PlateEngine = {
   html(total) {
     const r = this.calc(total);
     if (!(parseFloat(total) > r.bar)) {
-      return '<div style="font-size:12px;color:var(--txt3)">Enter a weight above the bar (' + r.bar + r.unit + ')</div>';
+      return '<div  class="muted-12">Enter a weight above the bar (' + r.bar + r.unit + ')</div>';
     }
     const chips = r.perSide.map(function(p) {
       return '<span style="display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);font-size:13px;font-weight:700;color:var(--txt)">' +
@@ -330,7 +330,7 @@ window.PlateEngine = PlateEngine;
 window.showPlateCalc = function(weight) {
   const w = parseFloat(weight) || 0;
   modal('Plate calculator',
-    '<div style="margin-bottom:12px">' +
+    '<div  class="mb-12">' +
     '<label class="field-label">Barbell total</label>' +
     '<input id="plate-inp" class="field" type="number" inputmode="decimal" value="' + (w || '') + '" ' +
     'oninput="var el=document.getElementById(\'plate-out\');if(el)el.innerHTML=PlateEngine.html(this.value)" style="font-size:20px;font-weight:800">' +
@@ -548,7 +548,7 @@ window.showProgramWeightSetup = function() {
     fields.map(function(f) {
       const cur = (st[f.k] && st[f.k].w) || pe._round((WeightEngine.suggest(
         f.k === 'squat' ? 'Back Squat' : f.k === 'bench' ? 'Barbell Bench Press' : f.k === 'deadlift' ? 'Deadlift' : f.k === 'ohp' ? 'Overhead Press' : 'Barbell Row', user) || 40) * 0.8);
-      return '<div class="field-wrap" style="margin-bottom:10px"><label class="field-label">' + f.l + ' (kg)</label>' +
+      return '<div class="field-wrap mb-10" ><label class="field-label">' + f.l + ' (kg)</label>' +
         '<input id="pw-' + f.k + '" class="field" type="number" inputmode="decimal" value="' + cur + '" style="font-size:18px;font-weight:700"></div>';
     }).join('') +
     '<button type="button" class="btn btn-primary" onclick="confirmProgramWeights()" style="width:100%;margin-top:8px">Lock in & start</button>' +
@@ -1097,10 +1097,10 @@ window.confirmSkipToday = function() {
   const sd = SplitEngine.getSplitDay();
   modal('Skip today?',
     '<div style="font-size:14px;color:var(--txt2);line-height:1.6;margin-bottom:4px">' +
-    'Life happens. I\'ll decide whether <b style="color:var(--txt)">' + esc(sd.n || 'today\'s session') + '</b> ' +
+    'Life happens. I\'ll decide whether <b class="c-txt">' + esc(sd.n || 'today\'s session') + '</b> ' +
     'needs to move to your next gym day, or whether the week absorbs it.</div>',
     '<div style="display:flex;gap:8px;margin-top:12px">' +
-    '<button type="button" class="btn btn-primary" style="flex:1" onclick="doSkipToday()">Skip — you decide, coach</button>' +
+    '<button type="button" class="btn btn-primary flex-1"  onclick="doSkipToday()">Skip — you decide, coach</button>' +
     '<button type="button" class="btn btn-ghost" onclick="closeModal()">Cancel</button>' +
     '</div>');
 };
@@ -1139,7 +1139,7 @@ window.renderSplitDayPicker = function(opts) {
   const restNote = SplitEngine.isScheduledRestDay()
     ? '<div style="font-size:12px;color:var(--c5);margin-bottom:10px;line-height:1.45">📅 Not a scheduled gym day — pick any session below or train anyway.</div>'
     : '';
-  return '<div style="margin-bottom:14px">' +
+  return '<div  class="mb-14">' +
     '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Choose today\'s session</div>' +
     restNote +
     '<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;-webkit-overflow-scrolling:touch">' + chips + '</div>' +

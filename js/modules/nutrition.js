@@ -26,7 +26,7 @@ reg('nutrition', function() {
     _dueSuppsSection(dueSupps) +
     _mySuppsSection(userSupps, logs) +
     _stackSuggestions(user) +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });
 
 function _calSection(cals, target, p, c, f, user) {
@@ -46,9 +46,9 @@ function _calSection(cals, target, p, c, f, user) {
     '<div style="font-size:16px;font-weight:900;color:var(--txt);line-height:1">'+cals+'</div>' +
     '<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--txt3)">kcal</div>' +
     '</div></div>' +
-    '<div style="flex:1">' +
+    '<div  class="flex-1">' +
     '<div style="font-size:22px;font-weight:800;color:var(--c1)">'+remain+'<span style="font-size:13px;font-weight:500;color:var(--txt3)"> remaining</span></div>' +
-    '<div style="font-size:12px;color:var(--txt3)">Target: '+target+'kcal</div>' +
+    '<div  class="muted-12">Target: '+target+'kcal</div>' +
     '</div></div>' +
     '<div class="macro-bar-wrap">' +
     _macroBar('Protein', p, macros.protein, '#10B981', 'macro-protein') +
@@ -130,7 +130,7 @@ function _stackSuggestions(user) {
       '<div class="supp-info">' +
       '<div class="supp-name">'+esc(s.name)+'</div>' +
       '<div class="supp-timing">'+esc(s.dose)+' · '+esc(s.timing)+'</div>' +
-      '<div style="font-size:12px;color:var(--txt3)">'+esc(s.notes)+'</div>' +
+      '<div  class="muted-12">'+esc(s.notes)+'</div>' +
       '</div>' +
       '<button type="button" class="supp-mark" onclick="addSuppToStack(\''+s.id+'\')">+ Add</button>' +
       '</div>'
@@ -168,14 +168,14 @@ function _mealPresets() {
     { key: 'snacks', label: 'Snacks', icon: '🍎' }
   ];
   return sh('Quick Add') +
-    '<div style="padding:0 16px 14px">' +
+    '<div  class="pad-x-16-b">' +
     '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">' +
     chips.map(function(c) {
       return '<button type="button" onclick="showMealPresets(\'' + c.key + '\')" style="flex:1;min-width:72px;padding:10px 8px;background:var(--bg4);border:1px solid var(--border);border-radius:12px;color:var(--txt);font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">' +
         c.icon + ' ' + esc(c.label) + '</button>';
     }).join('') +
     '</div>' +
-    '<div style="font-size:11px;color:var(--txt3)">Tap a meal slot, then pick a preset — or use + Log for custom entries.</div>' +
+    '<div  class="muted-11">Tap a meal slot, then pick a preset — or use + Log for custom entries.</div>' +
     '</div>';
 }
 
@@ -184,14 +184,14 @@ function _mealHistory(meals) {
   if (!todayMeals.length) return '';
   return sh('Today\'s Meals', 'Clear', 'if(confirm(\'Clear today\\\'s meals?\'))' +
     '{S.set(\'meals\',(S.g(\'meals\')||[]).filter(function(m){return m.date!==today();}));go(\'nutrition\')}') +
-    '<div style="padding:0 16px">' +
+    '<div  class="pad-x-16">' +
     todayMeals.map(m =>
-      '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">' +
-      '<div><div style="font-size:14px;font-weight:600;color:var(--txt)">'+esc(m.name||'Meal')+'</div>' +
-      '<div style="font-size:12px;color:var(--txt3)">'+esc(m.time?new Date(m.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):'')+'</div></div>' +
-      '<div style="text-align:right">' +
+      '<div class="list-divider-row">' +
+      '<div><div  class="row-strong">'+esc(m.name||'Meal')+'</div>' +
+      '<div  class="muted-12">'+esc(m.time?new Date(m.time).toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}):'')+'</div></div>' +
+      '<div class="ta-right">' +
       '<div style="font-size:14px;font-weight:700;color:var(--c1)">'+m.calories+'kcal</div>' +
-      '<div style="font-size:11px;color:var(--txt3)">P:'+m.protein+'g C:'+m.carbs+'g F:'+m.fat+'g</div>' +
+      '<div  class="muted-11">P:'+m.protein+'g C:'+m.carbs+'g F:'+m.fat+'g</div>' +
       '</div></div>'
     ).join('') +
     '</div>';
@@ -208,9 +208,9 @@ function _nutritionStreak(meals) {
   }
   if (streak < 2) return '';
   return '<div style="margin:0 16px 14px;padding:10px 14px;background:rgba(var(--c5-rgb,255,152,0),0.1);border:1px solid rgba(var(--c5-rgb,255,152,0),0.2);border-radius:12px;display:flex;align-items:center;gap:10px">' +
-    '<div style="font-size:20px">🔥</div>' +
-    '<div><div style="font-size:13px;font-weight:700;color:var(--txt)">'+streak+' day nutrition streak</div>' +
-    '<div style="font-size:11px;color:var(--txt3)">Keep logging meals daily</div></div>' +
+    '<div class="fs-20">🔥</div>' +
+    '<div><div  class="row-title">'+streak+' day nutrition streak</div>' +
+    '<div  class="muted-11">Keep logging meals daily</div></div>' +
     '</div>';
 }
 
@@ -246,8 +246,8 @@ window.showAddSuppModal = function() {
   const existing = userSupps.map(s=>s.id);
   const list = SupplementDB.filter(s=>!existing.includes(s.id)).map(s =>
     '<div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)">' +
-    '<div style="flex:1"><div style="font-size:14px;font-weight:600;color:var(--txt)">'+esc(s.name)+'</div>' +
-    '<div style="font-size:12px;color:var(--txt3)">'+esc(s.dose)+' · '+esc(s.timing)+'</div></div>' +
+    '<div  class="flex-1"><div  class="row-strong">'+esc(s.name)+'</div>' +
+    '<div  class="muted-12">'+esc(s.dose)+' · '+esc(s.timing)+'</div></div>' +
     '<button type="button" onclick="addSuppToStack(\''+s.id+'\');closeModal()" style="color:var(--c1);background:none;border:none;font-size:13px;font-weight:700;cursor:pointer;padding:8px;min-height:44px">+ Add</button>' +
     '</div>'
   ).join('');
@@ -260,9 +260,9 @@ window.showMealPresets = function(slot) {
   var labels = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner', snacks: 'Snacks' };
   modal((labels[slot] || 'Meal') + ' Presets',
     presets.map(function(p, i) {
-      return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">' +
-        '<div><div style="font-size:14px;font-weight:600;color:var(--txt)">' + esc(p.name) + '</div>' +
-        '<div style="font-size:11px;color:var(--txt3)">P:' + p.protein + 'g · C:' + p.carbs + 'g · F:' + p.fat + 'g</div></div>' +
+      return '<div class="list-divider-row">' +
+        '<div><div  class="row-strong">' + esc(p.name) + '</div>' +
+        '<div  class="muted-11">P:' + p.protein + 'g · C:' + p.carbs + 'g · F:' + p.fat + 'g</div></div>' +
         '<button type="button" onclick="quickAddMeal(' + i + ',\'' + slot + '\')" style="color:var(--c1);background:none;border:none;font-size:13px;font-weight:700;cursor:pointer;padding:8px;min-height:44px">+' + p.calories + '</button>' +
         '</div>';
     }).join('')
@@ -290,7 +290,7 @@ window.showLogMeal = function() {
     '<div class="field-wrap"><label class="field-label">Carbs (g)</label><input id="meal-c" class="field" type="number" placeholder="60"></div>' +
     '<div class="field-wrap"><label class="field-label">Fat (g)</label><input id="meal-f" class="field" type="number" placeholder="15"></div>' +
     '</div>',
-    '<button type="button" class="btn btn-primary" onclick="saveMeal()" style="margin-top:12px">Save Meal</button>'
+    '<button type="button" class="btn btn-primary mt-12" onclick="saveMeal()">Save Meal</button>'
   );
 };
 

@@ -772,14 +772,14 @@ reg('workout', function() {
     const swap = swapMap[name];
     return '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">' +
       '<div style="font-size:24px;width:36px;text-align:center">'+(ex?ex.em:'💪')+'</div>' +
-      '<div style="flex:1">' +
+      '<div  class="flex-1">' +
       '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
-      '<div style="font-size:14px;font-weight:700;color:var(--txt)">'+esc(name)+'</div>' +
+      '<div  class="row-title-14">'+esc(name)+'</div>' +
       (swap ? '<span style="font-size:10px;font-weight:700;color:var(--c5);background:rgba(255,159,10,0.12);border-radius:4px;padding:2px 6px">↔ '+esc(swap.original)+'</span>' : '') +
       (diff ? '<span style="font-size:10px;font-weight:700;color:'+diff.c+';text-transform:uppercase;letter-spacing:0.06em">'+diff.l+'</span>' : '') +
       (needsSpot ? '<span style="font-size:10px;color:#ff453a;font-weight:700">⚠️ SPOTTER</span>' : '') +
       '</div>' +
-      (ex?'<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+esc(ex.pri)+(ex.sec?', '+ex.sec:'')+'</div>':'') +
+      (ex?'<div  class="muted-12 mt-2">'+esc(ex.pri)+(ex.sec?', '+ex.sec:'')+'</div>':'') +
       (prev?'<div style="font-size:12px;color:var(--c1);margin-top:2px">'+esc(prev)+'</div>':'') +
       '</div>' +
       '<button type="button" onclick="showExerciseDetail(\''+esc(name)+'\')" ' +
@@ -792,14 +792,14 @@ reg('workout', function() {
     '<div><div class="topbar-title">Train</div><div class="topbar-date">'+esc(new Date().toLocaleDateString('en-GB',{weekday:'long',month:'short',day:'numeric'}))+'</div></div>' +
     '<div class="topbar-right"><button type="button" class="topbar-icon" onclick="go(\'workout\',{search:true})" aria-label="Exercise search" style="display:flex;align-items:center;justify-content:center">' + icon('search', 18) + '</button></div></div>' +
     '<div class="mod-chip-row">' +
-    '<button type="button" onclick="go(\'progress\')" class="press mod-chip" style="display:inline-flex;align-items:center;gap:6px">' + icon('chart', 15) + 'Progress</button>' +
-    '<button type="button" onclick="go(\'cardio\')" class="press mod-chip" style="display:inline-flex;align-items:center;gap:6px">' + icon('heart', 15) + 'Cardio</button>' +
-    '<button type="button" onclick="go(\'calisthenics\')" class="press mod-chip" style="display:inline-flex;align-items:center;gap:6px">' + icon('run', 15) + 'Skills</button>' +
-    '<button type="button" onclick="go(\'training-intel\')" class="press mod-chip" style="display:inline-flex;align-items:center;gap:6px">' + icon('sparkles', 15) + 'Intel</button>' +
+    '<button type="button" onclick="go(\'progress\')" class="press mod-chip inline-chip">' + icon('chart', 15) + 'Progress</button>' +
+    '<button type="button" onclick="go(\'cardio\')" class="press mod-chip inline-chip">' + icon('heart', 15) + 'Cardio</button>' +
+    '<button type="button" onclick="go(\'calisthenics\')" class="press mod-chip inline-chip">' + icon('run', 15) + 'Skills</button>' +
+    '<button type="button" onclick="go(\'training-intel\')" class="press mod-chip inline-chip">' + icon('sparkles', 15) + 'Intel</button>' +
     '</div>' +
 
-    '<div style="padding:0 16px 14px">' +
-    '<div class="readiness-label '+readiness.cls+'" style="margin-bottom:12px">Readiness: '+score+' — '+readiness.l+'</div>' +
+    '<div  class="pad-x-16-b">' +
+    '<div class="readiness-label '+readiness.cls+' mb-12" >Readiness: '+score+' — '+readiness.l+'</div>' +
     '</div>' +
 
     sh('Today\'s Plan') +
@@ -821,7 +821,7 @@ reg('workout', function() {
     '<div class="warmup-card">' +
     '<div class="warmup-title">Cardio Recommendation</div>' +
     '<div style="font-size:15px;font-weight:700;color:var(--c1);margin-bottom:4px">'+esc(cardioRec.machine)+'</div>' +
-    '<div style="font-size:13px;color:var(--txt2)">'+esc(cardioRec.duration)+' — '+esc(cardioRec.details)+'</div>' +
+    '<div  class="body-13">'+esc(cardioRec.duration)+' — '+esc(cardioRec.details)+'</div>' +
     '<div style="font-size:12px;color:var(--txt3);margin-top:6px">Best performed after your lifting session</div>' +
     '</div>' +
 
@@ -834,7 +834,7 @@ reg('workout', function() {
     '<button type="button" class="btn" style="margin-top:10px;background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);color:#ff453a;font-weight:700" onclick="go(\'cardio\')">Cardio Protocols</button>' +
     '<button type="button" class="btn" style="margin-top:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);color:var(--c1)" onclick="showAddCustomExercise()">+ Add Custom Exercise</button>' +
     '</div>' +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });
 
 /* ── CARDIO HOME SCREEN ── */
@@ -863,7 +863,7 @@ reg('cardio', function() {
       '<div style="font-size:36px;line-height:1">'+p.emoji+'</div>' +
       '<div>' +
       '<div style="font-size:18px;font-weight:800;color:var(--txt)">'+esc(p.name)+'</div>' +
-      '<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+esc(p.full)+'</div>' +
+      '<div  class="muted-12 mt-2">'+esc(p.full)+'</div>' +
       '</div></div>' +
       '<div style="font-size:13px;color:var(--txt2);line-height:1.5;margin-bottom:10px">'+esc(p.tagline)+'</div>' +
       '<div style="display:flex;gap:8px;flex-wrap:wrap">' +
@@ -879,12 +879,12 @@ reg('cardio', function() {
     '<div class="topbar-date">Choose your protocol</div></div></div>' +
 
     '<div style="padding:12px 16px;background:rgba(var(--c1-rgb),0.06);border-bottom:1px solid var(--border)">' +
-    '<div style="font-size:13px;color:var(--txt2)">Readiness score: <strong style="color:var(--c1)">'+score+'</strong> · ' +
+    '<div  class="body-13">Readiness score: <strong style="color:var(--c1)">'+score+'</strong> · ' +
     'Goal: <strong style="color:var(--c1)">'+esc(goal.replace('_',' '))+'</strong></div>' +
     '</div>' +
 
     '<div style="padding:14px 16px">' + cards + '</div>' +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });
 
 /* ── ACTIVE WORKOUT SCREEN ── */
@@ -909,7 +909,7 @@ reg('active', function() {
     '<div style="font-size:18px;font-weight:800;color:var(--txt)" id="wkt-count">'+doneSets+'/'+totalSets+'</div>' +
     '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em">Sets Done</div>' +
     '</div>' +
-    '<div style="display:flex;gap:8px">' +
+    '<div  class="flex-gap-8">' +
     '<button type="button" onclick="toggleSupersetMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_supersetMode?'var(--grad)':'var(--bg3)')+';color:'+(_supersetMode?'#fff':'var(--txt3)')+'">SS</button>' +
     '<button type="button" onclick="toggleFocusMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_focusMode?'var(--c1)':'var(--bg3)')+';color:'+(_focusMode?'#fff':'var(--txt3)')+'">'+(_focusMode?'Exit':'Focus')+'</button>' +
     '<button type="button" onclick="confirmFinishWorkout()" style="padding:8px 16px;border-radius:20px;background:var(--grad);color:#fff;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;border:none">Finish</button>' +
@@ -966,7 +966,7 @@ reg('active', function() {
       '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
       warmups.map(function(w) {
         return '<span style="padding:6px 10px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);font-size:12px;color:var(--txt2)">' +
-          esc(w.label) + ' · <strong style="color:var(--txt)">' + w.weight + '×' + w.reps + '</strong></span>';
+          esc(w.label) + ' · <strong class="c-txt">' + w.weight + '×' + w.reps + '</strong></span>';
       }).join('') + '</div></div>' : '';
 
     const mediaThumb = (typeof ExerciseLibrary !== 'undefined' ? ExerciseLibrary.getMedia(exData || ex.name).thumb : null);
@@ -977,9 +977,9 @@ reg('active', function() {
       (mediaThumb && !_focusMode ?
         '<div style="width:44px;height:44px;border-radius:12px;overflow:hidden;border:1px solid var(--border);flex-shrink:0;background:var(--bg4)"><img src="'+esc(mediaThumb)+'" alt="" style="width:100%;height:100%;object-fit:cover"/></div>' :
         '<div style="width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0">'+(allDone ? doneMark : (typeof iconTile === 'function' ? iconTile('dumbbell', 'c1', 36) : ''))+'</div>') +
-      '<div style="flex:1;min-width:0">' +
+      '<div  class="flex-1">' +
       '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
-      '<div style="font-size:15px;font-weight:700;color:var(--txt)">'+esc(ex.name)+'</div>' +
+      '<div  class="row-title-15">'+esc(ex.name)+'</div>' +
       (diff ? '<span style="font-size:9px;font-weight:700;color:'+diff.c+';text-transform:uppercase">'+diff.l+'</span>' : '') +
       (needsSpot ? '<span style="font-size:9px;color:#ff453a;font-weight:700">⚠️SPOT</span>' : '') +
       '</div>' +
@@ -1163,7 +1163,7 @@ window.swapExercise = function(exIdx) {
         'style="padding:12px 14px;border-radius:14px;margin-bottom:8px;cursor:pointer;touch-action:manipulation;' +
         'background:var(--bg3);border:1.5px solid ' + (s.best ? 'var(--c1)' : 'var(--border)') + '">' +
         '<div style="display:flex;align-items:center;gap:8px">' +
-        '<div style="font-size:18px">' + s.em + '</div>' +
+        '<div class="fs-18">' + s.em + '</div>' +
         '<div style="flex:1;font-size:14px;font-weight:700;color:var(--txt)">' + esc(s.name) + '</div>' +
         (s.best ? '<span style="font-size:10px;font-weight:800;background:rgba(var(--c1-rgb),0.15);color:var(--c1);padding:3px 8px;border-radius:8px;letter-spacing:0.04em">BEST SWAP</span>' : '') +
         '</div>' +
@@ -1175,7 +1175,7 @@ window.swapExercise = function(exIdx) {
         (s.why.length ? '<div style="font-size:11px;color:var(--txt3);margin-top:5px">' + esc(s.why.join(' · ')) + '</div>' : '') +
         '</div>';
     }).join('');
-  modal('Swap: ' + name, body, '<button type="button" class="btn btn-ghost" onclick="closeModal()" style="margin-top:8px">Keep original</button>');
+  modal('Swap: ' + name, body, '<button type="button" class="btn btn-ghost mt-8" onclick="closeModal()" >Keep original</button>');
 };
 
 window._doSwapExercise = function(exIdx, newName) {
@@ -1199,25 +1199,25 @@ window.confirmFinishWorkout = function() {
     '<div style="text-align:center;padding:8px 0 20px">' +
     '<div style="font-size:48px;margin-bottom:12px">💪</div>' +
     '<div style="font-size:20px;font-weight:800;color:var(--txt);margin-bottom:4px">'+esc(_wkt.name)+'</div>' +
-    '<div style="font-size:13px;color:var(--txt3)">'+fmtMins(Math.round(_wktElapsed/60))+' · '+totalSets+' sets</div>' +
+    '<div  class="muted-13">'+fmtMins(Math.round(_wktElapsed/60))+' · '+totalSets+' sets</div>' +
     '</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px">' +
     '<div style="background:var(--bg3);border-radius:12px;padding:12px;text-align:center">' +
     '<div style="font-size:20px;font-weight:800;color:var(--c1)">'+totalSets+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">Sets</div></div>' +
+    '<div  class="micro-label type-caption-mt">Sets</div></div>' +
     '<div style="background:var(--bg3);border-radius:12px;padding:12px;text-align:center">' +
     '<div style="font-size:20px;font-weight:800;color:var(--txt)">'+(totalVol>1000?round2(totalVol/1000)+'t':totalVol+'kg')+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">Volume</div></div>' +
+    '<div  class="micro-label type-caption-mt">Volume</div></div>' +
     '<div style="background:var(--bg3);border-radius:12px;padding:12px;text-align:center">' +
     '<div style="font-size:20px;font-weight:800;color:#ffd60a">'+prs+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">PRs</div></div>' +
+    '<div  class="micro-label type-caption-mt">PRs</div></div>' +
     '</div>' +
-    '<div class="field-wrap" style="margin-bottom:8px">' +
+    '<div class="field-wrap mb-8">' +
     '<label class="field-label">Workout Notes</label>' +
     '<textarea id="wkt-final-note" class="field" placeholder="Overall feeling, energy, anything to remember..." style="height:80px;resize:none;font-size:14px"></textarea>' +
     '</div>',
     '<button type="button" class="btn btn-primary" onclick="saveWorkout()" style="margin-top:4px">💾 Save Workout</button>' +
-    '<button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Keep Training</button>'
+    '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()" >Keep Training</button>'
   );
 };
 
@@ -1413,8 +1413,8 @@ window.showExercisePicker = function(grp) {
   const list = exercises.map(ex =>
     '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">' +
     '<div style="font-size:24px">'+esc(ex.em||'💪')+'</div>' +
-    '<div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--txt)">'+esc(ex.n)+'</div>' +
-    '<div style="font-size:12px;color:var(--txt3)">'+esc(ex.pri)+(ex.sec?', '+ex.sec:'')+'</div></div>' +
+    '<div  class="flex-1"><div  class="row-title-14">'+esc(ex.n)+'</div>' +
+    '<div  class="muted-12">'+esc(ex.pri)+(ex.sec?', '+ex.sec:'')+'</div></div>' +
     '<button type="button" style="font-size:12px;color:var(--c1);background:none;border:none;cursor:pointer;padding:8px;font-weight:700" onclick="addExerciseToWorkout(\''+esc(ex.n)+'\')">+ Add</button>' +
     '</div>'
   ).join('');
@@ -1459,12 +1459,12 @@ function showExerciseDetail(name) {
     '<div>' +
     '<div style="font-size:19px;font-weight:800;color:var(--txt)">'+esc(ex.n)+'</div>' +
     '<div style="font-size:12px;color:'+diff.c+';font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">'+diff.l+'</div>' +
-    '<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+esc(ex.pri)+(ex.sec?' · '+ex.sec:'')+'</div>' +
+    '<div  class="muted-12 mt-2">'+esc(ex.pri)+(ex.sec?' · '+ex.sec:'')+'</div>' +
     '</div></div>' +
 
     (needsSpotter || ex.assistanceRequired ?
       '<div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.25);border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px">' +
-      '<span style="font-size:18px">⚠️</span>' +
+      '<span class="fs-18">⚠️</span>' +
       '<div style="font-size:13px;color:#ff453a;line-height:1.5">' +
       (needsSpotter ? '<strong>Spotter recommended</strong> for this exercise. Do not attempt heavy sets alone.' :
         '<strong>Assistance required.</strong> Ensure proper coaching before loading.') +
@@ -1481,36 +1481,36 @@ function showExerciseDetail(name) {
     '<div style="font-size:12px;color:var(--txt2);margin-top:10px;font-style:italic">💡 '+esc(rec.note)+'</div>' +
     '</div>' +
 
-    '<div style="margin-bottom:14px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:6px">Setup</div>' +
-    '<div style="font-size:14px;color:var(--txt2);line-height:1.6">'+esc(ex.setup)+'</div>' +
+    '<div  class="mb-14">' +
+    '<div  class="type-caption type-caption-mb-xs">Setup</div>' +
+    '<div class="body-14">'+esc(ex.setup)+'</div>' +
     '</div>' +
 
-    '<div style="margin-bottom:14px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:6px">Coaching Cues</div>' +
-    '<div style="font-size:14px;color:var(--txt2);line-height:1.6">'+esc(ex.cues)+'</div>' +
+    '<div  class="mb-14">' +
+    '<div  class="type-caption type-caption-mb-xs">Coaching Cues</div>' +
+    '<div class="body-14">'+esc(ex.cues)+'</div>' +
     '</div>' +
 
-    '<div style="margin-bottom:14px">' +
+    '<div  class="mb-14">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#ff9f0a;margin-bottom:6px">Common Mistakes</div>' +
-    '<div style="font-size:14px;color:var(--txt2);line-height:1.6">⚠️ '+esc(ex.mistakes)+'</div>' +
+    '<div class="body-14">⚠️ '+esc(ex.mistakes)+'</div>' +
     '</div>' +
 
-    '<div style="margin-bottom:14px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:6px">Breathing</div>' +
+    '<div  class="mb-14">' +
+    '<div  class="type-caption type-caption-mb-xs">Breathing</div>' +
     '<div style="font-size:14px;color:var(--txt2)">'+esc(ex.breathing)+'</div>' +
     '</div>' +
 
-    '<div style="margin-bottom:14px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:6px">Intensity Techniques</div>' +
+    '<div  class="mb-14">' +
+    '<div  class="type-caption type-caption-mb-xs">Intensity Techniques</div>' +
     techs.slice(0,2).map(function(t) {
       return '<div style="font-size:13px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--border)">⚡ '+esc(t)+'</div>';
     }).join('') +
     '</div>' +
 
     (supersetWith.length ?
-      '<div style="margin-bottom:14px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:6px">Superset With</div>' +
+      '<div  class="mb-14">' +
+      '<div  class="type-caption type-caption-mb-xs">Superset With</div>' +
       supersetWith.slice(0,2).map(function(s) {
         return '<div style="font-size:13px;color:var(--c1);padding:6px 0;border-bottom:1px solid var(--border)">🔗 '+esc(s)+'</div>';
       }).join('') +
@@ -1537,7 +1537,7 @@ function showExerciseDetail(name) {
 
   modal(ex.n, html,
     '<div style="display:flex;gap:10px;margin-top:16px">' +
-    '<button type="button" class="btn btn-primary" onclick="closeModal()" style="flex:1">Got it</button>' +
+    '<button type="button" class="btn btn-primary flex-1" onclick="closeModal()" >Got it</button>' +
     '</div>'
   );
 }
@@ -1545,7 +1545,7 @@ window.showExerciseDetail = showExerciseDetail;
 
 function _recStat2(icon, label, val) {
   return '<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:10px;text-align:center">' +
-    '<div style="font-size:18px">'+icon+'</div>' +
+    '<div class="fs-18">'+icon+'</div>' +
     '<div style="font-size:14px;font-weight:700;color:var(--c1);margin-top:4px">'+esc(val)+'</div>' +
     '<div style="font-size:10px;color:var(--txt3);margin-top:2px;text-transform:uppercase;letter-spacing:0.06em">'+esc(label)+'</div>' +
     '</div>';
@@ -1577,13 +1577,13 @@ function showAddCustomExercise() {
     '</select></div></div>' +
 
     '<div class="field-wrap"><label class="field-label">Difficulty</label>' +
-    '<div style="display:flex;gap:8px">' +
+    '<div  class="flex-gap-8">' +
     '<button type="button" class="btn btn-secondary btn-sm cx-diff-btn" onclick="setCxDiff(1,this)">Beginner</button>' +
     '<button type="button" class="btn btn-secondary btn-sm cx-diff-btn" onclick="setCxDiff(2,this)">Intermediate</button>' +
     '<button type="button" class="btn btn-secondary btn-sm cx-diff-btn" onclick="setCxDiff(3,this)">Advanced</button>' +
     '</div></div>',
 
-    '<button type="button" class="btn btn-primary" onclick="saveCustomExercise()" style="margin-top:14px">Add Exercise</button>'
+    '<button type="button" class="btn btn-primary mt-14" onclick="saveCustomExercise()">Add Exercise</button>'
   );
   window._cxDiff = 1;
 }
@@ -1651,7 +1651,7 @@ function showBrowseExercises(filterGrp, filterQuery) {
         g.charAt(0).toUpperCase()+g.slice(1)+'</button>';
     }).join('') + '</div>';
 
-  const searchBar = '<div style="padding:0 16px 12px">' +
+  const searchBar = '<div class="pad-x-16-b12">' +
     '<input class="field" type="text" placeholder="Search exercises..." value="'+esc(query)+'" ' +
     'oninput="showBrowseExercises(\''+esc(grp||'all')+'\',this.value)" ' +
     'style="padding:12px 16px"></div>';
@@ -1661,14 +1661,14 @@ function showBrowseExercises(filterGrp, filterQuery) {
     const needsSpot = GUIDANCE.needsSpotter(ex.n);
     return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation" onclick="showExerciseDetail(\''+esc(ex.n)+'\')">' +
       '<div style="font-size:24px;width:36px;text-align:center">'+ex.em+'</div>' +
-      '<div style="flex:1">' +
+      '<div  class="flex-1">' +
       '<div style="display:flex;align-items:center;gap:6px">' +
-      '<div style="font-size:14px;font-weight:700;color:var(--txt)">'+esc(ex.n)+'</div>' +
+      '<div  class="row-title-14">'+esc(ex.n)+'</div>' +
       (ex.custom ? '<span style="font-size:10px;background:rgba(var(--c1-rgb),0.15);color:var(--c1);border-radius:4px;padding:2px 6px;font-weight:700">CUSTOM</span>' : '') +
       '</div>' +
       '<div style="font-size:12px;margin-top:2px">' +
       '<span style="color:'+diff.c+';font-weight:600">'+diff.l+'</span>' +
-      '<span style="color:var(--txt3)"> · '+esc(ex.pri)+'</span>' +
+      '<span class="c-muted"> · '+esc(ex.pri)+'</span>' +
       (needsSpot ? '<span style="color:#ff453a;font-weight:700"> · ⚠️ Spotter</span>' : '') +
       '</div></div>' +
       '<div style="color:var(--txt3);font-size:16px">›</div>' +
@@ -1686,8 +1686,8 @@ function showBrowseExercises(filterGrp, filterQuery) {
     filterTabs + searchBar +
     '<div style="font-size:12px;color:var(--txt3);padding:0 16px 8px">'+exercises.length+' exercises</div>' +
     exList +
-    '<div style="padding:16px"><button type="button" class="btn btn-secondary" onclick="showAddCustomExercise()">+ Add Custom Exercise</button></div>' +
-    '<div style="height:20px"></div>';
+    '<div  class="pad-16"><button type="button" class="btn btn-secondary" onclick="showAddCustomExercise()">+ Add Custom Exercise</button></div>' +
+    '<div  class="spacer-bottom"></div>';
   v.innerHTML = '';
   v.appendChild(div);
 
@@ -1700,7 +1700,7 @@ window.showBrowseExercises = showBrowseExercises;
 function _cStat(icon, label, val) {
   return '<div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:8px;text-align:center">' +
     '<div style="font-size:14px">'+icon+'</div>' +
-    '<div style="font-size:13px;font-weight:700;color:var(--txt)">'+val+'</div>' +
+    '<div  class="row-title">'+val+'</div>' +
     '<div style="font-size:10px;color:var(--txt3);margin-top:1px;text-transform:uppercase;letter-spacing:0.06em">'+label+'</div>' +
     '</div>';
 }
@@ -1722,13 +1722,13 @@ window.showCardioProtocol = function(key) {
       _cStat('📍','Total',esc(pr.totalTime)) +
       _cStat('💓','Intensity',esc(pr.intensity)) +
       '</div>' +
-      '<div style="margin-bottom:8px">' +
+      '<div class="mb-8">' +
       '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:4px">Exercises</div>' +
       pr.exercises.map(function(e){return '<div style="font-size:13px;color:var(--txt2);padding:3px 0;border-bottom:1px solid var(--border)">• '+esc(e)+'</div>';}).join('') +
       '</div>' +
-      '<div style="margin-bottom:8px">' +
+      '<div class="mb-8">' +
       '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:4px">Equipment</div>' +
-      '<div style="font-size:13px;color:var(--txt2)">'+esc(pr.equipment)+'</div>' +
+      '<div  class="body-13">'+esc(pr.equipment)+'</div>' +
       '</div>' +
       '<div style="background:rgba(var(--c1-rgb),0.06);border-radius:10px;padding:10px">' +
       '<div style="font-size:12px;color:var(--txt2);line-height:1.6">💡 '+esc(pr.notes)+'</div>' +
@@ -1753,7 +1753,7 @@ window.showCardioProtocol = function(key) {
     '<div style="font-size:48px">'+p.emoji+'</div>' +
     '<div>' +
     '<div style="font-size:22px;font-weight:900;color:'+p.color+'">'+esc(p.name)+'</div>' +
-    '<div style="font-size:13px;color:var(--txt3)">'+esc(p.tagline)+'</div>' +
+    '<div  class="muted-13">'+esc(p.tagline)+'</div>' +
     '<div style="display:flex;gap:8px;margin-top:6px">' +
     '<span style="font-size:11px;font-weight:600;color:'+diffColor+';background:rgba(0,0,0,0.3);padding:3px 10px;border-radius:20px">'+diffLabel+'</span>' +
     '<span style="font-size:11px;color:var(--txt3);background:rgba(0,0,0,0.2);padding:3px 10px;border-radius:20px">'+esc(p.duration)+'</span>' +
@@ -1763,25 +1763,25 @@ window.showCardioProtocol = function(key) {
     '🔬 '+esc(p.science)+'</div>' +
 
     sh('Protocols') +
-    '<div style="padding:0 16px">'+protocolCards+'</div>' +
+    '<div  class="pad-x-16">'+protocolCards+'</div>' +
 
     sh('Warm-Up') +
-    '<div style="padding:0 16px 12px">' +
+    '<div class="pad-x-16-b12">' +
     p.warmup.map(function(w){return '<div style="font-size:13px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--border)">🔥 '+esc(w)+'</div>';}).join('') +
     '</div>' +
 
     sh('Cool-Down') +
-    '<div style="padding:0 16px 12px">' +
+    '<div class="pad-x-16-b12">' +
     p.cooldown.map(function(c){return '<div style="font-size:13px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--border)">❄️ '+esc(c)+'</div>';}).join('') +
     '</div>' +
 
     sh('Warnings') +
-    '<div style="padding:0 16px 14px">' +
+    '<div  class="pad-x-16-b">' +
     p.warnings.map(function(w){return '<div style="font-size:13px;color:#ff9f0a;padding:6px 0;border-bottom:1px solid var(--border)">⚠️ '+esc(w)+'</div>';}).join('') +
     '</div>' +
 
     '</div>' +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 
   v.innerHTML = '';
   v.appendChild(div);
@@ -1826,7 +1826,7 @@ window.startCardioSession = function(key, protocolIdx) {
     pr.exercises.map(function(e){return '<span style="font-size:12px;background:rgba(var(--c1-rgb),0.1);color:var(--c1);border-radius:20px;padding:4px 12px;font-weight:600">'+esc(e)+'</span>';}).join('') +
     '</div></div>',
     '<button type="button" class="btn btn-primary" onclick="closeModal();go(\'cardio\')">Done ✓</button>' +
-    '<button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Keep Viewing</button>'
+    '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()" >Keep Viewing</button>'
   );
   toast('💪 '+p.name+' session logged!', 'ok', 4000);
 };

@@ -435,7 +435,7 @@ reg('encyclopedia', function(data) {
     '<button type="button" onclick="go(\'encyclopedia\',{section:\'search\'})" style="background:none;border:none;color:var(--txt3);font-size:14px;cursor:pointer;padding:0 16px">🔍</button>' +
     '</div>' +
 
-    '<div style="padding:16px">' +
+    '<div  class="pad-16">' +
     '<div style="margin-bottom:16px">' +
     '<input id="enc-search" class="field" placeholder="🔍 Search encyclopedia..." oninput="if(this.value.length>1)go(\'encyclopedia\',{section:\'search\',query:this.value})" style="width:100%;box-sizing:border-box">' +
     '</div>' +
@@ -450,106 +450,106 @@ reg('encyclopedia', function(data) {
     ].map(s => '<div onclick="go(\'encyclopedia\',{section:\'' + s.section + '\'})" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:16px;cursor:pointer;touch-action:manipulation">' +
       '<div style="font-size:32px;margin-bottom:8px">' + s.icon + '</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--txt);margin-bottom:4px">' + esc(s.title) + '</div>' +
-      '<div style="font-size:11px;color:var(--txt3)">' + esc(s.sub) + '</div>' +
+      '<div  class="muted-11">' + esc(s.sub) + '</div>' +
       '</div>'
     ).join('') +
     '</div></div>' +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });
 
 function _mobilityScreen() {
-  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Mobility Encyclopedia</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')"  class="back-chip">←</button><div class="topbar-title">Mobility Encyclopedia</div></div>' +
     Object.values(MobilityDB).map(joint =>
-      '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
+      '<div  class="card-block">' +
       '<div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">' +
-      '<div style="font-size:28px">' + joint.icon + '</div>' +
-      '<div><div style="font-size:16px;font-weight:800;color:var(--txt)">' + esc(joint.name) + '</div>' +
-      '<div style="font-size:11px;color:var(--txt3)">' + esc(joint.frequency) + '</div></div>' +
+      '<div class="fs-28">' + joint.icon + '</div>' +
+      '<div><div  class="row-title-16">' + esc(joint.name) + '</div>' +
+      '<div  class="muted-11">' + esc(joint.frequency) + '</div></div>' +
       '</div>' +
       '<div style="font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:10px;background:rgba(var(--c1-rgb),0.06);padding:10px;border-radius:10px"><strong>Assessment:</strong> ' + esc(joint.assessment) + '</div>' +
       '<div style="font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Drills</div>' +
       joint.drills.map(d => '<div style="padding:8px 0;border-bottom:1px solid var(--border)">' +
-        '<div style="font-size:13px;font-weight:600;color:var(--txt)">' + esc(d.name) + ' <span style="font-size:11px;color:var(--c1);font-weight:400">' + esc(d.sets) + '</span></div>' +
-        '<div style="font-size:11px;color:var(--txt3);margin-top:2px">' + esc(d.cue) + '</div>' +
+        '<div  class="row-title">' + esc(d.name) + ' <span style="font-size:11px;color:var(--c1);font-weight:400">' + esc(d.sets) + '</span></div>' +
+        '<div  class="muted-11 mt-2">' + esc(d.cue) + '</div>' +
         '</div>').join('') +
       '</div>'
     ).join('') +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 }
 
 function _stretchingScreen() {
-  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Stretching Encyclopedia</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')"  class="back-chip">←</button><div class="topbar-title">Stretching Encyclopedia</div></div>' +
     Object.values(StretchDB).map(group =>
-      '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
+      '<div  class="card-block">' +
       '<div style="font-size:16px;font-weight:800;color:var(--txt);margin-bottom:12px">' + group.icon + ' ' + esc(group.name) + '</div>' +
       group.stretches.map(s => '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
         '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:4px">' +
-        '<div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(s.name) + '</div>' +
+        '<div  class="row-title">' + esc(s.name) + '</div>' +
         '<span style="font-size:10px;background:rgba(var(--c1-rgb),0.15);color:var(--c1);padding:2px 8px;border-radius:10px;font-weight:600;flex-shrink:0;margin-left:8px">' + esc(s.type) + '</span>' +
         '</div>' +
         '<div style="font-size:11px;color:var(--c1);margin-bottom:4px">' + esc(s.duration) + '</div>' +
-        '<div style="font-size:11px;color:var(--txt3)">' + esc(s.cue) + '</div>' +
+        '<div  class="muted-11">' + esc(s.cue) + '</div>' +
         (s.contraindications ? '<div style="font-size:10px;color:#ff9f0a;margin-top:4px">⚠️ Avoid if: ' + s.contraindications.join(', ') + '</div>' : '') +
         '</div>').join('') +
       '</div>'
     ).join('') +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 }
 
 function _warmupScreen() {
-  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Warmup Protocols</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')"  class="back-chip">←</button><div class="topbar-title">Warmup Protocols</div></div>' +
     Object.values(WarmupDB).map(w =>
-      '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
-      '<div style="font-size:15px;font-weight:800;color:var(--txt)">🔥 ' + esc(w.name) + '</div>' +
+      '<div  class="card-block">' +
+      '<div class="row-between mb-12">' +
+      '<div  class="row-title-16">🔥 ' + esc(w.name) + '</div>' +
       '<span style="font-size:11px;color:var(--c1);font-weight:600">' + esc(w.duration) + '</span>' +
       '</div>' +
       w.steps.map((step, i) => '<div style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">' +
         '<div style="font-size:12px;font-weight:800;color:var(--c1);width:20px;flex-shrink:0">' + (i + 1) + '</div>' +
-        '<div style="font-size:12px;color:var(--txt2)">' + esc(step) + '</div>' +
+        '<div  class="body-12">' + esc(step) + '</div>' +
         '</div>').join('') +
       '</div>'
     ).join('') +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 }
 
 function _cooldownScreen() {
-  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Cooldown Protocols</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')"  class="back-chip">←</button><div class="topbar-title">Cooldown Protocols</div></div>' +
     Object.values(CooldownDB).map(c =>
-      '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">' +
-      '<div style="font-size:15px;font-weight:800;color:var(--txt)">❄️ ' + esc(c.name) + '</div>' +
+      '<div  class="card-block">' +
+      '<div class="row-between mb-12">' +
+      '<div  class="row-title-16">❄️ ' + esc(c.name) + '</div>' +
       '<span style="font-size:11px;color:var(--c1);font-weight:600">' + esc(c.duration) + '</span>' +
       '</div>' +
       c.steps.map((step, i) => '<div style="display:flex;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">' +
         '<div style="font-size:12px;font-weight:800;color:var(--c1);width:20px;flex-shrink:0">' + (i + 1) + '</div>' +
-        '<div style="font-size:12px;color:var(--txt2)">' + esc(step) + '</div>' +
+        '<div  class="body-12">' + esc(step) + '</div>' +
         '</div>').join('') +
       '</div>'
     ).join('') +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 }
 
 function _sportsScreen() {
-  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Sports Performance</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')"  class="back-chip">←</button><div class="topbar-title">Sports Performance</div></div>' +
     Object.values(SportsDB).map(sport =>
-      '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
+      '<div  class="card-block">' +
       '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">' +
       '<div style="font-size:32px">' + sport.icon + '</div>' +
-      '<div><div style="font-size:16px;font-weight:800;color:var(--txt)">' + esc(sport.name) + '</div>' +
-      '<div style="font-size:11px;color:var(--txt3)">' + esc(sport.positions.join(' · ')) + '</div></div>' +
+      '<div><div  class="row-title-16">' + esc(sport.name) + '</div>' +
+      '<div  class="muted-11">' + esc(sport.positions.join(' · ')) + '</div></div>' +
       '</div>' +
       '<div style="font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">Key Demands</div>' +
       sport.key_demands.map(d => '<div style="font-size:12px;color:var(--txt2);padding:3px 0">• ' + esc(d) + '</div>').join('') +
       '<div style="font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 6px">Primary Lifts</div>' +
       sport.strength_training.primary_lifts.map(l => '<span style="display:inline-block;background:rgba(var(--c1-rgb),0.12);color:var(--c1);padding:3px 8px;border-radius:8px;font-size:11px;font-weight:600;margin:2px">' + esc(l) + '</span>').join('') +
       '<div style="font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 6px">Conditioning</div>' +
-      '<div style="font-size:12px;color:var(--txt2)">' + esc(sport.conditioning) + '</div>' +
+      '<div  class="body-12">' + esc(sport.conditioning) + '</div>' +
       '<div style="font-size:11px;font-weight:700;color:#ff453a;text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 6px">Injury Risks</div>' +
       sport.injury_risks.map(r => '<div style="font-size:12px;color:#ff9f0a;padding:2px 0">⚠️ ' + esc(r) + '</div>').join('') +
       '</div>'
     ).join('') +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 }
 
 function _encyclopediaSearch(query) {
@@ -557,8 +557,8 @@ function _encyclopediaSearch(query) {
   const results = [];
 
   if (q.length < 2) {
-    return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Search Encyclopedia</div></div>' +
-      '<div style="padding:16px"><input class="field" placeholder="Type to search..." oninput="if(this.value.length>1)go(\'encyclopedia\',{section:\'search\',query:this.value})" autofocus style="width:100%;box-sizing:border-box"></div>';
+    return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')"  class="back-chip">←</button><div class="topbar-title">Search Encyclopedia</div></div>' +
+      '<div  class="pad-16"><input class="field" placeholder="Type to search..." oninput="if(this.value.length>1)go(\'encyclopedia\',{section:\'search\',query:this.value})" autofocus style="width:100%;box-sizing:border-box"></div>';
   }
 
   Object.entries(MobilityDB).forEach(([key, joint]) => {
@@ -585,16 +585,16 @@ function _encyclopediaSearch(query) {
     }
   });
 
-  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button><div class="topbar-title">Search Results</div></div>' +
+  return '<div class="topbar"><button type="button" onclick="go(\'encyclopedia\')"  class="back-chip">←</button><div class="topbar-title">Search Results</div></div>' +
     '<div style="padding:16px 16px 8px"><input class="field" value="' + esc(query) + '" placeholder="Search..." oninput="if(this.value.length>1)go(\'encyclopedia\',{section:\'search\',query:this.value})" style="width:100%;box-sizing:border-box"></div>' +
     (!results.length ? '<div style="padding:40px 20px;text-align:center;color:var(--txt3)">No results for "' + esc(query) + '"<br><span style="font-size:12px">Try: shoulder, cricket, hamstring, warmup</span></div>' :
       '<div style="font-size:12px;color:var(--txt3);padding:0 16px 10px">' + results.length + ' results</div>' +
       results.map(r => '<div onclick="' + r.action + '" style="margin:0 16px 10px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;gap:12px">' +
-        '<div style="font-size:28px">' + r.icon + '</div>' +
-        '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(r.title) + '</div>' +
-        '<div style="font-size:11px;color:var(--txt3)">' + esc(r.type) + ' · ' + esc(r.sub) + '</div></div>' +
+        '<div class="fs-28">' + r.icon + '</div>' +
+        '<div  class="flex-1"><div  class="row-title">' + esc(r.title) + '</div>' +
+        '<div  class="muted-11">' + esc(r.type) + ' · ' + esc(r.sub) + '</div></div>' +
         '<div style="font-size:16px;color:var(--txt3)">›</div>' +
         '</div>').join('')
     ) +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 }

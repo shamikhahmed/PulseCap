@@ -31,7 +31,7 @@ reg('settings', function(opts) {
   return '<div class="topbar"><div class="topbar-title">Settings</div></div>' +
     tabBar +
     (tabContent[_settingsTab] || _tabProfile(user)) +
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });
 
 function _tabProfile(u) {
@@ -45,7 +45,7 @@ function _tabProfile(u) {
   const bmr = BodyEngine.bmr(u);
   const healthyRange = BodyEngine.healthyWeightRange(u.height||175, u.gender||'male');
 
-  return '<div style="padding:16px">' +
+  return '<div  class="pad-16">' +
     _sectionTitle('Personal Info') +
     _fieldWrap('Name', '<input class="field" type="text" value="'+esc(u.name||'')+'" oninput="_setSetting(\'user.name\',this.value)" placeholder="Your name">') +
     '<div class="field-row">' +
@@ -93,7 +93,7 @@ function _tabProfile(u) {
     })() +
 
     _sectionTitle('Calculated Metrics') +
-    '<div class="card card-solid" style="margin-top:8px">' +
+    '<div class="card card-solid mt-8" >' +
     '<div style="display:flex;flex-wrap:wrap;gap:12px">' +
     _infoStat('BMI', bmi.bmi+'', bmi.cat) +
     _infoStat('BMR', bmr+' kcal', 'At rest') +
@@ -105,7 +105,7 @@ function _tabProfile(u) {
     '</div></div>' +
 
     _sectionTitle('Injuries & Pain') +
-    '<div style="margin-bottom:14px">' +
+    '<div  class="mb-14">' +
     (function() {
       const injuries = (S.g('user.injuries') || []).filter(function(i){ return i && typeof i === 'object'; });
       const active = injuries.filter(function(i){ return !i.recovered; });
@@ -115,7 +115,7 @@ function _tabProfile(u) {
       html += active.length
         ? '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.5">' + active.length + ' active ' + (active.length === 1 ? 'injury' : 'injuries') + ': ' + esc(active.map(function(i){ return i.bodyPart || i.id; }).join(', ')) + '</div>'
         : '<div style="font-size:13px;color:var(--txt3);margin-bottom:10px">No active injuries — workouts unrestricted.</div>';
-      html += '<button type="button" class="btn btn-secondary btn-sm" onclick="go(\'rehab\')" style="width:100%">🩹 Manage injuries in Rehab →</button>';
+      html += '<button type="button" class="btn btn-secondary btn-sm w-full" onclick="go(\'rehab\')" >🩹 Manage injuries in Rehab →</button>';
       return html;
     })() +
     '</div>' +
@@ -131,10 +131,10 @@ function _tabTraining(u) {
   const eqCount = (S.g('user.equipmentIds') || []).length;
   const eqLabel = S.g('user.equipmentConfigured') ? eqCount + ' items configured' : 'Not set up yet — tap to configure';
 
-  return '<div style="padding:16px">' +
+  return '<div  class="pad-16">' +
     (rec ? '<div style="background:linear-gradient(135deg,rgba(0,213,255,0.08),rgba(123,95,255,0.06));border:1px solid rgba(0,213,255,0.15);border-radius:14px;padding:14px;margin-bottom:16px">' +
       '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--c1);margin-bottom:6px">✨ Recommended for you</div>' +
-      '<div style="font-size:15px;font-weight:700;color:var(--txt)">'+esc(rec.name)+'</div>' +
+      '<div  class="row-title-15">'+esc(rec.name)+'</div>' +
       '<div style="font-size:12px;color:var(--txt3);margin-top:4px;line-height:1.45">'+esc(rec.reason)+'</div>' +
       '<button type="button" class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="_setSetting(\'user.split\',\''+rec.id+'\');toast(\'Split updated\',\'ok\');go(\'settings\',{tab:\'training\'})">Apply suggestion</button></div>' : '') +
 
@@ -193,7 +193,7 @@ function _renderWeekSchedule(u) {
     if (!isGym) {
       return '<div style="' + rowStyle + ';opacity:0.55">' +
         '<div style="font-size:13px;font-weight:700;color:var(--txt3)">' + labels[d] + (isToday ? ' · today' : '') + '</div>' +
-        '<div style="font-size:12px;color:var(--txt3)">🌿 Rest</div></div>';
+        '<div  class="muted-12">🌿 Rest</div></div>';
     }
     const sel = '<select class="field" style="width:auto;min-width:150px;padding:8px 10px;font-size:13px" onchange="setDayAssignment(\'' + d + '\', parseInt(this.value))">' +
       splitDays.map(function(sd, i) {
@@ -201,7 +201,7 @@ function _renderWeekSchedule(u) {
         return '<option value="' + num + '"' + (map[d] === num ? ' selected' : '') + '>' + esc(sd.n || ('Day ' + num)) + '</option>';
       }).join('') + '</select>';
     return '<div style="' + rowStyle + '">' +
-      '<div style="font-size:13px;font-weight:700;color:var(--txt)">' + labels[d] + (isToday ? ' · today' : '') + '</div>' + sel + '</div>';
+      '<div  class="row-title">' + labels[d] + (isToday ? ' · today' : '') + '</div>' + sel + '</div>';
   }).join('');
   html += '<button type="button" class="btn btn-secondary btn-sm" style="width:100%;margin:4px 0 14px" onclick="resetDayAssignments()">↺ Reset to automatic order</button>';
   return html;
@@ -224,7 +224,7 @@ window.resetDayAssignments = function() {
 
 function _tabSupplements() {
   const userSupps = S.g('supplements') || [];
-  return '<div style="padding:16px">' +
+  return '<div  class="pad-16">' +
     _sectionTitle('My Stack') +
     (userSupps.length ? userSupps.map(s =>
       '<div class="toggle-row">' +
@@ -234,14 +234,14 @@ function _tabSupplements() {
       '</div>'
     ).join('') : '<div style="color:var(--txt3);padding:12px 0;font-size:14px">No supplements in stack. Add them via Nutrition.</div>') +
     '<div class="spacer-sm"></div>' +
-    '<button type="button" class="btn btn-secondary btn-sm" onclick="go(\'nutrition\')" style="width:100%">Manage in Nutrition →</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm w-full" onclick="go(\'nutrition\')" >Manage in Nutrition →</button>' +
     '</div>';
 }
 
 function _tabNutrition(u) {
   const tdee = BodyEngine.tdee(u);
   const macros = TDEEEngine.macroSplit(u.goal||'hypertrophy', tdee);
-  return '<div style="padding:16px">' +
+  return '<div  class="pad-16">' +
     _sectionTitle('Daily Targets') +
     _fieldWrap('Calories (kcal)', '<input class="field" type="number" value="'+(u.calorieTarget||2200)+'" oninput="_setSetting(\'user.calorieTarget\',parseInt(this.value))">') +
     '<div class="field-row">' +
@@ -279,12 +279,12 @@ function _tabAppearance(u) {
       'style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 6px;border-radius:12px;cursor:pointer;touch-action:manipulation;' +
       'border:1.5px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';' +
       'background:' + (on ? 'rgba(var(--c1-rgb),0.10)' : 'var(--bg3)') + '">' +
-      '<span style="font-size:20px">' + emoji + '</span>' +
+      '<span class="fs-20">' + emoji + '</span>' +
       '<span style="font-size:12px;font-weight:700;color:' + (on ? 'var(--c1)' : 'var(--txt2)') + '">' + label + '</span>' +
       '</button>';
   };
 
-  return '<div style="padding:16px">' +
+  return '<div  class="pad-16">' +
     _sectionTitle('Appearance') +
     '<div style="display:flex;gap:8px;margin-bottom:8px">' +
     seg('auto', '📱', 'Auto', 'clearThemePref();go(\'settings\',{tab:\'appearance\'})') +
@@ -322,7 +322,7 @@ function _tabAppearance(u) {
           return '<button type="button" onclick="_setSetting(\'settings.coachTone\',\''+t.v+'\');go(\'settings\',{tab:\'appearance\'})" ' +
             'style="display:flex;flex-direction:column;align-items:center;gap:4px;padding:11px 4px;border-radius:12px;cursor:pointer;touch-action:manipulation;' +
             'border:1.5px solid '+(on?'var(--c1)':'var(--border)')+';background:'+(on?'rgba(var(--c1-rgb),0.10)':'var(--bg3)')+'">' +
-            '<span style="font-size:18px">'+parts[0]+'</span>' +
+            '<span class="fs-18">'+parts[0]+'</span>' +
             '<span style="font-size:11px;font-weight:700;color:'+(on?'var(--c1)':'var(--txt2)')+';white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">'+parts.slice(1).join(' ')+'</span>' +
             '</button>';
         }).join('') +
@@ -333,7 +333,7 @@ function _tabAppearance(u) {
     _sectionTitle('Units') +
     '<div style="display:flex;gap:8px;margin-bottom:14px">' +
     ['metric','imperial'].map(unit =>
-      '<button type="button" class="btn btn-'+(u.units===unit?'primary':'secondary')+' btn-sm" style="flex:1" onclick="_setSetting(\'user.units\',\''+unit+'\');go(\'settings\',{tab:\'appearance\'})">'+unit.charAt(0).toUpperCase()+unit.slice(1)+'</button>'
+      '<button type="button" class="btn btn-'+(u.units===unit?'primary':'secondary')+' btn-sm flex-1"  onclick="_setSetting(\'user.units\',\''+unit+'\');go(\'settings\',{tab:\'appearance\'})">'+unit.charAt(0).toUpperCase()+unit.slice(1)+'</button>'
     ).join('') + '</div>' +
 
     _sectionTitle('Performance') +
@@ -351,7 +351,7 @@ function _tabAppearance(u) {
 }
 
 function _tabNotifications(u) {
-  return '<div style="padding:16px">' +
+  return '<div  class="pad-16">' +
     _sectionTitle('Alerts') +
     _toggle('Supplement Reminders', 'user.suppReminders', u.suppReminders!==false) +
     _toggle('Rest Day Reminders', 'user.restDayReminders', u.restDayReminders!==false) +
@@ -376,9 +376,9 @@ function _tabNotifications(u) {
 function _tabData() {
   const ws = S.g('workouts') || [];
   const joinDate = S.g('user.joinDate');
-  return '<div style="padding:16px">' +
+  return '<div  class="pad-16">' +
     _sectionTitle('My Data') +
-    '<div class="card card-solid" style="margin-bottom:14px">' +
+    '<div class="card card-solid mb-14" >' +
     '<div style="display:flex;flex-wrap:wrap;gap:12px">' +
     _infoStat('Workouts', String(ws.length), 'logged') +
     _infoStat('Member since', joinDate ? new Date(joinDate).toLocaleDateString('en-GB',{month:'short',year:'numeric'}) : '—', '') +
@@ -386,25 +386,25 @@ function _tabData() {
     '</div></div>' +
 
     _sectionTitle('Profiles') +
-    '<button type="button" class="btn btn-secondary" onclick="go(\'profiles\')" style="margin-bottom:10px">Manage Profiles</button>' +
-    '<button type="button" class="btn btn-danger" onclick="confirmClearData()" style="margin-bottom:10px">Reset This Profile</button>' +
+    '<button type="button" class="btn btn-secondary mb-10" onclick="go(\'profiles\')" >Manage Profiles</button>' +
+    '<button type="button" class="btn btn-danger mb-10" onclick="confirmClearData()" >Reset This Profile</button>' +
 
     _sectionTitle('Exercise Library') +
     (function() {
       const st = typeof ExerciseLibrary !== 'undefined' ? ExerciseLibrary.status() : { cached: false, count: 0 };
       const exCount = typeof ExDB !== 'undefined' ? ExDB.db.length : 0;
-      return '<div class="card card-solid" style="margin-bottom:14px">' +
+      return '<div class="card card-solid mb-14" >' +
         '<div style="font-size:13px;color:var(--txt2);line-height:1.55;margin-bottom:12px">' +
-        'Built-in: <strong style="color:var(--txt)">' + exCount + '</strong> exercises. ' +
-        (st.cached ? 'wger cache: <strong style="color:var(--txt)">' + st.count + '</strong>' + (st.mediaCount ? ' · ' + st.mediaCount + ' with images/videos' : '') + ' (offline).' : 'Download wger.de library once while online — exercises, thumbnails & form videos stay on your phone.') +
+        'Built-in: <strong class="c-txt">' + exCount + '</strong> exercises. ' +
+        (st.cached ? 'wger cache: <strong class="c-txt">' + st.count + '</strong>' + (st.mediaCount ? ' · ' + st.mediaCount + ' with images/videos' : '') + ' (offline).' : 'Download wger.de library once while online — exercises, thumbnails & form videos stay on your phone.') +
         '</div>' +
-        '<button type="button" id="ex-lib-sync-btn" class="btn btn-secondary" onclick="syncExerciseLibrary(' + (st.cached ? 'true' : 'false') + ')" style="width:100%">' +
+        '<button type="button" id="ex-lib-sync-btn" class="btn btn-secondary w-full" onclick="syncExerciseLibrary(' + (st.cached ? 'true' : 'false') + ')" >' +
         (st.cached ? 'Re-sync Exercise Library' : 'Download Exercise Library') +
         '</button></div>';
     })() +
 
     _sectionTitle('Export & Import') +
-    '<button type="button" class="btn btn-secondary" onclick="exportData()" style="margin-bottom:10px">Export Backup (JSON)</button>' +
+    '<button type="button" class="btn btn-secondary mb-10" onclick="exportData()" >Export Backup (JSON)</button>' +
     '<div class="field-wrap">' +
     '<label class="field-label">Import Backup</label>' +
     '<input class="field" type="file" accept=".json" onchange="importData(this)" style="font-size:14px">' +
@@ -441,7 +441,7 @@ function _infoStat(label, val, sub) {
   return '<div style="flex:1;min-width:80px">' +
     '<div style="font-size:18px;font-weight:800;color:var(--c1)">'+esc(val)+'</div>' +
     '<div style="font-size:11px;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3)">'+esc(label)+'</div>' +
-    (sub?'<div style="font-size:12px;color:var(--txt3)">'+esc(sub)+'</div>':'') +
+    (sub?'<div  class="muted-12">'+esc(sub)+'</div>':'') +
     '</div>';
 }
 
@@ -511,8 +511,8 @@ reg('split-builder', function() {
     const exRows = (d.exercises || []).map(function(name, ei) {
       const ex = ExDB.byName(name);
       return '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)">' +
-        '<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(name) + '</div>' +
-        (ex ? '<div style="font-size:11px;color:var(--txt3)">' + esc(ex.pri || ex.grp || '') + '</div>' : '') + '</div>' +
+        '<div  class="flex-1"><div style="font-size:13px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(name) + '</div>' +
+        (ex ? '<div  class="muted-11">' + esc(ex.pri || ex.grp || '') + '</div>' : '') + '</div>' +
         '<button type="button" onclick="sbRemove(' + di + ',' + ei + ')" aria-label="Remove" style="background:var(--bg4);border:1px solid var(--border);border-radius:8px;color:var(--txt3);font-size:12px;padding:5px 9px;cursor:pointer;touch-action:manipulation">✕</button></div>';
     }).join('');
     return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;margin:0 16px 12px">' +
@@ -530,8 +530,8 @@ reg('split-builder', function() {
   return moduleTopbar('Custom Split', 'Your plan, your days', { backScreen: 'settings' }) +
     days +
     '<div style="padding:0 16px 8px;display:flex;gap:8px">' +
-    '<button type="button" class="btn btn-secondary" style="flex:1" onclick="sbAddDay()">+ Add day</button>' +
-    '<button type="button" class="btn btn-primary" style="flex:1" onclick="sbSave()">Save split</button>' +
+    '<button type="button" class="btn btn-secondary flex-1"  onclick="sbAddDay()">+ Add day</button>' +
+    '<button type="button" class="btn btn-primary flex-1"  onclick="sbSave()">Save split</button>' +
     '</div>' +
     '<div style="font-size:12px;color:var(--txt3);text-align:center;padding:0 24px 20px">Saving makes this your active split. It plugs into the weekly schedule, injuries, and equipment filtering like any other.</div>';
 });
@@ -548,7 +548,7 @@ window.sbSearch = function(inp, di) {
   const hits = ExDB.search(q).slice(0, 6);
   box.innerHTML = hits.map(function(e) {
     return '<div onclick="sbAdd(' + di + ',\'' + esc(e.n) + '\')" style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);margin-top:6px;cursor:pointer;touch-action:manipulation">' +
-      '<div style="font-size:13px;font-weight:600;color:var(--txt)">' + esc(e.n) + '</div>' +
+      '<div  class="row-title">' + esc(e.n) + '</div>' +
       '<div style="font-size:11px;color:var(--c1);font-weight:700">+ Add</div></div>';
   }).join('') || '<div style="font-size:12px;color:var(--txt3);padding:8px 4px">Nothing matches.</div>';
 };
@@ -639,8 +639,8 @@ window.confirmClearData = function() {
     '<div style="font-size:16px;font-weight:700;color:var(--txt);margin-bottom:8px">This will delete all your data</div>' +
     '<div style="font-size:14px;color:var(--txt3);line-height:1.6">Workouts, PRs, measurements, supplements and settings for this profile will be permanently deleted.</div>' +
     '</div>',
-    '<button type="button" class="btn btn-danger" onclick="S.reset()" style="margin-top:8px">Yes, Reset Everything</button>' +
-    '<button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Cancel</button>'
+    '<button type="button" class="btn btn-danger mt-8" onclick="S.reset()" >Yes, Reset Everything</button>' +
+    '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()" >Cancel</button>'
   );
 };
 

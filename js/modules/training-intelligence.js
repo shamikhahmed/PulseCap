@@ -387,38 +387,38 @@ window.renderTrainingIntelBody = function() {
 
     '<div style="padding:20px 16px 14px">' +
     '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:18px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">Training Age</div>' +
+    '<div  class="section-label">Training Age</div>' +
     '<div style="display:flex;align-items:center;gap:16px">' +
     '<div style="text-align:center">' +
     '<div style="font-size:48px;font-weight:900;color:' + ageColor + ';line-height:1">' + age.years + '</div>' +
-    '<div style="font-size:11px;color:var(--txt3)">years effective</div>' +
+    '<div  class="muted-11">years effective</div>' +
     '</div>' +
-    '<div style="flex:1">' +
+    '<div  class="flex-1">' +
     '<div style="font-size:16px;font-weight:800;color:' + ageColor + ';margin-bottom:4px">' + esc(age.label) + '</div>' +
     '<div style="font-size:12px;color:var(--txt2);line-height:1.5;margin-bottom:8px">' + esc(age.description) + '</div>' +
-    '<div style="font-size:11px;color:var(--txt3)">' + age.totalSessions + ' sessions · ' + age.prCount + ' PRs logged</div>' +
+    '<div  class="muted-11">' + age.totalSessions + ' sessions · ' + age.prCount + ' PRs logged</div>' +
     '</div></div></div></div>' +
 
-    (forecasts.length ? '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">12-Week Strength Forecast</div>' +
+    (forecasts.length ? '<div  class="card-block">' +
+      '<div  class="section-label">12-Week Strength Forecast</div>' +
       forecasts.map(function(f) {
         return '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">' +
-          '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(f.name) + '</div>' +
-          '<div style="font-size:11px;color:var(--txt3)">+' + f.gainRate + 'kg/wk projected</div></div>' +
-          '<div style="text-align:right">' +
-          '<div style="font-size:13px;color:var(--txt3)">' + f.current + 'kg</div>' +
-          '<div style="font-size:12px;color:var(--txt3)">→</div>' +
+          '<div  class="flex-1"><div  class="row-title">' + esc(f.name) + '</div>' +
+          '<div  class="muted-11">+' + f.gainRate + 'kg/wk projected</div></div>' +
+          '<div class="ta-right">' +
+          '<div  class="muted-13">' + f.current + 'kg</div>' +
+          '<div  class="muted-12">→</div>' +
           '<div style="font-size:15px;font-weight:800;color:#30d158">' + f.projected + 'kg</div>' +
           '</div></div>';
       }).join('') +
       '</div>' : '') +
 
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">Volume Allocation Analysis</div>' +
-    (undertrained.length ? '<div style="margin-bottom:10px"><div style="font-size:12px;font-weight:700;color:#ff9f0a;margin-bottom:6px">Undertrained Muscles</div>' +
+    '<div  class="card-block">' +
+    '<div  class="section-label">Volume Allocation Analysis</div>' +
+    (undertrained.length ? '<div  class="mb-10"><div style="font-size:12px;font-weight:700;color:#ff9f0a;margin-bottom:6px">Undertrained Muscles</div>' +
       undertrained.map(function(r) {
         return '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">' +
-          '<div><div style="font-size:13px;font-weight:600;color:var(--txt)">' + esc(r.muscle) + '</div>' +
+          '<div><div  class="row-title">' + esc(r.muscle) + '</div>' +
           '<div style="font-size:11px;color:' + r.color + '">' + esc(r.action) + '</div></div>' +
           '<div style="font-size:13px;font-weight:700;color:' + r.color + '">' + r.current + ' sets</div>' +
           '</div>';
@@ -430,13 +430,13 @@ window.renderTrainingIntelBody = function() {
     }).join('') +
     '</div>' +
 
-    (topEx.length ? '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">🏆 Your Best Exercises</div>' +
+    (topEx.length ? '<div  class="card-block">' +
+      '<div  class="section-label">🏆 Your Best Exercises</div>' +
       topEx.map(function(ex, i) {
         return '<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)">' +
           '<div style="font-size:16px;font-weight:900;color:' + ex.color + ';width:24px">' + (i + 1) + '</div>' +
-          '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(ex.name) + '</div>' +
-          '<div style="font-size:11px;color:var(--txt3)">' + ex.sessions + ' sessions · +' + ex.gainPct + '% strength gain · ' + ex.prCount + ' PRs</div></div>' +
+          '<div  class="flex-1"><div  class="row-title">' + esc(ex.name) + '</div>' +
+          '<div  class="muted-11">' + ex.sessions + ' sessions · +' + ex.gainPct + '% strength gain · ' + ex.prCount + ' PRs</div></div>' +
           '<div style="font-size:18px;font-weight:800;color:' + ex.color + '">' + ex.score + '</div>' +
           '</div>';
       }).join('') +
@@ -446,7 +446,7 @@ window.renderTrainingIntelBody = function() {
       '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#ff9f0a;margin-bottom:12px">⚠️ Consider Replacing</div>' +
       lowEx.map(function(ex) {
         return '<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)">' +
-          '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(ex.name) + '</div>' +
+          '<div  class="flex-1"><div  class="row-title">' + esc(ex.name) + '</div>' +
           '<div style="font-size:11px;color:#ff9f0a">Effectiveness: ' + ex.score + '/100 · ' + esc(ex.trend) + '</div></div>' +
           '<button type="button" onclick="go(\'workout\')" style="font-size:11px;color:var(--c1);background:none;border:none;cursor:pointer;font-weight:600">Swap →</button>' +
           '</div>';
@@ -454,12 +454,12 @@ window.renderTrainingIntelBody = function() {
       '</div>' : '') +
 
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(10,132,255,0.1),rgba(0,0,0,0.2));border:1px solid rgba(10,132,255,0.2);border-radius:20px;padding:16px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">🎯 Recommended Specialization Block</div>' +
+    '<div  class="section-label-sm">🎯 Recommended Specialization Block</div>' +
     '<div style="font-size:16px;font-weight:800;color:var(--c1);margin-bottom:4px">' + esc(specRec.block.name) + '</div>' +
     '<div style="font-size:12px;color:var(--txt3);margin-bottom:8px">Why: ' + esc(specRec.reason) + '</div>' +
     '<div style="display:flex;flex-direction:column;gap:6px;margin-bottom:12px">' +
     ['⏱ Duration: ' + specRec.block.duration, '📋 Volume: ' + specRec.block.volume, '🔄 Frequency: ' + specRec.block.frequency, '📈 Expected: ' + specRec.block.expected_gain].map(function(item) {
-      return '<div style="font-size:12px;color:var(--txt2)">' + esc(item) + '</div>';
+      return '<div  class="body-12">' + esc(item) + '</div>';
     }).join('') +
     '</div>' +
     '<div style="font-size:12px;color:var(--txt3);font-style:italic;margin-bottom:12px">' + esc(specRec.block.rationale) + '</div>' +
@@ -470,23 +470,23 @@ window.renderTrainingIntelBody = function() {
     }).join('') +
     '</div></div>' +
 
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">All Specialization Blocks</div>' +
+    '<div  class="card-block">' +
+    '<div  class="section-label">All Specialization Blocks</div>' +
     SpecializationEngine.allBlocks().map(function(b) {
       return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
-        '<div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(b.name) + '</div>' +
-        '<div style="font-size:11px;color:var(--txt3)">' + esc(b.duration) + ' · ' + esc(b.expected_gain) + '</div>' +
+        '<div  class="row-title">' + esc(b.name) + '</div>' +
+        '<div  class="muted-11">' + esc(b.duration) + ' · ' + esc(b.expected_gain) + '</div>' +
         '</div>';
     }).join('') +
     '</div>' +
 
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 
 };
 
 window.renderTrainingIntelUnified = function(data) {
   var tab = (data && data.tab) || 'intel';
-  var shell = '<div class="topbar"><button type="button" onclick="go(\'workout\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Training Intel</div></div>' + _trainingIntelTabBar(tab);
+  var shell = '<div class="topbar"><button type="button" onclick="go(\'workout\')"  class="back-chip" aria-label="Back">←</button><div class="topbar-title">Training Intel</div></div>' + _trainingIntelTabBar(tab);
   if (tab === 'style') {
     return shell + (typeof window.renderTrainingStyleBody === 'function' ? window.renderTrainingStyleBody() : '');
   }

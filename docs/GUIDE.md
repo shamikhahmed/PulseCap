@@ -110,7 +110,7 @@ Coach adapts to your goal (fat loss, strength, hypertrophy, recomp, athletic, ma
 ## Offline & data
 
 - All data in localStorage (`fos_profiles_[id]`)
-- Service worker cache-first (`pulsecap-v59`)
+- Service worker cache-first (`pulsecap-v60`)
 - No backend required
 - Export JSON before device reset
 

@@ -305,7 +305,7 @@ function _physiqueScoreBody() {
   const weak = PhysiqueEngine.weakestArea(report);
 
   function scoreCard(label, data, emoji) {
-    if (!data) return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center"><div style="font-size:20px;margin-bottom:6px">' + emoji + '</div><div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">' + label + '</div><div style="font-size:13px;color:var(--txt3)">No data yet</div></div>';
+    if (!data) return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center"><div style="font-size:20px;margin-bottom:6px">' + emoji + '</div><div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">' + label + '</div><div  class="muted-13">No data yet</div></div>';
     return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center">' +
       '<div style="font-size:20px;margin-bottom:4px">' + emoji + '</div>' +
       '<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">' + label + '</div>' +
@@ -370,52 +370,52 @@ function _physiqueScoreBody() {
     scoreCard('Muscularity', muscularity, '💪') +
     scoreCard('Conditioning', conditioning, '🏃') +
     '</div>' +
-    '<div style="margin:0 16px 14px">' +
+    '<div  class="mx-card">' +
     scoreCard('Athleticism', athleticism, '⚡') +
     '</div>' +
 
-    (symmetry && symmetry.reasons && symmetry.reasons.length ? '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">Symmetry Issues</div>' +
-      symmetry.reasons.map(r => '<div style="font-size:13px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span style="color:#f5c842">⚠️</span>' + esc(r) + '</div>').join('') +
+    (symmetry && symmetry.reasons && symmetry.reasons.length ? '<div class="card-block-sm">' +
+      '<div  class="section-label-sm">Symmetry Issues</div>' +
+      symmetry.reasons.map(r => '<div style="font-size:13px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px"><span class="c-warn">⚠️</span>' + esc(r) + '</div>').join('') +
       '</div>' : '') +
 
     (weak ? '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:16px;padding:14px">' +
       '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Priority Focus</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--c1);margin-bottom:4px">🎯 ' + esc(weak.name) + ' needs most attention</div>' +
-      '<div style="font-size:12px;color:var(--txt2)">Score: ' + weak.data.score + '/100 · ' + esc(weak.data.grade) + '</div>' +
+      '<div  class="body-12">Score: ' + weak.data.score + '/100 · ' + esc(weak.data.grade) + '</div>' +
       '</div>' : '') +
 
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
+    '<div  class="card-block">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:14px">📉 Muscle Growth Simulator</div>' +
 
-    (lagging.length ? '<div style="margin-bottom:12px"><div style="font-size:12px;font-weight:700;color:#ff9f0a;margin-bottom:8px">⚠️ Lagging Muscles</div>' +
+    (lagging.length ? '<div  class="mb-12"><div style="font-size:12px;font-weight:700;color:#ff9f0a;margin-bottom:8px">⚠️ Lagging Muscles</div>' +
       lagging.map(p => '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">' +
         '<div style="font-size:20px;width:28px;text-align:center">' + p.icon + '</div>' +
-        '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(p.label) + '</div>' +
-        '<div style="font-size:11px;color:var(--txt3)">' + p.weeklyVol + ' sets/wk · ' + esc(p.recommendation) + '</div></div>' +
-        '<div style="text-align:right"><div style="font-size:12px;font-weight:700;color:#ff9f0a">+' + p.projected8wks + 'cm</div>' +
-        '<div style="font-size:10px;color:var(--txt3)">8 weeks</div></div>' +
+        '<div  class="flex-1"><div  class="row-title">' + esc(p.label) + '</div>' +
+        '<div  class="muted-11">' + p.weeklyVol + ' sets/wk · ' + esc(p.recommendation) + '</div></div>' +
+        '<div class="ta-right"><div style="font-size:12px;font-weight:700;color:#ff9f0a">+' + p.projected8wks + 'cm</div>' +
+        '<div  class="muted-10">8 weeks</div></div>' +
         '</div>').join('') +
       '</div>' : '') +
 
     '<div style="font-size:12px;font-weight:700;color:var(--txt);margin-bottom:10px">All Muscle Groups — 8-Week Projections</div>' +
     projections.map(p => '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">' +
       '<div style="font-size:18px;width:24px;text-align:center">' + p.icon + '</div>' +
-      '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--txt)">' + esc(p.label) + '</div>' +
+      '<div  class="flex-1"><div  class="row-title">' + esc(p.label) + '</div>' +
       '<div style="font-size:10px;color:' + p.statusColor + '">' + p.weeklyVol + ' sets/wk · ' + esc(p.status) + '</div></div>' +
-      '<div style="text-align:right">' +
+      '<div class="ta-right">' +
       '<div style="font-size:13px;font-weight:700;color:' + (p.velocity > 0 ? '#30d158' : 'var(--txt3)') + '">' + (p.velocity > 0 ? '+' + p.projected8wks + 'cm' : 'No data') + '</div>' +
-      '<div style="font-size:10px;color:var(--txt3)">' + (p.velocity > 0 ? p.projected12wks + 'cm / 12wk' : '') + '</div>' +
+      '<div  class="muted-10">' + (p.velocity > 0 ? p.projected12wks + 'cm / 12wk' : '') + '</div>' +
       '</div></div>'
     ).join('') +
     '</div>' +
 
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 }
 
 window.renderPhysiqueUnified = function(data) {
   const tab = (data && data.tab) || 'score';
-  const shell = '<div class="topbar"><button type="button" onclick="go(\'bodymap\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Physique</div></div>' +
+  const shell = '<div class="topbar"><button type="button" onclick="go(\'bodymap\')"  class="back-chip" aria-label="Back">←</button><div class="topbar-title">Physique</div></div>' +
     _physiqueTabBar(tab);
   if (tab === 'archetype') {
     return shell + (typeof window.renderPhysiqueArchetypeBody === 'function' ? window.renderPhysiqueArchetypeBody(data) : '<div style="padding:24px;color:var(--txt3)">Archetype loading…</div>');

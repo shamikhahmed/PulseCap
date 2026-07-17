@@ -32,8 +32,8 @@ reg('dashboard', function() {
     const avatarLetter = (user.name || 'A').charAt(0).toUpperCase();
     const topbar = '<div class="topbar">' +
       '<div class="topbar-left">' +
-      '<div><div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(greeting) + ', ' + esc(name) + '</div>' +
-      '<div style="font-size:11px;color:var(--txt3)">' + esc(todayStr) + '</div></div>' +
+      '<div><div  class="row-title">' + esc(greeting) + ', ' + esc(name) + '</div>' +
+      '<div  class="muted-11">' + esc(todayStr) + '</div></div>' +
       '</div>' +
       '<div class="topbar-right">' +
       '<button type="button" class="topbar-icon press" onclick="go(\'search\')" aria-label="Search" style="display:flex;align-items:center;justify-content:center">' + icon('search', 18) + '</button>' +
@@ -88,16 +88,16 @@ reg('dashboard', function() {
     const startQuickAction = isRestDay
       ? '<button type="button" onclick="go(\'recovery-debt\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
         '<span style="color:var(--c4);display:flex">' + icon('bed', 26) + '</span>' +
-        '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Recovery</span>' +
+        '<span class="micro-label">Recovery</span>' +
         '</button>'
       : '<button type="button" onclick="startWorkout&&startWorkout()" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
         '<span style="color:var(--c1);display:flex">' + icon('dumbbell', 26) + '</span>' +
-        '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Start</span>' +
+        '<span class="micro-label">Start</span>' +
         '</button>';
     const heroCard = '<div onclick="go(\'' + heroTap + '\')" class="card-press" style="margin:0 16px 20px;border-radius:16px;background:' + heroGrad + ';border:1px solid var(--border);padding:22px 20px;cursor:pointer;touch-action:manipulation;box-shadow:var(--ds2)">' +
       '<div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:16px">' +
       ((dd && dd.ic) ? iconTile(dd.ic, dd.tint || 'c1', 56) : (typeof iconTile === 'function' ? iconTile('dumbbell', 'c1', 56) : '')) +
-      '<div style="flex:1;min-width:0">' +
+      '<div  class="flex-1">' +
       '<div style="font-size:22px;font-weight:800;color:var(--txt);line-height:1.25;letter-spacing:-0.4px">' + esc(dd ? dd.title : (plan ? splitDay.n || 'Ready to Train' : 'Ready to Train')) + '</div>' +
       '<div style="font-size:13px;color:var(--txt2);margin-top:8px;line-height:1.5">' + esc(plan ? plan.message : (dd ? (dd.reason || (dd.actions && dd.actions[0]) || '') : 'Tap to see your recommendation')) + '</div>' +
       '</div>' +
@@ -124,15 +124,15 @@ reg('dashboard', function() {
       startQuickAction +
       '<button type="button" onclick="go(\'recovery\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
       '<span style="color:var(--c3);display:flex">' + icon('chart', 26) + '</span>' +
-      '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Check In</span>' +
+      '<span class="micro-label">Check In</span>' +
       '</button>' +
       '<button type="button" onclick="go(\'assistant\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
       '<span style="color:var(--c2);display:flex">' + icon('sparkles', 26) + '</span>' +
-      '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Smart Coach</span>' +
+      '<span class="micro-label">Smart Coach</span>' +
       '</button>' +
       '<button type="button" onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 8px;text-align:center;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:6px;width:100%">' +
       '<span style="color:var(--txt2);display:flex">' + icon('search', 26) + '</span>' +
-      '<span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.05em;color:var(--txt3)">Search</span>' +
+      '<span class="micro-label">Search</span>' +
       '</button>' +
       '</div>';
 
@@ -160,7 +160,7 @@ reg('dashboard', function() {
       .sort(function(a, b) { return a.pct - b.pct; })
       .slice(0, 5);
     const muscleRecoveryMini = trainedMuscles.length ?
-      '<div style="margin-bottom:14px">' +
+      '<div  class="mb-14">' +
       '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);padding:0 16px;margin-bottom:8px">Muscle Recovery</div>' +
       '<div style="display:flex;gap:8px;padding:0 16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch">' +
       trainedMuscles.map(function(m) {
@@ -183,8 +183,8 @@ reg('dashboard', function() {
     const activeQuestCard = (function() {
       try {
         const noCTA = '<div onclick="go(\'quests\')" style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:12px 16px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:space-between">' +
-          '<div style="font-size:13px;color:var(--txt2)">⚔️ Start a Quest</div>' +
-          '<div style="font-size:12px;color:var(--txt3)">→</div></div>';
+          '<div  class="body-13">⚔️ Start a Quest</div>' +
+          '<div  class="muted-12">→</div></div>';
         if (typeof QuestEngine === 'undefined') return noCTA;
         QuestEngine.updateProgress();
         const active = QuestEngine.getActive();
@@ -192,12 +192,12 @@ reg('dashboard', function() {
         const q = active[0];
         const pct = QuestEngine.questProgress(q);
         return '<div onclick="go(\'quests\')" style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(123,95,255,0.1),rgba(0,213,255,0.06));border:1px solid rgba(123,95,255,0.25);border-radius:16px;padding:14px 16px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;gap:12px">' +
-          '<div style="font-size:28px">' + q.icon + '</div>' +
-          '<div style="flex:1">' +
-          '<div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(q.title) + '</div>' +
+          '<div class="fs-28">' + q.icon + '</div>' +
+          '<div  class="flex-1">' +
+          '<div  class="row-title">' + esc(q.title) + '</div>' +
           '<div style="width:100%;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;margin-top:6px"><div style="width:' + pct + '%;height:4px;border-radius:2px;background:var(--c1)"></div></div>' +
           '<div style="font-size:10px;color:var(--txt3);margin-top:3px">' + pct + '% complete</div>' +
-          '</div><div style="font-size:12px;color:var(--txt3)">›</div></div>';
+          '</div><div  class="muted-12">›</div></div>';
       } catch(e) { return ''; }
     })();
 
@@ -228,12 +228,12 @@ reg('dashboard', function() {
     /* ── LAST WORKOUT ── */
     const lastWkt = ws[ws.length - 1];
     const lastWktCard = lastWkt ?
-      '<div style="margin:0 16px 14px">' +
+      '<div  class="mx-card">' +
       '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Last Session</div>' +
       '<div onclick="go(\'progress\')" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px 16px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:space-between">' +
       '<div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--txt);margin-bottom:2px">' + esc(lastWkt.name || 'Workout') + '</div>' +
-      '<div style="font-size:12px;color:var(--txt3)">' +
+      '<div  class="muted-12">' +
       esc(lastWkt.date || '') +
       (lastWkt.duration ? ' · ' + lastWkt.duration + 'min' : '') +
       (lastWkt.totalVol ? ' · ' + Math.round(lastWkt.totalVol) + 'kg' : '') +
@@ -252,7 +252,7 @@ reg('dashboard', function() {
         'background:linear-gradient(135deg,rgba(0,213,255,0.1),rgba(123,95,255,0.08));' +
         'border:1px solid rgba(0,213,255,0.2);display:flex;align-items:center;gap:12px">' +
         '<div style="font-size:28px;flex-shrink:0">' + iconTile('sun', 'c5', 36) + '</div>' +
-        '<div style="flex:1;min-width:0">' +
+        '<div  class="flex-1">' +
         '<div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:3px">Morning Briefing</div>' +
         '<div style="font-size:11px;color:var(--txt3);line-height:1.45;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">' + esc(coachMsg) + '</div>' +
         '</div>' +
@@ -264,7 +264,7 @@ reg('dashboard', function() {
     const firstWorkoutEmpty = !ws.length ?
       emptyState(icon('dumbbell', 40), 'Day one', 'Your plan\'s built. The first session is the hardest button you\'ll ever press.', 'Start Workout', 'startWorkout&&startWorkout()') : '';
 
-    const moreRow = '<div style="margin:0 16px 14px">' +
+    const moreRow = '<div  class="mx-card">' +
       '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Browse</div>' +
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
       '<button type="button" onclick="go(\'hub\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 10px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left;display:flex;align-items:center;gap:8px">' + icon('book', 16) + ' Learn</button>' +
@@ -275,8 +275,8 @@ reg('dashboard', function() {
     const weightPrompt = !todayWt ?
       '<div style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px">' +
       iconTile('scale', 'c1') +
-      '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">Step on the scale?</div>' +
-      '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Morning, before breakfast — that\'s the honest number</div></div>' +
+      '<div  class="flex-1"><div  class="row-title">Step on the scale?</div>' +
+      '<div  class="muted-11 mt-2">Morning, before breakfast — that\'s the honest number</div></div>' +
       '<button type="button" class="btn btn-primary btn-sm" style="width:auto;padding:10px 16px;min-height:auto" onclick="showLogWeight()">Log</button></div>' : '';
 
     /* Weekly recap — Sunday evening through Monday */
@@ -290,18 +290,18 @@ reg('dashboard', function() {
         : recap.sessions >= 4 ? recap.sessions + ' sessions. That\'s a real week of work.'
         : recap.sessions + ' session' + (recap.sessions > 1 ? 's' : '') + ' banked.') + '</div>' +
       '<div style="display:flex;gap:8px;margin-bottom:12px">' +
-      '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--txt)">' + (Math.round(recap.volume / 100) / 10) + 't</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">Volume</div></div>' +
-      '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--c5)">' + recap.prs + '</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">PRs</div></div>' +
-      '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--c1)">' + recap.streak + '</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">Streak</div></div>' +
-      (recap.weightDelta !== null ? '<div style="flex:1;background:var(--bg3);border-radius:12px;padding:10px;text-align:center"><div style="font-size:15px;font-weight:800;color:var(--txt)">' + (recap.weightDelta > 0 ? '+' : '') + recap.weightDelta + '</div><div style="font-size:9px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em;margin-top:2px">kg</div></div>' : '') +
+      '<div class="stat-flex"><div  class="row-title-16">' + (Math.round(recap.volume / 100) / 10) + 't</div><div class="micro-label-9">Volume</div></div>' +
+      '<div class="stat-flex"><div style="font-size:15px;font-weight:800;color:var(--c5)">' + recap.prs + '</div><div class="micro-label-9">PRs</div></div>' +
+      '<div class="stat-flex"><div style="font-size:15px;font-weight:800;color:var(--c1)">' + recap.streak + '</div><div class="micro-label-9">Streak</div></div>' +
+      (recap.weightDelta !== null ? '<div class="stat-flex"><div  class="row-title-16">' + (recap.weightDelta > 0 ? '+' : '') + recap.weightDelta + '</div><div class="micro-label-9">kg</div></div>' : '') +
       '</div>' +
       (recap.coach && recap.coach.weak && recap.coach.weak.length ?
-        '<div style="margin-bottom:10px">' +
+        '<div  class="mb-10">' +
         recap.coach.weak.slice(0, 3).map(function(r) {
           const label = typeof prettyMuscle === 'function' ? prettyMuscle(r.muscle) : r.muscle;
           const col = r.flag === 'missed' ? '#ff453a' : '#ff9f0a';
           return '<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;padding:8px 10px;border-radius:10px;background:var(--bg3);margin-bottom:6px">' +
-            '<div style="font-size:12px;font-weight:700;color:var(--txt)">' + esc(label) + '</div>' +
+            '<div class="row-title-12">' + esc(label) + '</div>' +
             '<div style="font-size:11px;font-weight:700;color:' + col + '">' + r.sets + '/' + r.target + ' sets</div></div>';
         }).join('') + '</div>' : '') +
       (recap.coach && recap.coach.advice && recap.coach.advice.length ?
@@ -316,23 +316,23 @@ reg('dashboard', function() {
     const checkinCard = (!checkedInToday && hr < 12) ?
       '<button type="button" onclick="go(\'recovery\')" class="dash-prompt" style="margin:0 16px 14px;width:calc(100% - 32px);border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;touch-action:manipulation;text-align:left">' +
       iconTile('sun', 'c5') +
-      '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">30-second check-in</div>' +
-      '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Sleep, soreness, mood — then I\'ll shape your day around it</div></div>' +
+      '<div  class="flex-1"><div  class="row-title">30-second check-in</div>' +
+      '<div  class="muted-11 mt-2">Sleep, soreness, mood — then I\'ll shape your day around it</div></div>' +
       '<span style="color:var(--c1);font-size:18px" aria-hidden="true">›</span></button>' : '';
 
     const dueSupps = typeof SupplementEngine !== 'undefined' ? SupplementEngine.getDueNow() : [];
     const suppPrompt = dueSupps.length ?
       '<button type="button" onclick="go(\'nutrition\')" class="dash-prompt" style="margin:0 16px 14px;width:calc(100% - 32px);border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;cursor:pointer;touch-action:manipulation;text-align:left">' +
       iconTile('pill', 'c2') +
-      '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">' + dueSupps.length + ' supplement' + (dueSupps.length > 1 ? 's' : '') + ' due</div>' +
-      '<div style="font-size:11px;color:var(--txt3);margin-top:2px">' + esc(dueSupps.slice(0, 3).map(function(s){ return s.name; }).join(', ')) + '</div></div>' +
+      '<div  class="flex-1"><div  class="row-title">' + dueSupps.length + ' supplement' + (dueSupps.length > 1 ? 's' : '') + ' due</div>' +
+      '<div  class="muted-11 mt-2">' + esc(dueSupps.slice(0, 3).map(function(s){ return s.name; }).join(', ')) + '</div></div>' +
       '<span style="color:var(--c1);font-size:18px" aria-hidden="true">›</span></button>' : '';
 
     const setupBanner = (S.g('settings.equipmentSetupPending') || !S.g('user.equipmentConfigured')) ?
       '<button type="button" onclick="go(\'equipment-setup\')" class="dash-prompt" style="margin:0 16px 14px;width:calc(100% - 32px);border-radius:16px;padding:14px 16px;background:rgba(0,213,255,0.08);border:1px solid rgba(0,213,255,0.2);display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;touch-action:manipulation;text-align:left">' +
       iconTile('dumbbell', 'c1') +
-      '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--c1)">Set up your equipment</div>' +
-      '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Home, gym, Life Fitness machines — get matched workouts</div></div>' +
+      '<div  class="flex-1"><div style="font-size:13px;font-weight:700;color:var(--c1)">Set up your equipment</div>' +
+      '<div  class="muted-11 mt-2">Home, gym, Life Fitness machines — get matched workouts</div></div>' +
       '<span style="color:var(--c1);font-size:18px" aria-hidden="true">›</span></button>' : '';
 
     const injuryAssess = typeof InjuriesDB !== 'undefined' ? InjuriesDB.assessActive() : { shouldRest: false, messages: [], count: 0 };
@@ -349,7 +349,7 @@ reg('dashboard', function() {
     const splitBanner = splitRec && !S.g('user.splitConfirmed') ?
       '<div style="margin:0 16px 14px;border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border)">' +
       '<div style="font-size:12px;font-weight:700;color:var(--txt3);margin-bottom:4px">SUGGESTED SPLIT</div>' +
-      '<div style="font-size:15px;font-weight:800;color:var(--txt)">'+esc(splitRec.name)+'</div>' +
+      '<div  class="row-title-16">'+esc(splitRec.name)+'</div>' +
       '<div style="font-size:11px;color:var(--txt3);margin:6px 0 10px">'+esc(splitRec.reason)+'</div>' +
       '<button type="button" class="btn btn-primary btn-sm" onclick="applySuggestedSplit()">Use this split</button> ' +
       '<button type="button" class="btn btn-ghost btn-sm" onclick="go(\'settings\',{tab:\'training\'})">Choose another</button></div>' : '';

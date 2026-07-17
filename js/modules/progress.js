@@ -22,8 +22,8 @@ reg('progress', function() {
     _strengthCharts(ws, prs) +
     _bodyStatsChart(bodyStats, S.g('user')) +
     _achievementWall(earned) +
-    '<div style="padding:0 16px 16px"><button type="button" class="btn btn-secondary" onclick="go(\'physique\')" style="width:100%">📊 Physique Analysis & Growth Simulator →</button></div>' +
-    '<div style="height:20px"></div>';
+    '<div class="pad-x-16-b16"><button type="button" class="btn btn-secondary w-full" onclick="go(\'physique\')" >📊 Physique Analysis & Growth Simulator →</button></div>' +
+    '<div  class="spacer-bottom"></div>';
 });
 
 function _monthlyReport(ws, prs, bodyStats) {
@@ -63,10 +63,10 @@ function _periodizationBlock(ws) {
   const phases = ['Accumulation', 'Intensification', 'Peak', 'Deload'];
   const phase = phases[week - 1] || 'Deload';
   const labels = ['W1', 'W2', 'W3', 'W4'];
-  return '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
+  return '<div  class="card-block">' +
     '<div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">' +
     '<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--c2);margin-bottom:4px">Training Block</div>' +
-    '<div style="font-size:15px;font-weight:800;color:var(--txt)">Week ' + week + ' · ' + esc(phase) + '</div></div>' +
+    '<div  class="row-title-16">Week ' + week + ' · ' + esc(phase) + '</div></div>' +
     '<div style="font-size:11px;color:var(--txt3);text-align:right">4-week mesocycle<br><span style="font-weight:700;color:var(--c1)">' + weekWs.length + ' sessions</span></div></div>' +
     '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">' +
     labels.map(function(l, i) {
@@ -86,8 +86,8 @@ function _weeklySummary(ws, prs) {
   const volChange = lastVol > 0 ? Math.round(((thisVol-lastVol)/lastVol)*100) : 0;
   const thisCount = thisWeek.length;
   const newPRs = prs.filter(p => daysAgo(p.date) < 7).length;
-  return '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">This Week</div>' +
+  return '<div  class="card-block">' +
+    '<div  class="section-label">This Week</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">' +
     _pStat(thisCount, 'Sessions', '📅') +
     _pStat(Math.round(thisVol)+'kg', 'Volume', '🏋️') +
@@ -99,7 +99,7 @@ function _weeklySummary(ws, prs) {
 function _pStat(val, label, icon) {
   return '<div style="text-align:center;background:var(--bg4);border-radius:12px;padding:10px">' +
     '<div style="font-size:16px;margin-bottom:4px">'+icon+'</div>' +
-    '<div style="font-size:16px;font-weight:800;color:var(--txt)">'+esc(String(val))+'</div>' +
+    '<div  class="row-title-16">'+esc(String(val))+'</div>' +
     '<div style="font-size:10px;color:var(--txt3);margin-top:2px">'+esc(label)+'</div>' +
     '</div>';
 }
@@ -117,14 +117,14 @@ function _strengthLineChart(ws) {
     return '<option value="'+esc(n)+'">'+esc(n)+'</option>';
   }).join('');
 
-  const selectorHTML = '<div style="padding:0 16px 12px">' +
+  const selectorHTML = '<div class="pad-x-16-b12">' +
     '<select id="strength-chart-select" onchange="changeExerciseChart(this.value)" ' +
     'style="width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:var(--txt);font-size:14px;-webkit-appearance:none">' +
     (exNames.length ? selectOpts : '<option value="">No exercises logged yet</option>') +
     '</select></div>';
 
   const firstEx = exNames[0] || '';
-  const chartHTML = '<div id="strength-chart-wrap" style="padding:0 16px">' +
+  const chartHTML = '<div id="strength-chart-wrap"  class="pad-x-16">' +
     _renderStrengthChart(ws, firstEx) +
     '</div>';
 
@@ -270,7 +270,7 @@ function _workoutHistory(ws) {
   }
   const recent = ws.slice().reverse().slice(0, 20);
   return sh('Workout History') +
-    '<div style="padding:0 16px">' +
+    '<div  class="pad-x-16">' +
     recent.map(function(w) {
       const exNames = (w.exercises||[]).slice(0,3).map(function(e){return e.name;}).join(', ');
       const more = (w.exercises||[]).length > 3 ? ' +'+((w.exercises||[]).length-3)+' more' : '';
@@ -281,13 +281,13 @@ function _workoutHistory(ws) {
         return a + prSets.length;
       }, 0);
       return '<div onclick="showDayWorkouts(\''+w.date.slice(0,10)+'\')" style="display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
-        '<div style="flex:1">' +
-        '<div style="font-size:14px;font-weight:700;color:var(--txt)">'+esc(w.name||'Workout')+'</div>' +
-        '<div style="font-size:12px;color:var(--txt3);margin-top:2px">'+esc(exNames+more)+'</div>' +
+        '<div  class="flex-1">' +
+        '<div  class="row-title-14">'+esc(w.name||'Workout')+'</div>' +
+        '<div  class="muted-12 mt-2">'+esc(exNames+more)+'</div>' +
         '</div>' +
         '<div style="text-align:right;flex-shrink:0">' +
-        '<div style="font-size:12px;color:var(--txt3)">'+esc(fmtDate(w.date))+'</div>' +
-        '<div style="font-size:11px;color:var(--txt3);margin-top:2px">'+[vol,dur].filter(Boolean).join(' · ')+(prs?' · 🏆'+prs+' PR':'')+'</div>' +
+        '<div  class="muted-12">'+esc(fmtDate(w.date))+'</div>' +
+        '<div  class="muted-11 mt-2">'+[vol,dur].filter(Boolean).join(' · ')+(prs?' · 🏆'+prs+' PR':'')+'</div>' +
         '</div>' +
         '<div style="color:var(--txt3);font-size:16px;margin-left:8px">›</div>' +
         '</div>';
@@ -309,11 +309,11 @@ function _volumeChart(ws) {
     '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">' +
     '<div style="flex:1;width:100%;display:flex;align-items:flex-end">' +
     '<div style="width:100%;background:'+(w.isCur?'var(--grad)':'var(--bg4)')+';border-radius:4px 4px 0 0;height:'+Math.max(4,Math.round((w.vol/maxVol)*80))+'px"></div>' +
-    '</div><div style="font-size:10px;color:var(--txt3)">'+esc(w.label)+'</div></div>'
+    '</div><div  class="muted-10">'+esc(w.label)+'</div></div>'
   ).join('');
 
   return sh('Volume Trend') +
-    '<div style="padding:0 16px">' +
+    '<div  class="pad-x-16">' +
     '<div style="display:flex;align-items:flex-end;height:100px;gap:6px">'+bars+'</div>' +
     '</div>';
 }
@@ -328,14 +328,14 @@ function _prBoard(prs) {
     '</div>';
   const sorted = [...prs].sort((a,b) => new Date(b.date)-new Date(a.date));
   return sh('Personal Records') +
-    '<div style="padding:0 16px">' +
+    '<div  class="pad-x-16">' +
     sorted.slice(0,8).map(p =>
       '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">' +
       '<div style="font-size:22px">🏆</div>' +
-      '<div style="flex:1"><div style="font-size:14px;font-weight:700;color:var(--txt)">'+esc(p.exercise)+'</div>' +
-      '<div style="font-size:12px;color:var(--txt3)">'+fmtDate(p.date)+'</div></div>' +
-      '<div style="text-align:right"><div style="font-size:15px;font-weight:800;color:var(--c1)">'+p.weight+'kg × '+p.reps+'</div>' +
-      '<div style="font-size:11px;color:var(--txt3)">e1RM: '+(p.e1rm||'—')+'kg</div></div></div>'
+      '<div  class="flex-1"><div  class="row-title-14">'+esc(p.exercise)+'</div>' +
+      '<div  class="muted-12">'+fmtDate(p.date)+'</div></div>' +
+      '<div class="ta-right"><div style="font-size:15px;font-weight:800;color:var(--c1)">'+p.weight+'kg × '+p.reps+'</div>' +
+      '<div  class="muted-11">e1RM: '+(p.e1rm||'—')+'kg</div></div></div>'
     ).join('') + '</div>';
 }
 
@@ -359,11 +359,11 @@ function _strengthCharts(ws, prs) {
       '<polyline points="'+points+'" fill="none" stroke="var(--c1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
       pts.map((p,i) => { const x=(i/(pts.length-1||1))*W, y=H-((p.e1rm/maxE)*(H-8))-4; return '<circle cx="'+x+'" cy="'+y+'" r="3.5" fill="var(--c1)"/>'; }).join('') +
       '</svg>' +
-      '<div style="font-size:12px;color:var(--txt3)">Peak e1RM: '+Math.round(maxE)+'kg</div>' +
+      '<div  class="muted-12">Peak e1RM: '+Math.round(maxE)+'kg</div>' +
       '</div>';
   }).filter(Boolean).join('');
   if (!charts) return '';
-  return sh('Strength Trends') + '<div style="padding:0 16px">'+charts+'</div>';
+  return sh('Strength Trends') + '<div  class="pad-x-16">'+charts+'</div>';
 }
 
 function _bodyStatsChart(bodyStats, user) {
@@ -405,7 +405,7 @@ function _bodyStatsChart(bodyStats, user) {
     '<text x="'+(W-padR-2)+'" y="'+(toY(user.goalWeight)-4)+'" font-size="9" fill="#30d158" text-anchor="end">Goal</text>' : '';
 
   return sh('Weight Trend', '+ Log', 'go(\'bodymap\')') +
-    '<div style="padding:0 16px 14px">' +
+    '<div  class="pad-x-16-b">' +
     '<svg width="100%" viewBox="0 0 '+W+' '+H+'" overflow="visible">' +
     '<defs><linearGradient id="'+gradId+'" x1="0" y1="0" x2="0" y2="1">' +
     '<stop offset="0%" stop-color="var(--c2)" stop-opacity="0.25"/>' +
@@ -447,19 +447,19 @@ window.showDayWorkouts = function(dateStr) {
   const body = ws.map(function(w) {
     return '<div style="padding:12px 0;border-bottom:1px solid var(--border)">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
-      '<div style="font-size:15px;font-weight:700;color:var(--txt)">'+esc(w.name||'Workout')+'</div>' +
-      '<div style="font-size:12px;color:var(--txt3)">'+fmtMins(w.duration||0)+' · '+Math.round(w.totalVol||0)+'kg</div>' +
+      '<div  class="row-title-15">'+esc(w.name||'Workout')+'</div>' +
+      '<div  class="muted-12">'+fmtMins(w.duration||0)+' · '+Math.round(w.totalVol||0)+'kg</div>' +
       '</div>' +
       (w.exercises||[]).map(function(ex) {
         const doneSets = (ex.sets||[]).filter(function(s){return s.done;});
         if (!doneSets.length) return '';
         const bestSet = doneSets.slice().sort(function(a,b){return ProgEngine.epley(b.weight||0,b.reps||1)-ProgEngine.epley(a.weight||0,a.reps||1);})[0];
         return '<div style="padding:6px 0;display:flex;justify-content:space-between;align-items:center">' +
-          '<div style="font-size:13px;color:var(--txt2)">'+esc(ex.name)+'</div>' +
-          '<div style="font-size:12px;color:var(--txt3)">'+doneSets.length+' sets · Best: '+(bestSet.weight||0)+'kg×'+(bestSet.reps||0)+(bestSet.isPR?'  🏆':'')+'</div>' +
+          '<div  class="body-13">'+esc(ex.name)+'</div>' +
+          '<div  class="muted-12">'+doneSets.length+' sets · Best: '+(bestSet.weight||0)+'kg×'+(bestSet.reps||0)+(bestSet.isPR?'  🏆':'')+'</div>' +
           '</div>';
       }).join('') +
       '</div>';
   }).join('');
-  modal(fmtDate(dateStr), body, '<button type="button" class="btn btn-ghost" onclick="closeModal()" style="margin-top:12px">Close</button>');
+  modal(fmtDate(dateStr), body, '<button type="button" class="btn btn-ghost mt-12" onclick="closeModal()">Close</button>');
 };

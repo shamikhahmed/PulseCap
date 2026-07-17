@@ -15,9 +15,9 @@ reg('profiles', function() {
       '<div style="width:52px;height:52px;border-radius:16px;' +
       'background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:24px">' +
       p.avatar + '</div>' +
-      '<div style="flex:1">' +
+      '<div  class="flex-1">' +
       '<div style="font-size:16px;font-weight:700;color:var(--txt)">' + esc(p.name) + '</div>' +
-      '<div style="font-size:12px;color:var(--txt3);margin-top:2px">' +
+      '<div  class="muted-12 mt-2">' +
       (isDemo ? '🤖 Demo data' : isActive ? '✅ Active profile' : 'Tap to switch') +
       '</div></div>' +
       (isActive ? '<div style="color:var(--c1);font-size:20px">●</div>' :
@@ -32,8 +32,8 @@ reg('profiles', function() {
     sh('Your Profiles') +
     profileCards +
 
-    '<div style="padding:0 16px 14px">' +
-    '<button type="button" class="btn btn-secondary" style="margin-bottom:10px" onclick="showCreateProfile()">+ New Profile</button>' +
+    '<div  class="pad-x-16-b">' +
+    '<button type="button" class="btn btn-secondary mb-10"  onclick="showCreateProfile()">+ New Profile</button>' +
     (activeId === 'demo' ? '' :
       '<button type="button" class="btn" style="background:rgba(123,95,255,0.1);border:1px solid rgba(123,95,255,0.25);color:#7b5fff;margin-bottom:10px" onclick="openDemoProfile()">🤖 Open demo profile</button>' +
       '<a href="?demo=1" class="btn btn-secondary" style="display:block;text-align:center;text-decoration:none;margin-bottom:0">Fresh demo snapshot ↗</a>') +
@@ -45,7 +45,7 @@ reg('profiles', function() {
     'Demo is a separate profile with sample workouts, PRs, body stats, and supplements. Switch back anytime from this screen — your real profiles stay on this device.' +
     '</div></div>' +
 
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });
 
 window.switchToProfile = function(id) {
@@ -59,8 +59,8 @@ window.deleteProfile = function(id) {
   if (!prof) return;
   modal('Delete Profile?',
     '<div style="font-size:15px;color:var(--txt2);line-height:1.6">Delete <strong>'+esc(prof.name)+'</strong>? All workouts, PRs, and data for this profile will be permanently removed.</div>',
-    '<button type="button" class="btn btn-danger" onclick="confirmDeleteProfile(\''+id+'\')" style="margin-top:12px">Delete Profile</button>' +
-    '<button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Cancel</button>'
+    '<button type="button" class="btn btn-danger mt-12" onclick="confirmDeleteProfile(\''+id+'\')">Delete Profile</button>' +
+    '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()" >Cancel</button>'
   );
 };
 
@@ -75,8 +75,8 @@ window.openDemoProfile = function() {
   if (S.hasRealUserData && S.hasRealUserData() && S.activeId() !== 'demo') {
     modal('Open demo profile?',
       '<div style="font-size:15px;color:var(--txt2);line-height:1.65">Switch to the sample <strong>Demo Mode</strong> profile? Your real workout data stays saved — switch back here anytime.</div>',
-      '<button type="button" class="btn btn-primary" onclick="confirmOpenDemoProfile()" style="margin-top:12px">Open demo profile</button>' +
-      '<button type="button" class="btn btn-secondary" onclick="closeModal()" style="margin-top:8px">Cancel</button>'
+      '<button type="button" class="btn btn-primary mt-12" onclick="confirmOpenDemoProfile()">Open demo profile</button>' +
+      '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()" >Cancel</button>'
     );
     return;
   }

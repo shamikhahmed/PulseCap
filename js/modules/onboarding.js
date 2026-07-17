@@ -321,7 +321,7 @@ const OB_STEPS = {
       '<div class="field-row">' +
       '<div class="field-wrap">' +
       '<label class="field-label">Gender</label>' +
-      '<div style="display:flex;gap:8px">' +
+      '<div  class="flex-gap-8">' +
       '<button type="button" class="ob-opt'+((_obData.gender||'male')==='male'?' sel':'')+'" data-field="gender" data-val="male" onclick="obSelect(\'gender\',\'male\')" style="flex:1;padding:14px 12px;justify-content:center;gap:10px;align-items:center;min-height:52px">' +
       '<span aria-hidden="true" style="font-size:20px;line-height:1;flex-shrink:0;opacity:0.9">♂</span><span class="ob-opt-title" style="letter-spacing:0.02em">Male</span></button>' +
       '<button type="button" class="ob-opt'+((_obData.gender||'')==='female'?' sel':'')+'" data-field="gender" data-val="female" onclick="obSelect(\'gender\',\'female\')" style="flex:1;padding:14px 12px;justify-content:center;gap:10px;align-items:center;min-height:52px">' +
@@ -329,11 +329,11 @@ const OB_STEPS = {
       '</div></div>' +
       '<div class="field-wrap">' +
       '<label class="field-label">Age</label>' +
-      '<input class="field" type="number" min="14" max="80" placeholder="25" value="'+(_obData.age||'')+'" oninput="_obData.age=this.value" style="font-size:18px">' +
+      '<input class="field fs-18" type="number" min="14" max="80" placeholder="25" value="'+(_obData.age||'')+'" oninput="_obData.age=this.value">' +
       '</div></div>' +
-      '<div style="margin-bottom:14px">' +
+      '<div  class="mb-14">' +
       '<label class="field-label">Units</label>' +
-      '<div style="display:flex;gap:8px">' +
+      '<div  class="flex-gap-8">' +
       '<button type="button" class="ob-opt'+(units==='metric'?' sel':'')+'" data-field="units" data-val="metric" onclick="obSelect(\'units\',\'metric\');obSelect(\'heightUnit\',\'cm\');obSelect(\'weightUnit\',\'kg\');go(\'onboarding\')" style="flex:1;padding:12px;justify-content:center"><div class="ob-opt-title">Metric (kg/cm)</div></button>' +
       '<button type="button" class="ob-opt'+(units==='imperial'?' sel':'')+'" data-field="units" data-val="imperial" onclick="obSelect(\'units\',\'imperial\');obSelect(\'heightUnit\',\'in\');obSelect(\'weightUnit\',\'lb\');go(\'onboarding\')" style="flex:1;padding:12px;justify-content:center"><div class="ob-opt-title">Imperial (lb/in)</div></button>' +
       '</div></div>' +
@@ -350,15 +350,15 @@ const OB_STEPS = {
       '<div class="ob-body">' +
       '<div class="field-row">' +
       '<div class="field-wrap"><label class="field-label">'+hLabel+'</label>' +
-      '<input class="field" type="number" placeholder="'+(u?'70':'175')+'" value="'+(_obData.height||'')+'" oninput="_obData.height=this.value" style="font-size:18px"></div>' +
+      '<input class="field fs-18" type="number" placeholder="'+(u?'70':'175')+'" value="'+(_obData.height||'')+'" oninput="_obData.height=this.value"></div>' +
       '<div class="field-wrap"><label class="field-label">'+wLabel+'</label>' +
-      '<input class="field" type="number" placeholder="'+(u?'165':'75')+'" value="'+(_obData.weight||'')+'" oninput="_obData.weight=this.value" style="font-size:18px"></div>' +
+      '<input class="field fs-18" type="number" placeholder="'+(u?'165':'75')+'" value="'+(_obData.weight||'')+'" oninput="_obData.weight=this.value"></div>' +
       '</div>' +
       '<div class="field-row">' +
       '<div class="field-wrap"><label class="field-label">'+gwLabel+'</label>' +
-      '<input class="field" type="number" placeholder="'+(u?'155':'70')+'" value="'+(_obData.goalWeight||'')+'" oninput="_obData.goalWeight=this.value" style="font-size:18px"></div>' +
+      '<input class="field fs-18" type="number" placeholder="'+(u?'155':'70')+'" value="'+(_obData.goalWeight||'')+'" oninput="_obData.goalWeight=this.value"></div>' +
       '<div class="field-wrap"><label class="field-label">Body Fat % <span style="color:var(--txt3);font-weight:400">(optional)</span></label>' +
-      '<input class="field" type="number" placeholder="15" min="3" max="50" value="'+(_obData.targetBodyFat||'')+'" oninput="_obData.targetBodyFat=this.value" style="font-size:18px"></div>' +
+      '<input class="field fs-18" type="number" placeholder="15" min="3" max="50" value="'+(_obData.targetBodyFat||'')+'" oninput="_obData.targetBodyFat=this.value"></div>' +
       '</div>' +
       '</div>' + _footer(5) + '</div>';
   },
@@ -415,9 +415,9 @@ const OB_STEPS = {
 };
 
 function _summaryRow(icon, label, val) {
-  return '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">' +
+  return '<div class="list-divider-row">' +
     '<div style="display:flex;align-items:center;gap:10px;color:var(--txt3);font-size:13px">'+icon+' <span>'+esc(label)+'</span></div>' +
-    '<div style="font-size:14px;font-weight:600;color:var(--txt)">'+esc(val)+'</div>' +
+    '<div  class="row-strong">'+esc(val)+'</div>' +
     '</div>';
 }
 

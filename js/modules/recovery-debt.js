@@ -275,7 +275,7 @@ window.renderRecoveryDebtBody = function() {
     return '<div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1">' +
       '<div style="width:100%;background:rgba(255,255,255,0.06);border-radius:4px;height:64px;display:flex;align-items:flex-end;justify-content:center">' +
       '<div style="width:70%;border-radius:4px 4px 0 0;background:' + f.color + ';height:' + h + 'px;min-height:4px"></div></div>' +
-      '<div style="font-size:9px;color:var(--txt3)">' + new Date(f.date + 'T12:00').toLocaleDateString('en', { weekday: 'short' }) + '</div>' +
+      '<div class="muted-9">' + new Date(f.date + 'T12:00').toLocaleDateString('en', { weekday: 'short' }) + '</div>' +
       '<div style="font-size:8px;color:' + f.color + ';font-weight:700">' + f.debt + '</div>' +
       '</div>';
   }).join('');
@@ -302,12 +302,12 @@ window.renderRecoveryDebtBody = function() {
 
     // Coach Decision card
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:20px;padding:18px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">Today\'s Coach Recommendation</div>' +
+    '<div  class="section-label-sm">Today\'s Coach Recommendation</div>' +
     '<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">' +
-    '<div style="display:flex">' + (typeof iconTile === 'function' ? iconTile(decision.ic || 'dumbbell', decision.tint || 'c1', 44) : '') + '</div>' +
+    '<div class="flex-row">' + (typeof iconTile === 'function' ? iconTile(decision.ic || 'dumbbell', decision.tint || 'c1', 44) : '') + '</div>' +
     '<div>' +
     '<div style="font-size:18px;font-weight:800;color:' + decision.color + '">' + esc(decision.title) + '</div>' +
-    '<div style="font-size:12px;color:var(--txt3);margin-top:2px">Confidence: ' + decision.confidence + '%</div>' +
+    '<div  class="muted-12 mt-2">Confidence: ' + decision.confidence + '%</div>' +
     '</div></div>' +
     '<div style="font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:12px">' + esc(decision.reason) + '</div>' +
     '<div style="display:flex;flex-direction:column;gap:6px">' +
@@ -328,15 +328,15 @@ window.renderRecoveryDebtBody = function() {
     '</div></div>' +
 
     // 7-day forecast chart
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">7-Day Fatigue Forecast</div>' +
+    '<div  class="card-block">' +
+    '<div  class="section-label">7-Day Fatigue Forecast</div>' +
     '<div style="display:flex;gap:6px;align-items:flex-end">' + forecastBars + '</div>' +
     '<div style="font-size:11px;color:var(--txt3);margin-top:10px;text-align:center">Projected recovery debt · Higher = more fatigue</div>' +
     '</div>' +
 
     // 14-day outlook
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">14-Day Outlook</div>' +
+    '<div  class="card-block">' +
+    '<div  class="section-label">14-Day Outlook</div>' +
     '<div style="display:flex;flex-direction:column;gap:8px">' +
     forecast14.filter((_, i) => i % 2 === 0).map(f =>
       '<div style="display:flex;align-items:center;gap:12px">' +
@@ -349,13 +349,13 @@ window.renderRecoveryDebtBody = function() {
     '</div></div>' +
 
     // 14-day training history dots
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">Training History (14 days)</div>' +
+    '<div class="card-block-sm">' +
+    '<div  class="section-label-sm">Training History (14 days)</div>' +
     '<div style="display:flex;gap:8px;flex-wrap:wrap">' + histDots + '</div>' +
     '<div style="font-size:10px;color:var(--txt3);margin-top:8px">● Trained &nbsp; ○ Rest</div>' +
     '</div>' +
 
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 
 };
 

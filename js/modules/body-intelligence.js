@@ -520,30 +520,30 @@ reg('body-intelligence', function() {
     return '<div style="width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + score + '%;height:6px;border-radius:3px;background:' + color + '"></div></div>';
   }
 
-  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Body Intelligence</div></div>' +
+  return moduleBackTopbar('Body Intelligence') +
 
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">🎯 Today\'s Recovery Plan</div>' +
+    '<div  class="card-block">' +
+    '<div  class="section-label">🎯 Today\'s Recovery Plan</div>' +
     recs.slice(0, 4).map(r => {
       const bg = r.priority === 'critical' ? 'rgba(255,69,58,0.08)' : r.priority === 'high' ? 'rgba(255,159,10,0.08)' : r.priority === 'positive' ? 'rgba(48,209,88,0.08)' : 'rgba(255,255,255,0.03)';
       const border = r.priority === 'critical' ? 'rgba(255,69,58,0.3)' : r.priority === 'high' ? 'rgba(255,159,10,0.3)' : r.priority === 'positive' ? 'rgba(48,209,88,0.3)' : 'var(--border)';
       return '<div style="background:' + bg + ';border:1px solid ' + border + ';border-radius:14px;padding:12px;margin-bottom:8px">' +
         '<div style="display:flex;align-items:flex-start;gap:10px">' +
         '<div style="font-size:22px;flex-shrink:0">' + r.icon + '</div>' +
-        '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:3px">' + esc(r.title) + '</div>' +
+        '<div  class="flex-1"><div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:3px">' + esc(r.title) + '</div>' +
         '<div style="font-size:11px;color:var(--txt2);line-height:1.5;margin-bottom:6px">' + esc(r.detail) + '</div>' +
         '<div style="font-size:11px;font-weight:700;color:var(--c1)">→ ' + esc(r.action) + '</div>' +
         '</div></div></div>';
     }).join('') +
     '</div>' +
 
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">⏱️ Muscle Recovery Timeline</div>' +
+    '<div  class="card-block">' +
+    '<div  class="section-label">⏱️ Muscle Recovery Timeline</div>' +
     timeline.map(m => '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">' +
       '<div style="font-size:16px;width:22px;text-align:center">' + m.icon + '</div>' +
-      '<div style="flex:1;min-width:0">' +
+      '<div  class="flex-1">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">' +
-      '<div style="font-size:12px;font-weight:700;color:var(--txt)">' + esc(m.label) + '</div>' +
+      '<div class="row-title-12">' + esc(m.label) + '</div>' +
       '<div style="font-size:11px;font-weight:700;color:' + m.color + '">' + m.emoji + ' ' + m.pct + '%</div>' +
       '</div>' +
       '<div style="width:100%;height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + m.pct + '%;height:5px;border-radius:3px;background:' + m.color + ';transition:width 0.6s ease"></div></div>' +
@@ -552,7 +552,7 @@ reg('body-intelligence', function() {
     ).join('') +
     '</div>' +
 
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
+    '<div  class="card-block">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3)">🦴 Joint Health</div>' +
     '<div style="font-size:22px;font-weight:900;color:' + jColor + '">' + jointHealth + '/100</div>' +
@@ -561,13 +561,13 @@ reg('body-intelligence', function() {
     joints.map(j => '<div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:10px">' +
       '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">' +
       '<span style="font-size:16px">' + j.icon + '</span>' +
-      '<span style="font-size:12px;font-weight:700;color:var(--txt)">' + esc(j.label) + '</span>' +
+      '<span class="row-title-12">' + esc(j.label) + '</span>' +
       '<span style="font-size:12px;margin-left:auto">' + j.emoji + '</span>' +
       '</div>' +
       miniGauge(j.score, j.color) +
       '<div style="display:flex;justify-content:space-between;margin-top:4px">' +
       '<span style="font-size:10px;color:' + j.color + ';font-weight:600">' + j.score + '</span>' +
-      '<span style="font-size:10px;color:var(--txt3)">' + esc(j.label) + '</span>' +
+      '<span  class="muted-10">' + esc(j.label) + '</span>' +
       '</div>' +
       (j.warnings && j.warnings.length ? '<div style="font-size:9px;color:#ff9f0a;margin-top:4px">⚠ ' + esc(j.warnings[0]) + '</div>' : '') +
       '</div>'
@@ -576,8 +576,8 @@ reg('body-intelligence', function() {
     '<button type="button" onclick="go(\'injury-risk\')" style="width:100%;margin-top:12px;padding:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:12px;color:var(--c1);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">Full Joint Report →</button>' +
     '</div>' +
 
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">🧬 Body Response Model</div>' +
+    '<div  class="card-block">' +
+    '<div  class="section-label">🧬 Body Response Model</div>' +
     (!profile.ready ?
       '<div style="text-align:center;padding:20px 0">' +
       '<div style="font-size:40px;margin-bottom:10px">🧬</div>' +
@@ -586,19 +586,19 @@ reg('body-intelligence', function() {
       '<div style="margin-top:14px;width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px">' +
       '<div style="width:' + Math.round(((25 - (profile.sessionsNeeded || 25)) / 25) * 100) + '%;height:6px;border-radius:3px;background:var(--c1)"></div></div>' +
       '</div>' :
-      '<div style="margin-bottom:12px"><div style="font-size:12px;color:var(--txt3);margin-bottom:8px">Based on ' + profile.sessions + ' training sessions</div>' +
+      '<div  class="mb-12"><div style="font-size:12px;color:var(--txt3);margin-bottom:8px">Based on ' + profile.sessions + ' training sessions</div>' +
       (profile.insights || []).map(ins => '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">' +
         '<div style="font-size:18px;flex-shrink:0">' + ins.icon + '</div>' +
-        '<div style="font-size:12px;color:var(--txt2);line-height:1.5">' + esc(ins.text) + '</div>' +
+        '<div class="body-12-lh">' + esc(ins.text) + '</div>' +
         '</div>').join('') +
       '</div>'
     ) +
     '</div>' +
 
     (Object.keys(dna).length > 0 ?
-      '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">🧬 Exercise DNA Profile</div>' +
-      Object.entries(dna).slice(0, 4).map(([group, exercises]) => '<div style="margin-bottom:12px">' +
+      '<div  class="card-block">' +
+      '<div  class="section-label">🧬 Exercise DNA Profile</div>' +
+      Object.entries(dna).slice(0, 4).map(([group, exercises]) => '<div  class="mb-12">' +
         '<div style="font-size:12px;font-weight:700;color:var(--txt);margin-bottom:6px">' + esc(group) + '</div>' +
         exercises.slice(0, 3).map((ex, i) => '<div style="display:flex;align-items:center;gap:8px;padding:5px 0">' +
           '<div style="font-size:13px;font-weight:800;color:' + ex.color + ';width:20px">' + (i+1) + '</div>' +
@@ -610,5 +610,5 @@ reg('body-intelligence', function() {
       '<button type="button" onclick="go(\'training-intel\')" style="width:100%;padding:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:12px;color:var(--c1);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">Full DNA Profile →</button>' +
       '</div>' : '') +
 
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });

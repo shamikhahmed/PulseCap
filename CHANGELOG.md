@@ -1,5 +1,12 @@
 # Changelog — PulseCap
 
+## 5.6.1 (2026-07-17) — Design-token migration
+- **Utility CSS:** spacing/type/card/flex/back-chip classes expanded in `layout.css`.
+- **Inline style kill:** ~580 static chrome `style=` strings across modules → utility classes.
+- **Helpers:** `uiCard`, `uiSection`, `uiSpacer`, `moduleBackTopbar` for new screen chrome.
+- Remaining inline styles are mostly dynamic (computed colors/widths) — intentional.
+- SW `pulsecap-v60`.
+
 ## 5.6.0 (2026-07-17) — Architecture + lazy Learn + polish
 - **Split engines:** `js/engines.js` extracted from monolith `app.js` (~2.5k → ~700 LOC shell).
 - **Lazy Learn routes:** anatomy/encyclopedia/search/calculators/quests/assistant/… load on demand via `MODULE_SRC` + `loadScript`; SW still precaches for offline (`pulsecap-v59`).

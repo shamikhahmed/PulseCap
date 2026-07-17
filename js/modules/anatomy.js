@@ -136,7 +136,7 @@ reg('anatomy', function() {
         '<div style="margin-top:8px;font-size:11px;color:var(--txt3);line-height:1.4">'+m.function.slice(0,60)+'...</div>' +
         '</div>';
     }).join('') +
-    '</div><div style="height:20px"></div>';
+    '</div><div  class="spacer-bottom"></div>';
 });
 
 window.showMuscleDetail = function(id) {
@@ -146,16 +146,16 @@ window.showMuscleDetail = function(id) {
     '<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">'+m.region+' · '+m.group+'</div>' +
     '<div style="font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:12px">'+m.function+'</div>' +
     '<div style="background:var(--bg4);border-radius:12px;padding:12px;margin-bottom:10px">' +
-    '<div style="font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Origin & Insertion</div>' +
-    '<div style="font-size:12px;color:var(--txt2)"><strong style="color:var(--txt)">Origin:</strong> '+m.origin+'</div>' +
-    '<div style="font-size:12px;color:var(--txt2);margin-top:4px"><strong style="color:var(--txt)">Insertion:</strong> '+m.insertion+'</div>' +
+    '<div  class="type-caption type-caption-mb-xs">Origin & Insertion</div>' +
+    '<div  class="body-12"><strong class="c-txt">Origin:</strong> '+m.origin+'</div>' +
+    '<div style="font-size:12px;color:var(--txt2);margin-top:4px"><strong class="c-txt">Insertion:</strong> '+m.insertion+'</div>' +
     '</div>' +
-    '<div style="font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Best Exercises</div>' +
+    '<div  class="type-caption type-caption-mb-xs">Best Exercises</div>' +
     '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">'+m.exercises.map(function(e){return '<div style="background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--c1)">'+e+'</div>';}).join('')+'</div>' +
-    '<div style="font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Common Injuries</div>' +
+    '<div  class="type-caption type-caption-mb-xs">Common Injuries</div>' +
     '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">'+m.common_injuries.map(function(i){return '<div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);border-radius:8px;padding:4px 10px;font-size:11px;color:#ff453a">'+i+'</div>';}).join('')+'</div>' +
-    '<div style="display:flex;gap:8px"><div style="flex:1;background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:800;color:var(--txt)">'+m.recovery_hrs+'h</div><div style="font-size:10px;color:var(--txt3)">Recovery</div></div>' +
-    '<div style="flex:1;background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:12px;font-weight:700;color:var(--txt)">'+m.fiber_type+'</div><div style="font-size:10px;color:var(--txt3)">Fiber Type</div></div></div>',
+    '<div  class="flex-gap-8"><div style="flex:1;background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:800;color:var(--txt)">'+m.recovery_hrs+'h</div><div  class="muted-10">Recovery</div></div>' +
+    '<div style="flex:1;background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div class="row-title-12">'+m.fiber_type+'</div><div  class="muted-10">Fiber Type</div></div></div>',
     '<button type="button" class="btn btn-ghost" onclick="closeModal()">Close</button>'
   );
 };

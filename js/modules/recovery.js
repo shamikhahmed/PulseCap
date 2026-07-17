@@ -14,7 +14,7 @@ function _recoveryTabBar(tab) {
 
 window.renderRecoveryUnified = function(data) {
   const tab = (data && data.tab) || 'checkin';
-  const shell = '<div class="topbar"><button type="button" onclick="go(\'bodymap\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Recovery</div></div>' + _recoveryTabBar(tab);
+  const shell = '<div class="topbar"><button type="button" onclick="go(\'bodymap\')"  class="back-chip" aria-label="Back">←</button><div class="topbar-title">Recovery</div></div>' + _recoveryTabBar(tab);
   if (tab === 'debt') {
     return shell + (typeof window.renderRecoveryDebtBody === 'function' ? window.renderRecoveryDebtBody() : '');
   }
@@ -28,8 +28,8 @@ window.renderRecoveryUnified = function(data) {
     _recoveryHistoryChart() +
     _sleepInsights() +
     _recoveryRecs(score) +
-    '<div style="padding:0 16px 16px"><button type="button" class="btn btn-secondary" onclick="go(\'body-intelligence\')" style="width:100%">🧬 Body Intelligence →</button></div>' +
-    '<div style="height:20px"></div>';
+    '<div class="pad-x-16-b16"><button type="button" class="btn btn-secondary w-full" onclick="go(\'body-intelligence\')" >🧬 Body Intelligence →</button></div>' +
+    '<div  class="spacer-bottom"></div>';
 };
 
 reg('recovery', function(data) {
@@ -49,8 +49,8 @@ function _readinessSummary(score, rl) {
     '<div class="readiness-score">'+score+'</div>' +
     '<div class="readiness-label '+rl.cls+'">'+rl.l+'</div>' +
     '</div>' +
-    '<div style="flex:1">' +
-    '<div style="font-size:14px;color:var(--txt2);line-height:1.6">'+esc(ReadinessEngine.message(score))+'</div>' +
+    '<div  class="flex-1">' +
+    '<div class="body-14">'+esc(ReadinessEngine.message(score))+'</div>' +
     '</div></div>' +
     '<div class="readiness-metrics">' +
     _rm('😴','Sleep') + _rm('💪','Soreness') + _rm('🧠','Stress') + _rm('⚡','Energy') +
@@ -78,7 +78,7 @@ function _checkInForm(rec) {
     const val = rec[s.key] || s.def;
     return '<div class="slider-wrap">' +
       '<div class="slider-header">' +
-      '<span style="font-size:18px">'+s.icon+'</span>' +
+      '<span class="fs-18">'+s.icon+'</span>' +
       '<span class="slider-name">'+esc(s.label)+'</span>' +
       '<span class="slider-val" id="sv-'+s.key+'">'+val+'</span>' +
       '<span class="slider-unit">'+esc(s.unit)+'</span>' +
@@ -93,7 +93,7 @@ function _checkInForm(rec) {
 
   window._recTmp = { sleep: rec.sleep||7.5, soreness: rec.soreness||3, stress: rec.stress||4, energy: rec.energy||7, hydration: rec.hydration||2.5 };
   return sh('Daily Check-In') +
-    '<div style="padding:0 16px">' +
+    '<div  class="pad-x-16">' +
     slidersHTML +
     '<button type="button" class="btn btn-primary" onclick="saveRecovery()">Log Recovery</button>' +
     '</div>';
@@ -110,7 +110,7 @@ function _loggedView(rec) {
     _recStat('💧', rec.hydration||'—', 'L hydration') +
     '</div>' +
     '<div style="margin-top:14px;padding-top:14px;border-top:1px solid var(--border)">' +
-    '<div style="font-size:13px;color:var(--txt3)">Breakdown:</div>' +
+    '<div  class="muted-13">Breakdown:</div>' +
     '<div style="font-size:14px;color:var(--txt2);margin-top:4px;line-height:1.6">'+esc(_recoveryBreakdown(rec))+'</div>' +
     '</div></div>';
 }
@@ -119,7 +119,7 @@ function _recStat(icon, val, label) {
   return '<div style="text-align:center;flex:1;min-width:60px">' +
     '<div style="font-size:22px">'+icon+'</div>' +
     '<div style="font-size:20px;font-weight:800;color:var(--c1)">'+esc(String(val))+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3)">'+esc(label)+'</div>' +
+    '<div  class="muted-10">'+esc(label)+'</div>' +
     '</div>';
 }
 
@@ -164,7 +164,7 @@ function _recoveryRecs(score) {
     recs.push({ icon:'⚡', text:'Consider a 10 min dynamic warm-up to prime your CNS' });
   }
   return sh('Recommendations') +
-    '<div style="padding:0 16px">' +
+    '<div  class="pad-x-16">' +
     recs.map(r =>
       '<div style="display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">' +
       '<div style="font-size:24px;flex-shrink:0">'+r.icon+'</div>' +
@@ -189,18 +189,18 @@ function _recoveryHistoryChart() {
     return ['S','M','T','W','T','F','S'][d.getDay()];
   });
   return sh('Last 7 Days') +
-    '<div style="padding:0 16px 14px">' +
+    '<div  class="pad-x-16-b">' +
     '<div style="display:flex;align-items:flex-end;gap:8px;height:60px;margin-bottom:8px">' +
     scores.map((s,i) => {
       const h = Math.max(4, Math.round((s/maxS)*56));
       const color = s >= 70 ? 'var(--c3)' : s >= 50 ? 'var(--c5)' : 'var(--c4)';
       return '<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">' +
         '<div style="width:100%;height:'+h+'px;background:'+color+';border-radius:4px 4px 0 0"></div>' +
-        '<div style="font-size:9px;color:var(--txt3)">'+days[i]+'</div>' +
+        '<div class="muted-9">'+days[i]+'</div>' +
         '</div>';
     }).join('') +
     '</div>' +
-    '<div style="font-size:12px;color:var(--txt3)">Average readiness: <span style="color:var(--txt);font-weight:700">'+Math.round(scores.reduce((a,s)=>a+s,0)/scores.length)+'</span></div>' +
+    '<div  class="muted-12">Average readiness: <span style="color:var(--txt);font-weight:700">'+Math.round(scores.reduce((a,s)=>a+s,0)/scores.length)+'</span></div>' +
     '</div>';
 }
 

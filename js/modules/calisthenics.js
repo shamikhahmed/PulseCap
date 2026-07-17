@@ -140,7 +140,7 @@ reg('calisthenics', function() {
 
   return '<div class="topbar"><div class="topbar-title">Calisthenics Skills</div></div>' +
     sh('Skill Progressions') +
-    '<div style="padding:0 16px">' +
+    '<div  class="pad-x-16">' +
     Object.values(CALIS_SKILLS).map(function(skill) {
       var userLevel = userSkills[skill.id] || 0;
       var totalLevels = skill.levels.length - 1;
@@ -150,21 +150,21 @@ reg('calisthenics', function() {
 
       return '<div onclick="showSkillDetail(\'' + skill.id + '\')" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;cursor:pointer;touch-action:manipulation">' +
         '<div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">' +
-        '<div style="font-size:28px">' + skill.icon + '</div>' +
-        '<div style="flex:1">' +
-        '<div style="font-size:15px;font-weight:700;color:var(--txt)">' + skill.name + '</div>' +
-        '<div style="font-size:12px;color:var(--txt3)">Level ' + userLevel + '/' + totalLevels + ' · ' + pct + '% complete</div>' +
+        '<div class="fs-28">' + skill.icon + '</div>' +
+        '<div  class="flex-1">' +
+        '<div  class="row-title-15">' + skill.name + '</div>' +
+        '<div  class="muted-12">Level ' + userLevel + '/' + totalLevels + ' · ' + pct + '% complete</div>' +
         '</div>' +
-        (pct === 100 ? '<div style="font-size:20px">🏆</div>' : '<div style="color:var(--txt3);font-size:18px">›</div>') +
+        (pct === 100 ? '<div class="fs-20">🏆</div>' : '<div style="color:var(--txt3);font-size:18px">›</div>') +
         '</div>' +
         '<div style="height:4px;background:var(--bg4);border-radius:2px;margin-bottom:8px;overflow:hidden">' +
         '<div style="width:' + pct + '%;height:100%;background:var(--grad);border-radius:2px;transition:width 0.8s ease"></div>' +
         '</div>' +
         '<div style="font-size:12px;color:var(--c1);font-weight:600">Current: ' + currentLevel.name + '</div>' +
-        (nextLevel ? '<div style="font-size:11px;color:var(--txt3);margin-top:2px">Next: ' + nextLevel.name + '</div>' : '') +
+        (nextLevel ? '<div  class="muted-11 mt-2">Next: ' + nextLevel.name + '</div>' : '') +
         '</div>';
     }).join('') +
-    '</div><div style="height:20px"></div>';
+    '</div><div  class="spacer-bottom"></div>';
 });
 
 window.showSkillDetail = function(skillId) {
@@ -175,9 +175,9 @@ window.showSkillDetail = function(skillId) {
 
   modal(skill.icon + ' ' + skill.name,
     '<div style="font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:12px">' + skill.description + '</div>' +
-    '<div style="font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Prerequisites</div>' +
+    '<div  class="type-caption type-caption-mb-xs">Prerequisites</div>' +
     '<div style="font-size:12px;color:var(--txt2);margin-bottom:12px">' + skill.prerequisites + '</div>' +
-    '<div style="font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px">Key Muscles</div>' +
+    '<div  class="type-caption type-caption-mb-xs">Key Muscles</div>' +
     '<div style="font-size:12px;color:var(--txt2);margin-bottom:12px">' + skill.muscles.join(', ') + '</div>' +
     '<div style="font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">Progression Levels</div>' +
     skill.levels.map(function(lvl, i) {
@@ -186,17 +186,17 @@ window.showSkillDetail = function(skillId) {
       return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:' + (i > userLevel + 1 ? '0.4' : '1') + '">' +
         '<div style="width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:' + (isDone ? '#30d158' : isCurrent ? 'var(--c1)' : 'var(--bg4)') + ';color:' + (isDone || isCurrent ? '#000' : 'var(--txt3)') + '">' +
         (isDone ? '✓' : (i + 1)) + '</div>' +
-        '<div style="flex:1">' +
+        '<div  class="flex-1">' +
         '<div style="font-size:13px;font-weight:' + (isCurrent ? '700' : '500') + ';color:' + (isCurrent ? 'var(--txt)' : 'var(--txt2)') + '">' + lvl.name + '</div>' +
-        '<div style="font-size:11px;color:var(--txt3)">' + lvl.description + '</div>' +
+        '<div  class="muted-11">' + lvl.description + '</div>' +
         (isCurrent ? '<div style="margin-top:4px;font-size:11px;color:var(--c1);font-weight:600">← Current level</div>' : '') +
         '</div></div>';
     }).join('') +
     '<div style="margin-top:14px;font-size:10px;color:var(--txt3);font-style:italic">Training tip: ' + skill.tip + '</div>',
-    '<div style="display:flex;gap:8px">' +
+    '<div  class="flex-gap-8">' +
     (userLevel < skill.levels.length - 1 ?
-      '<button type="button" class="btn btn-primary" style="flex:1" onclick="levelUpSkill(\'' + skillId + '\');closeModal()">✅ Level ' + userLevel + ' Complete</button>' :
-      '<button type="button" class="btn btn-primary" style="flex:1" disabled>🏆 Mastered!</button>') +
+      '<button type="button" class="btn btn-primary flex-1"  onclick="levelUpSkill(\'' + skillId + '\');closeModal()">✅ Level ' + userLevel + ' Complete</button>' :
+      '<button type="button" class="btn btn-primary flex-1"  disabled>🏆 Mastered!</button>') +
     '<button type="button" class="btn btn-ghost" onclick="closeModal()">Close</button>' +
     '</div>'
   );

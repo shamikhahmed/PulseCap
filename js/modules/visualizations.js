@@ -37,7 +37,7 @@ function _muscleHeatmap() {
 
   const legend = '<div style="display:flex;gap:16px;justify-content:center;margin-top:12px;flex-wrap:wrap">' +
     [['#30d158','90-100% Ready'],['#f5c842','70-89% Recovering'],['#ff9f0a','50-69% Fatigued'],['#ff453a','< 50% Rest']].map(([c, l]) =>
-      '<div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:50%;background:' + c + '"></div><div style="font-size:11px;color:var(--txt3)">' + l + '</div></div>'
+      '<div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:50%;background:' + c + '"></div><div  class="muted-11">' + l + '</div></div>'
     ).join('') +
     '</div>';
 
@@ -113,7 +113,7 @@ function _fatigueMap() {
   return headers + rows +
     '<div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap">' +
     [['rgba(48,209,88,0.4)','Light'],['rgba(245,200,66,0.6)','Moderate'],['rgba(255,69,58,0.8)','Heavy'],['rgba(255,255,255,0.04)','Rest']].map(([c, l]) =>
-      '<div style="display:flex;align-items:center;gap:5px"><div style="width:12px;height:12px;border-radius:2px;background:' + c + '"></div><span style="font-size:10px;color:var(--txt3)">' + l + '</span></div>'
+      '<div style="display:flex;align-items:center;gap:5px"><div style="width:12px;height:12px;border-radius:2px;background:' + c + '"></div><span  class="muted-10">' + l + '</span></div>'
     ).join('') +
     '</div>';
 }
@@ -177,7 +177,7 @@ function _weaknessMap() {
   let html = '';
 
   if (weak.length) {
-    html += '<div style="margin-bottom:12px"><div style="font-size:11px;font-weight:700;color:#ff453a;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">⚡ Fatigued / Recovering</div>' +
+    html += '<div  class="mb-12"><div style="font-size:11px;font-weight:700;color:#ff453a;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">⚡ Fatigued / Recovering</div>' +
       weak.map(m => '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">' +
         '<div style="font-size:13px;font-weight:600;color:var(--txt);flex:1">' + esc(m.name) + '</div>' +
         '<div style="width:80px;height:6px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + m.pct + '%;height:6px;border-radius:3px;background:' + (m.pct < 50 ? '#ff453a' : '#ff9f0a') + '"></div></div>' +
@@ -188,7 +188,7 @@ function _weaknessMap() {
   if (undertrained.length) {
     html += '<div><div style="font-size:11px;font-weight:700;color:#ff9f0a;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">📉 Undertrained This Month</div>' +
       undertrained.map(r => '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">' +
-        '<div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--txt)">' + esc(r.muscle) + '</div>' +
+        '<div  class="flex-1"><div  class="row-title">' + esc(r.muscle) + '</div>' +
         '<div style="font-size:11px;color:' + r.color + '">' + esc(r.action) + '</div></div>' +
         '<div style="font-size:12px;font-weight:700;color:' + r.color + '">' + r.current + ' sets/wk</div>' +
         '</div>').join('') + '</div>';
@@ -201,27 +201,27 @@ function _weaknessMap() {
    VISUALIZATIONS SCREEN
 ══════════════════════════════════════════════════════ */
 reg('visualizations', function() {
-  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Analytics & Visualizations</div></div>' +
+  return moduleBackTopbar('Analytics & Visualizations') +
 
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-    '<div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:14px">🌡️ Muscle Recovery Heatmap</div>' +
+    '<div  class="card-block">' +
+    '<div class="row-title-16 mb-14">🌡️ Muscle Recovery Heatmap</div>' +
     _muscleHeatmap() +
     '</div>' +
 
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-    '<div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:14px">📡 Muscle Readiness Radar</div>' +
+    '<div  class="card-block">' +
+    '<div class="row-title-16 mb-14">📡 Muscle Readiness Radar</div>' +
     _progressionRadar() +
     '</div>' +
 
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-    '<div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:14px">🗓️ 7-Day Training Heatmap</div>' +
+    '<div  class="card-block">' +
+    '<div class="row-title-16 mb-14">🗓️ 7-Day Training Heatmap</div>' +
     _fatigueMap() +
     '</div>' +
 
-    '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:16px">' +
-    '<div style="font-size:13px;font-weight:800;color:var(--txt);margin-bottom:14px">⚠️ Weakness Map</div>' +
+    '<div  class="card-block">' +
+    '<div class="row-title-16 mb-14">⚠️ Weakness Map</div>' +
     _weaknessMap() +
     '</div>' +
 
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });

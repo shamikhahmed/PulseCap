@@ -587,27 +587,27 @@ reg('quests', function() {
 
   AchievementEngine2.checkAll();
 
-  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">⚔️ Quests & Missions</div></div>' +
+  return moduleBackTopbar('Quests & Missions') +
 
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(245,200,66,0.1),rgba(175,82,222,0.08));border:1px solid rgba(245,200,66,0.2);border-radius:16px;padding:14px">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
     '<div><div style="font-size:14px;font-weight:800;color:' + level.color + '">Level ' + level.level + ' · ' + esc(level.title) + '</div>' +
-    '<div style="font-size:11px;color:var(--txt3)">' + xp + ' total XP</div></div>' +
+    '<div  class="muted-11">' + xp + ' total XP</div></div>' +
     '<div style="font-size:32px">⭐</div></div>' +
     '<div style="width:100%;height:8px;background:rgba(255,255,255,0.06);border-radius:4px">' +
     '<div style="width:' + xpProg.pct + '%;height:8px;border-radius:4px;background:' + level.color + '"></div></div>' +
     '<div style="font-size:11px;color:var(--txt3);margin-top:4px">' + xpProg.current + ' / ' + xpProg.needed + ' XP to next level</div>' +
     '</div>' +
 
-    (active.length ? '<div style="margin:0 16px 14px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">Active Quests (' + active.length + ')</div>' +
+    (active.length ? '<div  class="mx-card"><div  class="section-label-sm">Active Quests (' + active.length + ')</div>' +
       active.map(q => {
         const pct = QuestEngine.questProgress(q);
         const daysLeft = q.dueDate ? Math.max(0, Math.round((new Date(q.dueDate) - new Date()) / 86400000)) : '?';
         return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px">' +
           '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">' +
           '<div style="display:flex;width:36px;justify-content:center">' + (typeof icon==='function' && q.icon && q.icon.indexOf(' ')===-1 ? icon(q.icon, 26) : esc(q.icon||'')) + '</div>' +
-          '<div style="flex:1"><div style="font-size:14px;font-weight:800;color:var(--txt)">' + esc(q.title) + '</div>' +
-          '<div style="font-size:11px;color:var(--txt3)">' + esc(q.category) + ' · ' + daysLeft + ' days left</div></div>' +
+          '<div  class="flex-1"><div style="font-size:14px;font-weight:800;color:var(--txt)">' + esc(q.title) + '</div>' +
+          '<div  class="muted-11">' + esc(q.category) + ' · ' + daysLeft + ' days left</div></div>' +
           '<div style="font-size:18px;font-weight:900;color:var(--c1)">' + pct + '%</div>' +
           '</div>' +
           '<div style="width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;margin-bottom:10px">' +
@@ -615,17 +615,17 @@ reg('quests', function() {
           q.goals.map(g => '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)">' +
             '<div style="font-size:14px">' + (g.completed ? '✅' : '⬜') + '</div>' +
             '<div style="flex:1;font-size:12px;color:' + (g.completed ? '#30d158' : 'var(--txt2)') + '">' + esc(g.label) + '</div>' +
-            (g.target ? '<div style="font-size:11px;color:var(--txt3)">' + Math.min(g.progress||0, g.target) + '/' + g.target + '</div>' : '') +
+            (g.target ? '<div  class="muted-11">' + Math.min(g.progress||0, g.target) + '/' + g.target + '</div>' : '') +
             '</div>').join('') +
           '<div style="margin-top:10px;padding:8px 12px;background:rgba(var(--c1-rgb),0.08);border-radius:10px">' +
-          '<div style="font-size:11px;color:var(--txt3)">Reward: <span style="color:var(--c1);font-weight:700">' + esc(q.reward.badge) + ' + ' + q.reward.xp + ' XP</span></div>' +
+          '<div  class="muted-11">Reward: <span style="color:var(--c1);font-weight:700">' + esc(q.reward.badge) + ' + ' + q.reward.xp + ' XP</span></div>' +
           '</div></div>';
       }).join('') + '</div>' : '') +
 
-    (recommended.length ? '<div style="margin:0 16px 14px"><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">Recommended For You</div>' +
+    (recommended.length ? '<div  class="mx-card"><div  class="section-label-sm">Recommended For You</div>' +
       recommended.map(t => '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;margin-bottom:10px;display:flex;gap:12px;align-items:flex-start">' +
         '<div style="display:flex;width:40px;justify-content:center;flex-shrink:0">' + (typeof icon==='function' && t.icon && t.icon.indexOf(' ')===-1 ? icon(t.icon, 28) : esc(t.icon||'')) + '</div>' +
-        '<div style="flex:1">' +
+        '<div  class="flex-1">' +
         '<div style="font-size:14px;font-weight:800;color:var(--txt);margin-bottom:3px">' + esc(t.title) + '</div>' +
         '<div style="font-size:12px;color:var(--txt2);margin-bottom:8px">' + esc(t.description) + '</div>' +
         '<div style="font-size:11px;color:var(--txt3);margin-bottom:8px">Reward: ' + esc(t.reward.badge) + ' · ' + t.reward.xp + ' XP · ' + t.duration_weeks + ' weeks</div>' +
@@ -634,13 +634,13 @@ reg('quests', function() {
 
     (!active.length && !recommended.length ?
       '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:20px;text-align:center">' +
-      '<div style="font-size:40px;margin-bottom:10px">⚔️</div>' +
+      '<div style="display:flex;justify-content:center;margin-bottom:10px">' + (typeof iconTile === 'function' ? iconTile('target', 'c1', 48) : '') + '</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--txt);margin-bottom:6px">No Quests Yet</div>' +
-      '<div style="font-size:12px;color:var(--txt2)">Complete more workouts and log data to unlock personalized quests.</div>' +
+      '<div  class="body-12">Complete more workouts and log data to unlock personalized quests.</div>' +
       '</div>' : '') +
 
-    (badges.length ? '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">Earned Badges (' + badges.length + ')</div>' +
+    (badges.length ? '<div class="card-block-sm">' +
+      '<div  class="section-label-sm">Earned Badges (' + badges.length + ')</div>' +
       '<div style="display:flex;flex-wrap:wrap;gap:8px">' +
       badges.map(b => '<div style="background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:10px;padding:6px 12px;font-size:12px;font-weight:600;color:var(--c1)">' + esc(b.badge) + '</div>').join('') +
       '</div></div>' : '') +
@@ -653,7 +653,7 @@ reg('quests', function() {
       StreakProtection.PROTECTION_EXERCISES.map(s => '<button type="button" onclick="StreakProtection.saveStreak(\'' + s.id + '\');go(\'quests\')" style="padding:10px 14px;background:rgba(255,159,10,0.1);border:1px solid rgba(255,159,10,0.3);border-radius:12px;color:#ff9f0a;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;text-align:left">' + esc(s.name) + ' <span style="font-size:11px;opacity:0.7">(' + s.duration + ')</span></button>').join('') +
       '</div></div>' : '') +
 
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });
 
 /* ══════════════════════════════════════════════════════
@@ -668,11 +668,11 @@ reg('academy', function(data) {
     const isCompleted = KnowledgeAcademy.isCompleted(lessonId);
 
     return '<div class="topbar">' +
-      '<button type="button" onclick="go(\'academy\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px">←</button>' +
+      '<button type="button" onclick="go(\'academy\')"  class="back-chip">←</button>' +
       '<div class="topbar-title">' + esc(lesson.title) + '</div>' +
       '</div>' +
 
-      '<div style="padding:16px">' +
+      '<div  class="pad-16">' +
       '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px">' +
       '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--txt3);margin-bottom:4px">' + esc(lesson.module) + '</div>' +
       '<div style="font-size:18px;font-weight:800;color:var(--txt);margin-bottom:8px">' + esc(lesson.title) + '</div>' +
@@ -689,10 +689,10 @@ reg('academy', function(data) {
           'style="width:100%;margin-bottom:8px;padding:12px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;color:var(--txt);font-size:13px;text-align:left;cursor:pointer;touch-action:manipulation">' +
           esc(opt) + '</button>'
         ).join('') +
-        '</div>' : '<button type="button" onclick="var r=KnowledgeAcademy.completeLesson(\'' + lessonId + '\',0);go(\'academy\',{lesson:\'' + lessonId + '\'})" class="btn btn-primary" style="width:100%">Mark Complete · +' + lesson.xp + ' XP</button>'
+        '</div>' : '<button type="button" onclick="var r=KnowledgeAcademy.completeLesson(\'' + lessonId + '\',0);go(\'academy\',{lesson:\'' + lessonId + '\'})" class="btn btn-primary w-full" >Mark Complete · +' + lesson.xp + ' XP</button>'
       ) +
       '</div></div>' +
-      '<div style="height:20px"></div>';
+      '<div  class="spacer-bottom"></div>';
   }
 
   const xp = KnowledgeAcademy.totalXP();
@@ -700,12 +700,12 @@ reg('academy', function(data) {
   const xpProg = KnowledgeAcademy.xpProgress();
   const modules = [...new Set(KnowledgeAcademy.LESSONS.map(l => l.module))];
 
-  return '<div class="topbar"><button type="button" class="topbar-icon press" onclick="go(\'dashboard\')" style="font-size:20px">‹</button><div class="topbar-title">🎓 Knowledge Academy</div></div>' +
+  return '<div class="topbar"><button type="button" class="topbar-icon press fs-20" onclick="go(\'dashboard\')">‹</button><div class="topbar-title">🎓 Knowledge Academy</div></div>' +
 
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:16px;padding:14px">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
     '<div><div style="font-size:14px;font-weight:800;color:' + level.color + '">Level ' + level.level + ' · ' + esc(level.title) + '</div>' +
-    '<div style="font-size:11px;color:var(--txt3)">' + xp + ' XP · ' + KnowledgeAcademy.completed().length + '/' + KnowledgeAcademy.LESSONS.length + ' lessons</div></div>' +
+    '<div  class="muted-11">' + xp + ' XP · ' + KnowledgeAcademy.completed().length + '/' + KnowledgeAcademy.LESSONS.length + ' lessons</div></div>' +
     '<div style="display:flex;justify-content:center">' + (typeof iconTile==='function'?iconTile('gradcap','c1',48):'') + '</div></div>' +
     '<div style="width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px">' +
     '<div style="width:' + xpProg.pct + '%;height:6px;border-radius:3px;background:' + level.color + '"></div></div>' +
@@ -714,23 +714,23 @@ reg('academy', function(data) {
     modules.map(mod => {
       const modLessons = KnowledgeAcademy.LESSONS.filter(l => l.module === mod);
       const completedCount = modLessons.filter(l => KnowledgeAcademy.isCompleted(l.id)).length;
-      return '<div style="margin:0 16px 14px">' +
+      return '<div  class="mx-card">' +
         '<div style="font-size:12px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:8px">' + esc(mod) + ' · ' + completedCount + '/' + modLessons.length + '</div>' +
         modLessons.map(l => {
           const done = KnowledgeAcademy.isCompleted(l.id);
           return '<div onclick="go(\'academy\',{lesson:\'' + l.id + '\'})" style="background:var(--bg3);border:1px solid ' + (done ? 'rgba(48,209,88,0.3)' : 'var(--border)') + ';border-radius:14px;padding:14px;margin-bottom:8px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;gap:12px">' +
             '<div style="display:flex;width:36px;justify-content:center">' + (typeof icon==='function' && l.icon && l.icon.indexOf(' ')===-1 ? icon(l.icon, 26) : esc(l.icon||'')) + '</div>' +
-            '<div style="flex:1">' +
-            '<div style="font-size:14px;font-weight:700;color:var(--txt)">' + esc(l.title) + '</div>' +
-            '<div style="font-size:11px;color:var(--txt3)">' + esc(l.summary) + ' · ' + l.xp + ' XP</div>' +
+            '<div  class="flex-1">' +
+            '<div  class="row-title-14">' + esc(l.title) + '</div>' +
+            '<div  class="muted-11">' + esc(l.summary) + ' · ' + l.xp + ' XP</div>' +
             '</div>' +
-            '<div style="font-size:20px">' + (done ? '✅' : '›') + '</div>' +
+            '<div class="fs-20">' + (done ? '✅' : '›') + '</div>' +
             '</div>';
         }).join('') +
         '</div>';
     }).join('') +
 
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 });
 
 /* ══════════════════════════════════════════════════════
@@ -740,7 +740,7 @@ window.renderPhysiqueTimelineBody = function() {
   const points = PhysiqueTimeline.getPoints();
   const changes = PhysiqueTimeline.changes();
 
-  return '<div class="topbar"><button type="button" onclick="history.length>1?history.back():go(\'hub\')" style="background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:0 16px;touch-action:manipulation" aria-label="Back">←</button><div class="topbar-title">Physique Timeline</div></div>' +
+  return moduleBackTopbar('Physique Timeline') +
 
     (points.length === 0 ?
       '<div style="padding:60px 20px;text-align:center"><div style="display:flex;justify-content:center;margin-bottom:14px">' + (typeof iconTile === 'function' ? iconTile('camera', 'c1', 56) : '') + '</div>' +
@@ -750,8 +750,8 @@ window.renderPhysiqueTimelineBody = function() {
       '</div>' :
 
       (changes ?
-        '<div style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px">' +
-        '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">Transformation Summary · ' + changes.weeks + ' weeks · ' + changes.points + ' check-ins</div>' +
+        '<div class="card-block-sm">' +
+        '<div  class="section-label">Transformation Summary · ' + changes.weeks + ' weeks · ' + changes.points + ' check-ins</div>' +
         '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">' +
         [
           { label: 'Weight', val: changes.weightChange, unit: 'kg', positive: false },
@@ -763,17 +763,17 @@ window.renderPhysiqueTimelineBody = function() {
           const isGood = c.positive ? c.val > 0 : c.val < 0;
           const color = c.val === 0 ? 'var(--txt3)' : isGood ? '#30d158' : '#ff453a';
           return '<div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:12px">' +
-            '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:4px">' + esc(c.label) + '</div>' +
+            '<div  class="micro-label mb-6">' + esc(c.label) + '</div>' +
             '<div style="font-size:20px;font-weight:900;color:' + color + '">' + (c.val > 0 ? '+' : '') + c.val + c.unit + '</div>' +
             '</div>';
         }).join('') +
         '</div></div>' : '') +
 
-      '<div style="margin:0 16px 14px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:12px">Measurement History</div>' +
+      '<div  class="mx-card">' +
+      '<div  class="section-label">Measurement History</div>' +
       points.slice().reverse().map(p => '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px">' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">' +
-        '<div style="font-size:14px;font-weight:700;color:var(--txt)">' + esc(new Date(p.date).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })) + '</div>' +
+        '<div  class="row-title-14">' + esc(new Date(p.date).toLocaleDateString('en-GB', { day:'numeric', month:'short', year:'numeric' })) + '</div>' +
         (p.weight ? '<div style="font-size:16px;font-weight:900;color:var(--c1)">' + p.weight + 'kg</div>' : '') +
         '</div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:8px">' +
@@ -784,14 +784,14 @@ window.renderPhysiqueTimelineBody = function() {
           p.waist ? { label: 'Waist', val: p.waist + 'cm' } : null,
           p.shoulders ? { label: 'Shoulders', val: p.shoulders + 'cm' } : null,
           p.thighs ? { label: 'Thighs', val: p.thighs + 'cm' } : null,
-        ].filter(Boolean).map(m => '<div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--txt2)"><span style="color:var(--txt3)">' + esc(m.label) + ' </span><span style="font-weight:700">' + esc(m.val) + '</span></div>').join('') +
+        ].filter(Boolean).map(m => '<div style="background:rgba(255,255,255,0.05);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--txt2)"><span class="c-muted">' + esc(m.label) + ' </span><span style="font-weight:700">' + esc(m.val) + '</span></div>').join('') +
         '</div>' +
         (p.note ? '<div style="font-size:12px;color:var(--txt3);margin-top:8px;font-style:italic">' + esc(p.note) + '</div>' : '') +
         '</div>').join('') +
       '</div>'
     ) +
 
-    '<div style="height:20px"></div>';
+    '<div  class="spacer-bottom"></div>';
 };
 
 reg('physique-timeline', function() {
