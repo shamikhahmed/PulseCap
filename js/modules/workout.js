@@ -1471,7 +1471,7 @@ function showExerciseDetail(name) {
       '</div></div>' : '') +
 
     '<div style="background:rgba(var(--c1-rgb),0.06);border:1px solid rgba(var(--c1-rgb),0.15);border-radius:14px;padding:14px;margin-bottom:14px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--c1);margin-bottom:10px">AI Recommendation for '+esc(goal.replace('_',' '))+'</div>' +
+    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--c1);margin-bottom:10px">Coach Recommendation for '+esc(goal.replace('_',' '))+'</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
     _recStat2('📦','Sets',rec.sets) +
     _recStat2('🔁','Reps',rec.reps) +

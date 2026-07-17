@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '5.5.0';
+window.APP_VERSION = '5.5.1';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -171,7 +171,7 @@ function go(id, data) {
     const v = document.getElementById('view');
     if (v) v.innerHTML = '<div style="padding:28px 20px;color:#ff4444;font-size:14px;line-height:1.6">' +
       '<div style="font-size:32px;margin-bottom:12px">⚠️</div>' +
-      '<strong>Screen error: ' + id + '</strong><br>' + e.message +
+      '<strong>Screen error: ' + esc(id) + '</strong><br>' + esc(e.message) +
       '<br><br><button type="button" onclick="go(\'dashboard\')" style="background:var(--bg3);border:1px solid var(--border);color:var(--txt);padding:10px 20px;border-radius:12px;font-size:14px;cursor:pointer">← Back to Home</button>' +
       '</div>';
   }
@@ -230,7 +230,7 @@ window.bootDeepLink = bootDeepLink;
 ══════════════════════════════════════════════════════ */
 function esc(s) {
   return String(s == null ? '' : s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
 }
 function isoNow() { return new Date().toISOString(); }
 /* LOCAL calendar date — never toISOString (that's UTC and breaks evenings

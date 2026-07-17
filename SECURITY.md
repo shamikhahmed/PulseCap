@@ -18,7 +18,7 @@
 
 ## PWA / supply chain
 
-- Static assets served from GitHub Pages; verify `sw.js` cache version (`fos-v20`) when updating.
+- Static assets served from GitHub Pages; verify `sw.js` cache version (`pulsecap-v57`) when updating.
 - Do not commit `.env` or API keys to the repository.
 
 ## Reporting

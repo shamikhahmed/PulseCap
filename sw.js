@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'pulsecap-v56';
+const CACHE = 'pulsecap-v57';
 const ASSETS = [
   './css/capricorn-core.css',
   './',
@@ -14,6 +14,7 @@ const ASSETS = [
   './css/base.css',
   './css/layout.css',
   './css/components.css',
+  './css/identity.css',
   './js/storage.js',
   './js/data/equipment-db.js',
   './js/data/splits-db.js',
@@ -57,6 +58,8 @@ const ASSETS = [
   './assets/apple-touch-icon-152.png',
   './assets/apple-touch-icon-180.png',
   './js/capricorn-motion.js',
+  './js/cap-demo-mode.js',
+  './js/cap-desktop-nav.js',
   './js/capricorn-scene.js',
   './js/capricorn-premium-nav.js',
   './js/capricorn-cinematic.js',
@@ -68,6 +71,7 @@ const ASSETS = [
   './privacy.html',
   './changelog.html',
 ];
+const ASSET_URLS = new Set(ASSETS.map(a => new URL(a, self.location).href));
 
 self.addEventListener('install', e => {
   e.waitUntil(
@@ -86,13 +90,19 @@ self.addEventListener('activate', e => {
 });
 
 self.addEventListener('fetch', e => {
+  if (e.request.method !== 'GET') return;
+  const reqUrl = new URL(e.request.url);
+  const sameOrigin = reqUrl.origin === self.location.origin;
+  const isNavigation = e.request.mode === 'navigate';
   e.respondWith(
     caches.match(e.request)
       .then(r => r || fetch(e.request).then(res => {
-        const clone = res.clone();
-        caches.open(CACHE).then(c => c.put(e.request, clone));
+        if (sameOrigin && res && res.ok && (ASSET_URLS.has(reqUrl.href) || isNavigation)) {
+          const clone = res.clone();
+          caches.open(CACHE).then(c => c.put(e.request, clone));
+        }
         return res;
       }))
-      .catch(() => caches.match('./index.html'))
+      .catch(() => isNavigation ? caches.match('./index.html') : Promise.reject())
   );
 });

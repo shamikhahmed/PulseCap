@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://wger.de; media-src 'self' blob: https://wger.de; connect-src 'self' https://wger.de; frame-src 'none'; object-src 'none'">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -263,7 +263,7 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
       });
     };
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=36').then(function(r){ r.update(); }).catch(function(){});
+      navigator.serviceWorker.register('sw.js?v=57').then(function(r){ r.update(); }).catch(function(){});
     }
   </script>
   <script src="js/capricorn-motion.js"></script>
@@ -277,48 +277,31 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
     });
   </script>
 
-<!-- PRO UPGRADE MODAL -->
-<div id="proUpgradeModal" style="display:none;position:fixed;inset:0;z-index:9800;background:rgba(0,0,0,0.80);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:24px" role="dialog" aria-modal="true" aria-label="PulseCap Pro">
+<!-- FUTURE FEATURES MODAL — no paid gates until monetization is actually implemented -->
+<div id="roadmapModal" style="display:none;position:fixed;inset:0;z-index:9800;background:rgba(0,0,0,0.80);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);align-items:center;justify-content:center;padding:24px" role="dialog" aria-modal="true" aria-label="PulseCap Roadmap">
   <div style="background:rgba(10,10,15,0.98);border:1px solid rgba(0,242,255,0.35);border-radius:24px;max-width:400px;width:100%;padding:36px 32px;box-shadow:0 40px 80px rgba(0,0,0,0.7)">
-    <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:#00f2ff;margin-bottom:8px">PULSECAP PRO</p>
-    <h2 style="font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.02em">Unlock your full training OS.</h2>
-    <p style="font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:28px">Your logs stay on your device either way. Pro unlocks the full 300+ library, body intelligence, and Smart Coach.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:28px">
-      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.10);border-radius:14px;padding:20px">
-        <p style="font-size:12px;font-weight:700;color:rgba(255,255,255,0.5);margin-bottom:12px">FREE</p>
-        <p style="font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:16px">$0</p>
-        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:13px;color:rgba(255,255,255,0.5)">
-          <li>✓ 50 exercises</li>
-          <li>✓ Workout logging</li>
-          <li>✓ PR tracking</li>
-          <li>✓ Offline PWA</li>
-        </ul>
-      </div>
-      <div style="background:rgba(0,242,255,0.07);border:2px solid rgba(0,242,255,0.4);border-radius:14px;padding:20px;position:relative">
-        <span style="position:absolute;top:-10px;left:16px;background:#00f2ff;color:#000;font-size:10px;font-weight:800;padding:3px 10px;border-radius:20px;letter-spacing:0.06em">PRO</span>
-        <p style="font-size:1.4rem;font-weight:800;color:#fff;margin-bottom:2px">$4.99<span style="font-size:13px;font-weight:400;color:rgba(255,255,255,0.5)">/mo</span></p>
-        <p style="font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:12px">or $39.99/yr</p>
-        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:13px;color:rgba(255,255,255,0.5)">
-          <li>✓ 300+ exercise library</li>
-          <li>✓ Body map & measurements</li>
-          <li>✓ Smart Coach (adaptive)</li>
-          <li>✓ Recovery readiness</li>
-          <li>✓ Nutrition tracking</li>
-          <li>✓ Unlimited history</li>
-        </ul>
-      </div>
+    <p style="font-size:11px;font-weight:700;letter-spacing:0.1em;color:#00f2ff;margin-bottom:8px">PULSECAP ROADMAP</p>
+    <h2 style="font-size:1.6rem;font-weight:800;color:#fff;margin-bottom:4px;letter-spacing:-0.02em">Future coaching features.</h2>
+    <p style="font-size:14px;color:rgba(255,255,255,0.5);margin-bottom:20px">PulseCap is fully local today. No paid features are locked. This panel only tracks interest for future optional upgrades.</p>
+    <div style="background:rgba(0,242,255,0.07);border:1px solid rgba(0,242,255,0.25);border-radius:16px;padding:18px;margin-bottom:22px">
+      <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px;font-size:13px;color:rgba(255,255,255,0.65)">
+        <li>✓ Advanced coach reports</li>
+        <li>✓ Larger offline media packs</li>
+        <li>✓ Optional export workflows</li>
+        <li>✓ More program templates</li>
+      </ul>
     </div>
-    <button type="button" onclick="document.getElementById('proUpgradeModal').style.display='none'" style="width:100%;padding:14px;background:rgba(0,242,255,0.12);border:1px solid rgba(0,242,255,0.3);color:#00f2ff;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px">Join Pro waitlist — coming soon →</button>
-    <button type="button" onclick="document.getElementById('proUpgradeModal').style.display='none'" style="width:100%;padding:10px;background:none;border:none;color:rgba(255,255,255,0.4);font-size:13px;cursor:pointer">Continue with Free</button>
+    <button type="button" onclick="document.getElementById('roadmapModal').style.display='none'" style="width:100%;padding:14px;background:rgba(0,242,255,0.12);border:1px solid rgba(0,242,255,0.3);color:#00f2ff;border-radius:14px;font-size:14px;font-weight:700;cursor:pointer;margin-bottom:10px">Keep me posted</button>
+    <button type="button" onclick="document.getElementById('roadmapModal').style.display='none'" style="width:100%;padding:10px;background:none;border:none;color:rgba(255,255,255,0.4);font-size:13px;cursor:pointer">Close</button>
   </div>
 </div>
 <script>
 (function () {
-  window.openProUpgrade = function () {
-    var m = document.getElementById('proUpgradeModal');
+  window.openRoadmapModal = function () {
+    var m = document.getElementById('roadmapModal');
     if (m) m.style.display = 'flex';
   };
-  var modal = document.getElementById('proUpgradeModal');
+  var modal = document.getElementById('roadmapModal');
   if (modal) modal.addEventListener('click', function (e) {
     if (e.target === modal) modal.style.display = 'none';
   });

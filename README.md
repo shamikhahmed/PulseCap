@@ -106,7 +106,7 @@ css/
   layout.css        — Nav, screens, topbar (DO NOT EDIT)
   components.css    — All component styles
 js/
-  app.js            — Router, AI engines (Readiness, Coach, Muscle, Split, etc.)
+  app.js            — Router, Smart Coach engines (Readiness, Coach, Muscle, Split, etc.)
   storage.js        — S object, multi-profile localStorage
   modules/
     dashboard.js    — Home screen
@@ -119,7 +119,7 @@ js/
     settings.js     — 6-tab settings screen
     profiles.js     — Profile switcher, demo mode
     onboarding.js   — 12-step onboarding + 4 intro slides
-sw.js               — Service worker (cache: fos-v20)
+sw.js               — Service worker (cache: pulsecap-v57)
 manifest.json       — PWA manifest
 ```
 

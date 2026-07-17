@@ -18,6 +18,15 @@ test.describe('PulseCap smoke', () => {
     await expect(page.locator('link[rel="manifest"]')).toHaveCount(1);
   });
 
+  test('service worker cache is allowlisted', async ({ page }) => {
+    const res = await page.goto('/sw.js');
+    expect(res && res.ok()).toBeTruthy();
+    const text = await page.textContent('body');
+    expect(text || '').toContain('ASSET_URLS');
+    expect(text || '').toContain('pulsecap-v57');
+    expect(text || '').toContain('sameOrigin');
+  });
+
   test('demo mode has nutrition and active quest data', async ({ page }) => {
     await page.goto('/?demo=1');
     await page.waitForLoadState('domcontentloaded');

@@ -1,5 +1,5 @@
 'use strict';
-/* ── PulseCap — Recovery Debt Engine + Fatigue Forecasting + Daily AI Decision ── */
+/* ── PulseCap — Recovery Debt Engine + Fatigue Forecasting + Daily Coach Decision ── */
 
 /* ══════════════════════════════════════════════════════
    RECOVERY DEBT ENGINE
@@ -141,7 +141,7 @@ const FatigueForecast = {
 window.FatigueForecast = FatigueForecast;
 
 /* ══════════════════════════════════════════════════════
-   DAILY AI DECISION ENGINE
+   DAILY COACH DECISION ENGINE
 ══════════════════════════════════════════════════════ */
 const DailyDecision = {
 
@@ -300,9 +300,9 @@ window.renderRecoveryDebtBody = function() {
     (RecoveryDebtEngine.deloadRecommended() ? '<div style="margin-top:8px;font-size:11px;color:#f5c842;font-weight:700">⚠️ Deload Recommended</div>' : '') +
     '</div></div></div>' +
 
-    // AI Decision card
+    // Coach Decision card
     '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:20px;padding:18px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">Today\'s AI Recommendation</div>' +
+    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:10px">Today\'s Coach Recommendation</div>' +
     '<div style="display:flex;align-items:center;gap:14px;margin-bottom:12px">' +
     '<div style="font-size:40px">' + decision.emoji + '</div>' +
     '<div>' +

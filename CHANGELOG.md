@@ -1,5 +1,13 @@
 # Changelog — PulseCap
 
+## 5.5.1 (2026-07-17) — Security + honesty patch
+- **XSS hardening:** `esc()` now escapes single quotes for attribute contexts; router error messages are escaped.
+- **Search hardening:** removed `eval(r.action)` from global search result dispatch; search now parses allowed `go(...)` actions only.
+- **wger sync fixed under CSP:** `connect-src`, `img-src`, and `media-src` now allow `https://wger.de` for exercise library images/videos.
+- **Service worker allowlist:** `sw.js` no longer caches every successful network response; cache is limited to same-origin app assets/navigation fallback. Added missing `identity.css`, demo mode, and desktop nav assets.
+- **Honesty cleanup:** user-facing "AI" labels renamed to Coach/Smart Coach; landing version updated; Pro pricing/gating copy replaced with neutral roadmap copy until real monetization exists.
+- **Docs updated:** `CLAUDE.md`, monetization notes, SECURITY, README, presentation, HANDOVER, and Brain note aligned to `5.5.1` / `pulsecap-v57`.
+
 ## 5.5.0 (2026-07-17) — Apple polish (PWA-only)
 - **Honest form cues:** FormLoops no longer pretend to be videos — text coaching cards + ExDB cues; label says "not a video".
 - **Barbell-only plates + warm-up ramp:** plate calc and ramp gated to barbell compounds (`FormLoops.isBarbell`).
@@ -10,7 +18,7 @@
 - **De-emoji chrome:** toast stroke icons; Train Start/Quick/Focus; active workout checkmarks; Learn/Search tiles.
 - **a11y:** focus-visible rings, `prefers-reduced-motion` kills canvas, prompt cards are real `<button>`s.
 - **Spacing/type tokens** in layout.css (`--space-*`, `--type-*`).
-- **Gallery:** active workout shot included. SW `pulsecap-v56`. Tests 26 pass.
+- **Gallery:** active workout shot included. SW `pulsecap-v57`. Tests 26 pass.
 
 ## 5.4.0 (2026-07-17) — Coach tools + screenshot polish
 - **Screenshot bugs fixed:** skip-to-content link no longer stuck over the iOS status bar (clip/sr-only until focus); gender Male/Female icons spaced so ♀ never clips the label; Settings version reads `APP_VERSION` (was hard-coded **v4.7.4**); Safari's opaque `"Load failed"` network toast mapped to a human offline/wger message.
@@ -114,7 +122,7 @@
 - Phase P4: Playwright test for periodization block on progress screen in demo mode; service worker cache bump.
 
 ## 4.5.1 (2026-06-10)
-- Portfolio CTO pass: PWA icons (192/512 maskable), service worker cache bump (`fos-v20`)
+- Portfolio CTO pass: PWA icons (192/512 maskable), service worker cache bump (`legacy fos-v20`) — superseded by `pulsecap-v57`
 - Truth sprint: docs aligned with shipped features
 - Smart Coach naming, 9 themes in settings, deck precache
 

@@ -344,5 +344,7 @@ window._doSearchResult = function(idx) {
   if (!r) return;
   var inp = document.getElementById('fit-search');
   if (inp) _saveSearch(inp.value);
-  eval(r.action);
+  var m = String(r.action || '').match(/^go\('([^']+)'(?:,\{section:'([^']+)'\})?\)$/);
+  if (!m) return;
+  go(m[1], m[2] ? { section: m[2] } : undefined);
 };

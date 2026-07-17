@@ -243,4 +243,39 @@ test.describe('PulseCap flows', () => {
     });
     expect(hidden).toBeTruthy();
   });
+
+  test('security: esc protects single-quoted attributes', async ({ page }) => {
+    const out = await page.evaluate(() => {
+      // @ts-ignore
+      return window.esc("O'Hara <script>");
+    });
+    expect(out).toContain('O&#39;Hara');
+    expect(out).toContain('&lt;script&gt;');
+  });
+
+  test('security: search result dispatch does not use eval', async ({ page }) => {
+    const out = await page.evaluate(() => {
+      // @ts-ignore
+      const w = window;
+      let evalCalled = false;
+      // @ts-ignore
+      const oldEval = window.eval;
+      // @ts-ignore
+      window.eval = function() { evalCalled = true; };
+      w._srItems = [{ action: "go('calculators')" }];
+      w._doSearchResult(0);
+      // @ts-ignore
+      window.eval = oldEval;
+      return { evalCalled, screen: w.currentScreenId && w.currentScreenId() };
+    });
+    expect(out.evalCalled).toBeFalsy();
+    expect(out.screen).toBe('calculators');
+  });
+
+  test('security: CSP permits wger sync and media', async ({ page }) => {
+    const csp = await page.locator('meta[http-equiv="Content-Security-Policy"]').getAttribute('content');
+    expect(csp || '').toContain('connect-src');
+    expect(csp || '').toContain('https://wger.de');
+    expect(csp || '').toContain('media-src');
+  });
 });

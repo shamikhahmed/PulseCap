@@ -86,7 +86,7 @@ reg('briefing', function() {
     '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">🏆 PRs</div>' +
     '</div></div>' +
 
-    (insights.length ? sh('AI Insights') +
+    (insights.length ? sh('Coach Insights') +
     '<div style="padding:0 16px">' +
     insights.slice(0,2).map(function(ins) {
       const col = ins.c || 'var(--c1)';
@@ -334,7 +334,7 @@ function _weeklyInsightsBlock(insights) {
     '<div class="insight-label" style="color:'+ins.c+'">'+esc(ins.t)+'</div>' +
     '<div class="insight-text">'+esc(ins.m)+'</div></div>'
   ).join('');
-  return sh('AI Insights') + insightCards;
+  return sh('Coach Insights') + insightCards;
 }
 
 function _suppTimingBlock(userSupps, user) {

@@ -7,8 +7,8 @@
 Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Activity / widgets planned). Workouts, nutrition, recovery, anatomy, 30+ modules.
 
 ## Facts
-**Version:** 5.5.0
-**SW cache:** `pulsecap-v56`
+**Version:** 5.5.1
+**SW cache:** `pulsecap-v57`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.
@@ -17,7 +17,7 @@ Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Acti
 ## Run & verify
 ```bash
 python3 -m http.server 8766   # or npm run serve
-npx playwright test           # 26 pass / 2 skip
+npx playwright test           # current suite
 npm run gallery               # regenerate screen shots (includes active workout)
 open screen-gallery.html
 ```
@@ -34,7 +34,7 @@ open screen-gallery.html
 |---|---|
 | Docs pack | ✅ |
 | Screen gallery | ✅ VaultCap-style + active workout |
-| Version discipline | ✅ VERSION.json ↔ APP_VERSION ↔ SW |
+| Version discipline | ✅ VERSION.json ↔ APP_VERSION ↔ SW/register query |
 | QA / e2e | ✅ 26 flows + module-smoke |
 | CI gate | ✅ Playwright on push |
 | PWA polish | ✅ shortcuts + rest notify (installed only) |

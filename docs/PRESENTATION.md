@@ -103,7 +103,7 @@ Families, coaches, clients — one install.
 ## Slide 10 — Architecture
 
 ```
-app.js        — Router + AI engines
+app.js        — Router + Smart Coach engines
 modules/      — dashboard, workout, bodymap, coach…
 storage.js    — Multi-profile S object
 sw.js         — cache-first PWA
