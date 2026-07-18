@@ -86,7 +86,7 @@ function _renderIntro(idx) {
       '<svg width="52" height="52" viewBox="0 0 512 512" fill="none" aria-hidden="true">' +
       '<path d="M96 256 H176 L208 208 L256 304 L304 176 L352 256 H416" stroke="#fff" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/>' +
       '<circle cx="256" cy="256" r="18" fill="#fff"/></svg>'
-      : (slide.ic ? icon(slide.ic, 46, '#fff') : (slide.emoji || ''))) + '</div>' +
+      : (slide.ic ? icon(slide.ic, 46, '#fff') : '')) + '</div>' +
 
     '<div style="font-size:30px;font-weight:900;letter-spacing:-1.5px;' +
     'color:var(--txt);margin-bottom:12px;line-height:1.15">' + esc(slide.title) + '</div>' +
@@ -137,10 +137,7 @@ window._introNext = function() {
   go('intro');
 };
 
-reg('intro', function() {
-  /* Deprecated — aliased to onboarding with showIntro (P3). */
-  return _renderIntro(_introSlide);
-});
+/* Route deleted — SCREEN_ALIASES maps intro → onboarding?showIntro=true. */
 
 /* ── end intro slides ── */
 

@@ -1,4 +1,4 @@
-# PulseCap iPhone soak checklist (v6.1.0)
+# PulseCap iPhone soak checklist (v6.2.0)
 
 Real-device pass — Playwright covers shell + safe-area math, not Dynamic Island / A2HS / Notifications delivery.
 
@@ -30,3 +30,6 @@ Real-device pass — Playwright covers shell + safe-area math, not Dynamic Islan
 
 ## After soak
 Append findings to Brain note + `CHANGELOG.md` if bugs found.
+
+## CI note
+`pages-gate` on `main` only runs after Playwright verify. Broken main fails status — Pages should not be treated as shipped until that check is green.

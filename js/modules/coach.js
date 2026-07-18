@@ -109,12 +109,7 @@ reg('briefing', function() {
     '</div></div>';
 });
 
-reg('coach', function() {
-  /* Deprecated — SCREEN_ALIASES maps coach → assistant before this runs via go(). */
-  return '<div class="topbar"><div class="topbar-title">Smart Coach</div></div>' +
-    '<div style="padding:24px;color:var(--txt3);line-height:1.5">Coach moved to Learn → Smart Coach.</div>' +
-    '<div style="padding:0 16px 24px"><button type="button" class="btn btn-primary" onclick="go(\'assistant\')">Open Smart Coach</button></div>';
-});
+/* Route deleted — SCREEN_ALIASES maps coach → assistant. */
 
 function _readinessBlock(score, rl, rec) {
   return sh('Readiness Assessment') +

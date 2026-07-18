@@ -183,7 +183,7 @@ reg('dashboard', function() {
     const activeQuestCard = (function() {
       try {
         const noCTA = '<div onclick="go(\'quests\')" style="margin:0 16px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:12px 16px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:space-between">' +
-          '<div  class="body-13">⚔️ Start a Quest</div>' +
+          '<div class="body-13" style="display:flex;align-items:center;gap:8px">' + icon('target', 16) + ' Start a Quest</div>' +
           '<div  class="muted-12">→</div></div>';
         if (typeof QuestEngine === 'undefined') return noCTA;
         QuestEngine.updateProgress();
@@ -192,7 +192,7 @@ reg('dashboard', function() {
         const q = active[0];
         const pct = QuestEngine.questProgress(q);
         return '<div onclick="go(\'quests\')" style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(123,95,255,0.1),rgba(0,213,255,0.06));border:1px solid rgba(123,95,255,0.25);border-radius:16px;padding:14px 16px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;gap:12px">' +
-          '<div class="fs-28">' + q.icon + '</div>' +
+          '<div style="display:flex;color:var(--c1)">' + (typeof icon === 'function' ? icon(q.icon || 'target', 26) : '') + '</div>' +
           '<div  class="flex-1">' +
           '<div  class="row-title">' + esc(q.title) + '</div>' +
           '<div style="width:100%;height:4px;background:rgba(255,255,255,0.06);border-radius:2px;margin-top:6px"><div style="width:' + pct + '%;height:4px;border-radius:2px;background:var(--c1)"></div></div>' +
@@ -378,9 +378,18 @@ reg('dashboard', function() {
       '<div style="margin:0 16px 12px;font-size:12px;color:var(--txt3)">' + esc(meso.label) +
       ' · <button type="button" onclick="MesocycleEngine.reset();go(\'dashboard\')" style="background:none;border:none;color:var(--c1);font-size:12px;font-weight:700;cursor:pointer;padding:0">Reset block</button></div>' : '';
 
+    const readinessScore = (typeof ReadinessEngine !== 'undefined') ? ReadinessEngine.score() : 70;
+    const mobilityCard = (typeof MobilityFlow !== 'undefined' && readinessScore < 65) ?
+      '<button type="button" onclick="go(\'recovery\')" class="dash-prompt" style="margin:0 16px 12px;width:calc(100% - 32px);border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border);cursor:pointer;touch-action:manipulation;text-align:left;display:flex;align-items:center;gap:12px">' +
+      '<div style="display:flex;color:var(--c1)">' + icon('walk', 22) + '</div>' +
+      '<div><div style="font-size:11px;font-weight:700;color:var(--txt3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:2px">Pre-train</div>' +
+      '<div style="font-size:14px;font-weight:800;color:var(--txt)">Mobility flow</div>' +
+      '<div style="font-size:12px;color:var(--txt2)">Readiness ' + readinessScore + ' — open Recovery for 4–8 min drills</div></div></button>' : '';
+
     /* Priority queue: show max 2 prompts on first paint; rest behind More */
     const promptQueue = [];
     if (oneThingCard) promptQueue.push({ pri: -1, html: oneThingCard });
+    if (mobilityCard) promptQueue.push({ pri: -0.7, html: mobilityCard });
     if (recapSessionCard) promptQueue.push({ pri: -0.5, html: recapSessionCard });
     if (recapCard) promptQueue.push({ pri: 0, html: recapCard });
     if (injuryBanner) promptQueue.push({ pri: 1, html: injuryBanner });

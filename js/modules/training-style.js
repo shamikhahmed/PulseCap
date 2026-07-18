@@ -326,6 +326,5 @@ window.renderTrainingStyleBody = function() {
 
 };
 
-reg('training-style', function() {
-  return window.renderTrainingIntelUnified({ tab: 'style' });
-});
+/* Route deleted — SCREEN_ALIASES maps training-style → training-intel?tab=style.
+   Keep this file for render bodies (lazy MODULE_SRC). */

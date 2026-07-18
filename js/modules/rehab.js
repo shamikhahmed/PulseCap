@@ -3,7 +3,7 @@
 
 var INJURY_DB = {
   shoulder_dislocation: {
-    id:'shoulder_dislocation', name:'Shoulder Dislocation', icon:'🦴', severity:'severe',
+    id:'shoulder_dislocation', name:'Shoulder Dislocation', severity:'severe',
     anatomy:'Anterior glenohumeral dislocation — humeral head displaced anteriorly from glenoid fossa. Stretches anterior capsule, labrum, and often axillary nerve.',
     mechanism:'Fall on outstretched hand (FOOSH), forceful overhead or behind-back arm movement, contact sport impact.',
     acute_phase:{ duration_weeks:2, do:['Wear sling for 1-2 weeks','Ice 20 min every 2-3 hours','Pendulum swings (gravity-assisted only)','Keep elbow at 90 degrees in sling'], avoid:['ANY overhead movement','Behind-back movements','All pressing exercises','Lifting any weight with injured arm'], exercises_ok:['Pendulum circles','Elbow flexion/extension','Hand grip squeezes'], exercises_avoid:['Bench press','Overhead press','Pull-ups','Rows','Push-ups'] },
@@ -15,7 +15,7 @@ var INJURY_DB = {
   },
 
   ankle_sprain_mild: {
-    id:'ankle_sprain_mild', name:'Ankle Sprain (Grade 1-2)', icon:'🦶', severity:'mild',
+    id:'ankle_sprain_mild', name:'Ankle Sprain (Grade 1-2)', severity:'mild',
     anatomy:'Lateral ankle ligament sprain — partial or micro-tear of anterior talofibular ligament (ATFL) and/or calcaneofibular ligament (CFL). Grade 1: stretch only. Grade 2: partial tear.',
     mechanism:'Inversion (rolling) of ankle, landing from jump, uneven surface. Most common sports injury.',
     acute_phase:{ duration_weeks:1, do:['PRICE protocol: Protect, Rest, Ice (20min on/off), Compress, Elevate','Partial weight bearing as tolerated','Single-leg balance exercises (pain-free)','Ankle alphabet exercises'], avoid:['Running or jumping','Aggressive stretching','Full weight bearing if painful','High heels or unstable footwear'], exercises_ok:['Seated calf raises','Ankle circles','Towel scrunches'], exercises_avoid:['Running','Jumping','Box jumps','Heavy leg press'] },
@@ -27,7 +27,7 @@ var INJURY_DB = {
   },
 
   ankle_sprain_severe: {
-    id:'ankle_sprain_severe', name:'Ankle Sprain (Grade 3)', icon:'🦶', severity:'moderate',
+    id:'ankle_sprain_severe', name:'Ankle Sprain (Grade 3)', severity:'moderate',
     anatomy:'Complete rupture of lateral ankle ligaments (ATFL + CFL, sometimes PTFL). Significant joint instability.',
     mechanism:'Severe inversion force, often with audible pop and immediate inability to weight-bear.',
     acute_phase:{ duration_weeks:2, do:['PRICE protocol strictly for 48-72 hours','Boot or cast immobilisation 1-3 weeks','No weight bearing initially','Ice and elevation aggressively'], avoid:['All weight bearing until pain allows','Any ankle inversion loading','Running or sport'], exercises_ok:['Upper body training (seated)','Pool walking when swelling reduces'], exercises_avoid:['All lower body loading','Running','Squats','Leg press (initially)'] },
@@ -39,7 +39,7 @@ var INJURY_DB = {
   },
 
   herniated_disc: {
-    id:'herniated_disc', name:'Herniated Disc (Lumbar)', icon:'🦴', severity:'moderate',
+    id:'herniated_disc', name:'Herniated Disc (Lumbar)', severity:'moderate',
     anatomy:'Nucleus pulposus (disc gel centre) protrudes through annulus fibrosus, potentially compressing nerve roots. Most common at L4-L5 and L5-S1.',
     mechanism:'Repetitive spinal flexion under load, sudden heavy lift with poor form, prolonged sitting with poor posture. Often gradual onset.',
     acute_phase:{ duration_weeks:4, do:['Walking — best early intervention','McKenzie extension exercises (prone press-ups)','Avoid prolonged sitting','Ice or heat for pain management','Continue daily activities as tolerated'], avoid:['ALL loaded spinal flexion','Deadlifts and squats with axial load','Sit-ups and crunches','Leg press (compressive)','Prolonged sitting'], exercises_ok:['Walking','Prone press-ups (McKenzie)','Pelvic tilts','Side-lying rest position'], exercises_avoid:['Deadlift','Squat','Good morning','Leg press','Sit-ups','Crunches','Loaded carries'] },
@@ -51,7 +51,7 @@ var INJURY_DB = {
   },
 
   rotator_cuff_tear: {
-    id:'rotator_cuff_tear', name:'Rotator Cuff Tear (Partial)', icon:'💪', severity:'moderate',
+    id:'rotator_cuff_tear', name:'Rotator Cuff Tear (Partial)', severity:'moderate',
     anatomy:'Partial thickness tear of rotator cuff — most commonly supraspinatus tendon. Causes pain with overhead movement and night pain. Full tears may require surgery.',
     mechanism:'Acute: forceful overhead movement or fall. Chronic: repetitive overhead loading, shoulder impingement, age-related degeneration.',
     acute_phase:{ duration_weeks:3, do:['PRICE protocol for acute onset','Pendulum exercises (gravity-assisted)','Avoid provocative positions','Anti-inflammatory management (ice)','Postural correction'], avoid:['ALL overhead loading','Bench press and push-ups','Pull-ups and rows with pain','Sleeping on affected shoulder'], exercises_ok:['Pendulum swings','Elbow and wrist exercises','Scapular retractions (pain-free)'], exercises_avoid:['Overhead press','Pull-ups','Bench press','Push-ups','Upright rows'] },
@@ -63,7 +63,7 @@ var INJURY_DB = {
   },
 
   patellar_tendinitis: {
-    id:'patellar_tendinitis', name:'Patellar Tendinopathy', icon:'🦵', severity:'mild',
+    id:'patellar_tendinitis', name:'Patellar Tendinopathy', severity:'mild',
     anatomy:'Degenerative changes or micro-tearing of the patellar tendon (inferior pole of patella). AKA "jumper\'s knee." Most common in volleyball, basketball, weightlifting.',
     mechanism:'Repetitive loading of knee extensor mechanism — jumping, landing, heavy squatting. Sudden load increase is key risk factor.',
     acute_phase:{ duration_weeks:2, do:['Load reduction — reduce training volume 50-70%','Ice post-exercise (not before)','Isometric knee extension (5x45s wall sit) — immediate pain relief','Avoid activities that provoke pain above 3/10'], avoid:['Deep squats past 90 degrees','Running and jumping','Stairs with heavy load','Kneeling with force'], exercises_ok:['Wall sit (isometric)','Swimming','Cycling (low resistance)','Upper body training'], exercises_avoid:['Box jumps','Heavy squat','Running','Stairs with load'] },
@@ -75,7 +75,7 @@ var INJURY_DB = {
   },
 
   acl_tear: {
-    id:'acl_tear', name:'ACL Tear (Post-Surgery)', icon:'🦵', severity:'severe',
+    id:'acl_tear', name:'ACL Tear (Post-Surgery)', severity:'severe',
     anatomy:'Complete rupture of anterior cruciate ligament — primary restraint to anterior tibial translation. ACL reconstruction typically uses hamstring graft or patellar tendon graft.',
     mechanism:'Non-contact: deceleration, pivoting, landing from jump. Contact: direct blow to knee. Heard/felt a pop, immediate swelling.',
     acute_phase:{ duration_weeks:2, do:['PRICE protocol post-injury/post-op','Quad sets (isometric quads on flat surface)','Straight leg raises','Heel slides for ROM','Weight bear as pain allows post-op'], avoid:['Full weight bearing without crutches initially','Knee flexion past 90 degrees (weeks 0-4)','Any pivoting or rotational force on knee','All sport'], exercises_ok:['Quad sets','Heel slides','Ankle pumps','Straight leg raises','Upper body training (seated)'], exercises_avoid:['Squats','Leg press','All lower body loaded exercises','Running'] },
@@ -87,7 +87,7 @@ var INJURY_DB = {
   },
 
   tennis_elbow: {
-    id:'tennis_elbow', name:'Tennis Elbow (Lateral Epicondylitis)', icon:'💪', severity:'mild',
+    id:'tennis_elbow', name:'Tennis Elbow (Lateral Epicondylitis)', severity:'mild',
     anatomy:'Degenerative tendinopathy of extensor carpi radialis brevis (ECRB) at the lateral epicondyle of humerus. Repetitive gripping and wrist extension overload.',
     mechanism:'Repetitive gripping under load, wrist extension movements. Common in tennis, weightlifting (barbell rows, pull-ups with supination), racquet sports.',
     acute_phase:{ duration_weeks:2, do:['Activity modification — avoid provocative gripping movements','Eccentric wrist extensions (Tyler Twist with Theraband, 3x15 daily)','Ice post-exercise','Counterforce brace during activities'], avoid:['Gripping under heavy load','Barbell rows with supinated grip','Heavy bicep curls','Wrist extension under load'], exercises_ok:['Lower body exercises','Push-ups (if pain-free)','Leg work','Core work'], exercises_avoid:['Barbell rows (supinated)','Heavy dumbbell curls','Wrist curls','Reverse curls'] },
@@ -99,7 +99,7 @@ var INJURY_DB = {
   },
 
   golfers_elbow: {
-    id:'golfers_elbow', name:"Golfer's Elbow (Medial Epicondylitis)", icon:'💪', severity:'mild',
+    id:'golfers_elbow', name:"Golfer's Elbow (Medial Epicondylitis)", severity:'mild',
     anatomy:'Degenerative tendinopathy of wrist flexor-pronator muscle group at medial epicondyle. Affects FCR, FCU, palmaris longus origin.',
     mechanism:'Repetitive wrist flexion and forearm pronation under load. Common in golf, overhead throwing, pull-up variations, and heavy rows.',
     acute_phase:{ duration_weeks:2, do:['Activity modification for provocative movements','Eccentric wrist flexion exercises (3x15 slowly lowering weight)','Ice post-exercise','Medial counterforce brace during activity'], avoid:['Heavy overhead pressing with poor mechanics','Heavy dumbbell and barbell rows (acute phase)','Gripping heavy loads'], exercises_ok:['Lower body training','Leg work','Core work (no grip)'], exercises_avoid:['Heavy rows','Overhead press (heavy)','Pull-ups (acute)','Wrist curls under heavy load'] },
@@ -111,7 +111,7 @@ var INJURY_DB = {
   },
 
   bicep_tendon_tear: {
-    id:'bicep_tendon_tear', name:'Bicep Tendon Tear (Distal)', icon:'💪', severity:'severe',
+    id:'bicep_tendon_tear', name:'Bicep Tendon Tear (Distal)', severity:'severe',
     anatomy:'Partial or complete rupture of distal biceps tendon at radial tuberosity. Complete tears produce visible deformity (Popeye sign) and significant loss of supination strength.',
     mechanism:'Sudden eccentric load with elbow flexed — catching heavy object, failed heavy curl, or dumbbell lowering under load.',
     acute_phase:{ duration_weeks:2, do:['Sling for 1-2 weeks','No elbow loading whatsoever','Ice and elevation','Surgical consultation for complete tear (surgery within 2-3 weeks gives best outcomes)'], avoid:['All elbow flexion loading','Carrying anything with affected arm','Supination loading'], exercises_ok:['Lower body training (no upper body grip)'], exercises_avoid:['All bicep exercises','Pull-ups','Rows','Any carrying'] },
@@ -123,7 +123,7 @@ var INJURY_DB = {
   },
 
   meniscus_tear: {
-    id:'meniscus_tear', name:'Meniscus Tear (Knee)', icon:'🦵', severity:'moderate',
+    id:'meniscus_tear', name:'Meniscus Tear (Knee)', severity:'moderate',
     anatomy:'Tear of medial or lateral fibrocartilage meniscus. Medial tears more common. Range from minor (bucket-handle not displaced) to complex. Outer third has blood supply — heals better.',
     mechanism:'Rotational force on flexed knee, deep squat, or degenerative tearing (older athletes). Often occurs with ACL injury.',
     acute_phase:{ duration_weeks:2, do:['PRICE protocol','Crutches if significant pain on weight-bearing','Gentle ROM exercise (heel slides)','Quad activation exercises','MRI to confirm diagnosis and extent'], avoid:['Deep squats','Heavy leg press','Twisting and pivoting','Running'], exercises_ok:['Heel slides','Quad sets','Straight leg raises','Upper body training'], exercises_avoid:['Deep squat','Leg press (deep)','Running','Pivoting sport'] },
@@ -135,7 +135,7 @@ var INJURY_DB = {
   },
 
   hamstring_strain: {
-    id:'hamstring_strain', name:'Hamstring Strain (Grade 1-2)', icon:'🦵', severity:'mild',
+    id:'hamstring_strain', name:'Hamstring Strain (Grade 1-2)', severity:'mild',
     anatomy:'Partial muscle tear most commonly at proximal musculotendinous junction of biceps femoris long head. Grade 1: minor tear. Grade 2: significant partial tear with bruising.',
     mechanism:'High-speed running (late swing phase), rapid eccentric loading, inadequate warm-up, fatigue.',
     acute_phase:{ duration_weeks:1, do:['PRICE protocol — no aggressive stretching for 48-72 hours','Gentle isometric hamstring contractions (pain-free)','Maintain upper body and quad/calf training','Walking as tolerated'], avoid:['Aggressive hamstring stretching (acutely — tears more fibres)','Sprint running','Heavy Romanian deadlift','Nordic curls in acute phase'], exercises_ok:['Isometric hamstring squeeze','Cycling (low resistance)','Upper body training','Quad exercises'], exercises_avoid:['Sprint running','Deadlift','Nordic curl (acute)','Deep hip flexion under load'] },
@@ -147,7 +147,7 @@ var INJURY_DB = {
   },
 
   quad_strain: {
-    id:'quad_strain', name:'Quadriceps Strain', icon:'🦵', severity:'mild',
+    id:'quad_strain', name:'Quadriceps Strain', severity:'mild',
     anatomy:'Partial tear of quadriceps — most commonly rectus femoris (biarticular) at the musculotendinous junction. Grade 1-3 severity.',
     mechanism:'Sudden acceleration, kicking, rapid knee extension against resistance. Direct blow to anterior thigh (contusion may accompany).',
     acute_phase:{ duration_weeks:1, do:['PRICE protocol','Gentle knee flexion ROM (to comfortable range)','Isometric quad contractions (pain-free)','Maintain upper body and hamstring training'], avoid:['Lunges and split squats','Heavy leg press','Sprinting and kicking','Aggressive stretching acutely'], exercises_ok:['Isometric quad set','Hip extension exercises','Upper body training','Swimming'], exercises_avoid:['Squat','Lunge','Leg press (initially)','Sprint running'] },
@@ -159,7 +159,7 @@ var INJURY_DB = {
   },
 
   lower_back_strain: {
-    id:'lower_back_strain', name:'Lower Back Strain', icon:'🦴', severity:'mild',
+    id:'lower_back_strain', name:'Lower Back Strain', severity:'mild',
     anatomy:'Acute strain of erector spinae, QL, or other paraspinal muscles. NOT disc pathology. Typically resolves fully within 2-4 weeks. Most common musculoskeletal presentation.',
     mechanism:'Sudden movement, heavy lift with poor form, prolonged posture, or simple movement. Often occurs at end of fatigued workout.',
     acute_phase:{ duration_weeks:1, do:['STAY ACTIVE — bed rest makes it worse','Walking is best medicine','McKenzie extension (prone press-ups) if comfortable','Ice or heat for symptom relief','McGill curl-up if tolerated'], avoid:['Heavy loaded spinal movements','Deadlift and squat with axial load','Sit-ups and crunches in acute phase','Prolonged bed rest'], exercises_ok:['Walking','Gentle McKenzie extension','Upper body seated work','Cycling (upright)'], exercises_avoid:['Deadlift','Squat with barbell','Heavy carries','Good mornings'] },
@@ -171,7 +171,7 @@ var INJURY_DB = {
   },
 
   hip_flexor_strain: {
-    id:'hip_flexor_strain', name:'Hip Flexor Strain (Iliopsoas)', icon:'🦵', severity:'mild',
+    id:'hip_flexor_strain', name:'Hip Flexor Strain (Iliopsoas)', severity:'mild',
     anatomy:'Partial tear of iliopsoas (psoas major + iliacus) or rectus femoris at its origin. Felt as deep anterior hip or groin pain with hip flexion.',
     mechanism:'Explosive hip flexion (sprint start, kicking), sudden acceleration, overstriding in running.',
     acute_phase:{ duration_weeks:1, do:['PRICE protocol','Rest from hip flexion loading','Gentle prone hip extension stretching','Maintain upper body and calf training'], avoid:['Squats and lunges (hip flexion under load)','Running','Leg raises and hanging exercises'], exercises_ok:['Upper body training','Calf raises','Gentle hip extension stretch','Gentle walking'], exercises_avoid:['Squat','Lunge','Leg raise','Sprint running','Rowing machine'] },
@@ -183,7 +183,7 @@ var INJURY_DB = {
   },
 
   groin_strain: {
-    id:'groin_strain', name:'Groin Strain (Adductor)', icon:'🦵', severity:'mild',
+    id:'groin_strain', name:'Groin Strain (Adductor)', severity:'mild',
     anatomy:'Partial tear of adductor longus (most common) or adductor magnus, brevis, or gracilis. Inner thigh pain with hip adduction and resistance.',
     mechanism:'Rapid change of direction, wide stance movements, kicking. High risk in football, hockey, rugby. Sudden stretch of adductors.',
     acute_phase:{ duration_weeks:1, do:['PRICE protocol','Avoid hip abduction loading','Gentle walking','Isometric adductor squeeze (ball between knees, 3x10)'], avoid:['Wide-stance movements (sumo squat, wide lunges)','Lateral movements','Kicking and pivoting'], exercises_ok:['Isometric adductor squeeze','Upper body training','Narrow stance squat (pain-free)'], exercises_avoid:['Sumo squat','Wide lunge','Lateral band walks','All kicking/pivoting'] },
@@ -195,7 +195,7 @@ var INJURY_DB = {
   },
 
   achilles_tendinopathy: {
-    id:'achilles_tendinopathy', name:'Achilles Tendinopathy', icon:'🦶', severity:'mild',
+    id:'achilles_tendinopathy', name:'Achilles Tendinopathy', severity:'mild',
     anatomy:'Degenerative changes in Achilles tendon fibres — mid-portion (2-6cm above heel) or insertional. NOT an inflammatory condition — pain in Achilles with loading.',
     mechanism:'Repetitive loading, sudden training volume increase, tight calves, pronation, change in footwear. Common in runners and weightlifters doing calf work.',
     acute_phase:{ duration_weeks:2, do:['Load modification — reduce calf loading 50-70%','Isometric calf raises (5x45s, heavy) — immediate pain relief effect','Continue gym training (upper body, non-impact lower body)','Ice post-exercise (not before)'], avoid:['Complete rest (makes tendons worse)','Explosive jumping and sprinting','Steep hill running','Stretching tendon aggressively (reduces load capacity)'], exercises_ok:['Isometric calf press (leg press)','Cycling','Swimming','All upper body work'], exercises_avoid:['Box jumps','Sprint running','Jump rope','Steep incline running'] },
@@ -207,7 +207,7 @@ var INJURY_DB = {
   },
 
   wrist_sprain: {
-    id:'wrist_sprain', name:'Wrist Sprain', icon:'🤚', severity:'mild',
+    id:'wrist_sprain', name:'Wrist Sprain', severity:'mild',
     anatomy:'Tear of intercarpal or radiocarpal ligaments — most commonly dorsal radiocarpal ligament. Causes wrist pain with loading and movement.',
     mechanism:'Fall on outstretched hand (FOOSH), forced wrist extension, awkward grip under load.',
     acute_phase:{ duration_weeks:1, do:['PRICE protocol','Wrist brace or splint in neutral position','Avoid wrist loading','Maintain elbow and shoulder training (careful)'], avoid:['Any wrist loading','Push-ups and dips','Bench press and overhead press','Front rack position (barbell)'], exercises_ok:['Lower body training (all)','Elbow and shoulder exercises (no grip)','Core work (no hand bearing)'], exercises_avoid:['Push-ups','Dips','Bench press','Deadlift (grip pain)','Olympic lifts'] },
@@ -219,7 +219,7 @@ var INJURY_DB = {
   },
 
   shoulder_impingement: {
-    id:'shoulder_impingement', name:'Shoulder Impingement', icon:'💪', severity:'mild',
+    id:'shoulder_impingement', name:'Shoulder Impingement', severity:'mild',
     anatomy:'Mechanical compression of supraspinatus tendon and subacromial bursa under the acromion. Caused by weak rotator cuff, tight posterior capsule, and poor scapular control — NOT a traumatic injury.',
     mechanism:'Repetitive overhead movement, weak lower/middle trapezius and rotator cuff, tight posterior shoulder capsule, poor bench press or overhead press form.',
     acute_phase:{ duration_weeks:2, do:['Activity modification — avoid painful arc (60-120 degrees shoulder abduction)','Rotator cuff strengthening (external rotation with band)','Lower trapezius activation (Y-raises)','Ice post-exercise','Postural correction'], avoid:['Upright rows permanently — primary impingement cause','Behind-neck press permanently','Overhead pressing in painful range'], exercises_ok:['Band external rotation','Face pulls','Scapular retractions','Rear delt fly'], exercises_avoid:['Upright rows','Behind-neck press','Overhead press to failure','Heavy lateral raises (early)'] },
@@ -231,7 +231,7 @@ var INJURY_DB = {
   },
 
   shin_splints: {
-    id:'shin_splints', name:'Shin Splints (MTSS)', icon:'🦶', severity:'mild',
+    id:'shin_splints', name:'Shin Splints (MTSS)', severity:'mild',
     anatomy:'Medial tibial stress syndrome — periosteal stress reaction along posteromedial tibia from tibialis posterior and soleus overload. Precursor to tibial stress fracture if ignored.',
     mechanism:'Rapid running volume increase, hard surfaces, worn footwear, overpronation. Common in beginners increasing mileage too fast.',
     acute_phase:{ duration_weeks:1, do:['Reduce running volume by 50-70%','Ice post-exercise (10-15 minutes)','Continue all non-impact training','Tibialis anterior strengthening (toe raises)','Review footwear'], avoid:['Running through sharp pain','Running on concrete in worn shoes','Sudden increase in training volume'], exercises_ok:['Swimming','Cycling','Upper body training','Tibialis raises','All non-impact lower body'], exercises_avoid:['Running (reduce significantly)','Box jumps','High impact plyometrics'] },

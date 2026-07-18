@@ -359,6 +359,5 @@ window.renderRecoveryDebtBody = function() {
 
 };
 
-reg('recovery-debt', function() {
-  return window.renderRecoveryUnified({ tab: 'debt' });
-});
+/* Route deleted — SCREEN_ALIASES maps recovery-debt → recovery?tab=debt.
+   Keep this file for renderRecoveryDebtBody. */

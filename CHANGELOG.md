@@ -1,5 +1,12 @@
 # Changelog — PulseCap
 
+## 6.2.0 (2026-07-18) — Finish leftovers
+- **Deprecated routes deleted** (aliases already shipped): `physique-archetype`, `recovery-debt`, `training-style`, `coach`, `intro` regs removed; body renderers kept.
+- **Barcode map** expanded to full offline food ids + demo EAN stubs; mobility presets + ankles/wrists; Today mobility nudge when readiness low.
+- **De-emoji:** anatomy/rehab unused icon glyphs stripped; settings macro presets; Today quest card → stroke icons.
+- **CI:** `pages-gate` job after verify on main (Pages serves main only when CI green).
+- SW `pulsecap-v72`.
+
 ## 6.1.0 (2026-07-18) — Gym tools (voice, barcode, wake, mobility)
 - **`js/gym-tools.js`:** Screen Wake Lock, Web Speech set logging, BarcodeDetector food scan (offline map), MobilityFlow presets, PainFlag → rehab.
 - **Logger:** Mic + Pain on active workout; wake lock while training; RPE+voice parse.

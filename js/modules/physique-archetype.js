@@ -506,7 +506,5 @@ window.renderPhysiqueArchetypeBody = function(data) {
     '<div  class="spacer-bottom"></div>';
 };
 
-reg('physique-archetype', function(data) {
-  /* Deprecated route — alias + unified Physique tabs (P3). */
-  return window.renderPhysiqueUnified(Object.assign({}, data || {}, { tab: 'archetype' }));
-});
+/* Route deleted — SCREEN_ALIASES maps physique-archetype → physique?tab=archetype.
+   Keep this file for renderPhysiqueArchetypeBody (lazy-loaded from physique). */

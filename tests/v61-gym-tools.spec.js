@@ -31,9 +31,10 @@ test.describe('v6.1 gym tools', () => {
     expect(ok.weight).toBe(135);
     expect(ok.reps).toBe(8);
     expect(ok.rpe).toBe(7);
-    expect(ok.flowCount).toBeGreaterThanOrEqual(3);
+    expect(ok.flowCount).toBeGreaterThanOrEqual(5);
     expect(ok.painGo).toBe('rehab');
     expect(ok.mealName).toBeTruthy();
+    expect(String(ok.mealName).toLowerCase()).toMatch(/chicken/);
     expect(ok.exNoEm).toBeTruthy();
   });
 

@@ -262,7 +262,7 @@ function _tabNutrition(u) {
     '</div>' +
     _sectionTitle('Macro Presets') +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">' +
-    [['hypertrophy','💪 Muscle'],['fat_loss','🔥 Fat loss'],['strength','🏋️ Strength'],['maintenance','⚖️ Maintain'],['athletic','⚡ Athletic']].map(g =>
+    [['hypertrophy','Muscle'],['fat_loss','Fat loss'],['strength','Strength'],['maintenance','Maintain'],['athletic','Athletic']].map(g =>
       '<button type="button" class="btn btn-secondary btn-sm" onclick="applyMacroPreset(\''+g[0]+'\')" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:11px 8px">'+g[1]+'</button>'
     ).join('') + '</div>' +
     '<div style="padding:12px 0;font-size:13px;color:var(--txt3)">Calculated TDEE: '+tdee+' kcal/day</div>' +

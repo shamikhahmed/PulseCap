@@ -112,21 +112,51 @@ window.VoiceLogger = {
 
 /* ── Offline barcode → meal ── */
 var BARCODE_MAP = {
-  '0000001': 'chicken',
+  '0000001': 'chicken_breast',
   '0000002': 'whey',
-  '0000003': 'greek yogurt',
+  '0000003': 'greek_yogurt',
   '0000004': 'oats',
   '0000005': 'banana',
   '0000006': 'rice',
   '0000007': 'egg',
   '0000008': 'tuna',
   '0000009': 'milk',
-  '0000010': 'peanut butter',
+  '0000010': 'peanut_butter',
   '0000011': 'bread',
   '0000012': 'salmon',
   '0000013': 'cottage',
   '0000014': 'almonds',
-  '0000015': 'protein'
+  '0000015': 'whey',
+  '0000016': 'turkey',
+  '0000017': 'beef_lean',
+  '0000018': 'tofu',
+  '0000019': 'lentils',
+  '0000020': 'beans',
+  '0000021': 'pasta',
+  '0000022': 'potato',
+  '0000023': 'sweet_potato',
+  '0000024': 'apple',
+  '0000025': 'berries',
+  '0000026': 'broccoli',
+  '0000027': 'spinach',
+  '0000028': 'avocado',
+  '0000029': 'olive_oil',
+  '0000030': 'cheese',
+  '0000031': 'egg_white',
+  '0000032': 'brown_rice',
+  '0000033': 'rice_cake',
+  '0000034': 'honey',
+  '0000035': 'creatine_food',
+  /* Demo retail stubs (offline only — not real product DB) */
+  '0123456789012': 'whey',
+  '0123456789013': 'chicken_breast',
+  '0123456789014': 'greek_yogurt',
+  '0123456789015': 'oats',
+  '0123456789016': 'banana',
+  '0123456789017': 'peanut_butter',
+  '0123456789018': 'salmon',
+  '0123456789019': 'milk',
+  '0123456789020': 'bread'
 };
 
 window.BarcodeFood = {
@@ -150,7 +180,10 @@ window.BarcodeFood = {
     var food = null;
     for (var i = 0; i < foods.length; i++) {
       var f = foods[i];
-      if (f.id === q || (f.name && f.name.toLowerCase().indexOf(q) !== -1)) { food = f; break; }
+      if (f.id === q || (f.name && f.name.toLowerCase().indexOf(q.replace(/_/g, ' ')) !== -1)) {
+        food = f;
+        break;
+      }
     }
     if (food && typeof FoodEngine !== 'undefined' && FoodEngine.toMeal) return FoodEngine.toMeal(food, 1);
     if (food) {
@@ -208,6 +241,22 @@ window.MobilityFlow = {
         { name: 'Wall slides', secs: 45, cue: 'Shoulders before pressing.' },
         { name: 'Bodyweight squat hold', secs: 40, cue: 'Knees track toes; breathe.' },
         { name: 'Down dog → plank', secs: 50, cue: 'Slow transitions; long heels.' }
+      ]
+    },
+    {
+      id: 'ankles', name: 'Ankles & calves', durationMin: 4, steps: [
+        { name: 'Ankle circles', secs: 40, cue: 'Both directions; keep knee quiet.' },
+        { name: 'Knee-to-wall dorsiflexion', secs: 50, cue: 'Heel down; touch wall with knee.' },
+        { name: 'Calf stretch (straight + bent)', secs: 50, cue: 'Gastroc then soleus.' },
+        { name: 'Single-leg balance', secs: 40, cue: 'Soft knee; eyes forward.' }
+      ]
+    },
+    {
+      id: 'wrists', name: 'Wrists & elbows', durationMin: 4, steps: [
+        { name: 'Wrist circles', secs: 40, cue: 'Slow, both directions.' },
+        { name: 'Prayer stretch', secs: 40, cue: 'Elbows down; gentle pressure.' },
+        { name: 'Reverse prayer / finger pull', secs: 40, cue: 'Open forearms; no pain.' },
+        { name: 'Band wrist extension', secs: 45, cue: 'Light band; control eccentric.' }
       ]
     }
   ],
