@@ -8,7 +8,7 @@
 - Data: `localStorage` via `S`; IndexedDB only for progress photos.
 - Security: CSP meta exists in `index.html`; keep it aligned with wger sync.
 - Coach naming: **Smart Coach** / Coach Insights. Do not use unbacked AI claims unless a real LLM is integrated.
-- v6 spine: `js/coach-kernel.js` + `js/data/foods-db.js` (see `docs/V6-NORTHSTAR.md`).
+- v6 spine: `js/coach-kernel.js` + `js/gym-tools.js` + `js/data/foods-db.js` (see `docs/V6-NORTHSTAR.md`).
 
 ## Required checks
 - `node --check` changed JS.
@@ -19,6 +19,8 @@
 ## Key files
 - `js/app.js` — router + engines
 - `js/storage.js` — profile/localStorage data
+- `js/coach-kernel.js` — autoreg / volume / joints / meso / GymFloor
+- `js/gym-tools.js` — WakeLock / VoiceLogger / BarcodeFood / MobilityFlow / PainFlag
 - `js/modules/workout.js` — exercise DB + active logger
 - `js/modules/dashboard.js` — Today screen
 - `js/modules/coach.js` — Smart Coach screen

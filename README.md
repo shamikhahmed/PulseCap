@@ -108,6 +108,9 @@ css/
 js/
   app.js            — Router, icon system, lazy MODULE_SRC loader
   engines.js        — Smart Coach engines (Readiness, Coach, Muscle, Split, Program, etc.)
+  coach-kernel.js   — RPE autoreg, volume lander, joints, mesocycle, GymFloor, BeginnerMode
+  gym-tools.js      — WakeLock, VoiceLogger, BarcodeFood, MobilityFlow, PainFlag
+  data/foods-db.js  — Offline food macros
   storage.js        — S object, multi-profile localStorage, seedPersonas
   modules/
     dashboard.js    — Today screen
@@ -115,8 +118,8 @@ js/
     bodymap.js      — SVG body map, measurements, body stats
     coach.js        — Daily briefing / coach insights
     progress.js     — Charts, PRs, achievements
-    nutrition.js    — Meals, macros, supplements
-    recovery.js     — Readiness check-in + debt tab
+    nutrition.js    — Meals, macros, supplements, barcode
+    recovery.js     — Readiness check-in + debt tab + mobility
     settings.js     — Settings tabs (profile/training/appearance/…)
     profiles.js     — Profile switcher, demo mode, sample athletes
     onboarding.js   — 4 intro slides + 7-step onboarding
@@ -129,18 +132,16 @@ manifest.json       — PWA manifest
 
 ## Roadmap
 
-Shipped through v5.6.x (see `CHANGELOG.md`): plate math, warm-up sets, ProgramEngine (SL/SS/5/3/1), custom splits, skip-day coach, injury auto-swap, progress photos, screen gallery (dark/light × mobile/desktop), sample personas + functional QA.
+Shipped through **v6.2.0** (see `CHANGELOG.md`): Coach Kernel, gym tools (voice/barcode/wake/mobility/pain), RPE autoreg, mesocycle, offline foods, plate math, ProgramEngine, sample personas, gallery + CI `pages-gate`.
 
-Still open / honest gaps:
+Still open / honest gaps (owner constraints):
 
-1. **Apple Watch companion** — rest timer / set logging (needs native or Watch connectivity; PWA-only today).
+1. **Apple Watch companion** — needs native; PWA-only today.
 2. **True AR physique overlay** — camera body-segmentation (preview only so far).
-3. **Offline form video** — download wger clips; today FormLoops = honest text/SVG cues, not video.
-4. **Periodisation planner** — mesocycle blocks beyond LP/5/3/1 waves.
-5. **Gym floor mode** — larger tap targets / always-on display.
-6. **HealthKit / Google Fit** — sleep/steps import (not in PWA without native shell).
-7. **Program sharing** — peer JSON templates (export exists; sharing UX not built).
-8. **Voice set logging** — hands-free parse during compounds.
+3. **Full retail barcode DB** — offline stub map only; no cloud food API.
+4. **Real-device iPhone soak** — checklist in `docs/IPHONE-SOAK.md` (manual).
+5. **HealthKit / Google Fit** — sleep/steps import (not in PWA without native shell).
+6. **Program sharing** — peer JSON templates (export exists; sharing UX not built).
 
 ---
 

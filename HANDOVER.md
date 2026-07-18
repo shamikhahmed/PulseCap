@@ -42,20 +42,22 @@ open screen-gallery.html      # Dark/Light + viewport + section filters
 - `js/data/exercise-library.js` — optional wger.de download for real form clips
 - Desktop sidebar + mobile glass tab bar (Today · Train · Body · Learn · Me)
 
-## Cap Standard status (2026-07-17)
+## Cap Standard status (2026-07-18)
 | Cap Standard item | Status |
 |---|---|
 | Docs pack | ✅ |
 | Screen gallery | ✅ VaultCap-style + active workout |
 | Version discipline | ✅ VERSION.json ↔ APP_VERSION ↔ SW/register query |
 | QA / e2e | ✅ smoke + flows + functional + gallery walk + viewport |
-| CI gate | ✅ Playwright on push |
+| CI gate | ✅ Playwright on push + `pages-gate` on main |
 | PWA polish | ✅ shortcuts + rest notify (installed only) |
 | Demo mode | ✅ `?demo=1` |
 
 ## Engines worth knowing
 | Engine | Role |
 |---|---|
+| `CoachKernel` / kernel engines | Today focus, RPE autoreg, volume, joints, meso, push/pull |
+| `WakeLock` / `VoiceLogger` / `BarcodeFood` / `MobilityFlow` / `PainFlag` | Gym-floor helpers (`js/gym-tools.js`) |
 | `ProgramEngine` | Stronglifts / SS / 5/3/1 + starting-weight confirm |
 | `RecapEngine` | Weekly stats + goal-aware coachReport |
 | `PlateEngine` | Barbell → plates per side (barbell compounds only in UI) |
@@ -70,8 +72,9 @@ open screen-gallery.html      # Dark/Light + viewport + section filters
 - Rest notifications need Add to Home Screen on iOS; never `requestPermission` mid-workout.
 - Dates: always `localISO()` / `today()`.
 - Settings version footer uses `window.APP_VERSION`.
+- Deprecated routes use `SCREEN_ALIASES` only — old `reg()` handlers removed in v6.2.0.
 - Glass floating nav is current truth (V5.2-PLAN WS12).
 
 ## Where decisions live
 - Capricorn-Brain project note
-- `CHANGELOG.md` / `docs/V5.2-PLAN.md` (WS15 = 5.5)
+- `CHANGELOG.md` / `docs/V6-NORTHSTAR.md` / `ROADMAP.md`

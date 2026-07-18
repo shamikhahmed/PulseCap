@@ -19,6 +19,8 @@
 ## Key files
 - `js/app.js` — router + engines
 - `js/storage.js` — profile/localStorage data
+- `js/coach-kernel.js` — autoreg / volume / joints / meso / GymFloor
+- `js/gym-tools.js` — WakeLock / VoiceLogger / BarcodeFood / MobilityFlow / PainFlag
 - `js/modules/workout.js` — exercise DB + active logger
 - `js/modules/dashboard.js` — Today screen
 - `js/modules/coach.js` — Smart Coach screen

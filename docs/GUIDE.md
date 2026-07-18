@@ -37,27 +37,29 @@ Pin extra screens via **Settings → Navigation** (min 3 tabs).
 ### Active workout logger
 
 1. Pick a program / split day or **Quick Workout**.
-2. Log sets: weight (kg/lb), reps, tap checkmark.
-3. **Rest timer** — SVG ring with Skip and +30s (installed-PWA rest notifications on iOS).
-4. **PR detection** — automatic when you beat a record.
-5. **Plate math + warm-up sets** on barbell compounds (when confirmed).
-6. **RPE (5–10)** on working sets — drives next-session weight suggestions (autoreg).
-7. **Superset mode** — SS toggle for paired exercises.
+2. Log sets: weight (kg/lb), reps, **RPE (5–10)**, tap checkmark.
+3. **Mic (voice)** — say e.g. `135 for 8 rpe 7` (Web Speech; Safari support varies).
+4. **Pain flag** — marks joint → Rehab guidance.
+5. **Rest timer** — SVG ring with Skip and +30s (installed-PWA rest notifications on iOS).
+6. **Wake Lock** — screen stays on during active workout / Gym Floor Mode.
+7. **PR detection** — automatic when you beat a record.
+8. **Plate math + warm-up sets** on barbell compounds (when confirmed).
+9. **Superset mode** — SS toggle for paired exercises.
 
 ### Food library
 
-Nutrition → search offline foods (chicken, oats, whey…) → one-tap log. No barcode cloud API.
+Nutrition → search offline foods → one-tap log. Optional **barcode scan** (Chromium `BarcodeDetector` + offline map — no cloud food API).
 
 ### Exercise library
 
 - **300+ exercises** with cues, setup, mistakes, breathing, joint stress
 - Search/filter by muscle, equipment, difficulty
 - Injury-aware swaps when Rehab has an active injury
-- Form cues via FormLoops (text/SVG — not video unless you sync wger clips)
+- Form cues via FormLoops (text/SVG — not video unless you sync wger clips in Settings → Data)
 
 ### Strength programs
 
-Stronglifts / Starting Strength linear progression and 5/3/1 TM waves prescribe into the logger and advance on save.
+Stronglifts / Starting Strength linear progression and 5/3/1 TM waves prescribe into the logger and advance on save. Mesocycle chip on Today tracks 4-week blocks.
 
 ### Cardio protocols
 
@@ -89,6 +91,7 @@ Coach adapts copy to your goal and flags deload / recovery when check-ins + stre
 
 - Check-in: sleep, soreness, stress, energy, hydration
 - Muscle recovery heatmap / readiness radar
+- **Mobility mini-flows** (shoulders, hips, spine, full, ankles, wrists)
 - Rehab library + active injury → workout auto-modify
 - Streak protection mini-sessions when you miss a day
 
@@ -96,16 +99,16 @@ Coach adapts copy to your goal and flags deload / recovery when check-ins + stre
 
 ## Nutrition
 
-Macro logging, water, supplements with timing. Quick-add meals. Not a full food database / meal planner.
+Macro logging, water, supplements with timing. Quick-add meals + offline food search + optional barcode. Not a full retail product DB / meal planner.
 
 ---
 
 ## Settings essentials
 
 - **Appearance** — Auto / Dark / Light (device default supported)
-- **Training** — split, gym days, weekday map, programs, equipment
+- **Training** — split, gym days, **Gym Floor Mode**, **Beginner Mode**, programs, equipment, manual RHR/HRV
+- **Data** — export/import, optional wger form-media pack sync
 - **Profiles** — multi-profile + Demo + “Load sample athletes”
-- **Import/Export** — full JSON backup
 
 ---
 
@@ -113,7 +116,7 @@ Macro logging, water, supplements with timing. Quick-add meals. Not a full food 
 
 - All data in localStorage (`fos_profiles_[id]`); photos in IndexedDB
 - Service worker cache-first (`pulsecap-v72`)
-- No backend required
+- No backend required · no account · no cloud sync
 - Export JSON before device reset
 
 ---

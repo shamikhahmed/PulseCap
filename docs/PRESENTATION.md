@@ -25,12 +25,12 @@ Serious lifters need **depth** — not generic 10-exercise libraries.
 
 ## Slide 3 — Solution
 
-**PulseCap Pro** — production-grade PWA:
+**PulseCap** — production-grade offline PWA (v6.2.0):
 
 - 300+ exercise database with coaching cues
-- Active set logger + PR detection + rest timer
-- 5 Smart Coach personalities
-- Body map, readiness, nutrition — one app
+- Active set logger + RPE autoreg + PR detection + rest timer
+- Gym tools: voice log, barcode food, wake lock, mobility, pain→rehab
+- Smart Coach (rules) + body map + nutrition — one app
 
 **Vanilla JS. Zero framework. Fully offline.**
 
@@ -103,20 +103,21 @@ Families, coaches, clients — one install.
 ## Slide 10 — Architecture
 
 ```
-app.js / engines.js — Router + Smart Coach engines
+app.js / engines.js / coach-kernel.js / gym-tools.js
 modules/            — Today · Train · Body · Learn · Me
 storage.js          — Multi-profile S + seedPersonas
+foods-db.js         — Offline macros
 sw.js               — cache-first PWA (pulsecap-v72)
 ```
 
-Vanilla JS. Zero framework. Fully offline.
+Vanilla JS. Zero framework. Fully offline. **v6.2.0**.
 
 ---
 
 ## Slide 11 — Roadmap highlights
 
-Shipped: plate math, ProgramEngine, photos, gallery, personas.
-Open: Watch companion, periodisation blocks, voice logging, HealthKit (needs native).
+Shipped (v6): RPE autoreg, mesocycle, voice/barcode/wake/mobility, offline foods, gallery, personas, CI pages-gate.
+Open (owner): Watch / HealthKit (native), full retail barcode DB, real-device soak.
 
 ---
 
@@ -125,10 +126,10 @@ Open: Watch companion, periodisation blocks, voice logging, HealthKit (needs nat
 Smart Coach = **rules**, not LLM. FormLoops = **cues**, not live form coaching.
 Replaces a template + logbook for intermediates. Does **not** replace a good in-person trainer for beginners, rehab, or competition prep.
 
-## Slide 12 — Try it
+## Slide 13 — Try it
 
-📱 shamikhahmed.github.io/PulseCap
+shamikhahmed.github.io/PulseCap
 
-🏋️ Complete onboarding → log your first set in 5 minutes
+Complete onboarding → log your first set in 5 minutes
 
-*Built by Shamikh Ahmed*
+*Built by Shamikh Ahmed · Capricorn Systems*
