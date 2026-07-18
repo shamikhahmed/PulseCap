@@ -1,5 +1,16 @@
 # Changelog — PulseCap
 
+## 6.0.0 (2026-07-18) — Coach Kernel (offline, free, linked)
+- **Coach Kernel** (`js/coach-kernel.js`): RPE autoreg, weekly volume lander, joint stress budget, 4-week mesocycle, push:pull ratio, session recap, manual RHR/HRV readiness bias, Gym Floor + Beginner Mode helpers, unified `CoachKernel` for Today + Assistant.
+- **Logger:** RPE field on every set; autoreg reason under exercise; progression respects RPE + deload week.
+- **Today:** Focus card + last-session recap + mesocycle chip.
+- **Smart Coach:** intents for today/status/RPE/meso/joints/push-pull/volume — still **rules + local data**, not cloud AI.
+- **Nutrition:** offline `FOODS_DB` search → one-tap meal log.
+- **Settings:** Gym Floor Mode, Beginner Mode, resting HR / HRV fields.
+- **Learn:** Beginner Mode simplifies hub.
+- **PWA:** SW update banner; cache `pulsecap-v70`.
+- Docs pack synced + `docs/V6-NORTHSTAR.md`. No native, no pricing, no B2B.
+
 ## 5.6.6 (2026-07-17) — Real-iPhone footer blank
 - **Root cause:** `#view` reserved `108px + safe` AND almost every screen also ended with `.spacer-bottom` at `96px + safe` → ~270px empty footer on devices with home-indicator inset.
 - **Fix:** view padding → `72px + max(12px, safe)`; `.spacer-bottom` → 12px breath only (no second safe/nav reserve).

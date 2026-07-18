@@ -1,14 +1,14 @@
 # PulseCap — Handover
 
 > Read this + `ROADMAP.md` + `~/Capricorn-Brain/01 Projects/PulseCap.md` before working here.
-> Last updated: 2026-07-17 · Fleet-wide standard: `capricorn-tooling/shared/CAP-STANDARD.md`
+> Last updated: 2026-07-18 · Fleet-wide standard: `capricorn-tooling/shared/CAP-STANDARD.md`
 
 ## What this is
 Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Activity / widgets planned). Workouts, nutrition, recovery, anatomy, 30+ modules.
 
 ## Facts
-**Version:** 5.6.6
-**SW cache:** `pulsecap-v65`
+**Version:** 6.0.0
+**SW cache:** `pulsecap-v70`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.
@@ -34,6 +34,8 @@ open screen-gallery.html      # Dark/Light + viewport + section filters
 ## Architecture
 - `js/app.js` — shell, router (`go()` + lazy `MODULE_SRC`), helpers, nav
 - `js/engines.js` — Program / Recap / Plate / RestNotify / Weight / Muscle / …
+- `js/coach-kernel.js` — Autoreg / VolumeLander / JointBudget / Mesocycle / CoachKernel / GymFloor
+- `js/data/foods-db.js` — offline food macros
 - `js/modules/` — feature screens (Learn deep-screens load on demand)
 - `js/data/form-loops.js` — honest offline form **cues** (not videos) + `isBarbell()`
 - `js/data/exercise-library.js` — optional wger.de download for real form clips
@@ -45,7 +47,7 @@ open screen-gallery.html      # Dark/Light + viewport + section filters
 | Docs pack | ✅ |
 | Screen gallery | ✅ VaultCap-style + active workout |
 | Version discipline | ✅ VERSION.json ↔ APP_VERSION ↔ SW/register query |
-| QA / e2e | ✅ 26 flows + module-smoke |
+| QA / e2e | ✅ smoke + flows + functional + gallery walk + viewport |
 | CI gate | ✅ Playwright on push |
 | PWA polish | ✅ shortcuts + rest notify (installed only) |
 | Demo mode | ✅ `?demo=1` |

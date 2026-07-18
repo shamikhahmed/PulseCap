@@ -1,7 +1,7 @@
 # PulseCap — Monetization Notes
 
-## Current truth (2026-07-17)
-PulseCap has **no paid gates** and no active subscription checkout. The shipped app is a full offline PWA. Do not show prices, paid unlock claims, or fake Pro restrictions until monetization is implemented.
+## Current truth (2026-07-18)
+PulseCap has **no paid gates** and no active subscription checkout (v6.0.0). The shipped app is a full offline PWA. Do not show prices, paid unlock claims, or fake Pro restrictions until monetization is implemented.
 
 ## Product stance
 - All current features are available locally.

@@ -20,6 +20,7 @@ reg('nutrition', function() {
   return '<div class="topbar"><div class="topbar-title">Nutrition & Supplements</div></div>' +
     _calSection(todayCals, calTarget, todayP, todayC, todayF, user) +
     _mealPresets() +
+    _foodSearch() +
     _nutritionStreak(meals) +
     _waterSection(todayWater, waterTarget) +
     _mealHistory(meals) +
@@ -178,6 +179,34 @@ function _mealPresets() {
     '<div  class="muted-11">Tap a meal slot, then pick a preset — or use + Log for custom entries.</div>' +
     '</div>';
 }
+
+function _foodSearch() {
+  return sh('Food library (offline)') +
+    '<div class="pad-x-16-b">' +
+    '<input id="food-q" class="field" placeholder="Search chicken, oats, whey…" oninput="renderFoodHits(this.value)" style="margin-bottom:8px">' +
+    '<div id="food-hits"></div>' +
+    '<div class="muted-11">Local macros only — no barcode API. Serving = listed portion.</div>' +
+    '</div>';
+}
+
+window.renderFoodHits = function(q) {
+  var el = document.getElementById('food-hits');
+  if (!el || typeof FoodEngine === 'undefined') return;
+  var hits = FoodEngine.search(q);
+  el.innerHTML = hits.map(function(f) {
+    return '<button type="button" onclick="addFoodMeal(\'' + f.id + '\',1)" style="width:100%;text-align:left;padding:10px 12px;margin-bottom:6px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;cursor:pointer;touch-action:manipulation">' +
+      '<div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(f.name) + '</div>' +
+      '<div class="muted-11">' + f.cal + ' kcal · P' + f.p + ' C' + f.c + ' F' + f.f + '</div></button>';
+  }).join('') || '<div class="muted-12">No matches</div>';
+};
+
+window.addFoodMeal = function(id, servings) {
+  var food = (FOODS_DB || []).find(function(f) { return f.id === id; });
+  if (!food || typeof FoodEngine === 'undefined') return;
+  S.push('meals', FoodEngine.toMeal(food, servings));
+  toast('Added ' + food.name, 'ok');
+  go('nutrition');
+};
 
 function _mealHistory(meals) {
   const todayMeals = meals.filter(m => m.date === today());

@@ -93,7 +93,7 @@ Built by Shamikh Ahmed across 14 development sessions as a production-grade pers
 | Storage | localStorage (multi-profile, key: `fos_profiles_[id]`) |
 | PWA | Service Worker (cache-first), Web App Manifest |
 | Charts | Hand-rolled SVG — no Chart.js |
-| Icons | SVG + emoji |
+| Icons | SVG stroke icons (`icon()` / `iconTile`) |
 | Build | None — zero build step |
 
 ---
@@ -106,20 +106,22 @@ css/
   layout.css        — Nav, screens, topbar (DO NOT EDIT)
   components.css    — All component styles
 js/
-  app.js            — Router, Smart Coach engines (Readiness, Coach, Muscle, Split, etc.)
-  storage.js        — S object, multi-profile localStorage
+  app.js            — Router, icon system, lazy MODULE_SRC loader
+  engines.js        — Smart Coach engines (Readiness, Coach, Muscle, Split, Program, etc.)
+  storage.js        — S object, multi-profile localStorage, seedPersonas
   modules/
-    dashboard.js    — Home screen
-    workout.js      — Exercise DB (300+), active logger, cardio protocols
+    dashboard.js    — Today screen
+    workout.js      — Exercise DB (300+), active logger, cardio, plates/warmup
     bodymap.js      — SVG body map, measurements, body stats
-    coach.js        — Daily briefing, coach screen
+    coach.js        — Daily briefing / coach insights
     progress.js     — Charts, PRs, achievements
     nutrition.js    — Meals, macros, supplements
-    recovery.js     — Readiness sliders
-    settings.js     — 6-tab settings screen
-    profiles.js     — Profile switcher, demo mode
-    onboarding.js   — 12-step onboarding + 4 intro slides
-sw.js               — Service worker (cache: pulsecap-v63)
+    recovery.js     — Readiness check-in + debt tab
+    settings.js     — Settings tabs (profile/training/appearance/…)
+    profiles.js     — Profile switcher, demo mode, sample athletes
+    onboarding.js   — 4 intro slides + 7-step onboarding
+    quests.js       — Quests, Academy, Physique Timeline body
+sw.js               — Service worker (cache: pulsecap-v70)
 manifest.json       — PWA manifest
 ```
 
@@ -127,18 +129,18 @@ manifest.json       — PWA manifest
 
 ## Roadmap
 
-High-value features that fit PulseCap’s workout-first, offline-first, Apple-native direction:
+Shipped through v5.6.x (see `CHANGELOG.md`): plate math, warm-up sets, ProgramEngine (SL/SS/5/3/1), custom splits, skip-day coach, injury auto-swap, progress photos, screen gallery (dark/light × mobile/desktop), sample personas + functional QA.
 
-1. **Apple Watch companion** — rest timer, set logging, and heart-rate-aware readiness synced via local QR/handoff (no cloud required).
-2. **True AR physique overlay** — camera body-segmentation with measurement-calibrated muscle highlight (extends v4.4 preview).
-3. **Offline video cache** — download wger/YouTube form clips during library sync for airplane-mode workouts.
-4. **Periodisation planner** — mesocycle blocks with auto-deload tied to recovery debt and PR velocity.
-5. **Gym floor mode** — extra-large tap targets, always-on display, haptic-only rest alerts for busy commercial gyms.
-6. **HealthKit / Google Fit import** — sleep, steps, and weight pull to enrich readiness without manual check-ins.
-7. **Plate calculator & bar math** — per-gym plate inventory (kg/lb) with visual loading diagram.
-8. **Program sharing (planned)** — peer-to-peer JSON import/export for workout templates; not in the app yet.
-9. **Voice set logging** — hands-free “135 for 8” parsing during compounds with spotter present.
-10. **Progress photo timeline** — side-by-side physique photos aligned to measurement logs and archetype targets.
+Still open / honest gaps:
+
+1. **Apple Watch companion** — rest timer / set logging (needs native or Watch connectivity; PWA-only today).
+2. **True AR physique overlay** — camera body-segmentation (preview only so far).
+3. **Offline form video** — download wger clips; today FormLoops = honest text/SVG cues, not video.
+4. **Periodisation planner** — mesocycle blocks beyond LP/5/3/1 waves.
+5. **Gym floor mode** — larger tap targets / always-on display.
+6. **HealthKit / Google Fit** — sleep/steps import (not in PWA without native shell).
+7. **Program sharing** — peer JSON templates (export exists; sharing UX not built).
+8. **Voice set logging** — hands-free parse during compounds.
 
 ---
 
@@ -150,14 +152,17 @@ High-value features that fit PulseCap’s workout-first, offline-first, Apple-na
 
 ## iPhone test checklist
 
-- [ ] Intro slides and 12-step onboarding complete
-- [ ] Bottom nav switches all enabled tabs
+- [ ] Intro slides and 7-step onboarding complete
+- [ ] Bottom nav: Today · Train · Body · Learn · Me
 - [ ] Active workout logger: sets, rest timer, PR badge
 - [ ] Body map taps show muscle recovery detail
 - [ ] Coach daily briefing renders with selected personality
 - [ ] Import/export JSON works in Settings
 - [ ] App works offline after first load
+- [ ] No huge blank gap under content above floating nav (v6.0.0+)
 - [ ] Safe area: nav and topbar clear notch / home indicator
+
+See `docs/IPHONE-SOAK.md` for automated vs manual soak.
 
 ## Documentation
 

@@ -93,35 +93,37 @@ Families, coaches, clients — one install.
 
 ## Slide 9 — Design
 
-- Default **Carbon** theme: `#00d5ff` → `#7b5fff` gradient
-- 8 themes total
-- iPhone-optimised 390px → 16 Pro Max
-- Cinematic dark default, light mode available
+- Appearance: **Auto / Dark / Light** (device default supported)
+- Brand accent cyan (`#00d5ff`) on dark cinematic shell
+- iPhone-optimised 390px → 16 Pro Max; safe-area aware floating nav
+- Stroke icon system (chrome); content emoji purged from primary UI
 
 ---
 
 ## Slide 10 — Architecture
 
 ```
-app.js        — Router + Smart Coach engines
-modules/      — dashboard, workout, bodymap, coach…
-storage.js    — Multi-profile S object
-sw.js         — cache-first PWA
+app.js / engines.js — Router + Smart Coach engines
+modules/            — Today · Train · Body · Learn · Me
+storage.js          — Multi-profile S + seedPersonas
+sw.js               — cache-first PWA (pulsecap-v70)
 ```
 
-14 dev sessions. Production-grade output.
+Vanilla JS. Zero framework. Fully offline.
 
 ---
 
 ## Slide 11 — Roadmap highlights
 
-- Apple Watch companion (QR handoff)
-- Periodisation planner
-- Plate calculator
-- Voice set logging
-- Progress photo timeline
+Shipped: plate math, ProgramEngine, photos, gallery, personas.
+Open: Watch companion, periodisation blocks, voice logging, HealthKit (needs native).
 
 ---
+
+## Slide 12 — Honest ceiling
+
+Smart Coach = **rules**, not LLM. FormLoops = **cues**, not live form coaching.
+Replaces a template + logbook for intermediates. Does **not** replace a good in-person trainer for beginners, rehab, or competition prep.
 
 ## Slide 12 — Try it
 

@@ -1,5 +1,5 @@
 'use strict';
-/* ── PulseCap v4 — Onboarding (12 steps) ── */
+/* ── PulseCap — Onboarding (7 steps + 4 intro slides) ── */
 
 /* ── Intro Slides ── */
 let _introSlide = 0;

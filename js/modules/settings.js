@@ -172,6 +172,14 @@ function _tabTraining(u) {
     _toggle('Show Warmup Protocol', 'user.warmupEnabled', u.warmupEnabled!==false) +
     _toggle('Cardio Recommendations', 'user.cardioEnabled', u.cardioEnabled!==false) +
     _toggle('Deload Reminders', 'user.deloadReminder', u.deloadReminder!==false) +
+    _toggle('Gym Floor Mode', 'user.gymFloorMode', !!u.gymFloorMode) +
+    '<div style="font-size:12px;color:var(--txt3);margin:-6px 0 10px;padding:0 2px">Bigger tap targets + keep-awake friendly logger chrome.</div>' +
+    _toggle('Beginner Mode', 'user.beginnerMode', !!u.beginnerMode) +
+    '<div style="font-size:12px;color:var(--txt3);margin:-6px 0 14px;padding:0 2px">Simplifies Today + Learn; Soft cues for first-year lifters.</div>' +
+    _sectionTitle('Manual vitals (optional)') +
+    _fieldWrap('Resting HR (bpm)', '<input class="field" type="number" value="'+(u.restingHr||'')+'" min="35" max="120" placeholder="e.g. 58" oninput="_setSetting(\'user.restingHr\',parseInt(this.value)||null)">') +
+    _fieldWrap('HRV (ms, morning)', '<input class="field" type="number" value="'+(u.hrvMs||'')+'" min="10" max="200" placeholder="e.g. 55" oninput="_setSetting(\'user.hrvMs\',parseInt(this.value)||null)">') +
+    '<div style="font-size:12px;color:var(--txt3);margin:-6px 0 14px;padding:0 2px">No HealthKit — type values from your watch if you want readiness bias.</div>' +
     '</div>';
 }
 
@@ -582,6 +590,7 @@ window.sbSave = function() {
 window.toggleSetting = function(key) {
   const cur = S.g(key);
   S.set(key, !cur);
+  if (key === 'user.gymFloorMode' && typeof GymFloor !== 'undefined') GymFloor.apply();
   go('settings', { tab: _activeSettingsTab });
 };
 

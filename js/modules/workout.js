@@ -947,6 +947,13 @@ reg('active', function() {
         'onchange="_setVal('+exIdx+','+sIdx+',\'reps\',parseInt(this.value)||0)" ' +
         'inputmode="numeric" style="width:56px">' +
         '</div>' +
+        '<div style="font-size:16px;color:var(--txt3);margin:0 4px">@</div>' +
+        '<div style="display:flex;flex-direction:column;align-items:center">' +
+        '<div style="font-size:9px;color:var(--txt3);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.06em">RPE</div>' +
+        '<input type="number" class="set-inp" placeholder="8" value="'+(set.rpe||'')+'" min="5" max="10" step="0.5" ' +
+        'onchange="_setVal('+exIdx+','+sIdx+',\'rpe\',parseFloat(this.value)||0)" ' +
+        'inputmode="decimal" style="width:48px" aria-label="RPE">' +
+        '</div>' +
         '</div>' +
         '<button type="button" class="set-check'+(isDone?' done':'')+'" onclick="_doneSet('+exIdx+','+sIdx+')" aria-label="'+(isDone?'Set done':'Mark set done')+'">' +
         (isDone ? (typeof icon === 'function' ? icon('check', 16, isPR ? '#000' : 'currentColor') : '✓') : '') +
@@ -981,9 +988,11 @@ reg('active', function() {
       '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
       '<div  class="row-title-15">'+esc(ex.name)+'</div>' +
       (diff ? '<span style="font-size:9px;font-weight:700;color:'+diff.c+';text-transform:uppercase">'+diff.l+'</span>' : '') +
-      (needsSpot ? '<span style="font-size:9px;color:#ff453a;font-weight:700">⚠️SPOT</span>' : '') +
+      (needsSpot ? '<span style="font-size:9px;color:#ff453a;font-weight:700">SPOTTER</span>' : '') +
       '</div>' +
       (prev ? '<div style="font-size:12px;color:var(--c1);margin-top:2px">'+esc(prev)+'</div>' : '') +
+      (typeof AutoregEngine !== 'undefined' && AutoregEngine.nextWeightDelta ?
+        (function(){ var ar = AutoregEngine.nextWeightDelta(ex.name); return ar && ar.reason ? '<div style="font-size:11px;color:var(--txt3);margin-top:2px">'+esc(ar.reason)+'</div>' : ''; })() : '') +
       (exData && !_focusMode ? '<div style="font-size:11px;color:var(--txt3);margin-top:1px">'+esc(exData.cues.slice(0,60))+'...</div>' : '') +
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;align-items:flex-end">' +
@@ -996,7 +1005,7 @@ reg('active', function() {
       warmupHTML +
       '<div style="display:grid;grid-template-columns:28px 1fr 36px;gap:8px;padding:8px 16px 4px;border-bottom:1px solid var(--border)">' +
       '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">SET</div>' +
-      '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">WEIGHT × REPS</div>' +
+      '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">KG × REPS @ RPE</div>' +
       '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">✓</div>' +
       '</div>' +
       '<div class="sets-list">'+setsHTML+'</div>' +
@@ -1246,6 +1255,10 @@ window.saveWorkout = function() {
   if (progMsgs && progMsgs.length) {
     setTimeout(function() { toast(progMsgs[0], 'ok', 5000); }, 1800);
   }
+  if (typeof SessionRecap !== 'undefined') {
+    const recap = SessionRecap.build(workout);
+    SessionRecap.store(recap);
+  }
   SplitEngine.nextDay();
   AchEngine.check();
   _wkt = null;
@@ -1256,7 +1269,7 @@ window.saveWorkout = function() {
   const prCount = workout.exercises.reduce(function(a,ex){
     return a + (ex.sets||[]).filter(function(s){return s._isPR;}).length;
   },0);
-  toast('In the books.' + (prCount>0?' '+prCount+' PR'+(prCount>1?'s':'')+' today 🏆':' 💪'), 'ok', 4000);
+  toast('In the books.' + (prCount>0?' '+prCount+' PR'+(prCount>1?'s':''):'') , 'ok', 4000);
   /* Streak milestone? */
   const streakNow = StreakEngine.get();
   if (StreakEngine.MILESTONES.indexOf(streakNow) !== -1 && typeof celebrate === 'function') {

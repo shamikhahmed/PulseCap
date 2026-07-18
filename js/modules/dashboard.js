@@ -354,8 +354,34 @@ reg('dashboard', function() {
       '<button type="button" class="btn btn-primary btn-sm" onclick="applySuggestedSplit()">Use this split</button> ' +
       '<button type="button" class="btn btn-ghost btn-sm" onclick="go(\'settings\',{tab:\'training\'})">Choose another</button></div>' : '';
 
+    /* ── ONE THING + SESSION RECAP (CoachKernel) ── */
+    const oneThing = (typeof CoachKernel !== 'undefined' && CoachKernel.oneThing) ? CoachKernel.oneThing() : null;
+    const oneThingCard = oneThing ?
+      '<button type="button" onclick="go(\'' + esc(oneThing.go || 'workout') + '\')" class="dash-prompt" style="margin:0 16px 12px;width:calc(100% - 32px);border-radius:16px;padding:14px 16px;background:rgba(var(--c1-rgb),0.08);border:1px solid rgba(var(--c1-rgb),0.25);cursor:pointer;touch-action:manipulation;text-align:left">' +
+      '<div style="font-size:11px;font-weight:700;color:var(--c1);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px">Focus today</div>' +
+      '<div style="font-size:15px;font-weight:800;color:var(--txt);margin-bottom:4px">' + esc(oneThing.title) + '</div>' +
+      '<div style="font-size:12px;color:var(--txt2);line-height:1.45">' + esc(oneThing.body) + '</div></button>' : '';
+
+    const lastRecap = (typeof SessionRecap !== 'undefined' && SessionRecap.consumeCard) ? SessionRecap.consumeCard() : null;
+    const recapSessionCard = lastRecap ?
+      '<div style="margin:0 16px 12px;border-radius:16px;padding:14px 16px;background:var(--bg3);border:1px solid var(--border)">' +
+      '<div style="font-size:11px;font-weight:700;color:var(--txt3);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:6px">Last session</div>' +
+      '<div style="font-size:14px;font-weight:800;color:var(--txt);margin-bottom:6px">' + esc(lastRecap.title || 'Session saved') + '</div>' +
+      (lastRecap.lines || []).slice(0, 4).map(function(l) {
+        return '<div style="font-size:12px;color:var(--txt2);line-height:1.45;margin-bottom:2px">' + esc(l) + '</div>';
+      }).join('') +
+      (lastRecap.nextHint ? '<div style="font-size:12px;color:var(--c1);font-weight:700;margin-top:8px">' + esc(lastRecap.nextHint) + '</div>' : '') +
+      '</div>' : '';
+
+    const meso = (typeof MesocycleEngine !== 'undefined') ? MesocycleEngine.summary() : null;
+    const mesoChip = meso && !(typeof BeginnerMode !== 'undefined' && BeginnerMode.on()) ?
+      '<div style="margin:0 16px 12px;font-size:12px;color:var(--txt3)">' + esc(meso.label) +
+      ' · <button type="button" onclick="MesocycleEngine.reset();go(\'dashboard\')" style="background:none;border:none;color:var(--c1);font-size:12px;font-weight:700;cursor:pointer;padding:0">Reset block</button></div>' : '';
+
     /* Priority queue: show max 2 prompts on first paint; rest behind More */
     const promptQueue = [];
+    if (oneThingCard) promptQueue.push({ pri: -1, html: oneThingCard });
+    if (recapSessionCard) promptQueue.push({ pri: -0.5, html: recapSessionCard });
     if (recapCard) promptQueue.push({ pri: 0, html: recapCard });
     if (injuryBanner) promptQueue.push({ pri: 1, html: injuryBanner });
     if (checkinCard) promptQueue.push({ pri: 2, html: checkinCard });
@@ -381,6 +407,7 @@ reg('dashboard', function() {
     /* P5 first paint: hero + session + ≤2 prompts. Rest behind disclosure. */
     return demoBanner + topbar +
       topPrompts +
+      mesoChip +
       heroCard +
       todayWorkout +
       (firstWorkoutEmpty || '') +

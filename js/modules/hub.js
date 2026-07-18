@@ -22,22 +22,26 @@ reg('hub', function() {
       '</div>';
   }
 
+  const beginner = typeof BeginnerMode !== 'undefined' && BeginnerMode.on();
+
   return moduleTopbar('Learn', { right: '<button type="button" class="topbar-icon press" onclick="go(\'search\')" aria-label="Search" style="display:flex;align-items:center;justify-content:center">' + icon('search', 18) + '</button>' }) +
-    '<p class="mod-lede">Knowledge, coach, and tools. Training and body modules live under Train and Body.</p>' +
+    '<p class="mod-lede">' + (beginner
+      ? 'Start with Smart Coach and Academy. Advanced charts unlock when you turn off Beginner Mode in Settings → Training.'
+      : 'Knowledge, coach, and tools. Training and body modules live under Train and Body.') + '</p>' +
 
     hubSection('Search & Coach') +
     '<div class="mod-list">' +
     hubRow('search', 'Search', 'Exercises · screens · encyclopedia', 'search', '') +
-    hubRow('sparkles', 'Smart Coach', 'Offline Q&A assistant', 'assistant', '') +
+    hubRow('sparkles', 'Smart Coach', 'Offline Q&A — your logs, not cloud AI', 'assistant', '') +
     '</div>' +
 
     hubSection('Knowledge') +
     '<div class="mod-list">' +
     hubRow('gradcap', 'Knowledge Academy', 'Lessons · quizzes · XP', 'academy', completedLessons + '/' + totalLessons) +
     hubRow('book', 'Encyclopedia', 'Mobility · warmups · sports', 'encyclopedia', '') +
-    hubRow('dna', 'Anatomy', 'Muscle groups · functions', 'anatomy', '') +
-    hubRow('calc', 'Calculators', '1RM · BMI · macros', 'calculators', '') +
-    hubRow('chart', 'Visualizations', 'Charts · volume views', 'visualizations', '') +
+    (beginner ? '' : hubRow('dna', 'Anatomy', 'Muscle groups · functions', 'anatomy', '')) +
+    (beginner ? '' : hubRow('calc', 'Calculators', '1RM · BMI · macros', 'calculators', '')) +
+    (beginner ? '' : hubRow('chart', 'Visualizations', 'Charts · volume views', 'visualizations', '')) +
     '</div>' +
 
     hubSection('Missions') +

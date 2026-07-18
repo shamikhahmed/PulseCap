@@ -26,6 +26,13 @@ const FitnessAssistant = {
     stretch: { keywords: ['stretch','stretching','flexibility','tight','stiff','mobility'], handler: 'handleStretch' },
     weight: { keywords: ['how much weight','what weight','increase weight','add weight','too heavy','too light','progression'], handler: 'handleWeight' },
     form: { keywords: ['form','technique','how to','cues','tips for','proper form'], handler: 'handleForm' },
+    today: { keywords: ['what today','today','what should i do today','one thing','focus'], handler: 'handleToday' },
+    rpe: { keywords: ['rpe','rate of perceived','how hard','effort','autoreg'], handler: 'handleRpe' },
+    mesocycle: { keywords: ['mesocycle','block','deload week','training block','periodization','periodisation'], handler: 'handleMeso' },
+    joints: { keywords: ['joint budget','joint load','shoulders overloaded','elbows','knee volume'], handler: 'handleJoints' },
+    pushpull: { keywords: ['push pull','push:pull','push to pull','ratio','imbalance'], handler: 'handlePushPull' },
+    volume_status: { keywords: ['am i behind','volume status','sets this week','on track volume'], handler: 'handleVolumeStatus' },
+    status: { keywords: ['status','how am i','overview','summary','report','check in with me'], handler: 'handleStatus' },
   },
 
   detectIntent: function(message) {
@@ -325,20 +332,132 @@ const FitnessAssistant = {
       type: 'education',
       icon: 'ruler',
       title: 'Form & Technique',
-      response: 'Good form prioritises: muscle stretch at the bottom (full ROM), controlled eccentric (2-4 seconds down), full contraction at top, neutral spine on all compounds.\n\nIf you cannot maintain form, reduce weight. Video yourself from the side for compound lifts — you cannot self-correct what you cannot see.',
-      actions: ['View Exercise Knowledge Graph'],
+      response: 'Good form prioritises: muscle stretch at the bottom (full ROM), controlled eccentric (2–4s down), full contraction at top, neutral spine on compounds.\n\nLog RPE honestly. Open exercise info in Train for cues/setup/mistakes. Sharp joint pain = stop — open Rehab.',
+      actions: ['Train', 'Rehab'],
+      actionTargets: ['workout', 'rehab'],
+    };
+  },
+
+  handleToday: function() {
+    var one = (typeof CoachKernel !== 'undefined') ? CoachKernel.oneThing() : null;
+    var snap = (typeof CoachKernel !== 'undefined') ? CoachKernel.snapshot() : null;
+    return {
+      type: 'analysis',
+      icon: 'sparkles',
+      title: one ? one.title : 'Today',
+      response: (one ? one.body : 'Open Today for your daily decision.') +
+        (snap ? '\n\nReadiness ' + snap.readiness + '/100 · ' + (snap.meso && snap.meso.label ? snap.meso.label : '') : ''),
+      actions: ['Go', 'Ask Smart Coach later'],
+      actionTargets: [one && one.go ? one.go : 'dashboard', 'assistant'],
+    };
+  },
+
+  handleRpe: function() {
+    return {
+      type: 'info',
+      icon: 'chart',
+      title: 'RPE & autoreg',
+      response: 'Log RPE (5–10) on working sets in the active logger. PulseCap averages recent RPE per lift and adjusts next-session weight suggestions:\n• ≥9.5 → cut 2.5kg\n• ~8.5 → hold\n• ≤6.5 → add 2.5kg\n\nRPE 10 = nothing left. RPE 7 = ~3 reps in reserve.',
+      actions: ['Start workout'],
       actionTargets: ['workout'],
     };
   },
 
+  handleMeso: function() {
+    var m = (typeof MesocycleEngine !== 'undefined') ? MesocycleEngine.summary() : null;
+    return {
+      type: 'analysis',
+      icon: 'calendar',
+      title: 'Training block',
+      response: m
+        ? (m.label + '\nVolume multiplier ≈ ' + m.multiplier + '×. Deload week cuts volume ~50% while you keep some intensity. Reset the block from Today if you want a fresh 4 weeks.')
+        : '4-week mesocycle tracks automatically once you train.',
+      actions: ['Today'],
+      actionTargets: ['dashboard'],
+    };
+  },
+
+  handleJoints: function() {
+    var rows = (typeof JointBudget !== 'undefined') ? JointBudget.report() : [];
+    var lines = rows.map(function(r) {
+      return r.joint + ': ' + r.used + '/' + r.cap + ' (' + r.status + ')';
+    });
+    return {
+      type: 'warning',
+      icon: 'alert',
+      title: 'Joint budget (7 days)',
+      response: lines.length
+        ? lines.join('\n') + '\n\nOver budget → prefer cables/machines, shorten ROM, or rest that joint.'
+        : 'No joint load data yet — keep logging sets.',
+      actions: ['Injury risk', 'Rehab'],
+      actionTargets: ['injury-risk', 'rehab'],
+    };
+  },
+
+  handlePushPull: function() {
+    var a = (typeof PushPullEngine !== 'undefined') ? PushPullEngine.advice() : { text: 'Need more sessions logged.' };
+    return {
+      type: 'analysis',
+      icon: 'dumbbell',
+      title: 'Push : Pull',
+      response: a.text + '\nAim near 1:1 weekly for shoulder health. Face pulls and rows fix most desk-worker imbalances.',
+      actions: ['Train'],
+      actionTargets: ['workout'],
+    };
+  },
+
+  handleVolumeStatus: function() {
+    var r = (typeof VolumeLander !== 'undefined') ? VolumeLander.report() : null;
+    if (!r) {
+      return { type: 'info', icon: 'chart', title: 'Volume', response: 'Volume lander unavailable.', actions: [], actionTargets: [] };
+    }
+    var low = r.low.map(function(x) { return x.muscle + ' ' + x.actual + '/' + x.target; }).join(', ') || 'none';
+    var high = r.high.map(function(x) { return x.muscle + ' ' + x.actual + '/' + x.target; }).join(', ') || 'none';
+    return {
+      type: 'analysis',
+      icon: 'chart',
+      title: 'Weekly volume vs target (' + r.exp + ')',
+      response: 'Behind: ' + low + '\nHigh: ' + high + '\n\nTargets scale with experience level in Settings → Profile.',
+      actions: ['Train', 'Progress'],
+      actionTargets: ['workout', 'progress'],
+    };
+  },
+
+  handleStatus: function() {
+    var s = (typeof CoachKernel !== 'undefined') ? CoachKernel.snapshot() : null;
+    if (!s) {
+      return { type: 'info', icon: 'sparkles', title: 'Status', response: 'Open Today — engines still loading.', actions: ['Today'], actionTargets: ['dashboard'] };
+    }
+    var one = CoachKernel.oneThing();
+    return {
+      type: 'analysis',
+      icon: 'sparkles',
+      title: 'Full status',
+      response: 'Readiness ' + s.readiness + '/100 (raw ' + s.readinessRaw + ')\n' +
+        'Decision: ' + (s.decision.title || s.decision.decision) + '\n' +
+        s.meso.label + '\n' +
+        s.pushPull.text + '\n' +
+        'Focus: ' + one.title + ' — ' + one.body,
+      actions: ['Today', 'Recovery', 'Train'],
+      actionTargets: ['dashboard', 'recovery', 'workout'],
+    };
+  },
+
   handleUnknown: function(message) {
+    var one = (typeof CoachKernel !== 'undefined') ? CoachKernel.oneThing() : null;
     return {
       type: 'unknown',
       icon: 'sparkles',
-      title: 'Try rephrasing',
-      response: 'I didn\'t quite understand that. Try asking about:\n• "Why is my shoulder hurting?"\n• "Best exercise for upper chest"\n• "Why am I plateauing?"\n• "How many sets per week for legs?"\n• "When can I train chest again?"\n• "Should I deload?"',
-      actions: [],
-      actionTargets: [],
+      title: 'Try another angle',
+      response: (one ? 'Meanwhile — focus: ' + one.title + '. ' + one.body + '\n\n' : '') +
+        'I am an offline Smart Coach (rules + your logs — not cloud AI). Try:\n' +
+        '• "What should I do today?"\n' +
+        '• "Status" / "Am I behind on volume?"\n' +
+        '• "Push pull ratio" / "Joint budget"\n' +
+        '• "Should I deload?" / "Why is my shoulder hurting?"\n' +
+        '• "How much protein do I need?" / "RPE"',
+      actions: one ? ['Do that', 'Today'] : ['Today'],
+      actionTargets: one ? [one.go || 'dashboard', 'dashboard'] : ['dashboard'],
     };
   },
 };
@@ -351,14 +470,15 @@ reg('assistant', function() {
   var history = S.g('assistantHistory') || [];
 
   var SUGGESTIONS = [
-    'Why is my shoulder hurting?',
-    'Best exercise for upper chest',
-    'Why am I plateauing?',
-    'How many sets per week for legs?',
-    'When can I train chest again?',
+    'What should I do today?',
+    'Status',
+    'Am I behind on volume?',
+    'Push pull ratio',
+    'Joint budget',
     'Should I deload?',
-    'Best exercises for me',
+    'Why is my shoulder hurting?',
     'How much protein do I need?',
+    'Explain RPE',
   ];
 
   var historyHtml = history.map(function(h) {
@@ -391,7 +511,7 @@ reg('assistant', function() {
       '<div style="padding:30px 20px;text-align:center">' +
       '<div style="width:72px;height:72px;border-radius:20px;margin:0 auto 14px;display:flex;align-items:center;justify-content:center;background:rgba(var(--c1-rgb),0.12);color:var(--c1)">' + icon('sparkles', 34) + '</div>' +
       '<div style="font-size:16px;font-weight:800;color:var(--txt);margin-bottom:8px">Fitness Assistant</div>' +
-      '<div style="font-size:13px;color:var(--txt2);line-height:1.7;max-width:260px;margin:0 auto">Offline coach powered by your data. Ask me anything about training, recovery, nutrition, or pain.</div>' +
+      '<div style="font-size:13px;color:var(--txt2);line-height:1.7;max-width:280px;margin:0 auto">Offline Smart Coach — rules + <em>your</em> logs. No cloud AI. Ask about today, volume, joints, pain, protein, RPE, deloads.</div>' +
       '</div>' : historyHtml) +
 
     (history.length === 0 ?

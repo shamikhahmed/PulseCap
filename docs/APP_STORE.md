@@ -1,7 +1,7 @@
 # PulseCap — Distribution Notes
 
-## Current truth (2026-07-17)
-PulseCap ships as an **offline-first PWA only**.
+## Current truth (2026-07-18)
+PulseCap ships as an **offline-first PWA only** (v6.0.0 / `pulsecap-v70`).
 
 - Install: Safari → Share → Add to Home Screen (iOS) or Chrome install (Android/desktop).
 - No Capacitor / Xcode / App Store binary in this repo.

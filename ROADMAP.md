@@ -1,18 +1,20 @@
 # PulseCap — Roadmap
 
-> Updated 2026-07-11. Fleet order & standard: `capricorn-tooling/shared/CAP-STANDARD.md`.
+> Updated 2026-07-18. Fleet order & standard: Cap Standard.
 
-## Now — v5.3.0
-Gap punch-down: local-time dates, real strength programs (SL/SS/5/3/1 via ProgramEngine), custom split builder, library-wide injury data, hardened skip-day, flow tests (suite 18). See `CHANGELOG.md`.
+## Now — v6.0.0
+Coach Kernel links logger ↔ Today ↔ Smart Coach ↔ recovery (RPE autoreg, volume lander, joint budget, mesocycle, session recap). Offline food DB. Gym Floor + Beginner Mode. SW update banner. See `docs/V6-NORTHSTAR.md` + `CHANGELOG.md`.
 
-## Previous — v5.2.0
-One-stop-shop pass: 2-theme system (device default), skip-day trainer engine, goal-aware weigh-in coach, weekly recap + smarter streaks + check-in ritual + progress photos, new splash/welcome, human copy voice. Plan/handover: `docs/V5.2-PLAN.md`.
-
-## Previous — v5.1.0
-Trainer-replacement pass shipped: weekday split schedule, scheduled rest days, injury system unified under Rehab with auto-modified workouts, supplement reminders on Today, bottom-sheet keyboard fix. See `CHANGELOG.md`.
-
-## Previous — v5.0.0
-IA overhaul shipped (ULTRACODE P1–P6). See `CHANGELOG.md` + `docs/AUDIT-IA.md`.
+## Shipped (recent)
+| Release | Focus |
+|---------|--------|
+| 6.0.0 | Coach Kernel + linked Smart Coach (offline rules, no AI API) |
+| 5.6.6 | Footer blank / safe-area double-count |
+| 5.6.5 | iPhone 16 Pro Max audit |
+| 5.6.4–5.6.0 | Visual QA, personas, tokens, lazy Learn |
+| 5.5.x | Security/honesty, Apple polish, PWA-only |
+| 5.3–5.4 | ProgramEngine, split builder, plates, FormLoops, RestNotify |
+| 5.0–5.2 | 5-tab IA, themes, skip-day, injury-aware train |
 
 ## Cap Standard gaps
 | Cap Standard item | Status |
@@ -25,10 +27,18 @@ IA overhaul shipped (ULTRACODE P1–P6). See `CHANGELOG.md` + `docs/AUDIT-IA.md`
 | PWA polish | ✅ |
 | Demo mode | ✅ |
 
-## Next
-1. Delete deprecated module regs after alias soak (physique-archetype, recovery-debt, training-style, coach, intro).
-2. Continue P4 CSS conversion (~5 modules / commit) until inline `style=` on buttons ≈ 0 in touched modules.
-3. Pages deploy workflow with test gate (owner decision vs legacy branch deploy).
+## Next (optional polish — not blockers)
+1. Delete deprecated module regs after alias soak.
+2. Further content/DB emoji purge in ExDB.
+3. Pages deploy workflow with test gate (owner decision).
+4. Real-device soak checklist (`docs/IPHONE-SOAK.md`).
+
+## Honest product ceiling
+- Does **not** replace in-person form coaching or PT diagnosis.
+- Smart Coach = **rules + local logs**, not LLM.
+- FormLoops = cues, not video (unless user syncs wger media).
+- No HealthKit / Watch — PWA-only by owner decision.
+- 100% free. No accounts. No B2B.
 
 ## Ground rules
 - No dirty trees: commit or discard before ending a session.

@@ -47,7 +47,11 @@ const ReadinessEngine = {
       }).length;
       if (activeInjuries >= 3) score -= 15;
       else if (activeInjuries >= 1) score -= 5;
-      return Math.max(0, Math.min(100, Math.round(score)));
+      score = Math.max(0, Math.min(100, Math.round(score)));
+      if (typeof ReadinessCalibrator !== 'undefined' && ReadinessCalibrator.adjustScore) {
+        score = ReadinessCalibrator.adjustScore(score);
+      }
+      return score;
     } catch(e) { return 70; }
   },
   label(s) {
@@ -583,7 +587,14 @@ const ProgEngine = {
         const allDone = ex.sets.filter(s=>s.reps).every(s=>s.done);
         const w = ex.sets[0].weight || 0;
         if (allDone) {
-          const inc = goal==='strength'?2.5:goal==='hypertrophy'?1.25:1.25;
+          let inc = goal==='strength'?2.5:goal==='hypertrophy'?1.25:1.25;
+          if (typeof AutoregEngine !== 'undefined' && AutoregEngine.nextWeightDelta) {
+            const ar = AutoregEngine.nextWeightDelta(name);
+            if (ar && typeof ar.deltaKg === 'number') inc = ar.deltaKg;
+          }
+          if (typeof MesocycleEngine !== 'undefined' && MesocycleEngine.isDeload && MesocycleEngine.isDeload()) {
+            return round2(Math.max(0, w * 0.9));
+          }
           return round2(w + inc);
         }
         return w;

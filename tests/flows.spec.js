@@ -229,7 +229,7 @@ test.describe('PulseCap flows', () => {
       const text = document.getElementById('view').innerText;
       return { ver: w.APP_VERSION, text: text };
     });
-    expect(out.ver).toMatch(/^5\./);
+    expect(out.ver).toMatch(/^[56]\./);
     expect(out.text).toContain('v' + out.ver);
     expect(out.text).not.toContain('v4.7.4');
   });
