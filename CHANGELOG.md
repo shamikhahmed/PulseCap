@@ -1,5 +1,14 @@
 # Changelog — PulseCap
 
+## 6.1.0 (2026-07-18) — Gym tools (voice, barcode, wake, mobility)
+- **`js/gym-tools.js`:** Screen Wake Lock, Web Speech set logging, BarcodeDetector food scan (offline map), MobilityFlow presets, PainFlag → rehab.
+- **Logger:** Mic + Pain on active workout; wake lock while training; RPE+voice parse.
+- **Nutrition:** camera barcode → local food library (no network API).
+- **Recovery:** mobility mini-flows (pre-train).
+- **ExDB:** stripped exercise emoji fields; cardio chrome uses stroke icons.
+- **Settings:** clearer form-media / wger sync copy; Gym Floor toggles wake lock.
+- SW `pulsecap-v71`. Still offline rules only — no LLM / native / pricing.
+
 ## 6.0.0 (2026-07-18) — Coach Kernel (offline, free, linked)
 - **Coach Kernel** (`js/coach-kernel.js`): RPE autoreg, weekly volume lander, joint stress budget, 4-week mesocycle, push:pull ratio, session recap, manual RHR/HRV readiness bias, Gym Floor + Beginner Mode helpers, unified `CoachKernel` for Today + Assistant.
 - **Logger:** RPE field on every set; autoreg reason under exercise; progression respects RPE + deload week.

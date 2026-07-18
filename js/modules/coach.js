@@ -192,7 +192,7 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
 
     return '<div style="padding:12px 0;border-bottom:1px solid var(--border)">' +
       '<div style="display:flex;align-items:flex-start;gap:10px">' +
-      '<div style="font-size:22px;width:32px">'+(ex && ex.em ? esc(ex.em) : '')+'</div>' +
+      '<div style="width:32px;display:flex;justify-content:center;color:var(--c1)">'+(typeof exChromeIcon==='function'?exChromeIcon(ex||name,22):'')+'</div>' +
       '<div  class="flex-1">' +
       '<div  class="row-title-14">' +
         (fatiguedMuscle?'<span style="color:#f5c842;font-weight:700">Fatigue · </span>':'') +

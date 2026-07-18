@@ -358,6 +358,21 @@ const GymFloor = {
 };
 window.GymFloor = GymFloor;
 
+/* Exercise chrome icon from muscle group — replaces legacy emoji `em` field */
+window.exChromeIcon = function(exOrName, size) {
+  var ex = typeof exOrName === 'string'
+    ? ((typeof ExDB !== 'undefined' && ExDB.byName) ? ExDB.byName(exOrName) : null)
+    : exOrName;
+  var grp = (ex && (ex.grp || ex.group)) || 'fullbody';
+  var map = {
+    chest: 'heart', back: 'trendDown', legs: 'run', shoulders: 'target',
+    biceps: 'dumbbell', triceps: 'dumbbell', core: 'flame', glutes: 'run',
+    fullbody: 'dumbbell', cardio: 'run', calves: 'run'
+  };
+  var name = map[String(grp).toLowerCase()] || 'dumbbell';
+  return typeof icon === 'function' ? icon(name, size || 22) : '';
+};
+
 /* ── Beginner mode helpers ── */
 const BeginnerMode = {
   on: function() {

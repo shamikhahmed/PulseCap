@@ -2,12 +2,13 @@
 
 > Updated 2026-07-18. Fleet order & standard: Cap Standard.
 
-## Now — v6.0.0
-Coach Kernel links logger ↔ Today ↔ Smart Coach ↔ recovery (RPE autoreg, volume lander, joint budget, mesocycle, session recap). Offline food DB. Gym Floor + Beginner Mode. SW update banner. See `docs/V6-NORTHSTAR.md` + `CHANGELOG.md`.
+## Now — v6.1.0
+Gym-floor tools on top of Coach Kernel: Wake Lock, voice logging, barcode food, mobility, pain flag. ExDB de-emoji. See `CHANGELOG.md`.
 
 ## Shipped (recent)
 | Release | Focus |
 |---------|--------|
+| 6.1.0 | Gym tools (voice/barcode/wake/mobility/pain) + ExDB purge |
 | 6.0.0 | Coach Kernel + linked Smart Coach (offline rules, no AI API) |
 | 5.6.6 | Footer blank / safe-area double-count |
 | 5.6.5 | iPhone 16 Pro Max audit |
@@ -28,10 +29,10 @@ Coach Kernel links logger ↔ Today ↔ Smart Coach ↔ recovery (RPE autoreg, v
 | Demo mode | ✅ |
 
 ## Next (optional polish — not blockers)
-1. Delete deprecated module regs after alias soak.
-2. Further content/DB emoji purge in ExDB.
-3. Pages deploy workflow with test gate (owner decision).
-4. Real-device soak checklist (`docs/IPHONE-SOAK.md`).
+1. Delete deprecated module regs after longer alias soak (already thin redirects).
+2. Pages deploy workflow with test gate (owner decision).
+3. Real-device soak checklist (`docs/IPHONE-SOAK.md`).
+4. Expand offline barcode map / more mobility presets.
 
 ## Honest product ceiling
 - Does **not** replace in-person form coaching or PT diagnosis.

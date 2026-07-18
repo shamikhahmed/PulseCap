@@ -21,6 +21,7 @@ reg('nutrition', function() {
     _calSection(todayCals, calTarget, todayP, todayC, todayF, user) +
     _mealPresets() +
     _foodSearch() +
+    _barcodeFood() +
     _nutritionStreak(meals) +
     _waterSection(todayWater, waterTarget) +
     _mealHistory(meals) +
@@ -206,6 +207,63 @@ window.addFoodMeal = function(id, servings) {
   S.push('meals', FoodEngine.toMeal(food, servings));
   toast('Added ' + food.name, 'ok');
   go('nutrition');
+};
+
+function _barcodeFood() {
+  if (typeof BarcodeFood === 'undefined' || !BarcodeFood.supported()) {
+    return '<div class="pad-x-16-b"><div class="muted-11">Barcode scan needs Chrome/Edge with BarcodeDetector — or search foods above.</div></div>';
+  }
+  return sh('Scan barcode') +
+    '<div class="pad-x-16-b">' +
+    '<button type="button" class="btn btn-secondary w-full" onclick="startBarcodeFoodScan()">Scan with camera</button>' +
+    '<div class="muted-11" style="margin-top:8px">Offline lookup only — unknown codes won’t hit the network.</div>' +
+    '</div>';
+}
+
+window.startBarcodeFoodScan = async function() {
+  if (typeof BarcodeFood === 'undefined' || !BarcodeFood.supported()) {
+    toast('Barcode not supported here', 'warn');
+    return;
+  }
+  try {
+    var stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'environment' } });
+    var video = document.createElement('video');
+    video.setAttribute('playsinline', 'true');
+    video.srcObject = stream;
+    await video.play();
+    modal('Point at barcode',
+      '<div style="border-radius:12px;overflow:hidden;background:#000"><video id="bc-video" playsinline autoplay style="width:100%;max-height:280px"></video></div>' +
+      '<div class="muted-11" style="margin-top:8px">Hold steady…</div>',
+      '<button type="button" class="btn btn-ghost" onclick="_stopBarcodeScan()">Cancel</button>');
+    var el = document.getElementById('bc-video');
+    if (el) { el.srcObject = stream; }
+    window._bcStream = stream;
+    window._bcTimer = setInterval(async function() {
+      try {
+        var hit = await BarcodeFood.scanFromVideo(el || video);
+        if (!hit || !hit.rawValue) return;
+        clearInterval(window._bcTimer);
+        _stopBarcodeScan();
+        var meal = BarcodeFood.lookupLocal(hit.rawValue);
+        if (!meal) { toast('Unknown barcode — search food library instead', 'warn'); return; }
+        S.push('meals', meal);
+        toast('Added ' + meal.name, 'ok');
+        go('nutrition');
+      } catch (e) { /* keep scanning */ }
+    }, 700);
+  } catch (e) {
+    toast('Camera permission needed', 'warn');
+  }
+};
+
+window._stopBarcodeScan = function() {
+  if (window._bcTimer) clearInterval(window._bcTimer);
+  window._bcTimer = null;
+  if (window._bcStream) {
+    window._bcStream.getTracks().forEach(function(t) { t.stop(); });
+    window._bcStream = null;
+  }
+  closeModal();
 };
 
 function _mealHistory(meals) {

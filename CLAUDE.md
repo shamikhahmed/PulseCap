@@ -1,14 +1,14 @@
 # PulseCap — CLAUDE.md
 
 ## Current truth
-- Version: 6.0.0
+- Version: 6.1.0
 - App type: offline-first **PWA only**. No native shell, HealthKit, Live Activity, WidgetKit, or RevenueCat unless owner reverses.
 - Stack: vanilla JS, no framework, no bundler.
 - Router: `reg('screen', fn)` + synchronous `go('screen')`.
 - Data: `localStorage` via `S`; IndexedDB only for progress photos.
 - Security: CSP meta exists in `index.html`; keep it aligned with wger sync.
 - Coach naming: **Smart Coach** / Coach Insights. Do not use unbacked AI claims unless a real LLM is integrated.
-- v6 spine: `js/coach-kernel.js` + `js/data/foods-db.js` (see `docs/V6-NORTHSTAR.md`).
+- v6 spine: `js/coach-kernel.js` + `js/gym-tools.js` + `js/data/foods-db.js` (see `docs/V6-NORTHSTAR.md`).
 
 ## Required checks
 - `node --check` changed JS.

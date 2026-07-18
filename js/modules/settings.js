@@ -403,11 +403,13 @@ function _tabData() {
       return '<div class="card card-solid mb-14" >' +
         '<div style="font-size:13px;color:var(--txt2);line-height:1.55;margin-bottom:12px">' +
         'Built-in: <strong class="c-txt">' + exCount + '</strong> exercises. ' +
-        (st.cached ? 'wger cache: <strong class="c-txt">' + st.count + '</strong>' + (st.mediaCount ? ' · ' + st.mediaCount + ' with images/videos' : '') + ' (offline).' : 'Download wger.de library once while online — exercises, thumbnails & form videos stay on your phone.') +
+        (st.cached ? 'wger cache: <strong class="c-txt">' + st.count + '</strong>' + (st.mediaCount ? ' · ' + st.mediaCount + ' media packs' : '') + ' stored offline on this device.' : 'Optional one-time download from wger.de while online — form images/videos then work offline in the logger detail view. Built-in FormLoops cues always work without download.') +
         '</div>' +
         '<button type="button" id="ex-lib-sync-btn" class="btn btn-secondary w-full" onclick="syncExerciseLibrary(' + (st.cached ? 'true' : 'false') + ')" >' +
-        (st.cached ? 'Re-sync Exercise Library' : 'Download Exercise Library') +
-        '</button></div>';
+        (st.cached ? 'Re-sync form media pack' : 'Download form media pack') +
+        '</button>' +
+        (st.cached && st.fetchedAt ? '<div class="muted-11" style="margin-top:8px">Last sync: ' + esc(new Date(st.fetchedAt).toLocaleString()) + '</div>' : '') +
+        '</div>';
     })() +
 
     _sectionTitle('Export & Import') +
@@ -590,7 +592,11 @@ window.sbSave = function() {
 window.toggleSetting = function(key) {
   const cur = S.g(key);
   S.set(key, !cur);
-  if (key === 'user.gymFloorMode' && typeof GymFloor !== 'undefined') GymFloor.apply();
+  if (key === 'user.gymFloorMode' && typeof GymFloor !== 'undefined') {
+    GymFloor.apply();
+    if (!cur && typeof WakeLock !== 'undefined') WakeLock.request();
+    if (cur && typeof WakeLock !== 'undefined') WakeLock.release();
+  }
   go('settings', { tab: _activeSettingsTab });
 };
 

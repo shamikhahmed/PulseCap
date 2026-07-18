@@ -1,4 +1,4 @@
-# PulseCap iPhone soak checklist (v6.0.0)
+# PulseCap iPhone soak checklist (v6.1.0)
 
 Real-device pass — Playwright covers shell + safe-area math, not Dynamic Island / A2HS / Notifications delivery.
 

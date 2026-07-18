@@ -1084,7 +1084,7 @@ const SplitEngine = {
       });
       if (safer) why.push('easier on your injury');
       if (e.bw) why.push('no equipment needed');
-      return { name: e.n, pct: Math.max(35, Math.min(98, score)), why: why.slice(0, 2), diff: e.diff, em: e.em || '💪' };
+      return { name: e.n, pct: Math.max(35, Math.min(98, score)), why: why.slice(0, 2), diff: e.diff, grp: e.grp };
     }).sort(function(a, b) { return b.pct - a.pct; })
       /* Built-in DB + wger import can both carry an exercise — keep the top-scored copy */
       .filter(function(r, i, arr) {

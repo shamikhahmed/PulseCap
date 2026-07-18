@@ -106,7 +106,7 @@ Families, coaches, clients — one install.
 app.js / engines.js — Router + Smart Coach engines
 modules/            — Today · Train · Body · Learn · Me
 storage.js          — Multi-profile S + seedPersonas
-sw.js               — cache-first PWA (pulsecap-v70)
+sw.js               — cache-first PWA (pulsecap-v71)
 ```
 
 Vanilla JS. Zero framework. Fully offline.

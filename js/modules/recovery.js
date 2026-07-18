@@ -28,6 +28,7 @@ window.renderRecoveryUnified = function(data) {
     _recoveryHistoryChart() +
     _sleepInsights() +
     _recoveryRecs(score) +
+    _mobilityBlock() +
     '<div class="pad-x-16-b16"><button type="button" class="btn btn-secondary w-full" onclick="go(\'body-intelligence\')" style="display:flex;align-items:center;justify-content:center;gap:8px">' + icon('dna', 18) + ' Body Intelligence →</button></div>' +
     '<div  class="spacer-bottom"></div>';
 };
@@ -226,4 +227,27 @@ window.saveRecovery = function() {
 window.resetRecovery = function() {
   S.set('recovery', { ...S.g('recovery'), date:'' });
   go('recovery');
+};
+
+function _mobilityBlock() {
+  if (typeof MobilityFlow === 'undefined') return '';
+  var list = MobilityFlow.list();
+  return '<div class="mx-card"><div class="section-label-sm">Mobility (pre-train)</div>' +
+    list.map(function(f) {
+      return '<button type="button" onclick="openMobilityFlow(\'' + f.id + '\')" style="width:100%;text-align:left;padding:12px 14px;margin-bottom:8px;background:var(--bg3);border:1px solid var(--border);border-radius:14px;cursor:pointer;touch-action:manipulation">' +
+        '<div style="font-size:14px;font-weight:800;color:var(--txt)">' + esc(f.name) + '</div>' +
+        '<div class="muted-11">' + f.durationMin + ' min · ' + f.steps.length + ' drills</div></button>';
+    }).join('') + '</div>';
+}
+
+window.openMobilityFlow = function(id) {
+  var f = MobilityFlow.get(id);
+  if (!f) return;
+  var body = f.steps.map(function(s, i) {
+    return '<div style="padding:10px 0;border-bottom:1px solid var(--border)">' +
+      '<div style="font-size:13px;font-weight:700;color:var(--txt)">' + (i + 1) + '. ' + esc(s.name) + ' · ' + s.secs + 's</div>' +
+      '<div class="muted-11">' + esc(s.cue) + '</div></div>';
+  }).join('');
+  modal(f.name + ' · ' + f.durationMin + ' min', body,
+    '<button type="button" class="btn btn-primary" onclick="closeModal();toast(\'Mobility done — ready to train\',\'ok\')">Done</button>');
 };
