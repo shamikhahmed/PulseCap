@@ -1,3 +1,11 @@
+## [6.2.3] — 2026-07-19
+
+### Pitch
+- Premium Capricorn QR (`assets/qr-pulsecap.png`) — H ECC, Capricorn Systems center mark, gold quiet frame on CTA
+
+### Ops
+- SW `pulsecap-v75`
+
 # Changelog — PulseCap
 
 ## 6.2.2 (2026-07-19) — Capricorn OS brand lock
