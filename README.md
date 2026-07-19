@@ -1,5 +1,7 @@
 # PulseCap
 
+**Version:** 6.2.4
+
 **Your Smart Coach fitness operating system — by Capricorn Systems, built as a single offline-first PWA.**
 
 🔗 **Live:** https://shamikhahmed.github.io/PulseCap  
@@ -132,7 +134,7 @@ manifest.json       — PWA manifest
 
 ## Roadmap
 
-Shipped through **v6.2.0** (see `CHANGELOG.md`): Coach Kernel, gym tools (voice/barcode/wake/mobility/pain), RPE autoreg, mesocycle, offline foods, plate math, ProgramEngine, sample personas, gallery + CI `pages-gate`.
+Shipped through **v6.2.4** (see `CHANGELOG.md`): Coach Kernel, gym tools (voice/barcode/wake/mobility/pain), RPE autoreg, mesocycle, offline foods, plate math, ProgramEngine, sample personas, gallery + CI `pages-gate`.
 
 Still open / honest gaps (owner constraints):
 
