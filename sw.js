@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'pulsecap-v75';
+const CACHE = 'pulsecap-v76';
 const ASSETS = [
   './css/capricorn-core.css',
   './',
@@ -74,6 +74,7 @@ const ASSETS = [
   './js/vendor/ScrollTrigger.min.js',
   './privacy.html',
   './changelog.html',
+  './assets/qr-pulsecap.png',
 ];
 const ASSET_URLS = new Set(ASSETS.map(a => new URL(a, self.location).href));
 

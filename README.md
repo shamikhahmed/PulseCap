@@ -124,7 +124,7 @@ js/
     profiles.js     — Profile switcher, demo mode, sample athletes
     onboarding.js   — 4 intro slides + 7-step onboarding
     quests.js       — Quests, Academy, Physique Timeline body
-sw.js               — Service worker (cache: pulsecap-v73)
+sw.js               — Service worker (cache: pulsecap-v76)
 manifest.json       — PWA manifest
 ```
 

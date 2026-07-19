@@ -3,7 +3,7 @@
 PulseCap is your **Smart Coach fitness operating system** — an offline-first PWA for workouts, cardio, body tracking, nutrition, and rule-based coaching.
 
 **Live app:** https://shamikhahmed.github.io/PulseCap  
-**Version:** 6.2.1 · SW `pulsecap-v73`
+**Version:** 6.2.1 · SW `pulsecap-v76`
 
 ---
 
@@ -115,7 +115,7 @@ Macro logging, water, supplements with timing. Quick-add meals + offline food se
 ## Offline & data
 
 - All data in localStorage (`fos_profiles_[id]`); photos in IndexedDB
-- Service worker cache-first (`pulsecap-v73`)
+- Service worker cache-first (`pulsecap-v76`)
 - No backend required · no account · no cloud sync
 - Export JSON before device reset
 

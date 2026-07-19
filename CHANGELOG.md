@@ -1,3 +1,12 @@
+## [6.2.4] — 2026-07-19
+
+### QA
+- SW allowlist includes Capricorn pitch QR; smoke test tracks `pulsecap-v76`
+- Pitch/presentation/docs SW version drift fixed (was stuck on v73)
+
+### Ops
+- SW `pulsecap-v76`
+
 ## [6.2.3] — 2026-07-19
 
 ### Pitch
