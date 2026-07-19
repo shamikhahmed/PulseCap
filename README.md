@@ -72,7 +72,7 @@ Built by Shamikh Ahmed across 14 development sessions as a production-grade pers
 
 ### ⚙️ Settings
 - **Dark & light modes** — Settings → Appearance
-- **Nav tab customization** — toggle which tabs appear (min 3)
+- **5-tab IA** — Today · Train · Body · Learn · Me (fixed; customization retired)
 - **18 training splits + build-your-own** — PPL, Upper/Lower, Full Body, Arnold, PHUL, PHAT & more, plus a custom split builder with live exercise search
 - **Real strength programs** — Stronglifts/Starting Strength linear progression (+2.5kg, auto-deload) and 5/3/1 training-max waves, prescribed straight into the logger
 - **Weekly schedule** — split days auto-map to your gym days (Monday shows Monday's workout), editable per weekday; non-gym days give active-recovery guidance with a "Train anyway" option
