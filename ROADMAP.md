@@ -2,12 +2,13 @@
 
 > Updated 2026-07-18. Fleet order & standard: Cap Standard.
 
-## Now — v6.2.0 (job complete under owner constraints)
-Coach Kernel + gym tools + leftover polish. No native / B2B / pricing / cloud LLM. See `CHANGELOG.md` + `docs/V6-NORTHSTAR.md`.
+## Now — v6.2.1
+VaultCap-style scroll gallery + leftover UI chrome polish. See `CHANGELOG.md`.
 
 ## Shipped (recent)
 | Release | Focus |
 |---------|--------|
+| 6.2.1 | Scroll gallery (viewport + bottom scroll) + UI de-emoji polish |
 | 6.2.0 | Finish leftovers: delete dead regs, barcode/mobility expand, de-emoji, CI pages-gate |
 | 6.1.0 | Gym tools (voice/barcode/wake/mobility/pain) + ExDB purge |
 | 6.0.0 | Coach Kernel + linked Smart Coach (offline rules, no AI API) |

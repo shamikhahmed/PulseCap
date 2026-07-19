@@ -38,7 +38,7 @@ reg('profiles', function() {
   }).join('');
 
   return moduleTopbar('Profiles', {
-    right: '<button type="button" class="topbar-icon press" onclick="go(\'settings\')" aria-label="Close">✕</button>'
+    right: '<button type="button" class="topbar-icon press" onclick="go(\'settings\')" aria-label="Close">×</button>'
   }) +
 
     sh('Your Profiles') +

@@ -11,7 +11,8 @@ reg('equipment-setup', function() {
   const brands = EquipmentDB.brands;
 
   const envBtns = EquipmentDB.environments.map(e =>
-    '<button type="button" class="btn btn-' + (env === e.id ? 'primary' : 'secondary') + ' btn-sm flex-1"  onclick="setTrainEnv(\'' + e.id + '\')">' + e.icon + ' ' + e.label + '</button>'
+    '<button type="button" class="btn btn-' + (env === e.id ? 'primary' : 'secondary') + ' btn-sm flex-1" style="display:flex;align-items:center;justify-content:center;gap:6px" onclick="setTrainEnv(\'' + e.id + '\')">' +
+    (typeof icon === 'function' ? icon(e.icon || 'dumbbell', 14) : '') + ' ' + esc(e.label) + '</button>'
   ).join('');
 
   const brandOpts = '<option value="">All brands</option>' + brands.map(b =>
@@ -41,7 +42,7 @@ reg('equipment-setup', function() {
   const rows = items.map(item => {
     const on = selected.includes(item.id);
     const badge = item.brand ?
-      '<span style="display:inline-block;font-size:9px;font-weight:800;padding:2px 7px;border-radius:6px;margin-top:5px;letter-spacing:0.04em;text-transform:uppercase;background:' + (brandColors[item.brand] || 'var(--c1)') + '22;color:' + (brandColors[item.brand] || 'var(--c1)') + ';border:1px solid ' + (brandColors[item.brand] || 'var(--c1)') + '44">' + esc(item.brand) + '</span>' : '';
+      '<span style="display:inline-block;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;margin-top:5px;letter-spacing:0.04em;text-transform:uppercase;background:' + (brandColors[item.brand] || 'var(--c1)') + '22;color:' + (brandColors[item.brand] || 'var(--c1)') + ';border:1px solid ' + (brandColors[item.brand] || 'var(--c1)') + '44">' + esc(item.brand) + '</span>' : '';
     return '<div onclick="toggleEquipment(\'' + item.id + '\')" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
       '<div style="width:26px;height:26px;border-radius:8px;border:2px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'var(--c1)' : 'transparent') + ';display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700">' + (on ? '✓' : '') + '</div>' +
       '<div  class="flex-1"><div  class="row-strong">' + esc(item.name) + '</div>' +
@@ -59,9 +60,9 @@ reg('equipment-setup', function() {
     '<div class="field-wrap"><label class="field-label">Filter by brand</label>' +
     '<select class="field" onchange="_eqBrand=this.value;go(\'equipment-setup\')">' + brandOpts + '</select></div>' +
     '<div style="display:flex;gap:8px;margin-top:12px">' +
-    '<button type="button" class="btn btn-secondary btn-sm" onclick="selectEquipmentPreset(\'gym_full\')">🏢 Full Gym</button>' +
-    '<button type="button" class="btn btn-secondary btn-sm" onclick="selectEquipmentPreset(\'home_basic\')">🏠 Home Basics</button>' +
-    '<button type="button" class="btn btn-secondary btn-sm" onclick="selectEquipmentPreset(\'bodyweight\')">🤸 Bodyweight</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm" style="display:inline-flex;align-items:center;gap:6px" onclick="selectEquipmentPreset(\'gym_full\')">' + icon('dumbbell', 14) + ' Full Gym</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm" style="display:inline-flex;align-items:center;gap:6px" onclick="selectEquipmentPreset(\'home_basic\')">' + icon('bed', 14) + ' Home Basics</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm" style="display:inline-flex;align-items:center;gap:6px" onclick="selectEquipmentPreset(\'bodyweight\')">' + icon('walk', 14) + ' Bodyweight</button>' +
     '</div></div>' +
 
     catTabs +

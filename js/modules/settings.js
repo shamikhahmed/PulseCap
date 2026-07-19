@@ -88,7 +88,7 @@ function _tabProfile(u) {
         _infoStat('Protein', plan.protein + '', 'g/day') +
         _infoStat('Readiness', plan.readiness + '', '/100') +
         '</div>' +
-        '<button type="button" class="btn btn-secondary btn-sm" onclick="go(\'calculators\')" style="width:100%;margin-top:10px">📊 Full Calculators</button>' +
+        '<button type="button" class="btn btn-secondary btn-sm" onclick="go(\'calculators\')" style="width:100%;margin-top:10px;display:inline-flex;align-items:center;justify-content:center;gap:6px">' + icon('calc', 14) + ' Full Calculators</button>' +
         '</div>';
     })() +
 
@@ -101,7 +101,7 @@ function _tabProfile(u) {
     _infoStat('Healthy wt', healthyRange.min+'–'+healthyRange.max+wtUnit, 'For your height') +
     '</div>' +
     '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">' +
-    '<button type="button" class="btn btn-secondary btn-sm" onclick="showLogWeight()">📊 Log Weight Today</button>' +
+    '<button type="button" class="btn btn-secondary btn-sm" onclick="showLogWeight()" style="display:inline-flex;align-items:center;gap:6px">' + icon('scale', 14) + ' Log Weight Today</button>' +
     '</div></div>' +
 
     _sectionTitle('Injuries & Pain') +
@@ -115,7 +115,7 @@ function _tabProfile(u) {
       html += active.length
         ? '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.5">' + active.length + ' active ' + (active.length === 1 ? 'injury' : 'injuries') + ': ' + esc(active.map(function(i){ return i.bodyPart || i.id; }).join(', ')) + '</div>'
         : '<div style="font-size:13px;color:var(--txt3);margin-bottom:10px">No active injuries — workouts unrestricted.</div>';
-      html += '<button type="button" class="btn btn-secondary btn-sm w-full" onclick="go(\'rehab\')" >🩹 Manage injuries in Rehab →</button>';
+      html += '<button type="button" class="btn btn-secondary btn-sm w-full" onclick="go(\'rehab\')" style="display:inline-flex;align-items:center;justify-content:center;gap:6px">' + icon('bandage', 14) + ' Manage injuries in Rehab →</button>';
       return html;
     })() +
     '</div>' +
@@ -161,7 +161,7 @@ function _tabTraining(u) {
     _renderWeekSchedule(u) +
 
     _sectionTitle('My Equipment') +
-    '<button type="button" class="btn btn-primary" onclick="go(\'equipment-setup\')" style="width:100%;margin-bottom:8px">🏋️ Configure Equipment</button>' +
+    '<button type="button" class="btn btn-primary" onclick="go(\'equipment-setup\')" style="width:100%;margin-bottom:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px">' + icon('dumbbell', 16) + ' Configure Equipment</button>' +
     '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-bottom:14px">'+esc(eqLabel)+' — Life Fitness, Technogym, home, bodyweight & more</div>' +
 
     _sectionTitle('Rest Timer') +

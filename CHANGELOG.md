@@ -1,5 +1,10 @@
 # Changelog — PulseCap
 
+## 6.2.1 (2026-07-19) — VaultCap-style scroll gallery + UI polish
+- Gallery captures **viewport + scroll** companions when `#view` overflows (VaultCap pattern); `screen-gallery.html` Include scroll / Scroll only filters.
+- Settings/Equipment/Today de-emoji leftovers; dashboard micro labels 10px; brand badges 10px.
+- SW `pulsecap-v73`.
+
 ## 6.2.0 (2026-07-18) — Finish leftovers
 - **Deprecated routes deleted** (aliases already shipped): `physique-archetype`, `recovery-debt`, `training-style`, `coach`, `intro` regs removed; body renderers kept.
 - **Barcode map** expanded to full offline food ids + demo EAN stubs; mobility presets + ankles/wrists; Today mobility nudge when readiness low.

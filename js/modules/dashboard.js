@@ -106,15 +106,15 @@ reg('dashboard', function() {
       '<div style="display:flex;gap:10px">' +
       '<div style="flex:1;background:rgba(255,255,255,0.06);border-radius:16px;padding:10px;text-align:center">' +
       '<div style="font-size:14px;font-weight:800;color:' + scoreColor + '">' + score + '/100</div>' +
-      '<div style="font-size:9px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px">Readiness</div>' +
+      '<div style="font-size:10px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px">Readiness</div>' +
       '</div>' +
       '<div style="flex:1;background:rgba(255,255,255,0.06);border-radius:16px;padding:10px;text-align:center">' +
       '<div style="font-size:14px;font-weight:800;color:var(--c4)">' + debtVal + '</div>' +
-      '<div style="font-size:9px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px">Debt</div>' +
+      '<div style="font-size:10px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px">Debt</div>' +
       '</div>' +
       '<div style="flex:1;background:rgba(255,255,255,0.06);border-radius:16px;padding:10px;text-align:center">' +
       '<div style="font-size:14px;font-weight:800;color:var(--c5);display:flex;align-items:center;justify-content:center;gap:4px">' + icon('flame', 14, 'var(--c5)') + ' ' + streak + '</div>' +
-      '<div style="font-size:9px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px">Streak</div>' +
+      '<div style="font-size:10px;color:var(--txt3);font-weight:600;text-transform:uppercase;letter-spacing:0.06em;margin-top:3px">Streak</div>' +
       '</div>' +
       '</div>' +
       '</div>';
@@ -146,7 +146,7 @@ reg('dashboard', function() {
         const injSwaps = (splitDay._swaps || []).filter(function(s){ return s.injury; });
         if (!injSwaps.length || isRestDay) return '';
         const parts = injSwaps.map(function(s){ return s.injury; }).filter(function(v,i,a){ return a.indexOf(v)===i; });
-        return '<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:10px;padding:5px 10px;margin-bottom:12px;font-size:11px;font-weight:700;color:#fff">🩹 Modified for ' + esc(parts.join(', ')) + '</div>';
+        return '<div style="display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.25);border-radius:10px;padding:5px 10px;margin-bottom:12px;font-size:11px;font-weight:700;color:#fff">' + icon('bandage', 14, '#fff') + ' Modified for ' + esc(parts.join(', ')) + '</div>';
       })() +
       (typeof renderSplitDayPicker === 'function' && !isRestDay ? renderSplitDayPicker({ compact: true }).replace(/var\(--txt3\)/g, 'rgba(255,255,255,0.55)').replace(/var\(--border\)/g, 'rgba(255,255,255,0.25)').replace(/var\(--bg3\)/g, 'rgba(255,255,255,0.08)').replace(/var\(--c1\)/g, '#fff').replace(/rgba\(0,213,255,0\.12\)/g, 'rgba(255,255,255,0.2)') : '') +
       sessionBtn +
@@ -213,15 +213,15 @@ reg('dashboard', function() {
     const progressSnapshot = '<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:0 16px;margin-bottom:14px">' +
       '<div onclick="go(\'progress\')" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center;cursor:pointer;touch-action:manipulation">' +
       '<div class="dash-stat-n" style="font-size:22px;font-weight:900;color:var(--c1);line-height:1">' + weekWkts.length + '/' + (user.weeklyGoal || 4) + '</div>' +
-      '<div style="font-size:9px;color:var(--txt3);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Sessions</div>' +
+      '<div style="font-size:10px;color:var(--txt3);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Sessions</div>' +
       '</div>' +
       '<div onclick="go(\'progress\')" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center;cursor:pointer;touch-action:manipulation">' +
       '<div class="dash-stat-n" style="font-size:22px;font-weight:900;color:var(--c2);line-height:1">' + Math.round(weekVol) + '</div>' +
-      '<div style="font-size:9px;color:var(--txt3);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Vol (kg)</div>' +
+      '<div style="font-size:10px;color:var(--txt3);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">Vol (kg)</div>' +
       '</div>' +
       '<div onclick="go(\'progress\')" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;text-align:center;cursor:pointer;touch-action:manipulation">' +
       '<div class="dash-stat-n" style="font-size:22px;font-weight:900;color:var(--c3);line-height:1">' + thisMonthPRs + '</div>' +
-      '<div style="font-size:9px;color:var(--txt3);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">PRs / mo</div>' +
+      '<div style="font-size:10px;color:var(--txt3);margin-top:4px;font-weight:600;text-transform:uppercase;letter-spacing:0.06em">PRs / mo</div>' +
       '</div>' +
       '</div>';
 

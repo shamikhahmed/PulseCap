@@ -8,10 +8,10 @@ window.EquipmentDB = {
   ],
 
   environments: [
-    { id: 'gym', label: 'Commercial Gym', icon: '🏢' },
-    { id: 'home', label: 'Home Gym', icon: '🏠' },
-    { id: 'outdoor', label: 'Outdoors / Park', icon: '🌲' },
-    { id: 'travel', label: 'Travel / Hotel', icon: '✈️' }
+    { id: 'gym', label: 'Commercial Gym', icon: 'dumbbell' },
+    { id: 'home', label: 'Home Gym', icon: 'bed' },
+    { id: 'outdoor', label: 'Outdoors / Park', icon: 'leaf' },
+    { id: 'travel', label: 'Travel / Hotel', icon: 'walk' }
   ],
 
   /* eqTags map to ExDB.eq values for workout filtering */

@@ -2,12 +2,14 @@
 // Screen gallery — every screen, tab, and flow step, in dark + light,
 // at mobile + desktop widths.
 // Default `playwright test`: walk all states, assert render (no PNG churn).
-// `npm run gallery` (CAPTURE_GALLERY=1): write 200 PNGs + manifest.
+// `npm run gallery` (CAPTURE_GALLERY=1): write viewport + scroll PNGs + manifest (VaultCap-style).
 const { test, expect } = require('@playwright/test');
 const { mkdirSync, writeFileSync, readFileSync } = require('node:fs');
 const { join } = require('node:path');
 
 const GALLERY_DIR = join(process.cwd(), 'docs', 'screenshots', 'gallery');
+/** Min overflow (px) before capturing a bottom-of-scroll companion shot. */
+const SCROLL_MIN = 80;
 
 /* Every screen + sub-tab worth a shot. stateId keeps filenames stable/unique;
    go = the router call; section = gallery grouping. */
@@ -115,6 +117,52 @@ async function waitReady(page) {
   await page.waitForTimeout(300);
 }
 
+async function scrollViewTop(page) {
+  await page.evaluate(() => {
+    const v = document.getElementById('view');
+    if (v) v.scrollTop = 0;
+    window.scrollTo(0, 0);
+  });
+}
+
+/** Find primary scroll container (#view) and overflow amount. */
+async function findScrollTarget(page) {
+  return page.evaluate(() => {
+    const candidates = ['#view', '#view .screen', '.ob-body', '.modal-body', '#modal .body'];
+    let best = null;
+    for (let i = 0; i < candidates.length; i++) {
+      const el = document.querySelector(candidates[i]);
+      if (!el) continue;
+      const overflow = el.scrollHeight - el.clientHeight;
+      if (!best || overflow > best.overflow) best = { selector: candidates[i], overflow: overflow };
+    }
+    return best;
+  });
+}
+
+async function scrollTargetToEnd(page, target) {
+  await page.evaluate((sel) => {
+    const el = document.querySelector(sel);
+    if (el) el.scrollTop = el.scrollHeight;
+  }, target.selector);
+}
+
+/**
+ * VaultCap-style: if content overflows, shoot bottom of scroll as companion PNG.
+ * @returns {Promise<object|null>} manifest entry or null
+ */
+async function maybeScrollShot(page, baseFile, meta) {
+  const target = await findScrollTarget(page);
+  if (!target || target.overflow < SCROLL_MIN) return null;
+  await scrollTargetToEnd(page, target);
+  await page.waitForTimeout(220);
+  const file = baseFile.replace(/\.png$/, '-scroll.png');
+  await page.screenshot({ path: join(GALLERY_DIR, file), fullPage: false });
+  await scrollViewTop(page);
+  await page.waitForTimeout(80);
+  return Object.assign({}, meta, { file: file, scroll: true, label: meta.label + ' (scroll)' });
+}
+
 /** Visual integrity — more than "element exists". */
 async function assertVisualOk(page, label) {
   const report = await page.evaluate(() => {
@@ -143,7 +191,7 @@ for (const [viewport, vp] of Object.entries(VIEWPORTS)) {
     test.beforeAll(() => { mkdirSync(GALLERY_DIR, { recursive: true }); });
 
     test(`${CAPTURE ? 'capture' : 'walk'} ${viewport} screens (dark + light)`, async ({ page }) => {
-      test.setTimeout(CAPTURE ? 600_000 : 180_000);
+      test.setTimeout(CAPTURE ? 900_000 : 180_000);
       await bootDemo(page);
 
       const shots = [];
@@ -162,9 +210,13 @@ for (const [viewport, vp] of Object.entries(VIEWPORTS)) {
           await assertVisualOk(page, `${theme}/${viewport}/${s.stateId}`);
           if (CAPTURE) {
             n += 1;
+            await scrollViewTop(page);
             const file = `${theme}-${viewport}-${String(n).padStart(3, '0')}-${s.stateId}.png`;
             await page.screenshot({ path: join(GALLERY_DIR, file), fullPage: false });
-            shots.push({ file, theme, viewport, section: s.section, screenId: s.stateId, label: s.label, route: `go('${s.go[0]}'${s.go[1] ? ', ' + JSON.stringify(s.go[1]) : ''})` });
+            const meta = { file, theme, viewport, section: s.section, screenId: s.stateId, label: s.label, route: `go('${s.go[0]}'${s.go[1] ? ', ' + JSON.stringify(s.go[1]) : ''})`, scroll: false };
+            shots.push(meta);
+            const scrollShot = await maybeScrollShot(page, file, meta);
+            if (scrollShot) shots.push(scrollShot);
           }
         }
 
@@ -174,9 +226,13 @@ for (const [viewport, vp] of Object.entries(VIEWPORTS)) {
           await waitReady(page);
           if (CAPTURE) {
             n += 1;
+            await scrollViewTop(page);
             const file = `${theme}-${viewport}-${String(n).padStart(3, '0')}-intro-${i + 1}.png`;
             await page.screenshot({ path: join(GALLERY_DIR, file), fullPage: false });
-            shots.push({ file, theme, viewport, section: 'Onboarding', screenId: `intro-${i + 1}`, label: `Welcome ${i + 1}/${INTRO_COUNT}`, route: "go('onboarding',{showIntro:true})" });
+            const meta = { file, theme, viewport, section: 'Onboarding', screenId: `intro-${i + 1}`, label: `Welcome ${i + 1}/${INTRO_COUNT}`, route: "go('onboarding',{showIntro:true})", scroll: false };
+            shots.push(meta);
+            const scrollShot = await maybeScrollShot(page, file, meta);
+            if (scrollShot) shots.push(scrollShot);
           }
         }
 
@@ -186,9 +242,13 @@ for (const [viewport, vp] of Object.entries(VIEWPORTS)) {
           await waitReady(page);
           if (CAPTURE) {
             n += 1;
+            await scrollViewTop(page);
             const file = `${theme}-${viewport}-${String(n).padStart(3, '0')}-onboarding-${step}.png`;
             await page.screenshot({ path: join(GALLERY_DIR, file), fullPage: false });
-            shots.push({ file, theme, viewport, section: 'Onboarding', screenId: `onboarding-${step}`, label: `Onboarding ${step}/${OB_STEPS}`, route: `onboarding step ${step}` });
+            const meta = { file, theme, viewport, section: 'Onboarding', screenId: `onboarding-${step}`, label: `Onboarding ${step}/${OB_STEPS}`, route: `onboarding step ${step}`, scroll: false };
+            shots.push(meta);
+            const scrollShot = await maybeScrollShot(page, file, meta);
+            if (scrollShot) shots.push(scrollShot);
           }
         }
 
@@ -204,9 +264,13 @@ for (const [viewport, vp] of Object.entries(VIEWPORTS)) {
         await page.waitForTimeout(500);
         if (CAPTURE) {
           n += 1;
+          await scrollViewTop(page);
           const activeFile = `${theme}-${viewport}-${String(n).padStart(3, '0')}-active.png`;
           await page.screenshot({ path: join(GALLERY_DIR, activeFile), fullPage: false });
-          shots.push({ file: activeFile, theme, viewport, section: 'Train', screenId: 'active', label: 'Active Workout', route: 'startWorkout()' });
+          const meta = { file: activeFile, theme, viewport, section: 'Train', screenId: 'active', label: 'Active Workout', route: 'startWorkout()', scroll: false };
+          shots.push(meta);
+          const scrollShot = await maybeScrollShot(page, activeFile, meta);
+          if (scrollShot) shots.push(scrollShot);
         }
 
         // Return to a clean screen before switching theme

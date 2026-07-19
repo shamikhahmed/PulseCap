@@ -45,6 +45,13 @@
     }
     .btn:hover { border-color: var(--accent); }
     .btn.active { border-color: var(--accent); background: var(--accent-dim); color: var(--accent); }
+    .tog { font-size: 0.8rem; color: var(--muted); display: flex; align-items: center; gap: 6px; cursor: pointer; user-select: none; }
+    .tog input { accent-color: var(--accent); }
+    .badge-scroll {
+      position: absolute; top: 10px; left: 10px; z-index: 2;
+      background: rgba(0,213,255,0.92); color: #041018; font-size: 0.65rem; font-weight: 800;
+      letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 8px; border-radius: 999px;
+    }
     .divider { width: 1px; height: 24px; background: var(--border); }
     .pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
     .pill {
@@ -69,6 +76,7 @@
       gap: 16px;
     }
     .card {
+      position: relative;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -129,6 +137,9 @@
       <span class="divider" aria-hidden="true"></span>
       <button type="button" class="btn active" id="btnDark">Dark</button>
       <button type="button" class="btn" id="btnLight">Light</button>
+      <span class="divider" aria-hidden="true"></span>
+      <label class="tog"><input type="checkbox" id="includeScroll" checked /> Include scroll</label>
+      <label class="tog"><input type="checkbox" id="scrollOnly" /> Scroll only</label>
       <a class="btn" href="docs/screenshots/gallery/gallery-manifest.json" target="_blank" rel="noopener">Manifest</a>
       <span style="color:var(--muted);font-size:0.8rem">Regen: <code>npm run gallery</code></span>
     </div>
@@ -162,6 +173,8 @@
       viewport: 'mobile',
       theme: 'dark',
       section: '',
+      includeScroll: true,
+      scrollOnly: false,
       flat: [],
       entries: [],
       lbIndex: -1
@@ -187,7 +200,8 @@
         ...s,
         section: sectionFor(s),
         theme: themeFor(s),
-        screenId: s.screenId || (s.file || '').replace(/^(dark|light)-/, '').replace(/^(mobile|desktop)-\d+-/, '').replace(/\.png$/, '')
+        scroll: !!(s.scroll || /-scroll\.png$/.test(s.file || '')),
+        screenId: s.screenId || (s.file || '').replace(/^(dark|light)-/, '').replace(/^(mobile|desktop)-\d+-/, '').replace(/-scroll\.png$/, '').replace(/\.png$/, '')
       }));
     }
 
@@ -196,7 +210,12 @@
     }
 
     function visible() {
-      return scope().filter((s) => !state.section || s.section === state.section);
+      return scope().filter((s) => {
+        if (state.section && s.section !== state.section) return false;
+        if (state.scrollOnly) return s.scroll;
+        if (!state.includeScroll && s.scroll) return false;
+        return true;
+      });
     }
 
     function sectionsPresent() {
@@ -255,6 +274,7 @@
         items.forEach((s) => {
           const idx = state.entries.indexOf(s);
           html += '<article class="card" tabindex="0" role="button" data-idx="' + idx + '">' +
+            (s.scroll ? '<span class="badge-scroll">scroll</span>' : '') +
             '<img src="docs/screenshots/gallery/' + s.file + '" alt="' + s.label + '" loading="lazy" />' +
             '<div class="meta"><div class="label">' + s.label + '</div>' +
             '<div class="tag">' + (s.route || '') + '</div></div></article>';
@@ -291,6 +311,8 @@
     $('#btnDesktop').onclick = () => { state.viewport = 'desktop'; render(); };
     $('#btnDark').onclick = () => { state.theme = 'dark'; render(); };
     $('#btnLight').onclick = () => { state.theme = 'light'; render(); };
+    $('#includeScroll').onchange = (e) => { state.includeScroll = e.target.checked; render(); };
+    $('#scrollOnly').onchange = (e) => { state.scrollOnly = e.target.checked; render(); };
     $('#lb-close').onclick = closeLb;
     $('#lb-prev').onclick = () => openLb(state.lbIndex - 1);
     $('#lb-next').onclick = () => openLb(state.lbIndex + 1);
@@ -308,7 +330,8 @@
         state.manifest = m;
         buildFlat();
         $('#meta').textContent = m.shots.length + ' shots · v' + (m.version || '?') +
-          ' · generated ' + (m.generated ? new Date(m.generated).toLocaleString() : '—');
+          ' · ' + m.shots.filter((s) => s.scroll || /-scroll\.png$/.test(s.file || '')).length + ' scroll · generated ' +
+          (m.generated ? new Date(m.generated).toLocaleString() : '—');
         render();
       })
       .catch((e) => {
