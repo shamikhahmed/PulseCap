@@ -1,5 +1,9 @@
 # Changelog — PulseCap
 
+## 6.2.2 (2026-07-19) — Capricorn OS brand lock
+- PWA icons + mark locked to Capricorn OS `assets/marks/pulsecap.svg` (BRAND-LOCK).
+- `FEATURES.md` inventory (S/W/L/R). SW `pulsecap-v74`.
+
 ## 6.2.1 (2026-07-19) — VaultCap-style scroll gallery + UI polish
 - Gallery captures **viewport + scroll** companions when `#view` overflows (VaultCap pattern); `screen-gallery.html` Include scroll / Scroll only filters.
 - Settings/Equipment/Today de-emoji leftovers; dashboard micro labels 10px; brand badges 10px.
