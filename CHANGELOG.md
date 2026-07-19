@@ -1,3 +1,6 @@
+## 6.2.5 — 2026-07-20
+- Visual DNA: training-journal splash (cover open + pulse line), DM Sans + Bricolage Grotesque, paper/chalk Today, stamped cards. Smart Coach honesty.
+
 ## [6.2.4] — 2026-07-19
 
 ### QA
