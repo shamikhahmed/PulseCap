@@ -1,8 +1,18 @@
 {
   "app": "PulseCap",
-  "version": "6.2.1",
-  "generated": "2026-07-19T00:01:32.802Z",
+  "version": "6.2.5",
+  "generated": "2026-07-20T06:07:00.505Z",
   "shots": [
+    {
+      "file": "dark-desktop-001-dashboard-scroll.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "dashboard",
+      "label": "Dashboard (scroll)",
+      "route": "go('dashboard')",
+      "scroll": true
+    },
     {
       "file": "dark-desktop-001-dashboard.png",
       "theme": "dark",
@@ -12,6 +22,16 @@
       "label": "Dashboard",
       "route": "go('dashboard')",
       "scroll": false
+    },
+    {
+      "file": "dark-desktop-002-briefing-scroll.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "briefing",
+      "label": "Morning Briefing (scroll)",
+      "route": "go('briefing')",
+      "scroll": true
     },
     {
       "file": "dark-desktop-002-briefing.png",
@@ -252,6 +272,16 @@
       "label": "Rehab",
       "route": "go('rehab')",
       "scroll": false
+    },
+    {
+      "file": "dark-desktop-015-injury-risk-scroll.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "injury-risk",
+      "label": "Injury Risk (scroll)",
+      "route": "go('injury-risk')",
+      "scroll": true
     },
     {
       "file": "dark-desktop-015-injury-risk.png",
@@ -1634,6 +1664,16 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-051-dashboard-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "dashboard",
+      "label": "Dashboard (scroll)",
+      "route": "go('dashboard')",
+      "scroll": true
+    },
+    {
       "file": "light-desktop-051-dashboard.png",
       "theme": "light",
       "viewport": "desktop",
@@ -1882,6 +1922,16 @@
       "label": "Rehab",
       "route": "go('rehab')",
       "scroll": false
+    },
+    {
+      "file": "light-desktop-065-injury-risk-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "injury-risk",
+      "label": "Injury Risk (scroll)",
+      "route": "go('injury-risk')",
+      "scroll": true
     },
     {
       "file": "light-desktop-065-injury-risk.png",
