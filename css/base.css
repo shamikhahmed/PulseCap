@@ -13,6 +13,7 @@
   /* Typography */
   --font: "DM Sans", -apple-system, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
   --font-display: "Bricolage Grotesque", "DM Sans", var(--font);
+  --font-display-nums: Impact, Haettenschweiler, "Franklin Gothic Bold", "Arial Narrow Bold", sans-serif;
 
   /* Animations */
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -33,11 +34,11 @@
   color-scheme: dark;
 
   /* Backgrounds - layered depth */
-  --bg:   #0a0a0f;
-  --bg2:  #111118;
-  --bg3:  #18181f;
-  --bg4:  #1e1e28;
-  --bg5:  #252532;
+  --bg:   #121212;
+  --bg2:  #181818;
+  --bg3:  #1e1e1e;
+  --bg4:  #242424;
+  --bg5:  #2c2c2c;
 
   /* Text */
   --txt:  #ffffff;
@@ -89,21 +90,21 @@
 [data-theme="carbon"], [data-theme="stealth"], [data-theme="forest"],
 [data-theme="electric"], [data-theme="sunset"], [data-theme="aurora"],
 [data-theme="midnight"], [data-theme="arctic"] {
-  --c1: #00f2ff; --c1-rgb: 0,242,255;
-  --c2: #0e7bff; --c2-rgb: 14,123,255;
+  --c1: #FF453A; --c1-rgb: 255,69,58;
+  --c2: #FF3B30; --c2-rgb: 255,59,48;
   --c3: #73ffcf; --c3-rgb: 115,255,207;
-  --c4: #ff4560; --c4-rgb: 255,69,96;
+  --c4: #FF453A; --c4-rgb: 255,69,58;
   --c5: #ffe04a; --c5-rgb: 255,224,74;
-  --grad: linear-gradient(128deg, #00f2ff 0%, #0e7bff 58%, #73ffcf 100%);
-  --grad2: linear-gradient(128deg, #0e7bff 0%, #00f2ff 100%);
-  --orb1: #00f2ff; --orb2: #0e7bff;
-  --shadow: 0 10px 30px rgba(0,242,255,0.14);
-  --glow: rgba(0,242,255,0.2);
+  --grad: linear-gradient(128deg, #FF453A 0%, #FF3B30 58%, #ff6b5e 100%);
+  --grad2: linear-gradient(128deg, #FF3B30 0%, #FF453A 100%);
+  --orb1: #FF453A; --orb2: #FF3B30;
+  --shadow: 0 10px 30px rgba(255,69,58,0.14);
+  --glow: rgba(255,69,58,0.2);
 }
 
 [data-theme="light"] {
-  --c1: #007aff; --c1-rgb: 0,122,255;
-  --c2: #5856d6; --c2-rgb: 88,86,214;
+  --c1: #FF3B30; --c1-rgb: 255,59,48;
+  --c2: #FF453A; --c2-rgb: 255,69,58;
   --c3: #34c759; --c3-rgb: 52,199,89;
   --c4: #ff3b30; --c4-rgb: 255,59,48;
   --c5: #ff9500; --c5-rgb: 255,149,0;
@@ -138,7 +139,7 @@ body {
     radial-gradient(120% 80% at 50% -20%, rgba(0,242,255,0.06), transparent 55%),
     radial-gradient(80% 60% at 100% 100%, rgba(14,123,255,0.05), transparent 50%),
     url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"),
-    linear-gradient(168deg, #12110f 0%, #1a1814 42%, #141210 100%);
+    linear-gradient(168deg, #121212 0%, #181818 42%, #121212 100%);
 }
 body::after {
   content: "";

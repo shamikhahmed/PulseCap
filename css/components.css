@@ -289,6 +289,7 @@ select.field{padding-right:36px;cursor:pointer;}
 }
 
 /* ══ REST TIMER ══════════════════════════════════════════════════ */
+#rest-sheet { border-top: 3px solid var(--c4) !important; }
 .rest-inner{padding:24px;text-align:center;}
 .rest-title-label{
   font-size:11px;font-weight:700;letter-spacing:0.12em;
@@ -304,7 +305,7 @@ select.field{padding-right:36px;cursor:pointer;}
   position:absolute;inset:0;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
 }
-.rest-count-num{font-size:40px;font-weight:900;font-variant-numeric:tabular-nums;color:var(--txt);}
+.rest-count-num{font-size:40px;font-weight:900;font-family:var(--font-display-nums);font-variant-numeric:tabular-nums;color:var(--txt);}
 .rest-count-label{font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--txt3);}
 .rest-label{font-size:14px;color:var(--txt3);margin-bottom:22px;}
 .rest-btns{display:flex;gap:10px;justify-content:center;}
@@ -317,6 +318,7 @@ select.field{padding-right:36px;cursor:pointer;}
   box-shadow:var(--ds1);
 }
 .rest-btn:active{background:var(--bg4);transform:scale(0.96);}
+#rest-countdown { font-family: var(--font-display-nums); }
 .rest-btn.skip{color:var(--c1);border-color:rgba(var(--c1-rgb),0.25);}
 
 /* ══ READINESS HERO ══════════════════════════════════════════════ */
