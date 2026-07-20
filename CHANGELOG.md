@@ -1,3 +1,6 @@
+## 6.2.7 — 2026-07-20
+- Today remint: clipboard layout — readiness + plan stack on mobile; desktop 3-pane (body rail / main clipboard / PR watchlist). Quick actions + progress snapshot restored. SW `pulsecap-v79`.
+
 ## 6.2.6 — 2026-07-20
 - Visual DNA remint: journal/passport splash → gym clipboard on rubber mat (chalk marks, metal clip). Chalk-red accent tokens (#FF3B30 / #FF453A), dark bg #121212, Impact stat numerals, 3px rest-timer border. SW `pulsecap-v78`.
 

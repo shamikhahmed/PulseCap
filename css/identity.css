@@ -360,3 +360,189 @@ h1, .topbar-title, .sh-t, .ob-title, .splash-word {
   .clipboard-pulse__line { stroke-dashoffset: 0; animation: none; }
   .clipboard-pulse__dot { opacity: 1; animation: none; }
 }
+
+/* ── Today clipboard layout: mobile stack · desktop 3-pane ── */
+.today-clipboard {
+  position: relative;
+}
+.today-layout {
+  display: block;
+}
+.today-rail {
+  display: none;
+}
+.clipboard-clip {
+  display: none;
+}
+.today-main {
+  position: relative;
+}
+.today-main .clipboard-clip--main {
+  display: block;
+  width: 48px;
+  height: 14px;
+  margin: 0 auto 10px;
+  border-radius: 3px 3px 6px 6px;
+  background: linear-gradient(180deg, #c0c4c8 0%, #8a9098 100%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.35);
+  border: 1px solid rgba(0,0,0,0.25);
+}
+.today-rail__label {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--txt3);
+  margin-bottom: 10px;
+}
+.today-body-preview {
+  width: 100%;
+  border: 2px solid var(--border);
+  border-radius: 8px;
+  background: var(--bg3);
+  padding: 16px 12px;
+  margin-bottom: 12px;
+  cursor: pointer;
+  text-align: center;
+  color: inherit;
+}
+.today-body-preview__ring {
+  width: 72px;
+  height: 72px;
+  margin: 0 auto 8px;
+  border-radius: 50%;
+  border: 3px solid color-mix(in srgb, var(--score-color, var(--c1)) 55%, transparent);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: color-mix(in srgb, var(--score-color, var(--c1)) 10%, transparent);
+}
+.today-body-preview__score {
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: 22px;
+  line-height: 1;
+  color: var(--score-color, var(--c1));
+}
+.today-body-preview__cap {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--txt3);
+}
+.today-body-preview__hint {
+  font-size: 11px;
+  color: var(--txt3);
+}
+.today-pr-row {
+  display: block;
+  width: 100%;
+  text-align: left;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  color: inherit;
+}
+.today-pr-row__name {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--txt);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.today-pr-row__stat {
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: 20px;
+  color: var(--c1);
+  line-height: 1.1;
+  margin-top: 2px;
+}
+.today-pr-row__stat span {
+  font-size: 11px;
+  font-family: var(--font);
+  font-weight: 600;
+  color: var(--txt3);
+  margin-left: 3px;
+}
+.today-pr-row__meta {
+  font-size: 10px;
+  color: var(--txt3);
+  margin-top: 2px;
+}
+.today-pr-empty {
+  padding: 12px 4px;
+}
+.today-pr-all {
+  margin-top: 6px;
+  background: none;
+  border: none;
+  color: var(--c1);
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  padding: 8px 0;
+}
+
+@media (min-width: 900px) {
+  #view > .screen:has(.today-clipboard) {
+    max-width: 1280px;
+  }
+  .today-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 1fr) 240px;
+    gap: 18px;
+    align-items: start;
+    padding: 0 8px;
+  }
+  .today-rail {
+    display: block;
+    position: sticky;
+    top: 12px;
+    background: var(--bg2);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 14px 12px;
+    box-shadow: 3px 4px 0 rgba(0,0,0,0.18);
+  }
+  .today-rail .clipboard-clip {
+    display: block;
+    width: 36px;
+    height: 10px;
+    margin: -20px auto 12px;
+    border-radius: 2px 2px 4px 4px;
+    background: linear-gradient(180deg, #c0c4c8 0%, #8a9098 100%);
+    border: 1px solid rgba(0,0,0,0.25);
+  }
+  .today-main {
+    background: var(--bg2);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 0 16px;
+    box-shadow: 4px 5px 0 rgba(0,0,0,0.2);
+  }
+  .today-main .clipboard-clip--main {
+    width: 56px;
+    height: 16px;
+  }
+  .today-mobile-muscles {
+    display: none;
+  }
+  /* Stamp-in cards on desktop */
+  .today-main > div {
+    animation: clipboardStamp 0.18s both;
+  }
+}
+
+@keyframes clipboardStamp {
+  from { opacity: 0; transform: translateY(6px) scale(0.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .today-main > div { animation: none; }
+}

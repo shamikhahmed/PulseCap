@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.2.6';
+window.APP_VERSION = '6.2.7';
 
 /* ══════════════════════════════════════════════════════
    ROUTER

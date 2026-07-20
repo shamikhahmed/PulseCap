@@ -413,15 +413,57 @@ reg('dashboard', function() {
       moreRow +
       '</div></details>';
 
-    /* P5 first paint: hero + session + ≤2 prompts. Rest behind disclosure. */
-    return demoBanner + topbar +
+    /* Desktop rails: body recovery map + PR watchlist */
+    const bodyRail = '<aside class="today-rail today-rail--body" aria-label="Muscle recovery">' +
+      '<div class="clipboard-clip" aria-hidden="true"></div>' +
+      '<div class="today-rail__label">Body map</div>' +
+      '<button type="button" class="today-body-preview press" onclick="go(\'body\')">' +
+      '<div class="today-body-preview__ring" style="--score-color:' + scoreColor + '">' +
+      '<span class="today-body-preview__score dash-stat-n">' + score + '</span>' +
+      '<span class="today-body-preview__cap">Ready</span></div>' +
+      '<div class="today-body-preview__hint">Tap full body map</div></button>' +
+      (muscleRecoveryMini || '<div class="muted-11" style="padding:0 4px">Log a session to see muscle recovery.</div>') +
+      '</aside>';
+
+    const recentPRs = (prs || []).slice().sort(function(a, b) {
+      return new Date(b.date || 0) - new Date(a.date || 0);
+    }).slice(0, 5);
+    const prRail = '<aside class="today-rail today-rail--pr" aria-label="PR watchlist">' +
+      '<div class="today-rail__label">PR watchlist</div>' +
+      (recentPRs.length
+        ? recentPRs.map(function(p) {
+            return '<button type="button" class="today-pr-row press" onclick="go(\'progress\')">' +
+              '<div class="today-pr-row__name">' + esc(p.exercise || 'Lift') + '</div>' +
+              '<div class="today-pr-row__stat dash-stat-n">' + esc(String(p.weight || '—')) + '<span>kg</span></div>' +
+              '<div class="today-pr-row__meta">' + esc(String(p.reps || '—')) + ' reps · ' + esc(fmtDate(p.date)) + '</div>' +
+              '</button>';
+          }).join('')
+        : '<div class="today-pr-empty muted-11">No PRs yet. Heavy sets land here.</div>') +
+      '<button type="button" class="tap-link today-pr-all" onclick="go(\'progress\')">All PRs →</button>' +
+      '</aside>';
+
+    /* Clipboard Today: mobile stack; desktop 3-pane (body / plan / PRs) */
+    return demoBanner +
+      '<div class="today-clipboard">' +
+      topbar +
+      '<div class="today-layout">' +
+      bodyRail +
+      '<div class="today-main">' +
+      '<div class="clipboard-clip clipboard-clip--main" aria-hidden="true"></div>' +
       topPrompts +
       mesoChip +
       heroCard +
       todayWorkout +
+      quickActions +
+      progressSnapshot +
+      '<div class="today-mobile-muscles">' + (muscleRecoveryMini || '') + '</div>' +
       (firstWorkoutEmpty || '') +
       moreDisclosure +
-      '<div style="height:24px"></div>';
+      '</div>' +
+      prRail +
+      '</div>' +
+      '<div style="height:24px"></div>' +
+      '</div>';
 
   } catch(e) {
     console.error('dashboard', e);
