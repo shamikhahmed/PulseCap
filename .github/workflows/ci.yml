@@ -10,6 +10,11 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 jobs:
   verify:
     runs-on: ubuntu-latest
@@ -20,7 +25,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps chromium webkit firefox
       - run: npm run verify
       - uses: actions/upload-artifact@v4
         if: failure()
@@ -29,11 +34,34 @@ jobs:
           path: test-results
           retention-days: 7
 
-  # GitHub Pages serves main. This job only passes when verify is green —
-  # use as required status check so broken main never looks "shipped".
-  pages-gate:
+  deploy-pages:
     needs: verify
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - run: echo "CI green — Pages can serve main (https://shamikhahmed.github.io/PulseCap)"
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      - name: Prepare verified static site
+        run: |
+          mkdir _site
+          rsync -a \
+            --exclude '.git' \
+            --exclude '.github' \
+            --exclude '.cursor' \
+            --exclude 'node_modules' \
+            --exclude 'tests' \
+            --exclude 'test-results' \
+            --exclude 'playwright-report' \
+            --exclude 'package.json' \
+            --exclude 'package-lock.json' \
+            --exclude 'playwright.config.js' \
+            ./ _site/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+      - name: Deploy verified site
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -256,6 +256,7 @@ for (const [viewport, vp] of Object.entries(VIEWPORTS)) {
         const activeOk = await page.evaluate(() => {
           try {
             window.S.set('programWeightsConfirmed', true);
+            if (window.S.g('activeWorkoutDraft')) window.discardWorkoutDraft();
             window.startWorkout();
             return !!document.getElementById('wkt-header');
           } catch { return false; }

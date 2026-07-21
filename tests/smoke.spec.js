@@ -1,5 +1,8 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
+const fs = require('node:fs');
+const path = require('node:path');
+const version = require('../VERSION.json');
 
 test.describe('PulseCap smoke', () => {
   test('loads shell without fatal errors', async ({ page }) => {
@@ -23,8 +26,125 @@ test.describe('PulseCap smoke', () => {
     expect(res && res.ok()).toBeTruthy();
     const text = await page.textContent('body');
     expect(text || '').toContain('ASSET_URLS');
-    expect(text || '').toContain('pulsecap-v79');
+    expect(text || '').toContain(`const CACHE = '${version.swCache}'`);
     expect(text || '').toContain('sameOrigin');
+  });
+
+  test('service worker precache assets exist', () => {
+    const repoRoot = path.resolve(__dirname, '..');
+    const source = fs.readFileSync(path.join(repoRoot, 'sw.js'), 'utf8');
+    const assetsBlock = source.match(/const ASSETS = \[([\s\S]*?)\];/);
+    expect(assetsBlock).not.toBeNull();
+    const assets = [...(assetsBlock?.[1] || '').matchAll(/['"](\.\/[^'"]*)['"]/g)].map(match => match[1]);
+    expect(assets.length).toBeGreaterThan(0);
+    for (const asset of assets) {
+      const target = asset === './' ? repoRoot : path.resolve(repoRoot, asset);
+      expect(fs.existsSync(target), `Missing precache asset: ${asset}`).toBeTruthy();
+    }
+  });
+
+  test('service worker precache assets return successful responses', async ({ request }) => {
+    const repoRoot = path.resolve(__dirname, '..');
+    const source = fs.readFileSync(path.join(repoRoot, 'sw.js'), 'utf8');
+    const assetsBlock = source.match(/const ASSETS = \[([\s\S]*?)\];/);
+    const assets = [...(assetsBlock?.[1] || '').matchAll(/['"](\.\/[^'"]*)['"]/g)].map(match => match[1]);
+    for (const asset of assets) {
+      const url = asset === './' ? '/' : '/' + asset.slice(2);
+      const response = await request.get(url);
+      expect(response.ok(), `Precache request failed: ${asset} (${response.status()})`).toBeTruthy();
+    }
+  });
+
+  test('service worker waits for update consent', () => {
+    const source = fs.readFileSync(path.resolve(__dirname, '..', 'sw.js'), 'utf8');
+    expect(source).toContain("e.data.type === 'SKIP_WAITING'");
+    expect(source).not.toMatch(/c\.addAll\(ASSETS\)[\s\S]{0,100}\.then\(\(\) => self\.skipWaiting\(\)\)/);
+  });
+
+  test('boot resolves deep link once without dashboard overwrite', async ({ page }) => {
+    await page.goto('/?demo=1&go=progress');
+    await expect(page.locator('html')).toHaveAttribute('data-boot-ready', 'true');
+    await expect(page.locator('.topbar-title')).toHaveText('Progress');
+  });
+
+  test('modal exposes accessible dialog behavior', async ({ page }) => {
+    await page.goto('/?demo=1');
+    await page.locator('html[data-boot-ready="true"]').waitFor();
+    await page.evaluate(() => window.modal('Test dialog', '<input aria-label="Test input">', '<button type="button">Save</button>'));
+    const dialog = page.getByRole('dialog', { name: 'Test dialog' });
+    await expect(dialog).toBeVisible();
+    expect(await page.evaluate(() => document.querySelector('#_modal')?.contains(document.activeElement))).toBe(true);
+    await page.keyboard.press('Escape');
+    await expect(dialog).toHaveCount(0);
+  });
+
+  test('JavaScript argument encoder blocks inline-handler breakout', async ({ page }) => {
+    await page.goto('/?demo=1');
+    await page.locator('html[data-boot-ready="true"]').waitFor();
+    const result = await page.evaluate(() => {
+      const payload = `x');window.__pulseXss=1;//`;
+      const host = document.createElement('div');
+      host.innerHTML = `<button onclick="window.__captured=${window.jsArg(payload)}">Run</button>`;
+      document.body.appendChild(host);
+      host.querySelector('button').click();
+      return { captured: window.__captured, xss: window.__pulseXss };
+    });
+    expect(result.captured).toBe(`x');window.__pulseXss=1;//`);
+    expect(result.xss).toBeUndefined();
+  });
+
+  test('progress photos stay scoped to owning profile', async ({ page }) => {
+    await page.goto('/?demo=1');
+    await page.locator('html[data-boot-ready="true"]').waitFor();
+    const result = await page.evaluate(async () => {
+      const suffix = Date.now() + '_' + Math.random();
+      const a = 'test_a_' + suffix;
+      const b = 'test_b_' + suffix;
+      await window.PhotoStore.add({ id: 'photo_a_' + suffix, profileId: a, date: '2026-07-21', blob: new Blob(['a']) });
+      await window.PhotoStore.add({ id: 'photo_b_' + suffix, profileId: b, date: '2026-07-21', blob: new Blob(['b']) });
+      const aRows = await window.PhotoStore.all(a);
+      const bRows = await window.PhotoStore.all(b);
+      await window.PhotoStore.removeProfile(a);
+      await window.PhotoStore.removeProfile(b);
+      return { a: aRows.map(row => row.profileId), b: bRows.map(row => row.profileId) };
+    });
+    expect(result).toEqual({ a: [expect.stringMatching(/^test_a_/)], b: [expect.stringMatching(/^test_b_/)] });
+  });
+
+  test('active workout draft survives navigation and reload', async ({ page }) => {
+    await page.goto('/?demo=1');
+    await page.locator('html[data-boot-ready="true"]').waitFor();
+    await page.evaluate(() => {
+      window.startQuickWorkout();
+      window._setVal(0, 0, 'weight', 42.5);
+      window._setVal(0, 0, 'reps', 8);
+      window._doneSet(0, 0);
+    });
+    await page.goto('/');
+    await page.locator('html[data-boot-ready="true"]').waitFor();
+    await page.evaluate(() => window.go('workout'));
+    await expect(page.getByRole('button', { name: 'Resume' })).toBeVisible();
+    await page.getByRole('button', { name: 'Resume' }).click();
+    await expect(page.locator('#wkt-header')).toBeVisible();
+    const weight = await page.evaluate(() => window.getActiveWorkout().exercises[0].sets[0].weight);
+    expect(weight).toBe(42.5);
+  });
+
+  test('imperial onboarding stores canonical metric values', async ({ page }) => {
+    await page.goto('/?demo=1');
+    await page.locator('html[data-boot-ready="true"]').waitFor();
+    const user = await page.evaluate(() => {
+      window.obSelect('units', 'imperial');
+      window.obSelect('height', 70);
+      window.obSelect('weight', 180);
+      window.obSelect('goalWeight', 170);
+      window._finishOnboarding();
+      return window.S.g('user');
+    });
+    expect(user.units).toBe('imperial');
+    expect(user.height).toBeCloseTo(177.8, 1);
+    expect(user.weight).toBeCloseTo(81.65, 1);
+    expect(user.goalWeight).toBeCloseTo(77.11, 1);
   });
 
   test('PWA-only: no Capacitor runtime dependency', async () => {
