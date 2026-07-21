@@ -1,7 +1,7 @@
 # PulseCap v6 — North Star
 
 **Date:** 2026-07-18  
-**Version:** 6.2.1 · SW `pulsecap-v76`  
+**Version:** 6.3.0 · SW `pulsecap-v81`
 **Constraints (owner):** 100% free · offline PWA · no Capacitor/native · no B2B · no pricing · no cloud AI/LLM APIs · Smart Coach = rule-based + local data.
 
 ## Spine (everything links)

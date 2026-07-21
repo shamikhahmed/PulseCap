@@ -3,7 +3,7 @@
 PulseCap is your **Smart Coach fitness operating system** — an offline-first PWA for workouts, cardio, body tracking, nutrition, and rule-based coaching.
 
 **Live app:** https://shamikhahmed.github.io/PulseCap  
-**Version:** 6.2.1 · SW `pulsecap-v76`
+**Version:** 6.3.0 · SW `pulsecap-v81`
 
 ---
 

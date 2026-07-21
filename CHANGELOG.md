@@ -1,3 +1,10 @@
+## 6.3.0 — 2026-07-21
+- Reliability: resumable active-workout drafts, lazy-route race protection, storage quota handling, robust wger sync retries, and user-consented service-worker activation.
+- Data: canonical metric body values, guarded legacy-unit migration with rollback snapshot, profile-scoped IndexedDB photos, and quarantined legacy photos.
+- Security/privacy: safe inline-handler arguments, validated 2 MB backup imports with confirmation and rollback, scoped photo deletion, camera cleanup, and PulseCap-specific privacy disclosures.
+- UX/accessibility: accessible modal focus trap, keyboard activation for custom controls, larger touch targets, iOS install guidance, tablet layout fixes, accurate unit displays, and educational rehab wording.
+- QA/release: SW `pulsecap-v81`, version `6.3.0`, cross-browser Playwright projects, precache integrity tests, and GitHub Pages deployment gated by verification.
+
 ## 6.2.7 — 2026-07-20
 - Today remint: clipboard layout — readiness + plan stack on mobile; desktop 3-pane (body rail / main clipboard / PR watchlist). Quick actions + progress snapshot restored. SW `pulsecap-v79`.
 

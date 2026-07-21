@@ -1,6 +1,6 @@
 # PulseCap
 
-**Version:** 6.2.4
+**Version:** 6.3.0
 
 **Your Smart Coach fitness operating system — by Capricorn Systems, built as a single offline-first PWA.**
 
@@ -11,7 +11,7 @@
 
 ## What it is
 
-PulseCap Pro is a comprehensive fitness tracking PWA built entirely in vanilla HTML, CSS, and JavaScript — no frameworks, no CDNs, no backend. It runs fully offline, installs on any device, and stores all data locally.
+PulseCap is a fitness tracking PWA built in vanilla HTML, CSS, and JavaScript — no framework, bundler, account, or backend. Core tracking works offline after first successful load and profile data stays on-device. Optional wger media and browser speech services can require network access.
 
 Built by Shamikh Ahmed across 14 development sessions as a production-grade personal project.
 
@@ -81,7 +81,7 @@ Built by Shamikh Ahmed across 14 development sessions as a production-grade pers
 - **Skip-day coach** — can't train? The engine decides like a trainer: shift the week forward or absorb the skip, with its reasoning shown
 - **Habit loop** — weekly recap card, streaks that respect rest days (one freeze per week, milestones at 7/30/100), morning check-in, private progress photos (IndexedDB, on-device compression)
 - **Goal-aware weigh-ins** — every weight log gets a coach reaction: on pace, eat more, or rein it in
-- **Injury-aware training** — log injuries in Body → Rehab (severity + phased protocol); unsafe exercises auto-swap via avoid-lists and joint-stress ratings, with a "Modified for X" badge
+- **Injury-aware training** — track conditions in Body → Rehab with educational guidance; high-stress exercises auto-swap via avoid-lists and joint-stress ratings, with a "Modified for X" badge
 - **Equipment selection** — filters exercises by available gear
 - **Import/Export** — full JSON backup/restore
 
@@ -126,7 +126,7 @@ js/
     profiles.js     — Profile switcher, demo mode, sample athletes
     onboarding.js   — 4 intro slides + 7-step onboarding
     quests.js       — Quests, Academy, Physique Timeline body
-sw.js               — Service worker (cache: pulsecap-v76)
+sw.js               — Service worker (cache: pulsecap-v81)
 manifest.json       — PWA manifest
 ```
 
@@ -134,7 +134,7 @@ manifest.json       — PWA manifest
 
 ## Roadmap
 
-Shipped through **v6.2.4** (see `CHANGELOG.md`): Coach Kernel, gym tools (voice/barcode/wake/mobility/pain), RPE autoreg, mesocycle, offline foods, plate math, ProgramEngine, sample personas, gallery + CI `pages-gate`.
+Shipped through **v6.3.0** (see `CHANGELOG.md`): canonical unit storage, profile-scoped photos, resumable workout drafts, safer backup import, accessible dialogs, route-race protection, consent-based PWA updates, cross-browser CI, and verified Pages deployment.
 
 Still open / honest gaps (owner constraints):
 

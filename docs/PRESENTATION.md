@@ -5,7 +5,7 @@
 ## Slide 1 — Title
 
 # PulseCap
-### Your Intelligent Training Partner
+### Your Smart Coach Training Partner
 
 *300+ exercises · Smart Coach · Offline PWA*
 
@@ -25,14 +25,14 @@ Serious lifters need **depth** — not generic 10-exercise libraries.
 
 ## Slide 3 — Solution
 
-**PulseCap** — production-grade offline PWA (v6.2.0):
+**PulseCap** — production-grade offline-first PWA (v6.3.0):
 
 - 300+ exercise database with coaching cues
 - Active set logger + RPE autoreg + PR detection + rest timer
 - Gym tools: voice log, barcode food, wake lock, mobility, pain→rehab
 - Smart Coach (rules) + body map + nutrition — one app
 
-**Vanilla JS. Zero framework. Fully offline.**
+**Vanilla JS. Zero framework. Core tracking works offline.**
 
 ---
 
@@ -107,10 +107,10 @@ app.js / engines.js / coach-kernel.js / gym-tools.js
 modules/            — Today · Train · Body · Learn · Me
 storage.js          — Multi-profile S + seedPersonas
 foods-db.js         — Offline macros
-sw.js               — cache-first PWA (pulsecap-v72)
+sw.js               — cache-first PWA (pulsecap-v81)
 ```
 
-Vanilla JS. Zero framework. Fully offline. **v6.2.0**.
+Vanilla JS. Zero framework. Core tracking works offline. **v6.3.0**.
 
 ---
 
