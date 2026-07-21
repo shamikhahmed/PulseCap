@@ -1,13 +1,42 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.2.8';
+window.APP_VERSION = '6.3.0';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
 ══════════════════════════════════════════════════════ */
 const _screens = {};
 let _currentScreen = null;
+let _navigationSeq = 0;
+const _routeCleanups = {};
+
+function registerRouteCleanup(id, fn) {
+  if (!id || typeof fn !== 'function') return;
+  _routeCleanups[id] = fn;
+}
+function _runRouteCleanup(id) {
+  const fn = id && _routeCleanups[id];
+  if (!fn) return;
+  try { fn(); } catch (e) { console.error('route cleanup (' + id + ')', e); }
+}
+window.registerRouteCleanup = registerRouteCleanup;
+
+function upgradeInteractiveMarkup(root) {
+  if (!root) return;
+  root.querySelectorAll('[onclick]').forEach(function(el) {
+    if (/^(BUTTON|A|INPUT|SELECT|TEXTAREA|SUMMARY)$/.test(el.tagName) || el.dataset.keyboardClick === 'true') return;
+    if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+    if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+    el.dataset.keyboardClick = 'true';
+    el.addEventListener('keydown', function(e) {
+      if (e.key !== 'Enter' && e.key !== ' ') return;
+      e.preventDefault();
+      el.click();
+    });
+  });
+}
+window.upgradeInteractiveMarkup = upgradeInteractiveMarkup;
 
 /** Old go() ids → canonical screen. Keep registered screens until later delete phase. */
 const SCREEN_ALIASES = {
@@ -140,6 +169,7 @@ const MODULE_SRC = {
   'body-intelligence': 'js/modules/body-intelligence.js',
   'physique-archetype': 'js/modules/physique-archetype.js',
   'training-style': 'js/modules/training-style.js',
+  'training-intel': 'js/modules/training-intelligence.js',
   quests: 'js/modules/quests.js',
   academy: 'js/modules/quests.js',
   'physique-timeline': 'js/modules/quests.js',
@@ -173,7 +203,10 @@ function _renderScreen(id, data) {
   const preserveScroll = sameScreen && (
     (data && data.preserveScroll) || (!data && SCROLL_PRESERVE_SCREENS[id])
   );
-  if (!sameScreen && typeof haptic === 'function') haptic(10);
+  if (!sameScreen) {
+    _runRouteCleanup(_currentScreen);
+    if (typeof haptic === 'function') haptic(10);
+  }
   _currentScreen = id;
   document.title = (id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ')) + ' — PulseCap';
   const html = _screens[id](data) || '';
@@ -185,6 +218,7 @@ function _renderScreen(id, data) {
   const div = document.createElement('div');
   div.className = (sameScreen || fastApp) ? 'screen' : 'screen screen-enter';
   div.innerHTML = html;
+  upgradeInteractiveMarkup(div);
   const prev = v.querySelector('.screen');
   if (prev) prev.remove();
   v.appendChild(div);
@@ -209,6 +243,7 @@ function _renderScreen(id, data) {
 }
 
 function go(id, data) {
+  const navSeq = ++_navigationSeq;
   try {
     const resolved = resolveScreenAlias(id, data);
     id = resolved.id;
@@ -221,9 +256,11 @@ function go(id, data) {
         v.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:var(--txt2);font-size:var(--type-body,14px)">Loading…</div>';
       }
       loadScript(src).then(function() {
+        if (navSeq !== _navigationSeq) return;
         if (!_screens[id]) throw new Error('Screen "' + id + '" missing after load');
         _renderScreen(id, data);
       }).catch(function(e) {
+        if (navSeq !== _navigationSeq) return;
         console.error('go(' + id + ') lazy', e);
         const view = document.getElementById('view');
         if (view) view.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:#ff4444;font-size:14px;line-height:1.6">' +
@@ -261,34 +298,49 @@ function bootDemoIfRequested() {
 window.bootDemoIfRequested = bootDemoIfRequested;
 
 /** Home-screen shortcuts / deep links: ?go=screen | ?action=start|today */
+let _pendingDeepLink = null;
 function bootDeepLink() {
   try {
     const q = new URLSearchParams(location.search);
     const action = q.get('action');
     const goTo = q.get('go') || q.get('tab');
     if (action === 'start' || goTo === 'log' || goTo === 'workout') {
-      setTimeout(function() {
+      _pendingDeepLink = function() {
         if (typeof startWorkout === 'function' && S.g('onboarded')) startWorkout();
-        else if (typeof go === 'function') go('workout');
-      }, 80);
+        else if (S.g('onboarded') && typeof go === 'function') go('workout');
+        else if (typeof go === 'function') go('onboarding', { showIntro: true });
+      };
       return true;
     }
     if (action === 'today' || goTo === 'today' || goTo === 'dashboard') {
-      setTimeout(function() { if (typeof go === 'function') go('dashboard'); }, 40);
+      _pendingDeepLink = function() {
+        if (typeof go === 'function') go(S.g('onboarded') ? 'dashboard' : 'onboarding', S.g('onboarded') ? undefined : { showIntro: true });
+      };
       return true;
     }
     if (goTo === 'exercises' || goTo === 'encyclopedia') {
-      setTimeout(function() { if (typeof go === 'function') go('encyclopedia'); }, 40);
+      _pendingDeepLink = function() {
+        if (typeof go === 'function') go(S.g('onboarded') ? 'encyclopedia' : 'onboarding', S.g('onboarded') ? undefined : { showIntro: true });
+      };
       return true;
     }
     if (goTo && typeof go === 'function') {
-      setTimeout(function() { go(goTo); }, 40);
+      _pendingDeepLink = function() {
+        go(S.g('onboarded') ? goTo : 'onboarding', S.g('onboarded') ? undefined : { showIntro: true });
+      };
       return true;
     }
   } catch (e) { /* ignore */ }
   return false;
 }
+function runPendingDeepLink() {
+  const fn = _pendingDeepLink;
+  _pendingDeepLink = null;
+  if (fn) fn();
+  return !!fn;
+}
 window.bootDeepLink = bootDeepLink;
+window.runPendingDeepLink = runPendingDeepLink;
 
 /* ══════════════════════════════════════════════════════
    HELPERS
@@ -296,6 +348,9 @@ window.bootDeepLink = bootDeepLink;
 function esc(s) {
   return String(s == null ? '' : s)
     .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function jsArg(value) {
+  return esc(JSON.stringify(String(value == null ? '' : value)));
 }
 function isoNow() { return new Date().toISOString(); }
 /* LOCAL calendar date — never toISOString (that's UTC and breaks evenings
@@ -314,8 +369,31 @@ function fmtMins(mins) { return mins<60?mins+'m':Math.floor(mins/60)+'h '+(mins%
 function daysAgo(d) { return Math.floor((Date.now() - new Date(d)) / 864e5); }
 function greet() { const h=new Date().getHours(); return h<12?'Good morning':h<17?'Good afternoon':'Good evening'; }
 function round2(n) { return Math.round(n*100)/100; }
-window.esc=esc;window.isoNow=isoNow;window.today=today;window.fmtDate=fmtDate;
+function usesImperial(user) {
+  return ((user || (typeof S !== 'undefined' ? S.g('user') : null) || {}).units === 'imperial');
+}
+function weightFromKg(kg, user) {
+  const value = Number(kg) || 0;
+  return usesImperial(user) ? Math.round(value * 2.2046226218 * 10) / 10 : Math.round(value * 10) / 10;
+}
+function weightToKg(value, user) {
+  const amount = Number(value) || 0;
+  return usesImperial(user) ? Math.round(amount * 0.45359237 * 100) / 100 : Math.round(amount * 100) / 100;
+}
+function heightFromCm(cm, user) {
+  const value = Number(cm) || 0;
+  return usesImperial(user) ? Math.round(value / 2.54 * 10) / 10 : Math.round(value * 10) / 10;
+}
+function heightToCm(value, user) {
+  const amount = Number(value) || 0;
+  return usesImperial(user) ? Math.round(amount * 2.54 * 10) / 10 : Math.round(amount * 10) / 10;
+}
+function weightUnit(user) { return usesImperial(user) ? 'lb' : 'kg'; }
+function formatWeight(kg, user) { return weightFromKg(kg, user) + ' ' + weightUnit(user); }
+window.esc=esc;window.jsArg=jsArg;window.isoNow=isoNow;window.today=today;window.fmtDate=fmtDate;
 window.fmtTime=fmtTime;window.fmtMins=fmtMins;window.daysAgo=daysAgo;window.greet=greet;
+window.usesImperial=usesImperial;window.weightFromKg=weightFromKg;window.weightToKg=weightToKg;
+window.heightFromCm=heightFromCm;window.heightToCm=heightToCm;window.weightUnit=weightUnit;window.formatWeight=formatWeight;
 
 /* ══════════════════════════════════════════════════════
    TOAST
@@ -408,26 +486,63 @@ window.moduleChip = moduleChip;
 window.uiCard = uiCard;
 window.uiSection = uiSection;
 window.uiSpacer = uiSpacer;
-function modal(title, bodyHtml, footerHtml) {
+function modal(title, bodyHtml, footerHtml, options) {
   closeModal();
   const d = document.createElement('div');
   d.className = 'modal-overlay'; d.id = '_modal';
+  d._returnFocus = document.activeElement;
+  d._onClose = options && typeof options.onClose === 'function' ? options.onClose : null;
   d.onclick = e => { if(e.target===d) closeModal(); };
-  d.innerHTML = '<div class="modal-sheet"><div class="modal-handle"></div>' +
+  const titleId = '_modal_title';
+  d.innerHTML = '<div class="modal-sheet" role="dialog" aria-modal="true" ' +
+    (title ? 'aria-labelledby="' + titleId + '"' : 'aria-label="Dialog"') + ' tabindex="-1"><div class="modal-handle" aria-hidden="true"></div>' +
     '<button type="button" class="modal-close" aria-label="Close" onclick="closeModal()">✕</button>' +
-    (title?'<div class="modal-title">'+esc(title)+'</div>':'') +
+    (title?'<div class="modal-title" id="' + titleId + '">'+esc(title)+'</div>':'') +
     bodyHtml + (footerHtml||'') + '</div>';
+  d.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeModal();
+      return;
+    }
+    if (e.key !== 'Tab') return;
+    const items = Array.from(d.querySelectorAll('button:not([disabled]),a[href],input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])'))
+      .filter(function(el) { return el.offsetParent !== null; });
+    if (!items.length) {
+      e.preventDefault();
+      d.querySelector('.modal-sheet').focus();
+      return;
+    }
+    const first = items[0];
+    const last = items[items.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  });
   document.body.appendChild(d);
   /* Lock the page behind the sheet so iOS keyboard focus-scroll can't yank it */
   const v = document.getElementById('view');
   if (v) { d._viewScroll = v.scrollTop; v.style.overflow = 'hidden'; }
+  const initialFocus = d.querySelector('button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),a[href]');
+  (initialFocus || d.querySelector('.modal-sheet')).focus();
 }
 function closeModal() {
   const m = document.getElementById('_modal');
   if (m) {
+    const cleanup = m._onClose;
+    const returnFocus = m._returnFocus;
+    m._onClose = null;
+    if (cleanup) {
+      try { cleanup(); } catch (e) { console.error('modal cleanup', e); }
+    }
     const v = document.getElementById('view');
     if (v) { v.style.overflow = ''; if (m._viewScroll != null) v.scrollTop = m._viewScroll; }
     m.remove();
+    if (returnFocus && typeof returnFocus.focus === 'function' && document.contains(returnFocus)) returnFocus.focus();
   }
 }
 window.sh=sh;window.emptyState=emptyState;window.modal=modal;window.closeModal=closeModal;
@@ -462,6 +577,11 @@ function initCanvas() {
     return;
   }
   if (S.g('settings.lowPower') === true) {
+    c.style.display = 'none';
+    return;
+  }
+  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if ((connection && connection.saveData) || (navigator.deviceMemory && navigator.deviceMemory <= 4)) {
     c.style.display = 'none';
     return;
   }
@@ -572,6 +692,8 @@ function applyTheme(t, persist) {
   /* Capricorn shared components (premium nav, glass surfaces) read their own
      attribute — keep both in sync or light mode ships a dark navbar. */
   document.documentElement.setAttribute('data-cap-theme', theme);
+  const themeMeta = document.querySelector('meta[name="theme-color"]');
+  if (themeMeta) themeMeta.setAttribute('content', theme === 'light' ? '#f2f2f7' : '#0d0d0f');
   if (persist !== false) {
     S.set('user.theme', theme);
     S.set('user.mode', theme);

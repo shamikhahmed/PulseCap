@@ -273,7 +273,7 @@ reg('search', function(data) {
       content =
         '<div style="padding:12px 16px 6px;display:flex;align-items:center;justify-content:space-between">' +
         '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3)">Recent</div>' +
-        '<button type="button" onclick="S.s(\'recentSearches\',[]);go(\'search\')" style="font-size:12px;color:var(--txt3);background:none;border:none;cursor:pointer;touch-action:manipulation;padding:4px 8px">Clear</button>' +
+        '<button type="button" onclick="S.set(\'recentSearches\',[]);go(\'search\')" style="font-size:12px;color:var(--txt3);background:none;border:none;cursor:pointer;touch-action:manipulation;padding:4px 8px">Clear</button>' +
         '</div>' +
         recents.slice(0, 5).map(function(r, i) {
           return '<button type="button" class="list-row" onclick="_searchRun(_srRecents[' + i + '])" aria-label="Search ' + esc(r) + '">' +
@@ -332,7 +332,7 @@ window._saveSearch = function(q) {
   var recents = S.g('recentSearches') || [];
   q = q.trim();
   recents = [q].concat(recents.filter(function(r) { return r !== q; })).slice(0, 8);
-  S.s('recentSearches', recents);
+  S.set('recentSearches', recents);
 };
 
 window._searchRun = function(q) {

@@ -1,6 +1,6 @@
 'use strict';
 /* PulseCap gym floor helpers — wake lock, voice log, barcode, mobility, pain.
-   Offline only. No network. Attached to window. */
+   Barcode lookup is local. Browser SpeechRecognition may use provider services. */
 
 /* ── Screen Wake Lock ── */
 var _wakeSentinel = null;

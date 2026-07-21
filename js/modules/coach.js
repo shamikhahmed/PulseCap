@@ -372,7 +372,7 @@ function _deloadBlock(user) {
   return sh('Recovery Alert') +
     '<div class="ai-msg" style="border-left-color:#f5c842">' +
     '<div class="ai-msg-header"><span class="c-warn">' + icon('alert', 16) + '</span><span class="ai-msg-label c-warn">Deload Recommended</span></div>' +
-    '<div class="ai-msg-text">5+ weeks of progressive training detected. A deload week (50% volume, same frequency) will prevent overtraining and drive adaptation.</div></div>';
+    '<div class="ai-msg-text">5+ weeks of progressive training detected. A lower-volume week may reduce accumulated fatigue. Adjust based on performance, soreness, and recovery.</div></div>';
 }
 
 window.showLogCardio = function() {

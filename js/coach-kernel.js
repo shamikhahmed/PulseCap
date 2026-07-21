@@ -278,7 +278,9 @@ const ReadinessCalibrator = {
       if (v.hrv < Number(S.g('user.baselineHrv')) * 0.85) s -= 6;
     }
     /* If last session avg RPE ≥ 9 and readiness claimed high — dampen */
-    const last = (S.g('workouts') || [])[0];
+    const last = (S.g('workouts') || []).slice().sort(function(a, b) {
+      return new Date(a.endedAt || a.startedAt || a.date || 0) - new Date(b.endedAt || b.startedAt || b.date || 0);
+    }).pop();
     if (last) {
       const ar = AutoregEngine.sessionAvgRpe(last.exercises);
       if (ar != null && ar >= 9 && s >= 75) s -= 10;
@@ -292,7 +294,7 @@ window.ReadinessCalibrator = ReadinessCalibrator;
 const CoachKernel = {
   snapshot: function() {
     const readinessRaw = (typeof ReadinessEngine !== 'undefined') ? ReadinessEngine.score() : 70;
-    const readiness = ReadinessCalibrator.adjustScore(readinessRaw);
+    const readiness = readinessRaw;
     const decision = (typeof DailyDecision !== 'undefined' && DailyDecision.decide)
       ? DailyDecision.decide()
       : { decision: 'train', title: 'Train', reason: '' };

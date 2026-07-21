@@ -26,6 +26,11 @@ reg('progress', function() {
     '<div  class="spacer-bottom"></div>';
 });
 
+function _progressUser() { return S.g('user') || {}; }
+function _progressUnit() { return weightUnit(_progressUser()); }
+function _progressWeight(kg) { return weightFromKg(kg, _progressUser()); }
+function _progressVolume(kgVolume) { return usesImperial(_progressUser()) ? Math.round((Number(kgVolume) || 0) * 2.2046226218) : Math.round(Number(kgVolume) || 0); }
+
 function _monthlyReport(ws, prs, bodyStats) {
   const now = new Date();
   const monthStart = new Date(now.getFullYear(), now.getMonth(), 1).toISOString().slice(0, 10);
@@ -40,10 +45,10 @@ function _monthlyReport(ws, prs, bodyStats) {
     '<div style="font-size:15px;font-weight:800;color:var(--txt);margin-bottom:12px">'+esc(monthName)+'</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">' +
     _pStat(monthWs.length, 'Sessions', 'calendar') +
-    _pStat(Math.round(monthVol / 1000) + 'k', 'Volume kg', 'dumbbell') +
+    _pStat(Math.round(_progressVolume(monthVol) / 1000) + 'k', 'Volume ' + _progressUnit(), 'dumbbell') +
     _pStat(monthPRs, 'PRs', 'gradcap') +
     '</div>' +
-    (weightChange !== null ? '<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--txt3)">Weight this month: <span style="color:'+(parseFloat(weightChange)<=0?'var(--c3)':'var(--c5)')+';font-weight:700">'+(parseFloat(weightChange)>0?'+':'')+weightChange+' kg</span></div>' : '') +
+    (weightChange !== null ? '<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--txt3)">Weight this month: <span style="color:'+(parseFloat(weightChange)<=0?'var(--c3)':'var(--c5)')+';font-weight:700">'+(parseFloat(weightChange)>0?'+':'')+_progressWeight(parseFloat(weightChange))+' '+_progressUnit()+'</span></div>' : '') +
     '</div>';
 }
 
@@ -90,7 +95,7 @@ function _weeklySummary(ws, prs) {
     '<div  class="section-label">This Week</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">' +
     _pStat(thisCount, 'Sessions', 'calendar') +
-    _pStat(Math.round(thisVol)+'kg', 'Volume', 'dumbbell') +
+    _pStat(_progressVolume(thisVol)+_progressUnit(), 'Volume', 'dumbbell') +
     _pStat(newPRs, 'New PRs', 'gradcap') +
     '</div>' +
     (lastVol > 0 ? '<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--border);font-size:12px;color:var(--txt3)">vs last week: <span style="color:'+(volChange>=0?'var(--c3)':'var(--c4)')+';font-weight:700">'+(volChange>=0?'+':'')+volChange+'% volume</span></div>' : '') +
@@ -183,7 +188,7 @@ function _renderStrengthChart(ws, exName) {
   var guideLines = guides.map(function(v) {
     var gy = toY(v);
     return '<line x1="'+padL+'" y1="'+gy+'" x2="'+(W-padR)+'" y2="'+gy+'" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>' +
-      '<text x="'+(padL-4)+'" y="'+(gy+4)+'" font-size="9" fill="var(--txt3)" text-anchor="end">'+Math.round(v)+'</text>';
+      '<text x="'+(padL-4)+'" y="'+(gy+4)+'" font-size="9" fill="var(--txt3)" text-anchor="end">'+_progressWeight(v)+'</text>';
   }).join('');
 
   var dots = pts.map(function(p, i) {
@@ -225,12 +230,13 @@ function _renderStrengthChart(ws, exName) {
     dots +
     xLabels +
     '</svg>' +
-    '<div style="text-align:center;font-size:11px;color:var(--txt3);margin-top:4px">e1RM (kg)</div>' +
+    '<div style="text-align:center;font-size:11px;color:var(--txt3);margin-top:4px">e1RM ('+_progressUnit()+')</div>' +
     '</div>';
 }
 
 function _heroStats(ws, prs, streak, totalVol) {
-  const volDisplay = totalVol > 1000 ? (Math.round(totalVol/100)/10) + 't' : totalVol + 'kg';
+  const converted = _progressVolume(totalVol);
+  const volDisplay = converted > 1000 ? (Math.round(converted/100)/10) + 'k ' + _progressUnit() : converted + _progressUnit();
   return '<div class="stats-row">' +
     '<div class="stat stat-accent"><div class="stat-v">'+ws.length+'</div><div class="stat-l">Workouts</div></div>' +
     '<div class="stat"><div class="stat-v">'+esc(volDisplay)+'</div><div class="stat-l">Total Vol</div></div>' +
@@ -274,7 +280,7 @@ function _workoutHistory(ws) {
     recent.map(function(w) {
       const exNames = (w.exercises||[]).slice(0,3).map(function(e){return e.name;}).join(', ');
       const more = (w.exercises||[]).length > 3 ? ' +'+((w.exercises||[]).length-3)+' more' : '';
-      const vol = w.totalVol ? Math.round(w.totalVol)+'kg' : '';
+      const vol = w.totalVol ? _progressVolume(w.totalVol)+_progressUnit() : '';
       const dur = w.duration ? fmtMins(w.duration) : '';
       const prs = (w.exercises||[]).reduce(function(a,ex) {
         const prSets = (ex.sets||[]).filter(function(s){return s.isPR;});
@@ -334,8 +340,8 @@ function _prBoard(prs) {
       '<div style="display:flex;color:var(--c1)">'+icon('gradcap', 22)+'</div>' +
       '<div  class="flex-1"><div  class="row-title-14">'+esc(p.exercise)+'</div>' +
       '<div  class="muted-12">'+fmtDate(p.date)+'</div></div>' +
-      '<div class="ta-right"><div style="font-size:15px;font-weight:800;color:var(--c1)">'+p.weight+'kg × '+p.reps+'</div>' +
-      '<div  class="muted-11">e1RM: '+(p.e1rm||'—')+'kg</div></div></div>'
+      '<div class="ta-right"><div style="font-size:15px;font-weight:800;color:var(--c1)">'+_progressWeight(p.weight)+_progressUnit()+' × '+p.reps+'</div>' +
+      '<div  class="muted-11">e1RM: '+(p.e1rm?_progressWeight(p.e1rm):'—')+_progressUnit()+'</div></div></div>'
     ).join('') + '</div>';
 }
 
@@ -359,7 +365,7 @@ function _strengthCharts(ws, prs) {
       '<polyline points="'+points+'" fill="none" stroke="var(--c1)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>' +
       pts.map((p,i) => { const x=(i/(pts.length-1||1))*W, y=H-((p.e1rm/maxE)*(H-8))-4; return '<circle cx="'+x+'" cy="'+y+'" r="3.5" fill="var(--c1)"/>'; }).join('') +
       '</svg>' +
-      '<div  class="muted-12">Peak e1RM: '+Math.round(maxE)+'kg</div>' +
+      '<div  class="muted-12">Peak e1RM: '+_progressWeight(maxE)+_progressUnit()+'</div>' +
       '</div>';
   }).filter(Boolean).join('');
   if (!charts) return '';
@@ -392,7 +398,7 @@ function _bodyStatsChart(bodyStats, user) {
 
   var dots = pts.map(function(p,i){
     var cx=toX(i), cy=toY(p.weight), isLast=i===pts.length-1;
-    var w = isImperial ? Math.round(p.weight*2.205*10)/10 : p.weight;
+    var w = weightFromKg(p.weight, user);
     var fasted = p.fasted !== false;
     var dotFill = isLast ? 'white' : (fasted ? '#ffd60a' : '#bf5af2');
     var dotStroke = fasted ? '#ffd60a' : '#bf5af2';
@@ -448,7 +454,7 @@ window.showDayWorkouts = function(dateStr) {
     return '<div style="padding:12px 0;border-bottom:1px solid var(--border)">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">' +
       '<div  class="row-title-15">'+esc(w.name||'Workout')+'</div>' +
-      '<div  class="muted-12">'+fmtMins(w.duration||0)+' · '+Math.round(w.totalVol||0)+'kg</div>' +
+      '<div  class="muted-12">'+fmtMins(w.duration||0)+' · '+_progressVolume(w.totalVol||0)+_progressUnit()+'</div>' +
       '</div>' +
       (w.exercises||[]).map(function(ex) {
         const doneSets = (ex.sets||[]).filter(function(s){return s.done;});
@@ -456,7 +462,7 @@ window.showDayWorkouts = function(dateStr) {
         const bestSet = doneSets.slice().sort(function(a,b){return ProgEngine.epley(b.weight||0,b.reps||1)-ProgEngine.epley(a.weight||0,a.reps||1);})[0];
         return '<div style="padding:6px 0;display:flex;justify-content:space-between;align-items:center">' +
           '<div  class="body-13">'+esc(ex.name)+'</div>' +
-          '<div  class="muted-12">'+doneSets.length+' sets · Best: '+(bestSet.weight||0)+'kg×'+(bestSet.reps||0)+(bestSet.isPR?'  '+icon('gradcap',12):'')+'</div>' +
+          '<div  class="muted-12">'+doneSets.length+' sets · Best: '+_progressWeight(bestSet.weight||0)+_progressUnit()+'×'+(bestSet.reps||0)+(bestSet.isPR?'  '+icon('gradcap',12):'')+'</div>' +
           '</div>';
       }).join('') +
       '</div>';

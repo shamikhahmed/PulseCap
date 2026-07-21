@@ -206,7 +206,7 @@ const RecapEngine = {
       if (t < startT || t > endT) return;
       (w.exercises || []).forEach(ex => {
         const key = this._muscleKey(ex);
-        const n = (ex.sets || []).filter(s => s.done).length;
+        const n = (ex.sets || []).filter(s => s.done && !s._warmup).length;
         counts[key] = (counts[key] || 0) + n;
       });
     });

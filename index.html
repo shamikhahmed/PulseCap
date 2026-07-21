@@ -139,12 +139,17 @@
 <div class="cap-scroll-progress" aria-hidden="true"></div>
 <div class="cap-ambient" aria-hidden="true"></div>
 <a href="#view" class="cap-skip-link">Skip to content</a>
-<div id="offline-banner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#ff453a;color:#fff;text-align:center;padding:10px;font-size:13px;font-weight:600">
-  📵 You're offline — PulseCap works fully offline
+<div id="offline-banner" role="status" aria-live="polite" style="display:none;position:fixed;top:0;left:0;right:0;z-index:9999;background:#ff453a;color:#fff;text-align:center;padding:10px;font-size:13px;font-weight:600">
+  You’re offline — downloaded features remain available
 </div>
 <script>
-window.addEventListener('online', function(){ document.getElementById('offline-banner').style.display='none'; });
-window.addEventListener('offline', function(){ document.getElementById('offline-banner').style.display='block'; });
+function updateOfflineBanner() {
+  var banner = document.getElementById('offline-banner');
+  if (banner) banner.style.display = navigator.onLine ? 'none' : 'block';
+}
+window.addEventListener('online', updateOfflineBanner);
+window.addEventListener('offline', updateOfflineBanner);
+updateOfflineBanner();
 </script>
   <canvas id="cap-scene" class="cap-scene-canvas cap-scene-canvas--subtle" aria-hidden="true"></canvas>
   <canvas id="bg-canvas"></canvas>
@@ -213,21 +218,24 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
   <script src="js/modules/knowledge-graph.js"></script>
   <script src="js/modules/recovery-debt.js"></script>
   <script src="js/modules/physique.js"></script>
-  <script src="js/modules/training-intelligence.js"></script>
   <script src="js/modules/hub.js"></script>
   <script src="js/modules/photos.js"></script>
   <!-- Learn deep-screens load on demand via go() + MODULE_SRC (still SW-cached for offline) -->
 
   <script>
     (function() {
-      var SPLASH_MS = 2000;
+      var SPLASH_MS = 300;
       var t0 = performance.now();
       window._bootAfterSplash = function(fn) {
         var wait = Math.max(0, SPLASH_MS - (performance.now() - t0));
         setTimeout(function() {
           var splash = document.getElementById('boot-splash');
           if (splash) splash.classList.add('clipboard-splash--out');
-          setTimeout(fn, 260);
+          setTimeout(function() {
+            fn();
+            document.documentElement.setAttribute('data-boot-ready', 'true');
+            window.dispatchEvent(new CustomEvent('pulsecap:ready'));
+          }, 180);
         }, wait);
       };
     })();
@@ -245,14 +253,13 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
     if (typeof loadCustomExercises === 'function') loadCustomExercises();
     if (typeof ExerciseLibrary !== 'undefined') ExerciseLibrary.mergeIntoExDB();
     initCanvas();
-    if (_isDemo) {
-      _bootAfterSplash(function() { go('dashboard'); });
-    } else if (!S.g('onboarded')) {
-      _bootAfterSplash(function() { go('intro'); });
-    } else {
-      _bootAfterSplash(function() { go('dashboard'); });
-    }
-    if (typeof bootDeepLink === 'function') bootDeepLink();
+    const _hasDeepLink = typeof bootDeepLink === 'function' && bootDeepLink();
+    _bootAfterSplash(function() {
+      if (typeof currentScreenId === 'function' && currentScreenId()) return;
+      if (_hasDeepLink && typeof runPendingDeepLink === 'function' && runPendingDeepLink()) return;
+      if (_isDemo || S.g('onboarded')) go('dashboard');
+      else go('intro');
+    });
     var _deferredInstallPrompt = null;
     window.addEventListener('beforeinstallprompt', function(e) {
       e.preventDefault();
@@ -283,10 +290,46 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
         var b = document.getElementById('install-banner'); if (b) b.remove();
       });
     };
+    (function showIOSInstallGuidance() {
+      var isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      var standalone = window.matchMedia && window.matchMedia('(display-mode: standalone)').matches;
+      if (!isIOS || standalone || navigator.standalone || localStorage.getItem('fos_ios_install_dismissed')) return;
+      var visits = parseInt(localStorage.getItem('fos_ios_visits') || '0', 10) + 1;
+      localStorage.setItem('fos_ios_visits', String(visits));
+      if (visits < 2) return;
+      setTimeout(function() {
+        if (document.getElementById('install-banner')) return;
+        var banner = document.createElement('div');
+        banner.id = 'install-banner';
+        banner.setAttribute('role', 'status');
+        banner.style.cssText = 'position:fixed;bottom:calc(var(--nav-h,64px) + var(--safe,0px) + 8px);left:16px;right:16px;background:var(--bg3);border:1px solid var(--border2);border-radius:16px;padding:14px 16px;display:flex;align-items:center;gap:12px;z-index:888';
+        banner.innerHTML = '<div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">Install PulseCap</div><div style="font-size:11px;color:var(--txt3);line-height:1.4">In Safari, tap Share, then Add to Home Screen.</div></div><button type="button" aria-label="Dismiss install guidance" style="min-width:44px;min-height:44px;background:none;border:none;color:var(--txt3);font-size:20px">×</button>';
+        banner.querySelector('button').addEventListener('click', function() {
+          localStorage.setItem('fos_ios_install_dismissed', 'true');
+          banner.remove();
+        });
+        document.body.appendChild(banner);
+      }, 1200);
+    })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=80').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=81').then(function(reg) {
+        var updateReloadRequested = false;
         reg.update();
-        function showUpdate() {}
+        function showUpdate() {
+          if (!reg.waiting || document.getElementById('update-banner')) return;
+          var banner = document.createElement('div');
+          banner.id = 'update-banner';
+          banner.setAttribute('role', 'status');
+          banner.style.cssText = 'position:fixed;top:calc(12px + var(--top-safe));left:16px;right:16px;z-index:10001;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px';
+          banner.innerHTML = '<div style="flex:1;font-size:13px;color:var(--txt)">PulseCap update ready</div><button type="button" class="btn btn-primary btn-sm">Reload</button><button type="button" class="btn btn-ghost btn-sm" aria-label="Dismiss update">Later</button>';
+          var buttons = banner.querySelectorAll('button');
+          buttons[0].addEventListener('click', function() {
+            updateReloadRequested = true;
+            if (reg.waiting) reg.waiting.postMessage({ type: 'SKIP_WAITING' });
+          });
+          buttons[1].addEventListener('click', function() { banner.remove(); });
+          document.body.appendChild(banner);
+        }
         if (reg.waiting) showUpdate();
         reg.addEventListener('updatefound', function() {
           var w = reg.installing;
@@ -295,7 +338,15 @@ window.addEventListener('offline', function(){ document.getElementById('offline-
             if (w.state === 'installed' && navigator.serviceWorker.controller) showUpdate();
           });
         });
-      }).catch(function(){});
+        var refreshing = false;
+        navigator.serviceWorker.addEventListener('controllerchange', function() {
+          if (refreshing || !updateReloadRequested) return;
+          refreshing = true;
+          location.reload();
+        });
+      }).catch(function() {
+        if (typeof toast === 'function') toast('Offline setup failed. Stay online and reload to retry.', 'warn', 5000);
+      });
     }
   </script>
   <script src="js/capricorn-motion.js"></script>

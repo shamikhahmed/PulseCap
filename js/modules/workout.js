@@ -747,6 +747,53 @@ let _wktNotes = {};
 let _supersetMode = false;
 let _quickMode = false;
 let _focusMode = false;
+let _lastDraftCheckpoint = 0;
+
+function _workoutDraft() {
+  return S.g('activeWorkoutDraft');
+}
+function _checkpointWorkout(force) {
+  if (!_wkt) return;
+  const now = Date.now();
+  if (!force && now - _lastDraftCheckpoint < 1000) return;
+  _lastDraftCheckpoint = now;
+  S.set('activeWorkoutDraft', {
+    version: 1,
+    workout: _wkt,
+    notes: _wktNotes,
+    supersetMode: _supersetMode,
+    quickMode: _quickMode,
+    focusMode: _focusMode,
+    savedAt: now
+  });
+}
+function _hydrateWorkoutDraft() {
+  const draft = _workoutDraft();
+  if (!draft || draft.version !== 1 || !draft.workout || !Array.isArray(draft.workout.exercises)) return false;
+  _wkt = draft.workout;
+  _wktNotes = draft.notes || {};
+  _supersetMode = !!draft.supersetMode;
+  _quickMode = !!draft.quickMode;
+  _focusMode = !!draft.focusMode;
+  _startWktTimer();
+  return true;
+}
+window.resumeWorkoutDraft = function() {
+  if (!_hydrateWorkoutDraft()) {
+    toast('Workout draft could not be restored', 'warn');
+    return;
+  }
+  if (typeof WakeLock !== 'undefined') WakeLock.request();
+  go('active');
+};
+window.discardWorkoutDraft = function() {
+  S.set('activeWorkoutDraft', null);
+  _wkt = null;
+  _wktNotes = {};
+  clearInterval(_wktTimer);
+  go('workout');
+  toast('Workout draft discarded', 'info');
+};
 
 /* ── WORKOUT HOME SCREEN ── */
 reg('workout', function() {
@@ -756,6 +803,13 @@ reg('workout', function() {
   const cardioRec = CoachEngine.cardioRec(splitDay, score);
   const readiness = ReadinessEngine.label(score);
   const suggestion = CoachEngine.insights()[0];
+  const draft = _workoutDraft();
+  const draftBanner = draft && draft.workout
+    ? '<div class="card-block"><div class="section-label">Workout in progress</div>' +
+      '<div class="body-13">' + esc(draft.workout.name || 'Workout') + ' · saved ' + esc(fmtDate(new Date(draft.savedAt || Date.now()))) + '</div>' +
+      '<div class="flex-gap-8 mt-14"><button type="button" class="btn btn-primary btn-sm" onclick="resumeWorkoutDraft()">Resume</button>' +
+      '<button type="button" class="btn btn-secondary btn-sm" onclick="discardWorkoutDraft()">Discard</button></div></div>'
+    : '';
 
   const warmupItems = (splitDay.warmup || []).map(w =>
     '<div class="warmup-item"><span class="warmup-item-icon" style="color:var(--c5);display:inline-flex">'+icon('flame',14)+'</span>'+esc(w)+'</div>'
@@ -782,7 +836,7 @@ reg('workout', function() {
       (ex?'<div  class="muted-12 mt-2">'+esc(ex.pri)+(ex.sec?', '+ex.sec:'')+'</div>':'') +
       (prev?'<div style="font-size:12px;color:var(--c1);margin-top:2px">'+esc(prev)+'</div>':'') +
       '</div>' +
-      '<button type="button" onclick="showExerciseDetail(\''+esc(name)+'\')" aria-label="Exercise details" ' +
+      '<button type="button" onclick="showExerciseDetail('+jsArg(name)+')" aria-label="Exercise details" ' +
       'style="width:32px;height:32px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);' +
       'display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0">'+icon('book',15)+'</button>' +
       '</div>';
@@ -796,7 +850,7 @@ reg('workout', function() {
     '<button type="button" onclick="go(\'cardio\')" class="press mod-chip inline-chip">' + icon('heart', 15) + 'Cardio</button>' +
     '<button type="button" onclick="go(\'calisthenics\')" class="press mod-chip inline-chip">' + icon('run', 15) + 'Skills</button>' +
     '<button type="button" onclick="go(\'training-intel\')" class="press mod-chip inline-chip">' + icon('sparkles', 15) + 'Intel</button>' +
-    '</div>' +
+    '</div>' + draftBanner +
 
     '<div  class="pad-x-16-b">' +
     '<div class="readiness-label '+readiness.cls+' mb-12" >Readiness: '+score+' — '+readiness.l+'</div>' +
@@ -889,9 +943,10 @@ reg('cardio', function() {
 
 /* ── ACTIVE WORKOUT SCREEN ── */
 reg('active', function() {
-  if (!_wkt) { go('workout'); return ''; }
+  if (!_wkt && !_hydrateWorkoutDraft()) { go('workout'); return ''; }
   const user = S.g('user') || {};
   const goal = user.goal || 'hypertrophy';
+  const displayUnit = weightUnit(user).toUpperCase();
   const restSecs = user.restSecs || 120;
   const totalSets = _wkt.exercises.reduce(function(a,ex){return a+(ex.sets||[]).length;},0);
   const doneSets = _wkt.exercises.reduce(function(a,ex){return a+(ex.sets||[]).filter(function(s){return s.done;}).length;},0);
@@ -932,16 +987,18 @@ reg('active', function() {
       const isDone = set.done;
       const isPR = set._isPR;
       const showPlates = barbell && set.weight && sIdx === 0;
+      const displayWeight = set.weight ? weightFromKg(set.weight, user) : '';
+      const displaySuggest = suggest ? weightFromKg(suggest, user) : 0;
       return '<div class="set-row' + (isDone?' done':'') + (isPR?' pr':'') + '" id="set-'+exIdx+'-'+sIdx+'">' +
         '<div class="set-num">'+(sIdx+1)+'</div>' +
         '<div class="set-inputs">' +
         '<div style="display:flex;flex-direction:column;align-items:center">' +
-        '<div style="font-size:9px;color:var(--txt3);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.06em">KG</div>' +
-        '<input type="number" class="set-inp" placeholder="'+(suggest||0)+'" value="'+(set.weight||'')+'" ' +
-        'onchange="_setVal('+exIdx+','+sIdx+',\'weight\',parseFloat(this.value)||0)" ' +
+        '<div style="font-size:9px;color:var(--txt3);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.06em">'+displayUnit+'</div>' +
+        '<input type="number" class="set-inp" placeholder="'+displaySuggest+'" value="'+displayWeight+'" ' +
+        'onchange="_setVal('+exIdx+','+sIdx+',\'weight\',weightToKg(parseFloat(this.value)||0))" ' +
         'inputmode="decimal" style="width:64px">' +
         (showPlates ?
-          '<button type="button" onclick="event.stopPropagation();showPlateCalc('+set.weight+')" style="margin-top:4px;font-size:9px;font-weight:700;color:var(--c1);background:none;border:none;cursor:pointer;padding:0;touch-action:manipulation">plates</button>' : '') +
+          '<button type="button" onclick="event.stopPropagation();showPlateCalc('+displayWeight+')" style="margin-top:4px;font-size:9px;font-weight:700;color:var(--c1);background:none;border:none;cursor:pointer;padding:0;touch-action:manipulation">plates</button>' : '') +
         '</div>' +
         '<div style="font-size:16px;color:var(--txt3);margin:0 4px">×</div>' +
         '<div style="display:flex;flex-direction:column;align-items:center">' +
@@ -976,7 +1033,7 @@ reg('active', function() {
       '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
       warmups.map(function(w) {
         return '<span style="padding:6px 10px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);font-size:12px;color:var(--txt2)">' +
-          esc(w.label) + ' · <strong class="c-txt">' + w.weight + '×' + w.reps + '</strong></span>';
+          esc(w.label) + ' · <strong class="c-txt">' + weightFromKg(w.weight, user) + displayUnit.toLowerCase() + ' × ' + w.reps + '</strong></span>';
       }).join('') + '</div></div>' : '';
 
     const mediaThumb = (typeof ExerciseLibrary !== 'undefined' ? ExerciseLibrary.getMedia(exData || ex.name).thumb : null);
@@ -999,7 +1056,7 @@ reg('active', function() {
       (exData && !_focusMode ? '<div style="font-size:11px;color:var(--txt3);margin-top:1px">'+esc(exData.cues.slice(0,60))+'...</div>' : '') +
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;align-items:flex-end">' +
-      '<button type="button" onclick="showExerciseDetail(\''+esc(ex.name)+'\')" style="width:30px;height:30px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);font-size:12px;cursor:pointer;touch-action:manipulation">ℹ️</button>' +
+      '<button type="button" onclick="showExerciseDetail('+jsArg(ex.name)+')" style="width:30px;height:30px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);font-size:12px;cursor:pointer;touch-action:manipulation">ℹ️</button>' +
       (!_focusMode ? '<button type="button" onclick="swapExercise('+exIdx+')" style="padding:4px 7px;border-radius:8px;background:var(--bg4);border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--txt3);cursor:pointer;touch-action:manipulation;white-space:nowrap">⇄ Swap</button>' : '') +
       '</div>' +
       '</div>' +
@@ -1019,7 +1076,7 @@ reg('active', function() {
       '<div id="note-'+exIdx+'" style="display:'+(_focusMode?'none':(noteVal?'block':'none'))+';padding:0 16px 12px">' +
       '<textarea class="field" placeholder="How did this feel? Form notes, energy level..." ' +
       'style="height:72px;resize:none;font-size:13px" ' +
-      'oninput="_wktNotes[\''+esc(ex.name)+'\'] = this.value">'+esc(noteVal)+'</textarea>' +
+      'oninput="_setWktNote('+exIdx+',this.value)">'+esc(noteVal)+'</textarea>' +
       '</div>' +
       '</div>';
   }).join('');
@@ -1056,6 +1113,12 @@ window._setVal = function(exIdx, sIdx, field, val) {
   if (!_wkt || !_wkt.exercises[exIdx]) return;
   if (!_wkt.exercises[exIdx].sets[sIdx]) return;
   _wkt.exercises[exIdx].sets[sIdx][field] = val;
+  _checkpointWorkout();
+};
+window._setWktNote = function(exIdx, value) {
+  if (!_wkt || !_wkt.exercises[exIdx]) return;
+  _wktNotes[_wkt.exercises[exIdx].name] = value;
+  _checkpointWorkout();
 };
 
 window._doneSet = function(exIdx, sIdx) {
@@ -1075,7 +1138,7 @@ window._doneSet = function(exIdx, sIdx) {
       ProgEngine.savePR(ex.name, w, r, today());
       toast('New PR on ' + ex.name + '!', 'pr', 5000);
       haptic([50, 50, 100]);
-      if (typeof celebrate === 'function') celebrate(icon('star',28), 'New PR!', ex.name + ' · ' + w + 'kg × ' + r, 2200);
+      if (typeof celebrate === 'function') celebrate(icon('star',28), 'New PR!', ex.name + ' · ' + formatWeight(w) + ' × ' + r, 2200);
     } else {
       haptic(25);
     }
@@ -1095,6 +1158,7 @@ window._doneSet = function(exIdx, sIdx) {
 
   _updateSetRow(exIdx, sIdx, set);
   _updateProgress();
+  _checkpointWorkout(true);
   AchEngine.check();
 };
 
@@ -1139,6 +1203,7 @@ window._addSet = function(exIdx) {
   const ex = _wkt.exercises[exIdx];
   const lastSet = ex.sets[ex.sets.length - 1] || {};
   ex.sets.push({ weight: lastSet.weight || 0, reps: lastSet.reps || 0, done: false });
+  _checkpointWorkout(true);
   go('active');
 };
 
@@ -1154,6 +1219,7 @@ window._toggleNote = function(exIdx) {
 
 window.toggleSupersetMode = function() {
   _supersetMode = !_supersetMode;
+  _checkpointWorkout(true);
   toast(_supersetMode ? '🔗 Superset mode ON' : 'Superset mode off', 'info');
   const btn = document.querySelector('[onclick="toggleSupersetMode()"]');
   if (btn) {
@@ -1164,6 +1230,7 @@ window.toggleSupersetMode = function() {
 
 window.toggleFocusMode = function() {
   _focusMode = !_focusMode;
+  _checkpointWorkout(true);
   go('active');
   toast(_focusMode ? '🎯 Focus Mode — distractions hidden' : 'Focus Mode off', 'info');
 };
@@ -1177,7 +1244,7 @@ window.swapExercise = function(exIdx) {
     '<div style="font-size:12px;color:var(--txt3);margin-bottom:12px">Ranked by how closely each one matches ' + esc(name) + ' — muscles hit, difficulty, and your injuries.</div>' +
     subs.map(function(s) {
       const barColor = s.pct >= 80 ? 'var(--c3)' : s.pct >= 60 ? 'var(--c1)' : 'var(--c5)';
-      return '<div onclick="_doSwapExercise(' + exIdx + ',\'' + esc(s.name) + '\')" ' +
+      return '<div onclick="_doSwapExercise(' + exIdx + ',' + jsArg(s.name) + ')" ' +
         'style="padding:12px 14px;border-radius:14px;margin-bottom:8px;cursor:pointer;touch-action:manipulation;' +
         'background:var(--bg3);border:1.5px solid ' + (s.best ? 'var(--c1)' : 'var(--border)') + '">' +
         '<div style="display:flex;align-items:center;gap:8px">' +
@@ -1199,12 +1266,14 @@ window.swapExercise = function(exIdx) {
 window._doSwapExercise = function(exIdx, newName) {
   if (!_wkt || !_wkt.exercises[exIdx]) return;
   _wkt.exercises[exIdx].name = newName;
+  _checkpointWorkout(true);
   closeModal();
   toast('Swapped in ' + newName, 'ok');
   go('active');
 };
 
 window.confirmFinishWorkout = function() {
+  const user = S.g('user') || {};
   const totalSets = _wkt.exercises.reduce(function(a,ex){return a+(ex.sets||[]).filter(function(s){return s.done;}).length;},0);
   const prs = _wkt.exercises.reduce(function(a,ex){
     return a + (ex.sets||[]).filter(function(s){return s._isPR;}).length;
@@ -1224,7 +1293,7 @@ window.confirmFinishWorkout = function() {
     '<div style="font-size:20px;font-weight:800;color:var(--c1)">'+totalSets+'</div>' +
     '<div  class="micro-label type-caption-mt">Sets</div></div>' +
     '<div style="background:var(--bg3);border-radius:12px;padding:12px;text-align:center">' +
-    '<div style="font-size:20px;font-weight:800;color:var(--txt)">'+(totalVol>1000?round2(totalVol/1000)+'t':totalVol+'kg')+'</div>' +
+    '<div style="font-size:20px;font-weight:800;color:var(--txt)">'+(usesImperial(user)?Math.round(totalVol*2.2046226218)+'lb':(totalVol>1000?round2(totalVol/1000)+'t':totalVol+'kg'))+'</div>' +
     '<div  class="micro-label type-caption-mt">Volume</div></div>' +
     '<div style="background:var(--bg3);border-radius:12px;padding:12px;text-align:center">' +
     '<div style="font-size:20px;font-weight:800;color:#ffd60a">'+prs+'</div>' +
@@ -1248,9 +1317,11 @@ window.saveWorkout = function() {
     return a + (ex.sets||[]).filter(function(s){return s.done;}).reduce(function(b,s){return b+((s.weight||0)*(s.reps||0));},0);
   },0);
   const workout = {
-    id: 'wkt_' + Date.now(),
+    id: _wkt.id || ('wkt_' + Date.now()),
     name: _wkt.name,
     date: today(),
+    startedAt: new Date(_wkt.startTime || Date.now()).toISOString(),
+    endedAt: new Date().toISOString(),
     duration: Math.round(_wktElapsed / 60),
     totalVol: totalVol,
     exercises: _wkt.exercises,
@@ -1258,7 +1329,10 @@ window.saveWorkout = function() {
     exerciseNotes: Object.assign({}, _wktNotes),
     splitDay: SplitEngine.todayDayNumber()
   };
-  S.push('workouts', workout);
+  const workouts = S.g('workouts') || [];
+  if (!workouts.some(function(w) { return w.id === workout.id; })) workouts.push(workout);
+  if (S.set('workouts', workouts) === false) return;
+  S.set('activeWorkoutDraft', null);
   /* Strength programs: advance working weights / training max */
   const progMsgs = typeof ProgramEngine !== 'undefined' ? ProgramEngine.onFinish(workout) : null;
   if (progMsgs && progMsgs.length) {
@@ -1293,16 +1367,25 @@ window.saveWorkout = function() {
 
 function _startWktTimer() {
   clearInterval(_wktTimer);
-  _wktElapsed = 0;
+  if (_wkt && !_wkt.startTime) _wkt.startTime = Date.now() - (_wktElapsed * 1000);
+  _wktElapsed = _wkt && _wkt.startTime ? Math.max(0, Math.floor((Date.now() - _wkt.startTime) / 1000)) : 0;
   _wktTimer = setInterval(function() {
-    _wktElapsed++;
+    _wktElapsed = _wkt && _wkt.startTime ? Math.max(0, Math.floor((Date.now() - _wkt.startTime) / 1000)) : _wktElapsed + 1;
     const el = document.getElementById('wkt-timer-display');
     if (el) el.textContent = fmtTime(_wktElapsed);
+    if (_wktElapsed % 15 === 0) _checkpointWorkout(true);
   }, 1000);
 }
 
 window.startWorkout = function(templateName) {
   haptic(50);
+  if (_workoutDraft()) {
+    modal('Workout already in progress',
+      '<div class="body-13">Resume or discard the saved workout before starting another.</div>',
+      '<button type="button" class="btn btn-primary mt-14" onclick="closeModal();resumeWorkoutDraft()">Resume workout</button>' +
+      '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()">Cancel</button>');
+    return;
+  }
   if (typeof ProgramEngine !== 'undefined' && ProgramEngine.needsWeightConfirm && ProgramEngine.needsWeightConfirm()) {
     showProgramWeightSetup();
     return;
@@ -1326,12 +1409,13 @@ window.startWorkout = function(templateName) {
     return { name: name, sets: sets, muscles: ex ? ex.muscles : { primary:[], secondary:[] } };
   });
 
-  _wkt = { name: splitDay.n || 'Workout', exercises: exercises, startTime: Date.now() };
+  _wkt = { id: 'wkt_' + Date.now(), name: splitDay.n || 'Workout', exercises: exercises, startTime: Date.now() };
   _wktNotes = {};
   _supersetMode = false;
   _quickMode = false;
   _focusMode = false;
   _startWktTimer();
+  _checkpointWorkout(true);
   if (typeof WakeLock !== 'undefined') WakeLock.request();
   if (typeof GymFloor !== 'undefined') GymFloor.apply();
   go('active');
@@ -1339,6 +1423,11 @@ window.startWorkout = function(templateName) {
 
 window.startQuickWorkout = function() {
   haptic(50);
+  if (_workoutDraft()) {
+    toast('Resume or discard the current workout first', 'warn');
+    go('workout');
+    return;
+  }
   const splitDay = SplitEngine.getSplitDay();
   const user = S.g('user') || {};
   const goal = user.goal || 'hypertrophy';
@@ -1351,12 +1440,25 @@ window.startQuickWorkout = function() {
     }
     return { name: name, sets: sets, muscles: {} };
   });
-  _wkt = { name: 'Quick — ' + (splitDay.n || 'Workout'), exercises: exercises, startTime: Date.now() };
+  _wkt = { id: 'wkt_' + Date.now(), name: 'Quick — ' + (splitDay.n || 'Workout'), exercises: exercises, startTime: Date.now() };
   _wktNotes = {};
   _quickMode = true;
   _startWktTimer();
+  _checkpointWorkout(true);
+  if (typeof WakeLock !== 'undefined') WakeLock.request();
   go('active');
 };
+
+if (typeof registerRouteCleanup === 'function') {
+  registerRouteCleanup('active', function() {
+    clearInterval(_wktTimer);
+    clearInterval(_restInterval);
+    if (typeof RestNotify !== 'undefined') RestNotify.stop();
+    if (typeof WakeLock !== 'undefined') WakeLock.release();
+    if (typeof VoiceLogger !== 'undefined') VoiceLogger.stop();
+    _checkpointWorkout(true);
+  });
+}
 
 /* ── Rest Timer ── */
 window.startRestTimer = function(secs) {
@@ -1419,6 +1521,7 @@ window.insertWarmupSets = function(exIdx) {
   });
   ex.sets = wuSets.concat(ex.sets || []);
   ex._warmupsInserted = true;
+  _checkpointWorkout(true);
   toast('Warm-up ramp loaded', 'ok');
   go('active');
 };
@@ -1433,19 +1536,24 @@ window.showExercisePicker = function(grp) {
   const groups = ['chest','back','legs','shoulders','biceps','triceps','core','glutes','fullbody'];
   const curGrp = grp || 'chest';
   const exercises = ExDB.byGroup(curGrp);
+  window._exercisePickerItems = exercises;
   const tabs = groups.map(g =>
     '<button type="button" class="cap-tab pill'+(g===curGrp?' on':'')+'" role="tab" aria-selected="'+(g===curGrp)+'" onclick="showExercisePicker(\''+g+'\')">'+g.charAt(0).toUpperCase()+g.slice(1)+'</button>'
   ).join('');
-  const list = exercises.map(ex =>
+  const list = exercises.map(function(ex, idx) { return (
     '<div style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border)">' +
     '<div style="display:flex;color:var(--c1)">'+(typeof exChromeIcon==='function'?exChromeIcon(ex,24):'')+'</div>' +
     '<div  class="flex-1"><div  class="row-title-14">'+esc(ex.n)+'</div>' +
     '<div  class="muted-12">'+esc(ex.pri)+(ex.sec?', '+ex.sec:'')+'</div></div>' +
-    '<button type="button" style="font-size:12px;color:var(--c1);background:none;border:none;cursor:pointer;padding:8px;font-weight:700" onclick="addExerciseToWorkout(\''+esc(ex.n)+'\')">+ Add</button>' +
+    '<button type="button" style="font-size:12px;color:var(--c1);background:none;border:none;cursor:pointer;padding:8px;font-weight:700" onclick="addExerciseToWorkoutByIndex('+idx+')">+ Add</button>' +
     '</div>'
-  ).join('');
+  ); }).join('');
   modal('Exercise Library',
     '<div class="cap-tab-bar cap-tab-bar--flush" role="tablist" aria-label="Muscle groups" style="margin-bottom:4px">'+tabs+'</div>' + list);
+};
+window.addExerciseToWorkoutByIndex = function(idx) {
+  const ex = (window._exercisePickerItems || [])[Number(idx)];
+  if (ex && ex.n) addExerciseToWorkout(ex.n);
 };
 
 window.addExerciseToWorkout = function(name) {
@@ -1458,6 +1566,7 @@ window.addExerciseToWorkout = function(name) {
   const suggested = WeightEngine.suggest(name, user);
   const sets = Array.from({length:4}, (_, i) => ({ setNum:i+1, weight:suggested||'', reps:'', done:false }));
   _wkt.exercises.push({ name: name, sets: sets, muscles: (ExDB.byName(name) || {}).muscles || {} });
+  _checkpointWorkout(true);
   closeModal();
   go('active');
 };
@@ -1582,7 +1691,7 @@ function showAddCustomExercise() {
   const groups = ['chest','back','legs','shoulders','biceps','triceps','core','glutes','forearms','cardio','fullbody'];
   modal('Add Custom Exercise',
     '<div class="field-wrap"><label class="field-label">Exercise Name *</label>' +
-    '<input id="cx-name" class="field" type="text" placeholder="e.g. Smith Machine Row"></div>' +
+    '<input id="cx-name" class="field" type="text" maxlength="80" placeholder="e.g. Smith Machine Row"></div>' +
 
     '<div class="field-wrap"><label class="field-label">Muscle Group *</label>' +
     '<div class="select-wrap"><select id="cx-grp" class="field">' +
@@ -1590,10 +1699,10 @@ function showAddCustomExercise() {
     '</select></div></div>' +
 
     '<div class="field-wrap"><label class="field-label">Primary Muscle</label>' +
-    '<input id="cx-pri" class="field" type="text" placeholder="e.g. Lats"></div>' +
+    '<input id="cx-pri" class="field" type="text" maxlength="80" placeholder="e.g. Lats"></div>' +
 
     '<div class="field-wrap"><label class="field-label">Coaching Cues</label>' +
-    '<input id="cx-cues" class="field" type="text" placeholder="Key technique points"></div>' +
+    '<input id="cx-cues" class="field" type="text" maxlength="500" placeholder="Key technique points"></div>' +
 
     '<div class="field-wrap"><label class="field-label">Equipment</label>' +
     '<div class="select-wrap"><select id="cx-eq" class="field">' +
@@ -1627,30 +1736,34 @@ window.saveCustomExercise = function() {
   const pri  = (document.getElementById('cx-pri')||{}).value||'Custom';
   const cues = (document.getElementById('cx-cues')||{}).value||'Focus on form';
   const eq   = (document.getElementById('cx-eq')||{}).value||'';
-  if (!name.trim()) { toast('Enter exercise name','warn'); return; }
-  if (ExDB.byName(name.trim())) { toast('Exercise already exists','warn'); return; }
+  const allowedGroups = ['chest','back','legs','shoulders','biceps','triceps','core','glutes','forearms','cardio','fullbody'];
+  const allowedEquipment = ['barbell','dumbbell','cables','machine','bands',''];
+  const cleanName = name.trim().slice(0, 80);
+  if (!cleanName) { toast('Enter exercise name','warn'); return; }
+  if (!allowedGroups.includes(grp) || !allowedEquipment.includes(eq)) { toast('Choose valid exercise options','warn'); return; }
+  if (ExDB.byName(cleanName)) { toast('Exercise already exists','warn'); return; }
   const custom = {
-    n:name.trim(),  grp:grp, diff:window._cxDiff||1,
+    n:cleanName, grp:grp, diff:[1,2,3].includes(window._cxDiff) ? window._cxDiff : 1,
     bw:!eq, eq:eq?[eq]:[],
-    pri:pri||'Custom', sec:'',
-    cues:cues, setup:'Set up as needed', breathing:'Exhale exertion',
+    pri:(pri||'Custom').trim().slice(0,80), sec:'',
+    cues:(cues||'Focus on form').trim().slice(0,500), setup:'Set up as needed', breathing:'Exhale exertion',
     mistakes:'Maintain form', joint:{shoulder:0,elbow:0,knee:0,spine:0,hip:0},
     cns:1, muscles:{primary:[grp],secondary:[]},
     regressions:[], progressions:[], met:4.0, tempoRec:'2-0-1-0',
     custom:true
   };
-  ExDB.db.push(custom);
-  const saved = S.g('customExercises') || [];
+  const saved = (S.g('customExercises') || []).slice();
   saved.push(custom);
-  S.set('customExercises', saved);
+  if (S.set('customExercises', saved) === false) return;
+  ExDB.db.push(custom);
   closeModal();
-  toast('✅ '+name.trim()+' added!', 'ok');
+  toast(cleanName+' added', 'ok');
 };
 
 function loadCustomExercises() {
   const saved = S.g('customExercises') || [];
   saved.forEach(function(ex) {
-    if (!ExDB.byName(ex.n)) ExDB.db.push(ex);
+    if (ex && typeof ex.n === 'string' && ex.n.length <= 80 && !ExDB.byName(ex.n)) ExDB.db.push(ex);
   });
 }
 window.loadCustomExercises = loadCustomExercises;
@@ -1673,7 +1786,7 @@ function showBrowseExercises(filterGrp, filterQuery) {
   const filterTabs = '<div class="cap-tab-bar" role="tablist" aria-label="Exercise groups">' +
     groups.map(function(g) {
       const active = (grp||'all') === g;
-      return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" onclick="showBrowseExercises(\''+g+'\',\''+esc(query)+'\')">' +
+      return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" onclick="showBrowseExercises('+jsArg(g)+','+jsArg(query)+')">' +
         g.charAt(0).toUpperCase()+g.slice(1)+'</button>';
     }).join('') + '</div>';
 
@@ -1685,7 +1798,7 @@ function showBrowseExercises(filterGrp, filterQuery) {
   const exList = exercises.slice(0,80).map(function(ex) {
     const diff = GUIDANCE.diffLabel(ex.diff);
     const needsSpot = GUIDANCE.needsSpotter(ex.n);
-    return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation" onclick="showExerciseDetail(\''+esc(ex.n)+'\')">' +
+    return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation" onclick="showExerciseDetail('+jsArg(ex.n)+')">' +
       '<div style="width:36px;display:flex;justify-content:center;color:var(--c1)">'+(typeof exChromeIcon==='function'?exChromeIcon(ex,22):'')+'</div>' +
       '<div  class="flex-1">' +
       '<div style="display:flex;align-items:center;gap:6px">' +
@@ -1716,6 +1829,7 @@ function showBrowseExercises(filterGrp, filterQuery) {
     '<div  class="spacer-bottom"></div>';
   v.innerHTML = '';
   v.appendChild(div);
+  if (typeof upgradeInteractiveMarkup === 'function') upgradeInteractiveMarkup(div);
 
   const nav = document.getElementById('nav');
   if (nav) nav.style.display = 'flex';
@@ -1862,6 +1976,13 @@ window.voiceLogCurrentSet = function() {
     toast('Voice not supported in this browser', 'warn');
     return;
   }
+  if (!S.g('settings.voiceDisclosureAccepted')) {
+    modal('Voice processing',
+      '<div class="body-13">Voice logging uses your browser’s SpeechRecognition service. Depending on browser and device, audio or transcripts may be processed by the browser vendor and may require network access.</div>',
+      '<button type="button" class="btn btn-primary mt-14" onclick="S.set(\'settings.voiceDisclosureAccepted\',true);closeModal();voiceLogCurrentSet()">Continue</button>' +
+      '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()">Cancel</button>');
+    return;
+  }
   toast('Listening… say “135 for 8” or “RPE 8”', 'ok', 2500);
   VoiceLogger.start(function(text) {
     var parsed = VoiceLogger.parseUtterance(text);
@@ -1874,10 +1995,11 @@ window.voiceLogCurrentSet = function() {
       }
     }
     var set = _wkt.exercises[exIdx].sets[sIdx];
-    if (parsed.weight != null) set.weight = parsed.weight;
+    if (parsed.weight != null) set.weight = weightToKg(parsed.weight);
     if (parsed.reps != null) set.reps = parsed.reps;
     if (parsed.rpe != null) set.rpe = parsed.rpe;
-    toast('Logged: ' + (parsed.weight || set.weight || '?') + ' × ' + (parsed.reps || set.reps || '?') + (parsed.rpe ? ' @' + parsed.rpe : ''), 'ok');
+    _checkpointWorkout(true);
+    toast('Logged: ' + (set.weight ? formatWeight(set.weight) : '?') + ' × ' + (parsed.reps || set.reps || '?') + (parsed.rpe ? ' @' + parsed.rpe : ''), 'ok');
     go('active');
   }, function() { toast('Couldn’t hear that — try again', 'warn'); });
 };

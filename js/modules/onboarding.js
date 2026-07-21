@@ -194,21 +194,46 @@ function _validateStep(step) {
     toast('Enter your name to continue', 'warn');
     return false;
   }
+  if (step === 4) {
+    const age = Number(_obData.age);
+    if (!Number.isFinite(age) || age < 14 || age > 100) {
+      toast('Enter an age from 14 to 100', 'warn');
+      return false;
+    }
+  }
+  if (step === 5) {
+    const imperial = _obData.units === 'imperial';
+    const height = Number(_obData.height);
+    const weight = Number(_obData.weight);
+    const goalWeight = Number(_obData.goalWeight);
+    const validHeight = imperial ? height >= 36 && height <= 96 : height >= 90 && height <= 245;
+    const validWeight = imperial ? weight >= 55 && weight <= 1100 : weight >= 25 && weight <= 500;
+    const validGoal = imperial ? goalWeight >= 55 && goalWeight <= 1100 : goalWeight >= 25 && goalWeight <= 500;
+    if (!validHeight || !validWeight || !validGoal) {
+      toast('Check height and weight values before continuing', 'warn');
+      return false;
+    }
+  }
   return true;
 }
 
 function _finishOnboarding() {
   const u = S.g('user') || {};
+  const selectedUnits = _obData.units || 'metric';
+  const unitContext = { units: selectedUnits };
+  const rawHeight = parseFloat(_obData.height);
+  const rawWeight = parseFloat(_obData.weight);
+  const rawGoalWeight = parseFloat(_obData.goalWeight);
   Object.assign(u, {
     name: (_obData.name||'Athlete').trim(),
     goal: _obData.goal || 'hypertrophy',
     exp: _obData.exp || 'intermediate',
     gender: _obData.gender || 'male',
     age: parseInt(_obData.age) || 25,
-    units: _obData.units || 'metric',
-    height: parseFloat(_obData.height) || 175,
-    weight: parseFloat(_obData.weight) || 75,
-    goalWeight: parseFloat(_obData.goalWeight) || 70,
+    units: selectedUnits,
+    height: rawHeight > 0 ? heightToCm(rawHeight, unitContext) : 175,
+    weight: rawWeight > 0 ? weightToKg(rawWeight, unitContext) : 75,
+    goalWeight: rawGoalWeight > 0 ? weightToKg(rawGoalWeight, unitContext) : 70,
     targetBodyFat: parseFloat(_obData.targetBodyFat) || 15,
     split: (typeof SplitsDB !== 'undefined' ? SplitsDB.recommend({ goal: _obData.goal, exp: _obData.exp, weeklyGoal: 4 }).id : 'ppl'),
     weeklyGoal: (typeof SplitsDB !== 'undefined' ? SplitsDB.recommend({ goal: _obData.goal, exp: _obData.exp }).daysPerWeek : 4),

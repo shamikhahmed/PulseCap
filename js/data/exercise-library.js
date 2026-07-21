@@ -1,12 +1,39 @@
 'use strict';
-/* Offline exercise library — one-time fetch from wger.de, cached in localStorage */
+/* Optional wger metadata cache. Remote media URLs still require network/browser cache. */
 
 const ExerciseLibrary = (() => {
   const CACHE_KEY = 'exerciseLibrary.wger';
   const MEDIA_KEY = 'exerciseLibrary.media';
+  const GLOBAL_CACHE_KEY = 'pulsecap_wger_library';
+  const GLOBAL_MEDIA_KEY = 'pulsecap_wger_media';
   const CACHE_VER = 3; /* v3: inferred joint-stress on imported exercises */
   const MEDIA_VER = 1;
   const WGER_BASE = 'https://wger.de/api/v2';
+
+  function _readGlobal(key, legacyPath) {
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw) return JSON.parse(raw);
+    } catch (e) { /* invalid cache is treated as missing */ }
+    const legacy = S.g(legacyPath);
+    if (legacy) {
+      try {
+        localStorage.setItem(key, JSON.stringify(legacy));
+        S.set(legacyPath, null);
+        return legacy;
+      } catch (e) { /* leave legacy copy intact if migration cannot persist */ }
+    }
+    return null;
+  }
+  function _writeGlobal(key, value) {
+    try {
+      if (value == null) localStorage.removeItem(key);
+      else localStorage.setItem(key, JSON.stringify(value));
+      return true;
+    } catch (e) {
+      throw new Error('Not enough device storage for the wger library');
+    }
+  }
 
   const CAT_GRP = {
     10: 'chest', 11: 'back', 12: 'legs', 13: 'shoulders',
@@ -110,13 +137,13 @@ const ExerciseLibrary = (() => {
   }
 
   function getCached() {
-    const c = S.g(CACHE_KEY);
+    const c = _readGlobal(GLOBAL_CACHE_KEY, CACHE_KEY);
     if (!c || c.version !== CACHE_VER) return null;
     return c.exercises || [];
   }
 
   function getMediaMap() {
-    const m = S.g(MEDIA_KEY);
+    const m = _readGlobal(GLOBAL_MEDIA_KEY, MEDIA_KEY);
     if (!m || m.version !== MEDIA_VER) return {};
     return m.byExercise || {};
   }
@@ -168,20 +195,34 @@ const ExerciseLibrary = (() => {
 
   async function _fetchJson(url, ms) {
     ms = ms || 15000;
-    const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
-    const timer = ctrl ? setTimeout(function() { ctrl.abort(); }, ms) : null;
-    try {
-      const res = await fetch(url, {
-        headers: { Accept: 'application/json' },
-        signal: ctrl ? ctrl.signal : undefined
-      });
-      return res;
-    } catch (e) {
-      if (e && e.name === 'AbortError') throw new Error('Network timeout — try again on a better connection');
-      throw e;
-    } finally {
-      if (timer) clearTimeout(timer);
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const ctrl = typeof AbortController !== 'undefined' ? new AbortController() : null;
+      const timer = ctrl ? setTimeout(function() { ctrl.abort(); }, ms) : null;
+      try {
+        const res = await fetch(url, {
+          headers: { Accept: 'application/json' },
+          signal: ctrl ? ctrl.signal : undefined
+        });
+        if ((res.status === 429 || res.status >= 500) && attempt < 2) {
+          const retryAfter = Number(res.headers.get('Retry-After')) || 0;
+          await new Promise(function(resolve) {
+            setTimeout(resolve, Math.min(5000, retryAfter * 1000 || (400 * Math.pow(2, attempt) + Math.random() * 250)));
+          });
+          continue;
+        }
+        return res;
+      } catch (e) {
+        if (attempt < 2 && (!e || e.name !== 'AbortError')) {
+          await new Promise(function(resolve) { setTimeout(resolve, 400 * Math.pow(2, attempt)); });
+          continue;
+        }
+        if (e && e.name === 'AbortError') throw new Error('Network timeout — try again on a better connection');
+        throw e;
+      } finally {
+        if (timer) clearTimeout(timer);
+      }
     }
+    throw new Error('wger request failed');
   }
 
   async function _fetchPaginated(path, onProgress) {
@@ -189,11 +230,14 @@ const ExerciseLibrary = (() => {
     let offset = 0;
     const limit = 100;
     let total = 0;
+    let pages = 0;
     while (true) {
+      if (++pages > 100) throw new Error('wger pagination limit exceeded');
       const url = WGER_BASE + path + (path.includes('?') ? '&' : '?') + 'limit=' + limit + '&offset=' + offset;
       const res = await _fetchJson(url);
-      if (!res.ok) break;
+      if (!res.ok) throw new Error('wger API error ' + res.status);
       const data = await res.json();
+      if (!data || !Array.isArray(data.results)) throw new Error('Invalid wger response');
       total = data.count || total;
       out.push.apply(out, data.results || []);
       if (onProgress) onProgress(out.length, total);
@@ -204,9 +248,9 @@ const ExerciseLibrary = (() => {
     return out;
   }
 
-  async function fetchMedia(onProgress) {
-    const existing = S.g(MEDIA_KEY);
-    if (existing && existing.version === MEDIA_VER && existing.byExercise) return existing.byExercise;
+  async function fetchMedia(onProgress, force) {
+    const existing = _readGlobal(GLOBAL_MEDIA_KEY, MEDIA_KEY);
+    if (!force && existing && existing.version === MEDIA_VER && existing.byExercise) return existing.byExercise;
 
     const byExercise = {};
     const images = await _fetchPaginated('/exerciseimage/?is_main=True', onProgress);
@@ -234,7 +278,7 @@ const ExerciseLibrary = (() => {
       });
     } catch (e) { /* video endpoint optional */ }
 
-    S.set(MEDIA_KEY, { version: MEDIA_VER, fetchedAt: Date.now(), byExercise: byExercise });
+    _writeGlobal(GLOBAL_MEDIA_KEY, { version: MEDIA_VER, fetchedAt: Date.now(), byExercise: byExercise });
     return byExercise;
   }
 
@@ -270,18 +314,21 @@ const ExerciseLibrary = (() => {
     }
 
     if (onProgress) onProgress(0, 0, 'Fetching exercise media…');
-    const mediaMap = await fetchMedia(onProgress);
+    const mediaMap = await fetchMedia(onProgress, force);
 
     const all = [];
     let offset = 0;
     const limit = 50;
     let total = 0;
 
+    let pages = 0;
     while (true) {
+      if (++pages > 100) throw new Error('wger pagination limit exceeded');
       const url = WGER_BASE + '/exerciseinfo/?language=2&limit=' + limit + '&offset=' + offset;
       const res = await _fetchJson(url);
       if (!res.ok) throw new Error('wger API error ' + res.status);
       const data = await res.json();
+      if (!data || !Array.isArray(data.results)) throw new Error('Invalid wger response');
       total = data.count || total;
       const batch = (data.results || []).map(info => _toExDB(info, mediaMap)).filter(Boolean);
       all.push.apply(all, batch);
@@ -291,15 +338,11 @@ const ExerciseLibrary = (() => {
       await new Promise(r => setTimeout(r, 120));
     }
 
-    S.set(CACHE_KEY, { version: CACHE_VER, fetchedAt: Date.now(), count: all.length, exercises: all });
+    _writeGlobal(GLOBAL_CACHE_KEY, { version: CACHE_VER, fetchedAt: Date.now(), count: all.length, exercises: all });
     return all.length;
   }
 
   async function sync(onProgress, force) {
-    if (force) {
-      S.set(CACHE_KEY, null);
-      S.set(MEDIA_KEY, null);
-    }
     const cached = getCached();
     if (cached && cached.length > 0 && !force) {
       const added = mergeIntoExDB();
@@ -315,8 +358,8 @@ const ExerciseLibrary = (() => {
   }
 
   function status() {
-    const c = S.g(CACHE_KEY);
-    const m = S.g(MEDIA_KEY);
+    const c = _readGlobal(GLOBAL_CACHE_KEY, CACHE_KEY);
+    const m = _readGlobal(GLOBAL_MEDIA_KEY, MEDIA_KEY);
     if (!c) return { cached: false, count: 0, fetchedAt: null, mediaCount: 0 };
     return {
       cached: true,

@@ -81,11 +81,11 @@ function _checkInForm(rec) {
     return '<div class="slider-wrap">' +
       '<div class="slider-header">' +
       '<span style="display:inline-flex;color:var(--c1)">'+icon(s.icon, 18)+'</span>' +
-      '<span class="slider-name">'+esc(s.label)+'</span>' +
+      '<span class="slider-name" id="sl-'+s.key+'">'+esc(s.label)+'</span>' +
       '<span class="slider-val" id="sv-'+s.key+'">'+val+'</span>' +
       '<span class="slider-unit">'+esc(s.unit)+'</span>' +
       '</div>' +
-      '<input type="range" min="'+s.min+'" max="'+s.max+'" step="'+s.step+'" value="'+val+'" ' +
+      '<input type="range" aria-labelledby="sl-'+s.key+'" aria-describedby="sv-'+s.key+'" min="'+s.min+'" max="'+s.max+'" step="'+s.step+'" value="'+val+'" ' +
         'oninput="document.getElementById(\'sv-'+s.key+'\').textContent=this.value;_recTmp.'+s.key+'=parseFloat(this.value)">' +
       '<div class="slider-labels">' +
       '<span>'+s.min+(s.unit==='hrs'?' hrs':'')+' </span>' +

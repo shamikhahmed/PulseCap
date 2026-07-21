@@ -173,7 +173,7 @@ window.showSkillDetail = function(skillId) {
   var userSkills = S.g('calisthenics') || {};
   var userLevel = userSkills[skillId] || 0;
 
-  modal('<span style="display:inline-flex;align-items:center;gap:8px">' + icon(skill.icon, 20) + ' ' + esc(skill.name) + '</span>',
+  modal(skill.name,
     '<div style="font-size:13px;color:var(--txt2);line-height:1.6;margin-bottom:12px">' + skill.description + '</div>' +
     '<div  class="type-caption type-caption-mb-xs">Prerequisites</div>' +
     '<div style="font-size:12px;color:var(--txt2);margin-bottom:12px">' + skill.prerequisites + '</div>' +

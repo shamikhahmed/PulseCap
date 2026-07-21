@@ -262,7 +262,7 @@ function _muscleStatusGrid(muscleStatus) {
   var chips = muscleStatus.map(function(m) {
     var isInjured = m.status === 'injured';
     var big = isInjured ? icon('bandage', 16) : m.pct + '%';
-    return '<button type="button" onclick="' + (isInjured ? 'go(\'rehab\')' : 'showMuscleInfo(\''+esc(m.name)+'\')') + '" class="press" ' +
+    return '<button type="button" onclick="' + (isInjured ? 'go(\'rehab\')' : 'showMuscleInfo('+jsArg(m.name)+')') + '" class="press" ' +
       'aria-label="' + esc(m.name) + ' recovery" ' +
       'style="background:var(--bg3);border-radius:14px;padding:12px;cursor:pointer;touch-action:manipulation;border:1px solid ' + (isInjured ? 'rgba(255,69,58,0.35)' : 'var(--border)') + ';text-align:left;width:100%;font:inherit;color:inherit">' +
       '<div style="display:flex;align-items:baseline;justify-content:space-between;gap:6px">' +

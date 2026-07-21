@@ -484,16 +484,63 @@ window.renderTrainingIntelBody = function() {
 
 };
 
+var _trainingIntelActiveTab = 'intel';
+var _trainingStyleLoadState = 'idle';
+
+function _trainingStyleStatusBody() {
+  if (_trainingStyleLoadState === 'error') {
+    return '<div style="padding:24px;color:#ff453a"><strong>Could not load Training Style.</strong><br><button type="button" class="btn btn-secondary" onclick="_retryTrainingStyle()" style="margin-top:14px">Retry</button></div>';
+  }
+  return '<div style="padding:24px;color:var(--txt3)">Loading Training Style…</div>';
+}
+
+function _loadTrainingStyle() {
+  if (typeof window.renderTrainingStyleBody === 'function') {
+    _trainingStyleLoadState = 'ready';
+    return;
+  }
+  if (typeof loadScript !== 'function') {
+    _trainingStyleLoadState = 'error';
+    return;
+  }
+  _trainingStyleLoadState = 'loading';
+  loadScript((window.MODULE_SRC && window.MODULE_SRC['training-style']) || 'js/modules/training-style.js').then(function() {
+    if (typeof window.renderTrainingStyleBody !== 'function') throw new Error('Training Style renderer missing after load');
+    _trainingStyleLoadState = 'ready';
+    if (typeof currentScreenId === 'function' && currentScreenId() === 'training-intel' && _trainingIntelActiveTab === 'style') {
+      go('training-intel', { tab: 'style' });
+    }
+  }).catch(function(e) {
+    _trainingStyleLoadState = 'error';
+    console.error('training-intel style lazy', e);
+    if (typeof currentScreenId === 'function' && currentScreenId() === 'training-intel' && _trainingIntelActiveTab === 'style') {
+      go('training-intel', { tab: 'style' });
+    }
+  });
+}
+
+window._retryTrainingStyle = function() {
+  _trainingStyleLoadState = 'idle';
+  if (typeof currentScreenId === 'function' && currentScreenId() === 'training-intel' && _trainingIntelActiveTab === 'style') {
+    go('training-intel', { tab: 'style' });
+  }
+};
+
 window.renderTrainingIntelUnified = function(data) {
   var tab = (data && data.tab) || 'intel';
+  _trainingIntelActiveTab = tab;
   var shell = '<div class="topbar"><button type="button" onclick="go(\'workout\')"  class="back-chip" aria-label="Back">←</button><div class="topbar-title">Training Intel</div></div>' + _trainingIntelTabBar(tab);
   if (tab === 'style') {
-    return shell + (typeof window.renderTrainingStyleBody === 'function' ? window.renderTrainingStyleBody() : '');
+    return shell + (typeof window.renderTrainingStyleBody === 'function' ? window.renderTrainingStyleBody() : _trainingStyleStatusBody());
   }
   return shell + window.renderTrainingIntelBody();
 };
 
 reg('training-intel', function(data) {
+  var tab = (data && data.tab) || 'intel';
+  if (tab === 'style' && typeof window.renderTrainingStyleBody !== 'function' && _trainingStyleLoadState === 'idle') {
+    _loadTrainingStyle();
+  }
   return window.renderTrainingIntelUnified(data);
 });
 

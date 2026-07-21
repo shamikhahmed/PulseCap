@@ -90,7 +90,7 @@ function _dueSuppsSection(due) {
       '<div class="supp-name">'+esc(s.name)+'</div>' +
       '<div class="supp-timing">'+esc(s.timing)+' · '+esc(s.dose||'')+'</div>' +
       '</div>' +
-      '<button type="button" class="supp-mark" onclick="SupplementEngine.markTaken(\''+esc(s.id)+'\');go(\'nutrition\')">Done</button>' +
+      '<button type="button" class="supp-mark" onclick="SupplementEngine.markTaken('+jsArg(s.id)+');go(\'nutrition\')">Done</button>' +
       '</div>'
     ).join('');
 }
@@ -114,7 +114,7 @@ function _mySuppsSection(userSupps, logs) {
         (taken&&lastTime?'<div class="supp-taken">Taken at '+lastTime+'</div>':'') +
         (cafWarn?'<div class="supp-warn" style="display:flex;align-items:center;gap:4px">'+icon('alert',13,'#f5c842')+esc(cafWarn)+'</div>':'') +
         '</div>' +
-        (!taken?'<button type="button" class="supp-mark" onclick="SupplementEngine.markTaken(\''+esc(s.id)+'\');go(\'nutrition\')">Done</button>':'') +
+        (!taken?'<button type="button" class="supp-mark" onclick="SupplementEngine.markTaken('+jsArg(s.id)+');go(\'nutrition\')">Done</button>':'') +
         '</div>';
     }).join('');
 }
@@ -234,7 +234,8 @@ window.startBarcodeFoodScan = async function() {
     modal('Point at barcode',
       '<div style="border-radius:12px;overflow:hidden;background:#000"><video id="bc-video" playsinline autoplay style="width:100%;max-height:280px"></video></div>' +
       '<div class="muted-11" style="margin-top:8px">Hold steady…</div>',
-      '<button type="button" class="btn btn-ghost" onclick="_stopBarcodeScan()">Cancel</button>');
+      '<button type="button" class="btn btn-ghost" onclick="_stopBarcodeScan()">Cancel</button>',
+      { onClose: _cleanupBarcodeResources });
     var el = document.getElementById('bc-video');
     if (el) { el.srcObject = stream; }
     window._bcStream = stream;
@@ -256,15 +257,22 @@ window.startBarcodeFoodScan = async function() {
   }
 };
 
-window._stopBarcodeScan = function() {
+function _cleanupBarcodeResources() {
   if (window._bcTimer) clearInterval(window._bcTimer);
   window._bcTimer = null;
   if (window._bcStream) {
     window._bcStream.getTracks().forEach(function(t) { t.stop(); });
     window._bcStream = null;
   }
+}
+window._stopBarcodeScan = function() {
+  _cleanupBarcodeResources();
   closeModal();
 };
+if (typeof registerRouteCleanup === 'function') registerRouteCleanup('nutrition', _cleanupBarcodeResources);
+document.addEventListener('visibilitychange', function() {
+  if (document.hidden) _cleanupBarcodeResources();
+});
 
 function _mealHistory(meals) {
   const todayMeals = meals.filter(m => m.date === today());
@@ -368,14 +376,14 @@ window.quickAddMeal = function(idx, slot) {
 window.showLogMeal = function() {
   modal('Log Meal',
     '<div class="field-wrap"><label class="field-label">Meal Name</label>' +
-    '<input id="meal-name" class="field" type="text" placeholder="e.g. Chicken & Rice"></div>' +
+    '<input id="meal-name" class="field" type="text" maxlength="100" placeholder="e.g. Chicken & Rice"></div>' +
     '<div class="field-row">' +
-    '<div class="field-wrap"><label class="field-label">Calories</label><input id="meal-cal" class="field" type="number" placeholder="500"></div>' +
-    '<div class="field-wrap"><label class="field-label">Protein (g)</label><input id="meal-p" class="field" type="number" placeholder="40"></div>' +
+    '<div class="field-wrap"><label class="field-label">Calories</label><input id="meal-cal" class="field" type="number" min="1" max="10000" step="1" placeholder="500"></div>' +
+    '<div class="field-wrap"><label class="field-label">Protein (g)</label><input id="meal-p" class="field" type="number" min="0" max="500" step="0.1" placeholder="40"></div>' +
     '</div>' +
     '<div class="field-row">' +
-    '<div class="field-wrap"><label class="field-label">Carbs (g)</label><input id="meal-c" class="field" type="number" placeholder="60"></div>' +
-    '<div class="field-wrap"><label class="field-label">Fat (g)</label><input id="meal-f" class="field" type="number" placeholder="15"></div>' +
+    '<div class="field-wrap"><label class="field-label">Carbs (g)</label><input id="meal-c" class="field" type="number" min="0" max="1000" step="0.1" placeholder="60"></div>' +
+    '<div class="field-wrap"><label class="field-label">Fat (g)</label><input id="meal-f" class="field" type="number" min="0" max="500" step="0.1" placeholder="15"></div>' +
     '</div>',
     '<button type="button" class="btn btn-primary mt-12" onclick="saveMeal()">Save Meal</button>'
   );
@@ -387,7 +395,11 @@ window.saveMeal = function() {
   const p = parseFloat(document.getElementById('meal-p')?.value)||0;
   const c = parseFloat(document.getElementById('meal-c')?.value)||0;
   const f = parseFloat(document.getElementById('meal-f')?.value)||0;
-  if (!cal) { toast('Enter calories', 'warn'); return; }
-  S.push('meals', { name:name||'Meal', calories:cal, protein:p, carbs:c, fat:f, date:today(), time:isoNow() });
+  if (!Number.isFinite(cal) || cal < 1 || cal > 10000) { toast('Calories must be between 1 and 10,000', 'warn'); return; }
+  if (![p,c,f].every(Number.isFinite) || p < 0 || p > 500 || c < 0 || c > 1000 || f < 0 || f > 500) {
+    toast('Check macro values', 'warn');
+    return;
+  }
+  S.push('meals', { name:(name||'Meal').trim().slice(0,100), calories:cal, protein:p, carbs:c, fat:f, date:today(), time:isoNow() });
   closeModal(); toast('Meal logged!', 'ok'); go('nutrition');
 };

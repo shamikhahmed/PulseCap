@@ -357,7 +357,7 @@ reg('dashboard', function() {
     /* ── ONE THING + SESSION RECAP (CoachKernel) ── */
     const oneThing = (typeof CoachKernel !== 'undefined' && CoachKernel.oneThing) ? CoachKernel.oneThing() : null;
     const oneThingCard = oneThing ?
-      '<button type="button" onclick="go(\'' + esc(oneThing.go || 'workout') + '\')" class="dash-prompt" style="margin:0 16px 12px;width:calc(100% - 32px);border-radius:16px;padding:14px 16px;background:rgba(var(--c1-rgb),0.08);border:1px solid rgba(var(--c1-rgb),0.25);cursor:pointer;touch-action:manipulation;text-align:left">' +
+      '<button type="button" onclick="go(' + jsArg(oneThing.go || 'workout') + ')" class="dash-prompt" style="margin:0 16px 12px;width:calc(100% - 32px);border-radius:16px;padding:14px 16px;background:rgba(var(--c1-rgb),0.08);border:1px solid rgba(var(--c1-rgb),0.25);cursor:pointer;touch-action:manipulation;text-align:left">' +
       '<div style="font-size:11px;font-weight:700;color:var(--c1);letter-spacing:0.06em;text-transform:uppercase;margin-bottom:4px">Focus today</div>' +
       '<div style="font-size:15px;font-weight:800;color:var(--txt);margin-bottom:4px">' + esc(oneThing.title) + '</div>' +
       '<div style="font-size:12px;color:var(--txt2);line-height:1.45">' + esc(oneThing.body) + '</div></button>' : '';

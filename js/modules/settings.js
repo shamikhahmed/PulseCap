@@ -44,6 +44,11 @@ function _tabProfile(u) {
   const tdee = BodyEngine.tdee(u);
   const bmr = BodyEngine.bmr(u);
   const healthyRange = BodyEngine.healthyWeightRange(u.height||175, u.gender||'male');
+  const heightValue = heightFromCm(u.height || 175, u);
+  const weightValue = weightFromKg(u.weight || 75, u);
+  const goalWeightValue = weightFromKg(u.goalWeight || 70, u);
+  const healthyMin = weightFromKg(healthyRange.min, u);
+  const healthyMax = weightFromKg(healthyRange.max, u);
 
   return '<div  class="pad-16">' +
     _sectionTitle('Personal Info') +
@@ -53,11 +58,11 @@ function _tabProfile(u) {
     _fieldWrap('Gender', '<div class="select-wrap"><select class="field" onchange="_setSetting(\'user.gender\',this.value)"><option value="male"'+(u.gender==='male'?' selected':'')+'>Male</option><option value="female"'+(u.gender==='female'?' selected':'')+'>Female</option></select></div>') +
     '</div>' +
     '<div class="field-row">' +
-    _fieldWrap(hLabel, '<input class="field" type="number" value="'+(u.height||175)+'" oninput="_setSetting(\'user.height\',parseFloat(this.value))">') +
-    _fieldWrap(wLabel, '<input class="field" type="number" value="'+(u.weight||75)+'" step="0.1" oninput="_setSetting(\'user.weight\',parseFloat(this.value))">') +
+    _fieldWrap(hLabel, '<input class="field" type="number" value="'+heightValue+'" min="'+(imperial?36:90)+'" max="'+(imperial?96:245)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.height\',this.value,\'height\')">') +
+    _fieldWrap(wLabel, '<input class="field" type="number" value="'+weightValue+'" min="'+(imperial?55:25)+'" max="'+(imperial?1100:500)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.weight\',this.value,\'weight\')">') +
     '</div>' +
     '<div class="field-row">' +
-    _fieldWrap(gwLabel, '<input class="field" type="number" value="'+(u.goalWeight||70)+'" step="0.1" oninput="_setSetting(\'user.goalWeight\',parseFloat(this.value))">') +
+    _fieldWrap(gwLabel, '<input class="field" type="number" value="'+goalWeightValue+'" min="'+(imperial?55:25)+'" max="'+(imperial?1100:500)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.goalWeight\',this.value,\'weight\')">') +
     _fieldWrap('Body Fat %', '<input class="field" type="number" value="'+(u.targetBodyFat||15)+'" oninput="_setSetting(\'user.targetBodyFat\',parseFloat(this.value))">') +
     '</div>' +
 
@@ -98,7 +103,7 @@ function _tabProfile(u) {
     _infoStat('BMI', bmi.bmi+'', bmi.cat) +
     _infoStat('BMR', bmr+' kcal', 'At rest') +
     _infoStat('TDEE', tdee+' kcal', 'Total daily') +
-    _infoStat('Healthy wt', healthyRange.min+'–'+healthyRange.max+wtUnit, 'For your height') +
+    _infoStat('Healthy wt', healthyMin+'–'+healthyMax+wtUnit, 'For your height') +
     '</div>' +
     '<div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">' +
     '<button type="button" class="btn btn-secondary btn-sm" onclick="showLogWeight()" style="display:inline-flex;align-items:center;gap:6px">' + icon('scale', 14) + ' Log Weight Today</button>' +
@@ -238,7 +243,7 @@ function _tabSupplements() {
       '<div class="toggle-row">' +
       '<div class="toggle-info"><div class="toggle-label">'+esc(s.name)+'</div>' +
       '<div class="toggle-sub">'+esc(s.timing)+' · '+esc(s.dose||'')+'</div></div>' +
-      '<button type="button" onclick="removeSupp(\''+esc(s.id)+'\')" style="color:#ff4444;background:none;border:none;cursor:pointer;padding:8px;font-size:13px;font-weight:600;min-height:44px">Remove</button>' +
+      '<button type="button" onclick="removeSupp('+jsArg(s.id)+')" style="color:#ff4444;background:none;border:none;cursor:pointer;padding:8px;font-size:13px;font-weight:600;min-height:44px">Remove</button>' +
       '</div>'
     ).join('') : '<div style="color:var(--txt3);padding:12px 0;font-size:14px">No supplements in stack. Add them via Nutrition.</div>') +
     '<div class="spacer-sm"></div>' +
@@ -403,10 +408,10 @@ function _tabData() {
       return '<div class="card card-solid mb-14" >' +
         '<div style="font-size:13px;color:var(--txt2);line-height:1.55;margin-bottom:12px">' +
         'Built-in: <strong class="c-txt">' + exCount + '</strong> exercises. ' +
-        (st.cached ? 'wger cache: <strong class="c-txt">' + st.count + '</strong>' + (st.mediaCount ? ' · ' + st.mediaCount + ' media packs' : '') + ' stored offline on this device.' : 'Optional one-time download from wger.de while online — form images/videos then work offline in the logger detail view. Built-in FormLoops cues always work without download.') +
+        (st.cached ? 'wger metadata cache: <strong class="c-txt">' + st.count + '</strong>' + (st.mediaCount ? ' · ' + st.mediaCount + ' remote media links' : '') + '. Images and videos still need network access unless your browser has cached them.' : 'Optional sync from wger.de while online. Exercise metadata is cached on this device; remote images and videos are not guaranteed offline. Built-in FormLoops cues always work offline.') +
         '</div>' +
         '<button type="button" id="ex-lib-sync-btn" class="btn btn-secondary w-full" onclick="syncExerciseLibrary(' + (st.cached ? 'true' : 'false') + ')" >' +
-        (st.cached ? 'Re-sync form media pack' : 'Download form media pack') +
+        (st.cached ? 'Re-sync wger library' : 'Sync wger library') +
         '</button>' +
         (st.cached && st.fetchedAt ? '<div class="muted-11" style="margin-top:8px">Last sync: ' + esc(new Date(st.fetchedAt).toLocaleString()) + '</div>' : '') +
         '</div>';
@@ -480,6 +485,12 @@ window._setSetting = function(key, val) {
     const c = document.getElementById('bg-canvas');
     if (c) c.style.display = val ? 'none' : '';
   }
+};
+window._setCanonicalBodySetting = function(key, raw, kind) {
+  const value = Number(raw);
+  if (!Number.isFinite(value) || value <= 0) return;
+  const user = S.g('user') || {};
+  S.set(key, kind === 'height' ? heightToCm(value, user) : weightToKg(value, user));
 };
 
 window.toggleInjuryRecovered = function(idx) {
@@ -556,7 +567,7 @@ window.sbSearch = function(inp, di) {
   if (q.length < 2) { box.innerHTML = ''; return; }
   const hits = ExDB.search(q).slice(0, 6);
   box.innerHTML = hits.map(function(e) {
-    return '<div onclick="sbAdd(' + di + ',\'' + esc(e.n) + '\')" style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);margin-top:6px;cursor:pointer;touch-action:manipulation">' +
+    return '<div onclick="sbAdd(' + di + ',' + jsArg(e.n) + ')" style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);margin-top:6px;cursor:pointer;touch-action:manipulation">' +
       '<div  class="row-title">' + esc(e.n) + '</div>' +
       '<div style="font-size:11px;color:var(--c1);font-weight:700">+ Add</div></div>';
   }).join('') || '<div style="font-size:12px;color:var(--txt3);padding:8px 4px">Nothing matches.</div>';
@@ -631,19 +642,90 @@ window.exportData = function() {
   toast('Backup exported!', 'ok');
 };
 
+function _validateBackupValue(value, depth, state) {
+  if (depth > 12 || state.nodes++ > 50000) throw new Error('Backup is too complex');
+  if (value == null || typeof value === 'boolean') return;
+  if (typeof value === 'number') {
+    if (!Number.isFinite(value) || Math.abs(value) > 1e12) throw new Error('Backup contains invalid numbers');
+    return;
+  }
+  if (typeof value === 'string') {
+    if (value.length > 20000) throw new Error('Backup contains oversized text');
+    return;
+  }
+  if (Array.isArray(value)) {
+    if (value.length > 20000) throw new Error('Backup contains oversized lists');
+    value.forEach(function(item) { _validateBackupValue(item, depth + 1, state); });
+    return;
+  }
+  if (typeof value !== 'object' || Object.getPrototypeOf(value) !== Object.prototype) throw new Error('Backup contains unsupported data');
+  Object.keys(value).forEach(function(key) {
+    if (key === '__proto__' || key === 'prototype' || key === 'constructor' || key.length > 100) throw new Error('Backup contains unsafe keys');
+    _validateBackupValue(value[key], depth + 1, state);
+  });
+}
+function _validateBackup(data) {
+  if (!data || Array.isArray(data) || typeof data !== 'object') throw new Error('Backup root must be an object');
+  if (Number(data._schemaVersion) > S.SCHEMA_VERSION) throw new Error('Backup comes from a newer PulseCap version');
+  _validateBackupValue(data, 0, { nodes: 0 });
+  if (data.user != null && (Array.isArray(data.user) || typeof data.user !== 'object')) throw new Error('Invalid user profile');
+  ['workouts','prs','bodyStats','meals','customExercises'].forEach(function(key) {
+    if (data[key] != null && !Array.isArray(data[key])) throw new Error('Invalid ' + key + ' data');
+  });
+  (data.customExercises || []).forEach(function(ex) {
+    if (!ex || typeof ex !== 'object' || typeof ex.n !== 'string' || !ex.n.trim() || ex.n.length > 80) {
+      throw new Error('Invalid custom exercise');
+    }
+  });
+  return data;
+}
+
 window.importData = function(input) {
   const file = input.files[0];
   if (!file) return;
+  if (file.size > 2 * 1024 * 1024) {
+    toast('Backup is too large. Maximum size is 2 MB.', 'err');
+    input.value = '';
+    return;
+  }
   const reader = new FileReader();
   reader.onload = e => {
     try {
-      const data = JSON.parse(e.target.result);
-      Object.assign(S.d, data); S.save();
-      toast('Data imported!', 'ok');
-      location.reload();
-    } catch(err) { toast('Invalid backup file', 'err'); }
+      const data = _validateBackup(JSON.parse(e.target.result));
+      window._pendingPulseImport = data;
+      modal('Replace this profile?',
+        '<div class="body-13">Validated backup contains ' + ((data.workouts || []).length) + ' workouts and ' + ((data.bodyStats || []).length) + ' body entries. Current profile data will be replaced. Progress photos are not included.</div>',
+        '<button type="button" class="btn btn-danger mt-14" onclick="applyImportedData()">Replace profile</button>' +
+        '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()">Cancel</button>');
+    } catch(err) {
+      toast(err && err.message ? err.message : 'Invalid backup file', 'err', 5000);
+    }
+    input.value = '';
   };
+  reader.onerror = function() { toast('Could not read backup file', 'err'); };
   reader.readAsText(file);
+};
+window.applyImportedData = function() {
+  const data = window._pendingPulseImport;
+  if (!data) return;
+  const previous = S.d;
+  try {
+    localStorage.setItem(S._key + '_' + S.activeId() + '_pre_import_' + Date.now(), JSON.stringify(previous));
+  } catch (e) {
+    toast('Not enough storage to create rollback copy. Import cancelled.', 'err', 6000);
+    return;
+  }
+  S.d = data;
+  S._migrate();
+  if (S.save() === false) {
+    S.d = previous;
+    S.save();
+    toast('Import failed; previous profile restored', 'err', 6000);
+    return;
+  }
+  window._pendingPulseImport = null;
+  toast('Backup imported', 'ok');
+  location.reload();
 };
 
 window.confirmClearData = function() {

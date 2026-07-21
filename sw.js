@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'pulsecap-v80';
+const CACHE = 'pulsecap-v81';
 const ASSETS = [
   './css/capricorn-core.css',
   './',
@@ -56,7 +56,6 @@ const ASSETS = [
   './js/modules/body-intelligence.js',
   './js/modules/fitness-assistant.js',
   './js/modules/quests.js',
-  './manifest.json',
   './icon.svg',
   './assets/apple-touch-icon-120.png',
   './assets/apple-touch-icon-152.png',
@@ -67,11 +66,7 @@ const ASSETS = [
   './js/capricorn-scene.js',
   './js/capricorn-premium-nav.js',
   './js/capricorn-cinematic.js',
-  './js/capricorn-deck.js',
-  './js/capricorn-deck-pro.js',
   './js/capricorn-pitch.js',
-  './js/vendor/gsap.min.js',
-  './js/vendor/ScrollTrigger.min.js',
   './privacy.html',
   './changelog.html',
   './assets/qr-pulsecap.png',
@@ -82,8 +77,11 @@ self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE)
       .then(c => c.addAll(ASSETS))
-      .then(() => self.skipWaiting())
   );
+});
+
+self.addEventListener('message', e => {
+  if (e.data && e.data.type === 'SKIP_WAITING') self.skipWaiting();
 });
 
 self.addEventListener('activate', e => {

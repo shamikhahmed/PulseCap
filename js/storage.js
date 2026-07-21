@@ -4,6 +4,7 @@ const S = {
   _metaKey: 'fos_meta',
   _pid: null,
   d: {},
+  SCHEMA_VERSION: 2,
 
   /* ── Meta (profile list) ── */
   getMeta() {
@@ -38,6 +39,7 @@ const S = {
       this.saveMeta(newMeta);
       this._pid = id;
       try { this.d = JSON.parse(legacyRaw); } catch(e) { this.d = {}; }
+      this._migrate();
       this._save();
       return;
     }
@@ -50,12 +52,13 @@ const S = {
       };
       this.saveMeta(newMeta);
       this._pid = id;
-      this.d = {};
+      this.d = { _schemaVersion: this.SCHEMA_VERSION };
       this._save();
       return;
     }
     this._pid = meta.activeId || meta.profiles[0].id;
     this._load();
+    this._migrate();
     this.applyGlobalCoach();
   },
 
@@ -68,6 +71,7 @@ const S = {
     this.saveMeta(meta);
     this._pid = id;
     this._load();
+    this._migrate();
     this.applyGlobalCoach();
     return true;
   },
@@ -99,7 +103,7 @@ const S = {
     meta.activeId = id;
     this.saveMeta(meta);
     this._pid = id;
-    this.d = {};
+    this.d = { _schemaVersion: this.SCHEMA_VERSION };
     this._save();
     return id;
   },
@@ -108,6 +112,11 @@ const S = {
   deleteProfile(id) {
     const meta = this.getMeta();
     meta.profiles = (meta.profiles||[]).filter(p => p.id !== id);
+    if (window.PhotoStore && PhotoStore.removeProfile) {
+      PhotoStore.removeProfile(id).catch(function() {
+        if (typeof toast === 'function') toast('Profile removed, but photo cleanup needs another try', 'warn');
+      });
+    }
     localStorage.removeItem(this._key + '_' + id);
     if (meta.activeId === id) {
       meta.activeId = meta.profiles.length ? meta.profiles[0].id : null;
@@ -164,6 +173,7 @@ const S = {
     }
     /* Inject rich demo data */
     const demoData = {
+      _schemaVersion: this.SCHEMA_VERSION,
       onboarded: true,
       user: {
         name: 'Alex Demo', goal: 'hypertrophy', exp: 'intermediate',
@@ -299,9 +309,41 @@ const S = {
       this.d = raw ? JSON.parse(raw) : {};
     } catch(e) { this.d = {}; }
   },
+  _migrate() {
+    const current = Number(this.d && this.d._schemaVersion) || 0;
+    if (current >= this.SCHEMA_VERSION) return false;
+    try {
+      localStorage.setItem(this._key + '_' + this._pid + '_pre_v' + this.SCHEMA_VERSION, JSON.stringify(this.d || {}));
+    } catch (e) { /* best-effort rollback snapshot */ }
+    const user = this.d.user || {};
+    if (current < 2 && user.units === 'imperial') {
+      const height = Number(user.height);
+      const legacyImperial = height >= 36 && height <= 96;
+      if (legacyImperial) {
+        user.height = Math.round(height * 2.54 * 10) / 10;
+        if (Number(user.weight) > 0) user.weight = Math.round(Number(user.weight) * 0.45359237 * 10) / 10;
+        if (Number(user.goalWeight) > 0) user.goalWeight = Math.round(Number(user.goalWeight) * 0.45359237 * 10) / 10;
+        this.d.user = user;
+      }
+    }
+    this.d._schemaVersion = this.SCHEMA_VERSION;
+    this._save();
+    return true;
+  },
   _save() {
     if (!this._pid) return;
-    localStorage.setItem(this._key + '_' + this._pid, JSON.stringify(this.d));
+    try {
+      localStorage.setItem(this._key + '_' + this._pid, JSON.stringify(this.d));
+      return true;
+    } catch (e) {
+      window._pulseStorageError = e;
+      if (typeof toast === 'function') {
+        toast(e && e.name === 'QuotaExceededError'
+          ? 'Storage is full. Export a backup before adding more data.'
+          : 'Could not save changes on this device.', 'err', 6000);
+      }
+      return false;
+    }
   },
   save() { this._save(); },
 
@@ -319,19 +361,29 @@ const S = {
       v = v[keys[i]];
     }
     v[keys[keys.length-1]] = val;
-    this._save();
+    return this._save();
   },
   push(path, item) {
     const arr = this.g(path) || [];
     arr.push(item);
-    this.set(path, arr);
+    return this.set(path, arr);
   },
   reset() {
     if (!this._pid) return;
-    localStorage.removeItem(this._key + '_' + this._pid);
-    this.d = {};
-    toast('All data cleared', 'ok');
-    location.reload();
+    const profileId = this._pid;
+    const finish = function() {
+      localStorage.removeItem(S._key + '_' + profileId);
+      S.d = {};
+      toast('All profile data cleared', 'ok');
+      location.reload();
+    };
+    if (window.PhotoStore && PhotoStore.removeProfile) {
+      PhotoStore.removeProfile(profileId).then(finish).catch(function() {
+        toast('Could not delete profile photos. Reset cancelled.', 'err', 6000);
+      });
+    } else {
+      finish();
+    }
   }
 };
 window.S = S;
@@ -501,6 +553,7 @@ function _buildPersonaData(cfg) {
   });
   const todayStr = new Date().toISOString().slice(0, 10);
   return {
+    _schemaVersion: S.SCHEMA_VERSION,
     onboarded: true,
     user: user,
     recovery: { sleep: 7, soreness: 3, stress: 3, energy: 7, hydration: 2.2, date: todayStr },
