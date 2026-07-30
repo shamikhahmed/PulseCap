@@ -38,3 +38,6 @@ logs/
 # Temporary files
 *.tmp
 *.temp
+
+# Device-matrix PNGs (keep REPORT.md + meta.json)
+qa/device-matrix/**/*.png

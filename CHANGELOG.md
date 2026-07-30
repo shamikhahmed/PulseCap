@@ -1,3 +1,9 @@
+## 6.5.2 — 2026-07-30
+- Cap fleet device-matrix harness: `tests/device-matrix.{js,spec.js}`, `qa/device-matrix/REPORT.md`, PNGs gitignored.
+- Shell BP **900 → 700** (`CapDesktopNav` + CSS show/hide): iPad mini/Air/Pro 11 now sidebar; hide rule was still `max-width:899` with `!important` (neither chrome).
+- Demo banner `padding-top` uses `--top-safe`; viewport tests for 744 / 699 Cap BP band.
+- SW `pulsecap-v85`.
+
 ## 6.5.1 — 2026-07-30
 - Brand: kill residual cyan/purple fad on Today, progress charts, exercise-done chrome, marketing pages (landing/pitch/presentation/gallery/privacy/changelog).
 - Tokens: dashboard chrome → shared `.dash-*` / `.icon-flex-*` classes; semantic status hex → `--success`/`--warn`/`--danger` in modules.

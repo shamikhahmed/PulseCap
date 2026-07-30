@@ -14,13 +14,13 @@ async function resize(page, name) {
   await page.setViewportSize(vp);
   await page.waitForFunction(
     (w) => {
-      const desktop900 = w >= 900;
+      const desktopShell = w >= 700;
       if (typeof window.CapDesktopNav !== 'undefined') {
-        return document.body.classList.contains('cap-desktop-nav') === desktop900;
+        return document.body.classList.contains('cap-desktop-nav') === desktopShell;
       }
       if (document.getElementById('nav-sidebar')) {
         const lc = document.body.classList.contains('lc-desktop-nav');
-        return lc === desktop900;
+        return lc === desktopShell;
       }
       return true;
     },
@@ -53,7 +53,7 @@ async function assertCapSharedDesktop(page, ex) {
   await ex(page.locator('body')).toHaveClass(/cap-desktop-nav/);
   const shell = page.locator('.cap-desktop-shell');
   const box = await shell.boundingBox();
-  ex(box?.width ?? 0).toBeGreaterThan(900);
+  ex(box?.width ?? 0).toBeGreaterThan(700);
 }
 
 /**

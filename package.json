@@ -7,7 +7,8 @@
     "test:e2e": "playwright test",
     "verify": "playwright test",
     "gallery": "CAPTURE_GALLERY=1 playwright test tests/gallery.spec.js",
-    "gallery:view": "python3 -m http.server 8766"
+    "gallery:view": "python3 -m http.server 8766",
+    "device-matrix": "DEVICE_MATRIX=1 playwright test tests/device-matrix.spec.js --project=chromium"
   },
   "devDependencies": {
     "@playwright/test": "^1.52.0"

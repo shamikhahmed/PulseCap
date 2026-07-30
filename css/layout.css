@@ -571,7 +571,7 @@ input[type=range] {
 }
 
 /* ── Desktop shell (Mac / Windows browsers) ── */
-@media (min-width: 900px) {
+@media (min-width: 700px) {
   html.cap-desktop-bg { background: #030508; }
   #app.cap-desktop-main {
     max-width: none;
@@ -585,15 +585,7 @@ input[type=range] {
   #view > .screen { max-width: 1120px; margin-inline: auto; width: 100%; }
 }
 
-@media (min-width: 768px) and (max-width: 899px) {
-  html { background: #030508; }
-  .cap-desktop-shell {
-    max-width: 100vw;
-    margin: 0 auto;
-    box-shadow: none;
-  }
-  #view > .screen { max-width: 720px; margin-inline: auto; width: 100%; }
-}
+/* Narrow tablet band removed — Cap fleet BP 700 puts 700–899 on sidebar */
 
 @media (min-width: 769px) and (hover: hover) and (pointer: fine) {
   :root { --safe: 0px; --top-safe: 0px; }
@@ -828,6 +820,7 @@ body.gym-floor #nav.cap-premium-nav .nav-label { font-size: 0.65rem; }
   background: linear-gradient(135deg, rgba(255,69,58,0.15), rgba(255,69,58,0.08));
   border-bottom: 1px solid rgba(255,69,58,0.2);
   padding: 10px 16px;
+  padding-top: calc(10px + var(--top-safe, 0px));
   display: flex; align-items: center; justify-content: space-between;
 }
 .dash-demo-label {

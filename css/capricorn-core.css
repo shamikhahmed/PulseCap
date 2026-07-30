@@ -1429,8 +1429,9 @@ body[data-cap-app="1"] #view > .screen {
 }
 
 /* ════════════════════════════════════════════════════════════════
-   Capricorn Desktop Shell — Mac / Windows browsers (≥900px)
+   Capricorn Desktop Shell — Mac / Windows browsers (≥700px)
    Sidebar + full-width content; phone shell only below breakpoint.
+   Cap fleet: iPad mini 744 → sidebar (was 900 — left tablets on tabs).
    ════════════════════════════════════════════════════════════════ */
 
 :root {
@@ -1439,7 +1440,7 @@ body[data-cap-app="1"] #view > .screen {
   --cap-sidebar-w-wide: 272px;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 700px) {
   html.cap-desktop-bg {
     background: var(--cap-desktop-bg);
   }
@@ -1536,14 +1537,14 @@ body[data-cap-app="1"] #view > .screen {
   }
 }
 
-@media (max-width: 899px) {
+@media (max-width: 699px) {
   #cap-nav-sidebar {
     display: none !important;
   }
 }
 
-/* Phone column — mobile / narrow tablet only */
-@media (max-width: 899px) {
+/* Phone column — mobile / narrow only */
+@media (max-width: 699px) {
   .cap-phone-shell {
     max-width: min(430px, 100vw);
     margin-left: auto;

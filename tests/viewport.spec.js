@@ -74,8 +74,26 @@ test.describe('PulseCap viewport contract', () => {
     await assertCapSharedMobile(page, expect);
   });
 
-  test('1280px — sidebar and full-width main', async ({ page }) => {
-    await resize(page, 'desktop');
-    await assertCapSharedDesktop(page, expect);
+  test('744px — iPad mini band uses sidebar (Cap BP 700)', async ({ page }) => {
+    await page.setViewportSize({ width: 744, height: 1133 });
+    await page.waitForTimeout(200);
+    await page.evaluate(() => {
+      if (window.CapDesktopNav && window.CapDesktopNav.sync) window.CapDesktopNav.sync();
+    });
+    await page.waitForTimeout(80);
+    await expect(page.locator('body')).toHaveClass(/cap-desktop-nav/);
+    await expect(page.locator('#cap-nav-sidebar')).toBeVisible();
+    await expect(page.locator('#nav')).toBeHidden();
+  });
+
+  test('699px — just under Cap BP keeps phone tabs', async ({ page }) => {
+    await page.setViewportSize({ width: 699, height: 900 });
+    await page.waitForTimeout(200);
+    await page.evaluate(() => {
+      if (window.CapDesktopNav && window.CapDesktopNav.sync) window.CapDesktopNav.sync();
+    });
+    await page.waitForTimeout(80);
+    await expect(page.locator('body')).not.toHaveClass(/cap-desktop-nav/);
+    await expect(page.locator('#nav')).toBeVisible();
   });
 });
