@@ -45,7 +45,7 @@ Most-used / identity → rare → destructive / legal.
 
 ## Body / Learn tool strips
 
-- **Body tools:** Recover, Fuel, Rehab, Photos, Physique, Body Intel, Injury Risk, Calculators — body-adjacent; Calculators also listed under Learn for discovery (dual entry justified: tool vs knowledge directory). *Note:* Calculators dual-home is intentional discoverability; primary home = Learn Knowledge.
+- **Body tools:** Recover, Fuel, Rehab, Photos, Physique, Body Intel, Injury Risk — body-adjacent. Calculators live under Learn only (one home).
 - **Learn:** Search & Coach → Knowledge → Missions. Advanced charts hidden in Beginner Mode.
 
 ## Progressive disclosure

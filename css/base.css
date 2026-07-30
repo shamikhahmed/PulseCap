@@ -14,16 +14,31 @@
   --font: "DM Sans", -apple-system, "SF Pro Text", system-ui, "Segoe UI", Roboto, sans-serif;
   --font-display: "Bricolage Grotesque", "DM Sans", var(--font);
   --font-display-nums: Impact, Haettenschweiler, "Franklin Gothic Bold", "Arial Narrow Bold", sans-serif;
+  --type-display: clamp(1.75rem, 4vw, 2.25rem);
+  --type-title: 1.375rem;
+  --type-heading: 1.125rem;
+  --type-body: 1rem;
+  --type-label: 0.8125rem;
+  --type-caption: 0.75rem;
+  --lh-tight: 1.2;
+  --lh-body: 1.5;
+  --tracking-label: 0.06em;
 
-  /* Animations */
+  /* Motion */
+  --dur-fast: 120ms;
+  --dur-med: 220ms;
+  --dur-slow: 360ms;
   --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
   --snap: cubic-bezier(0.4, 0, 0.2, 1);
 
-  /* Shadows */
+  /* Shadows / elevation */
   --ds1: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.08);
   --ds2: 0 4px 16px rgba(0,0,0,0.18), 0 2px 6px rgba(0,0,0,0.1);
   --ds3: 0 8px 32px rgba(0,0,0,0.24), 0 4px 12px rgba(0,0,0,0.12);
+  --elev-1: var(--ds1);
+  --elev-2: var(--ds2);
+  --elev-3: var(--ds3);
 }
 
 /* ══ DARK THEME (default) ══════════════════════════════ */
@@ -56,6 +71,21 @@
 
   /* Input */
   --input-bg: #18181f;
+
+  /* Semantic (same names every theme) */
+  --surface: var(--bg2);
+  --surface-2: var(--bg3);
+  --layer-0: transparent;
+  --layer-1: var(--bg3);
+  --layer-2: var(--bg4);
+  --layer-3: var(--bg5);
+  --text: var(--txt);
+  --text-muted: var(--txt3);
+  --accent: var(--c1);
+  --accent-contrast: #ffffff;
+  --success: #30d158;
+  --warn: #ff9f0a;
+  --danger: #ff453a;
 }
 
 /* ══ LIGHT THEME ═══════════════════════════════════════ */
@@ -82,6 +112,21 @@
   --card-bg2: rgba(255,255,255,0.95);
 
   --input-bg: #ffffff;
+
+  /* Semantic (same names as dark) */
+  --surface: var(--bg2);
+  --surface-2: var(--bg3);
+  --layer-0: transparent;
+  --layer-1: var(--bg3);
+  --layer-2: var(--bg4);
+  --layer-3: var(--bg5);
+  --text: var(--txt);
+  --text-muted: var(--txt3);
+  --accent: var(--c1);
+  --accent-contrast: #ffffff;
+  --success: #248A3D;
+  --warn: #B25000;
+  --danger: #C41E3A;
 }
 
 /* ══ BRAND ACCENTS (dark / light only — no color theme variants) ══ */

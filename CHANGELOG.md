@@ -1,3 +1,9 @@
+## 6.5.0 — 2026-07-30
+- Close quality checklist gaps: PERF.md budgets + live measures; QA-MATRIX.md interactive audit; calc correctness tests; a11y + offline/update specs.
+- Design foundations: type/motion/elevation semantic tokens; offline banner to CSS; intro slides chalk-red (no cyan/purple fad).
+- IA: Calculators one home under Learn (removed Body tool duplicate).
+- SW `pulsecap-v83`.
+
 ## 6.4.0 — 2026-07-30
 - IA: Settings regrouped to Account · Training · Fuel · Appearance · Access · Alerts · Privacy · About (aliases keep old deep links). See `IA-RATIONALE.md` + `AUDIT.md`.
 - Design: light theme chalk-red DNA (no blue/purple fad); `--cap-accent` locked to PulseCap red; dark backdrop orbs match brand; duplicate layout CSS utilities removed.

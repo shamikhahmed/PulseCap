@@ -14,8 +14,8 @@ reg('bodymap', function() {
   _measUnit = user.measureUnit || 'cm';
 
   var tool = function(screen, ic, label, tint) {
-    return '<button type="button" onclick="go(\'' + screen + '\')" class="press" ' +
-      'style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:5px">' +
+    return '<button type="button" onclick="go(\'' + screen + '\')" class="press body-tool-btn" aria-label="' + esc(label) + '" ' +
+      'style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 6px;min-height:48px;cursor:pointer;touch-action:manipulation;display:flex;flex-direction:column;align-items:center;gap:5px">' +
       '<span style="color:var(--' + (tint || 'c1') + ');display:flex">' + icon(ic, 20) + '</span>' +
       '<span style="font-size:10px;font-weight:700;color:var(--txt2);letter-spacing:0.02em">' + label + '</span></button>';
   };
@@ -37,7 +37,6 @@ reg('bodymap', function() {
     tool('physique', 'ruler', 'Physique', 'c1') +
     tool('body-intelligence', 'dna', 'Body Intel', 'c2') +
     tool('injury-risk', 'alert', 'Injury Risk', 'c5') +
-    tool('calculators', 'calc', 'Calculators', 'c1') +
     '</div>' +
 
     _measurementsSection(latestMeas, prevMeas, user) +
@@ -79,8 +78,10 @@ function _bodyMapSection(colors, user) {
   /* HD anatomical map: bezier muscle shapes, one side authored, mirrored
      with an SVG transform; decor lines add definition without capturing taps. */
   function mus(d, grp) {
+    var label = prettyMuscle ? prettyMuscle(grp) : grp;
     return '<path d="' + d + '" fill="' + c(grp) + '" fill-opacity="0.92" ' +
       'stroke="rgba(0,0,0,0.30)" stroke-width="0.8" stroke-linejoin="round" ' +
+      'role="button" tabindex="0" aria-label="' + esc(label) + ' recovery" ' +
       'onclick="showMuscleInfo(\'' + grp + '\')" style="cursor:pointer"/>';
   }
   function dec(d) {
@@ -194,13 +195,14 @@ function _bodyMapSection(colors, user) {
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3)">Body Map</div>' +
     '<div style="display:flex;gap:6px">' +
-    '<button type="button" onclick="_bodyView=\'front\';go(\'bodymap\')" style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid '+(!isBack?'var(--c1)':'var(--border)')+';background:'+(!isBack?'var(--c1)':'transparent')+';color:'+(!isBack?'#fff':'var(--txt3)')+'">Front</button>' +
-    '<button type="button" onclick="_bodyView=\'back\';go(\'bodymap\')" style="padding:6px 14px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid '+(isBack?'var(--c1)':'var(--border)')+';background:'+(isBack?'var(--c1)':'transparent')+';color:'+(isBack?'#fff':'var(--txt3)')+'">Back</button>' +
+    '<button type="button" onclick="_bodyView=\'front\';go(\'bodymap\')" aria-pressed="'+(!isBack)+'" style="min-height:44px;min-width:44px;padding:10px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid '+(!isBack?'var(--c1)':'var(--border)')+';background:'+(!isBack?'var(--c1)':'transparent')+';color:'+(!isBack?'#fff':'var(--txt3)')+'">Front</button>' +
+    '<button type="button" onclick="_bodyView=\'back\';go(\'bodymap\')" aria-pressed="'+isBack+'" style="min-height:44px;min-width:44px;padding:10px 16px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid '+(isBack?'var(--c1)':'var(--border)')+';background:'+(isBack?'var(--c1)':'transparent')+';color:'+(isBack?'#fff':'var(--txt3)')+'">Back</button>' +
     '</div></div></div>' +
     '<div style="background:var(--bg3);border-radius:20px;margin:0 16px 14px;padding:16px;border:1px solid var(--border)">' +
     '<div class="row-between mb-12">' +
     '<div style="font-size:12px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em">' +
     (isBack ? 'Posterior (Back)' : 'Anterior (Front)') + '</div>' +
+    '<p class="cap-sr-only" id="bodymap-summary">Body recovery map. Colored regions show muscle recovery. Tap a region for details. ' + esc((user && user.name) || 'Athlete') + ' profile.</p>' +
     '<div style="display:flex;gap:6px;align-items:center">' +
     '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:#30d158"></div><div  class="muted-10">Ready</div></div>' +
     '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:#ff9f0a"></div><div  class="muted-10">Recovering</div></div>' +

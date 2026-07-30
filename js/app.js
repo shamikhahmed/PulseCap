@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.4.0';
+window.APP_VERSION = '6.5.0';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -460,7 +460,7 @@ function moduleTopbar(title, opts) {
 /** History-aware back chip — preferred for Learn deep-screens. */
 function moduleBackTopbar(title, fallbackScreen) {
   const fb = fallbackScreen || 'hub';
-  return '<div class="topbar"><button type="button" class="back-chip" onclick="history.length>1?history.back():go(\'' + fb + '\')" aria-label="Back">←</button>' +
+  return '<div class="topbar"><button type="button" class="back-chip" onclick="history.length>1?history.back():go(\'' + fb + '\')" aria-label="Back" style="min-height:44px;min-width:44px">←</button>' +
     '<div class="topbar-title">' + esc(title) + '</div></div>';
 }
 function moduleLede(text) {

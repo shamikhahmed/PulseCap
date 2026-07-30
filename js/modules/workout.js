@@ -837,7 +837,7 @@ reg('workout', function() {
       (prev?'<div style="font-size:12px;color:var(--c1);margin-top:2px">'+esc(prev)+'</div>':'') +
       '</div>' +
       '<button type="button" onclick="showExerciseDetail('+jsArg(name)+')" aria-label="Exercise details" ' +
-      'style="width:32px;height:32px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);' +
+      'style="width:44px;height:44px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);' +
       'display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation;flex-shrink:0">'+icon('book',15)+'</button>' +
       '</div>';
   }).join('');
@@ -1056,7 +1056,7 @@ reg('active', function() {
       (exData && !_focusMode ? '<div style="font-size:11px;color:var(--txt3);margin-top:1px">'+esc(exData.cues.slice(0,60))+'...</div>' : '') +
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;align-items:flex-end">' +
-      '<button type="button" onclick="showExerciseDetail('+jsArg(ex.name)+')" style="width:30px;height:30px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);font-size:12px;cursor:pointer;touch-action:manipulation">ℹ️</button>' +
+      '<button type="button" onclick="showExerciseDetail('+jsArg(ex.name)+')" aria-label="Exercise details" style="width:44px;height:44px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation">'+icon('book',15)+'</button>' +
       (!_focusMode ? '<button type="button" onclick="swapExercise('+exIdx+')" style="padding:4px 7px;border-radius:8px;background:var(--bg4);border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--txt3);cursor:pointer;touch-action:manipulation;white-space:nowrap">⇄ Swap</button>' : '') +
       '</div>' +
       '</div>' +

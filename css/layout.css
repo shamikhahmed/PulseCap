@@ -182,6 +182,42 @@
 }
 #toast.show { opacity: 1; animation: toastIn 0.4s var(--spring) both; }
 
+/* PulseCap override: Cap tabs meet 44px touch target */
+.cap-tab,
+.div-tab,
+.tab-pill,
+.search-chip,
+.perf-tab {
+  min-height: 44px;
+  min-width: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 14px;
+}
+
+.back-chip,
+button.back-chip {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.pc-offline-banner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  background: var(--danger, #ff453a);
+  color: #fff;
+  text-align: center;
+  padding: 10px var(--space-4, 16px);
+  padding-top: calc(10px + var(--top-safe, 0px));
+  font-size: var(--type-label, 13px);
+  font-weight: 600;
+}
+.pc-offline-banner[hidden] { display: none !important; }
+
 .fs-18 { font-size: 18px; }
 .fs-20 { font-size: 20px; }
 .fs-28 { font-size: 28px; }

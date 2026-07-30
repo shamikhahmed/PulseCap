@@ -250,7 +250,7 @@ reg('search', function(data) {
 
   const topbar =
     '<div style="display:flex;align-items:center;gap:10px;padding:10px 16px 0;background:var(--bg);position:sticky;top:0;z-index:20">' +
-    '<button type="button" onclick="history.length>1?history.back():go(\'dashboard\')" style="width:34px;height:34px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--txt);font-size:18px;cursor:pointer;touch-action:manipulation;flex-shrink:0">←</button>' +
+    '<button type="button" onclick="history.length>1?history.back():go(\'dashboard\')" aria-label="Back" style="width:44px;height:44px;border-radius:50%;background:var(--bg3);border:1px solid var(--border);color:var(--txt);font-size:18px;cursor:pointer;touch-action:manipulation;flex-shrink:0;display:flex;align-items:center;justify-content:center">←</button>' +
     '<input id="fit-search" type="search" placeholder="Exercises, muscles, injuries, sports..." ' +
     'value="' + qEsc + '" ' +
     'oninput="clearTimeout(window._st);window._st=setTimeout(function(){go(\'search\',{q:document.getElementById(\'fit-search\').value,filter:\'' + fEsc + '\'})},280)" ' +

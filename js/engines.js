@@ -1145,7 +1145,7 @@ window.renderSplitDayPicker = function(opts) {
     const num = i + 1;
     const on = num === active;
     const label = compact ? String(num) : (d.n.split('—')[0].split(' - ')[0].trim().slice(0, 14));
-    return '<button type="button" onclick="pickSplitDay(' + num + ')" style="flex-shrink:0;padding:' + (compact ? '8px 12px' : '10px 14px') + ';border-radius:12px;border:1.5px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'rgba(0,213,255,0.12)' : 'var(--bg3)') + ';color:' + (on ? 'var(--c1)' : 'var(--txt2)') + ';font-size:' + (compact ? '12px' : '11px') + ';font-weight:700;cursor:pointer;touch-action:manipulation;white-space:nowrap">' + esc(label) + '</button>';
+    return '<button type="button" onclick="pickSplitDay(' + num + ')" aria-pressed="' + on + '" aria-label="Session ' + num + (d.n ? ': ' + esc(d.n) : '') + '" style="flex-shrink:0;min-height:44px;min-width:44px;padding:' + (compact ? '10px 14px' : '10px 14px') + ';border-radius:12px;border:1.5px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'rgba(var(--c1-rgb),0.12)' : 'var(--bg3)') + ';color:' + (on ? 'var(--c1)' : 'var(--txt2)') + ';font-size:' + (compact ? '12px' : '11px') + ';font-weight:700;cursor:pointer;touch-action:manipulation;white-space:nowrap">' + esc(label) + '</button>';
   }).join('');
   const restNote = SplitEngine.isScheduledRestDay()
     ? '<div style="font-size:12px;color:var(--c5);margin-bottom:10px;line-height:1.45">📅 Not a scheduled gym day — pick any session below or train anyway.</div>'

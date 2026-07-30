@@ -432,7 +432,7 @@ reg('encyclopedia', function(data) {
   if (section === 'search') return _encyclopediaSearch(data && data.query);
 
   return '<div class="topbar"><div class="topbar-title">Encyclopedia</div>' +
-    '<button type="button" onclick="go(\'encyclopedia\',{section:\'search\'})" aria-label="Search encyclopedia" style="background:none;border:none;color:var(--txt3);font-size:14px;cursor:pointer;padding:0 16px;display:flex;align-items:center">' + icon('search', 18) + '</button>' +
+    '<button type="button" onclick="go(\'encyclopedia\',{section:\'search\'})" aria-label="Search encyclopedia" style="background:none;border:none;color:var(--txt3);font-size:14px;cursor:pointer;min-height:44px;min-width:44px;padding:8px 16px;display:flex;align-items:center">' + icon('search', 18) + '</button>' +
     '</div>' +
 
     '<div  class="pad-16">' +

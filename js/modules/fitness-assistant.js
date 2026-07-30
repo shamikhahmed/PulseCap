@@ -503,7 +503,7 @@ reg('assistant', function() {
 
   return '<div class="topbar">' +
     '<div class="topbar-title" style="display:flex;align-items:center;gap:8px"><span style="color:var(--c1);display:inline-flex">' + icon('sparkles', 20) + '</span>Fitness Assistant</div>' +
-    '<button type="button" onclick="S.set(\'assistantHistory\',[]);go(\'assistant\')" style="background:none;border:none;color:var(--txt3);font-size:12px;cursor:pointer;padding:0 16px">Clear</button>' +
+    '<button type="button" onclick="S.set(\'assistantHistory\',[]);go(\'assistant\')" style="background:none;border:none;color:var(--txt3);font-size:12px;cursor:pointer;min-height:44px;padding:8px 16px">Clear</button>' +
     '</div>' +
 
     '<div id="chat-history" style="min-height:300px;padding-bottom:20px">' +
@@ -519,7 +519,7 @@ reg('assistant', function() {
       '<div style="font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px">Suggested Questions</div>' +
       '<div style="display:flex;flex-direction:column;gap:6px">' +
       SUGGESTIONS.map(function(s) {
-        return '<button type="button" onclick="window.askAssistant(\'' + s.replace(/'/g, "\\'") + '\')" style="text-align:left;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:var(--txt2);font-size:13px;cursor:pointer;touch-action:manipulation">' + esc(s) + '</button>';
+        return '<button type="button" onclick="window.askAssistant(\'' + s.replace(/'/g, "\\'") + '\')" style="text-align:left;padding:12px 14px;min-height:44px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:var(--txt2);font-size:13px;cursor:pointer;touch-action:manipulation">' + esc(s) + '</button>';
       }).join('') +
       '</div></div>' : '') +
     '</div>' +
