@@ -1,3 +1,10 @@
+## 6.4.0 — 2026-07-30
+- IA: Settings regrouped to Account · Training · Fuel · Appearance · Access · Alerts · Privacy · About (aliases keep old deep links). See `IA-RATIONALE.md` + `AUDIT.md`.
+- Design: light theme chalk-red DNA (no blue/purple fad); `--cap-accent` locked to PulseCap red; dark backdrop orbs match brand; duplicate layout CSS utilities removed.
+- Health: deleted dead `toggleNavTab`; removed `physique-timeline` stub reg (alias-only); marketing SW version drift fixed (`pulsecap-v82`).
+- Forms/a11y: settings labels, `inputmode`/`autocomplete`, `aria-pressed`/`tabpanel`, ≥44px targets, confirm copy without emoji.
+- QA: settings IA smoke invariant; gallery states updated. SW `pulsecap-v82`.
+
 ## 6.3.0 — 2026-07-21
 - Reliability: resumable active-workout drafts, lazy-route race protection, storage quota handling, robust wger sync retries, and user-consented service-worker activation.
 - Data: canonical metric body values, guarded legacy-unit migration with rollback snapshot, profile-scoped IndexedDB photos, and quarantined legacy photos.

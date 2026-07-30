@@ -232,7 +232,15 @@
   text-align: center;
 }
 
-#toast .toast-icon { font-size: 16px; flex-shrink: 0; }
+#toast .toast-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+#toast .toast-icon svg { display: block; }
 #toast.t-ok    { background: rgba(48,209,88,0.15);  border: 1px solid rgba(48,209,88,0.3);  color: #30d158; }
 #toast.t-err   { background: rgba(255,69,58,0.15);  border: 1px solid rgba(255,69,58,0.3);  color: #ff453a; }
 #toast.t-warn  { background: rgba(255,159,10,0.15); border: 1px solid rgba(255,159,10,0.3); color: #ff9f0a; }
@@ -746,65 +754,6 @@ textarea:focus-visible,
   touch-action: manipulation;
 }
 
-
-.fs-18 { font-size: 18px; }
-.fs-20 { font-size: 20px; }
-.fs-28 { font-size: 28px; }
-.c-txt { color: var(--txt); }
-.c-muted { color: var(--txt3); }
-.c-warn { color: #f5c842; }
-.ta-right { text-align: right; }
-.muted-9 { font-size: 9px; color: var(--txt3); }
-.mt-12 { margin-top: var(--space-3); }
-.mt-14 { margin-top: 14px; }
-.inline-chip { display: inline-flex; align-items: center; gap: 6px; }
-.row-title-12 { font-size: 12px; font-weight: 700; color: var(--txt); }
-.body-14 { font-size: 14px; color: var(--txt2); line-height: 1.6; }
-.body-12-lh { font-size: 12px; color: var(--txt2); line-height: 1.5; }
-.pad-x-16-b12 { padding: 0 var(--space-4) var(--space-3); }
-.pad-x-16-b16 { padding: 0 var(--space-4) var(--space-4); }
-.tile-12 { background: var(--bg3); border-radius: 12px; padding: var(--space-3); }
-.tile-tap {
-  background: var(--bg3);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 14px 8px;
-  text-align: center;
-  cursor: pointer;
-  touch-action: manipulation;
-}
-.micro-label-9 {
-  font-size: 9px;
-  color: var(--txt3);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-top: 2px;
-}
-.list-divider-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid var(--border);
-}
-.row-between { display: flex; justify-content: space-between; align-items: center; }
-.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-.stat-flex {
-  flex: 1;
-  background: var(--bg3);
-  border-radius: 12px;
-  padding: 10px;
-  text-align: center;
-}
-
-#toast .toast-icon {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 20px;
-  height: 20px;
-}
-#toast .toast-icon svg { display: block; }
 
 /* ── Gym Floor Mode — large tap targets, less chrome ── */
 body.gym-floor .set-inp {

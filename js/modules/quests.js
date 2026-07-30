@@ -792,8 +792,5 @@ window.renderPhysiqueTimelineBody = function() {
     '<div  class="spacer-bottom"></div>';
 };
 
-reg('physique-timeline', function() {
-  /* Deprecated route — alias + unified Physique tabs (P3). */
-  return window.renderPhysiqueUnified({ tab: 'timeline' });
-});
+/* physique-timeline: SCREEN_ALIASES → physique {tab:timeline}; no stub reg. */
 

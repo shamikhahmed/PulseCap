@@ -130,7 +130,7 @@ test.describe('Functional — every screen as every user type', () => {
 
     const steps = [
       ['settings-tabs', () => page.evaluate(() => {
-        ['profile', 'training', 'supplements', 'nutrition', 'appearance', 'notifications', 'data']
+        ['account', 'training', 'fuel', 'appearance', 'accessibility', 'notifications', 'privacy', 'about']
           .forEach((t) => window.go('settings', { tab: t }));
         return true;
       })],

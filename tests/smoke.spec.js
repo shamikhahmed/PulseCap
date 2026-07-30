@@ -176,6 +176,51 @@ test.describe('PulseCap smoke', () => {
     expect(css).toContain('.section-label');
   });
 
+  test('settings IA: mature groups + aliases + chalk accent', async ({ page }) => {
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.go === 'function' && typeof window.S !== 'undefined');
+    const out = await page.evaluate(() => {
+      window.go('settings', { tab: 'profile' });
+      const tabs = [...document.querySelectorAll('[role="tab"]')].map((t) => t.textContent.trim());
+      const accountOn = document.getElementById('settings-tab-account')?.getAttribute('aria-selected') === 'true';
+      window.go('settings', { tab: 'accessibility' });
+      const access = document.getElementById('view').innerText;
+      window.go('settings', { tab: 'privacy' });
+      const privacy = document.getElementById('view').innerText;
+      window.go('settings', { tab: 'about' });
+      const about = document.getElementById('view').innerText;
+      const on = document.querySelector('.cap-tab.on');
+      const onBg = on ? getComputedStyle(on).backgroundColor : '';
+      const capAccent = getComputedStyle(document.documentElement).getPropertyValue('--cap-accent').trim();
+      const c1 = getComputedStyle(document.documentElement).getPropertyValue('--c1').trim();
+      return {
+        tabs,
+        accountOn,
+        alias: window.resolveSettingsTab('data'),
+        accessUnits: /Units/i.test(access),
+        privacyExport: /Export Backup/i.test(privacy),
+        privacyDanger: /Danger Zone/i.test(privacy),
+        aboutVer: about.includes('v' + window.APP_VERSION),
+        onBg,
+        capAccent,
+        c1,
+        ver: window.APP_VERSION
+      };
+    });
+    expect(out.ver).toBe('6.4.0');
+    expect(out.tabs).toEqual(['Account', 'Training', 'Fuel', 'Appearance', 'Access', 'Alerts', 'Privacy', 'About']);
+    expect(out.accountOn).toBeTruthy();
+    expect(out.alias).toBe('privacy');
+    expect(out.accessUnits).toBeTruthy();
+    expect(out.privacyExport).toBeTruthy();
+    expect(out.privacyDanger).toBeTruthy();
+    expect(out.aboutVer).toBeTruthy();
+    expect(out.c1.toLowerCase()).toMatch(/#ff453a|#c41e3a/);
+    expect(out.capAccent.toLowerCase()).toMatch(/#ff453a|#c41e3a/);
+    // Active tab must not be Cap cyan/blue fad
+    expect(out.onBg).not.toMatch(/0,\s*242,\s*255|0,\s*122,\s*255/);
+  });
+
   test('demo mode has nutrition and active quest data', async ({ page }) => {
     await page.goto('/?demo=1');
     await page.waitForLoadState('domcontentloaded');

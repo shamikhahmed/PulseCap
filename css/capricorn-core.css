@@ -1023,10 +1023,10 @@ body.cap-has-scene > #root {
 .tab-pill.on,
 .search-chip.on,
 .perf-tab.active {
-  background: var(--cap-accent, var(--accent, var(--os-accent, #2563eb)));
-  border-color: var(--cap-accent, var(--accent, var(--os-accent, #2563eb)));
+  background: var(--c1, var(--cap-accent, var(--accent, #FF453A)));
+  border-color: var(--c1, var(--cap-accent, var(--accent, #FF453A)));
   color: #fff;
-  box-shadow: 0 0 12px color-mix(in srgb, var(--cap-accent, var(--accent)) 35%, transparent);
+  box-shadow: 0 0 12px rgba(var(--c1-rgb, 255, 69, 58), 0.35);
 }
 
 /* ── Segmented control (Research mode, 2-up) ── */

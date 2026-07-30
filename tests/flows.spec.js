@@ -225,7 +225,7 @@ test.describe('PulseCap flows', () => {
     const out = await page.evaluate(() => {
       // @ts-ignore
       const w = window;
-      w.go('settings', { tab: 'data' });
+      w.go('settings', { tab: 'about' });
       const text = document.getElementById('view').innerText;
       return { ver: w.APP_VERSION, text: text };
     });

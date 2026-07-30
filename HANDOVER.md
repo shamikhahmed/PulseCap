@@ -1,18 +1,19 @@
 # PulseCap — Handover
 
 > Read this + `ROADMAP.md` + `~/Capricorn-Brain/01 Projects/PulseCap.md` before working here.
-> Last updated: 2026-07-21 · Fleet-wide standard: `capricorn-tooling/shared/CAP-STANDARD.md`
+> Last updated: 2026-07-30 · Fleet-wide standard: `capricorn-tooling/shared/CAP-STANDARD.md`
 
 ## What this is
 Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Activity / widgets planned). Workouts, nutrition, recovery, anatomy, 30+ modules.
 
 ## Facts
-**Version:** 6.3.0
-**SW cache:** `pulsecap-v81`
+**Version:** 6.4.0
+**SW cache:** `pulsecap-v82`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.
 **Data:** Local storage (+ IndexedDB for progress photos). Profiles are local-per-device.
+**IA docs:** `AUDIT.md`, `IA-RATIONALE.md`, `docs/SCREEN-GALLERY.md`
 
 ## Run & verify
 ```bash

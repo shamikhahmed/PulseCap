@@ -1,40 +1,68 @@
 'use strict';
-/* ── PulseCap v4 — Settings (7 sub-tabs) ── */
+/* ── PulseCap — Settings (mature IA groups) ── */
 
-let _activeSettingsTab = 'profile';
+let _activeSettingsTab = 'account';
+
+/** Old tab ids → canonical (deep links / tests / bookmarks). */
+const SETTINGS_TAB_ALIASES = {
+  profile: 'account',
+  supplements: 'fuel',
+  nutrition: 'fuel',
+  data: 'privacy',
+  style: 'appearance',
+  alerts: 'notifications',
+  access: 'accessibility'
+};
+function resolveSettingsTab(tab) {
+  const raw = tab || 'account';
+  return SETTINGS_TAB_ALIASES[raw] || raw;
+}
+window.resolveSettingsTab = resolveSettingsTab;
 
 reg('settings', function(opts) {
-  const _settingsTab = (opts && opts.tab) ? opts.tab : 'profile';
+  const _settingsTab = resolveSettingsTab(opts && opts.tab);
   _activeSettingsTab = _settingsTab;
   const user = S.g('user') || {};
 
   const tabContent = {
-    profile: _tabProfile(user),
+    account: _tabAccount(user),
     training: _tabTraining(user),
-    supplements: _tabSupplements(),
-    nutrition: _tabNutrition(user),
+    fuel: _tabFuel(user),
     appearance: _tabAppearance(user),
+    accessibility: _tabAccessibility(user),
     notifications: _tabNotifications(user),
-    data: _tabData()
+    privacy: _tabPrivacy(),
+    about: _tabAbout()
   };
 
-  const tabList = ['profile','training','supplements','nutrition','appearance','notifications','data'];
+  const tabList = ['account','training','fuel','appearance','accessibility','notifications','privacy','about'];
+  const labels = {
+    account: 'Account',
+    training: 'Training',
+    fuel: 'Fuel',
+    appearance: 'Appearance',
+    accessibility: 'Access',
+    notifications: 'Alerts',
+    privacy: 'Privacy',
+    about: 'About'
+  };
 
   const tabBar = '<div class="cap-tab-bar" role="tablist" aria-label="Settings">' +
     tabList.map(function(t) {
       const active = _settingsTab === t;
-      const labels = {profile:'Profile',training:'Training',supplements:'Supps',nutrition:'Nutrition',appearance:'Style',notifications:'Alerts',data:'Data'};
-      return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" onclick="go(\'settings\',{tab:\''+t+'\'})">' +
+      return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" aria-controls="settings-panel" id="settings-tab-' + t + '" onclick="go(\'settings\',{tab:\''+t+'\'})">' +
         (labels[t]||t) + '</button>';
     }).join('') + '</div>';
 
   return '<div class="topbar"><div class="topbar-title">Settings</div></div>' +
     tabBar +
-    (tabContent[_settingsTab] || _tabProfile(user)) +
-    '<div  class="spacer-bottom"></div>';
+    '<div id="settings-panel" role="tabpanel" aria-labelledby="settings-tab-' + _settingsTab + '">' +
+    (tabContent[_settingsTab] || _tabAccount(user)) +
+    '</div>' +
+    '<div class="spacer-bottom"></div>';
 });
 
-function _tabProfile(u) {
+function _tabAccount(u) {
   const imperial = (u.units || 'metric') === 'imperial';
   const hLabel = imperial ? 'Height (in)' : 'Height (cm)';
   const wLabel = imperial ? 'Weight (lb)' : 'Weight (kg)';
@@ -50,20 +78,20 @@ function _tabProfile(u) {
   const healthyMin = weightFromKg(healthyRange.min, u);
   const healthyMax = weightFromKg(healthyRange.max, u);
 
-  return '<div  class="pad-16">' +
-    _sectionTitle('Personal Info') +
-    _fieldWrap('Name', '<input class="field" type="text" value="'+esc(u.name||'')+'" oninput="_setSetting(\'user.name\',this.value)" placeholder="Your name">') +
+  return '<div class="pad-16">' +
+    _sectionTitle('Identity') +
+    _fieldWrap('Name', '<input class="field" type="text" name="name" autocomplete="name" value="'+esc(u.name||'')+'" oninput="_setSetting(\'user.name\',this.value)" placeholder="Your name">') +
     '<div class="field-row">' +
-    _fieldWrap('Age', '<input class="field" type="number" value="'+(u.age||25)+'" oninput="_setSetting(\'user.age\',parseInt(this.value))" min="14" max="80">') +
-    _fieldWrap('Gender', '<div class="select-wrap"><select class="field" onchange="_setSetting(\'user.gender\',this.value)"><option value="male"'+(u.gender==='male'?' selected':'')+'>Male</option><option value="female"'+(u.gender==='female'?' selected':'')+'>Female</option></select></div>') +
+    _fieldWrap('Age', '<input class="field" type="number" inputmode="numeric" value="'+(u.age||25)+'" oninput="_setSetting(\'user.age\',parseInt(this.value))" min="14" max="80">') +
+    _fieldWrap('Gender', '<div class="select-wrap"><select class="field" aria-label="Gender" onchange="_setSetting(\'user.gender\',this.value)"><option value="male"'+(u.gender==='male'?' selected':'')+'>Male</option><option value="female"'+(u.gender==='female'?' selected':'')+'>Female</option></select></div>') +
     '</div>' +
     '<div class="field-row">' +
-    _fieldWrap(hLabel, '<input class="field" type="number" value="'+heightValue+'" min="'+(imperial?36:90)+'" max="'+(imperial?96:245)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.height\',this.value,\'height\')">') +
-    _fieldWrap(wLabel, '<input class="field" type="number" value="'+weightValue+'" min="'+(imperial?55:25)+'" max="'+(imperial?1100:500)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.weight\',this.value,\'weight\')">') +
+    _fieldWrap(hLabel, '<input class="field" type="number" inputmode="decimal" value="'+heightValue+'" min="'+(imperial?36:90)+'" max="'+(imperial?96:245)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.height\',this.value,\'height\')">') +
+    _fieldWrap(wLabel, '<input class="field" type="number" inputmode="decimal" value="'+weightValue+'" min="'+(imperial?55:25)+'" max="'+(imperial?1100:500)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.weight\',this.value,\'weight\')">') +
     '</div>' +
     '<div class="field-row">' +
-    _fieldWrap(gwLabel, '<input class="field" type="number" value="'+goalWeightValue+'" min="'+(imperial?55:25)+'" max="'+(imperial?1100:500)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.goalWeight\',this.value,\'weight\')">') +
-    _fieldWrap('Body Fat %', '<input class="field" type="number" value="'+(u.targetBodyFat||15)+'" oninput="_setSetting(\'user.targetBodyFat\',parseFloat(this.value))">') +
+    _fieldWrap(gwLabel, '<input class="field" type="number" inputmode="decimal" value="'+goalWeightValue+'" min="'+(imperial?55:25)+'" max="'+(imperial?1100:500)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.goalWeight\',this.value,\'weight\')">') +
+    _fieldWrap('Body Fat %', '<input class="field" type="number" inputmode="decimal" value="'+(u.targetBodyFat||15)+'" oninput="_setSetting(\'user.targetBodyFat\',parseFloat(this.value))">') +
     '</div>' +
 
     _sectionTitle('Goal') +
@@ -84,8 +112,8 @@ function _tabProfile(u) {
     (function() {
       const plan = typeof PlanEngine !== 'undefined' ? PlanEngine.build(u) : null;
       if (!plan) return '';
-      return '<div style="background:linear-gradient(135deg,rgba(0,213,255,0.08),rgba(123,95,255,0.06));border:1px solid rgba(0,213,255,0.15);border-radius:14px;padding:14px;margin-bottom:16px">' +
-        '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--c1);margin-bottom:8px">📋 Plan Snapshot</div>' +
+      return '<div class="card card-solid mb-14" style="border-color:rgba(var(--c1-rgb),0.22)">' +
+        '<div class="settings-section-title" style="margin-top:0">Plan snapshot</div>' +
         '<div style="font-size:14px;font-weight:700;color:var(--txt);margin-bottom:6px">' + esc(plan.split) + '</div>' +
         '<div style="font-size:12px;color:var(--txt3);line-height:1.5;margin-bottom:10px">' + esc(plan.readinessNote) + '</div>' +
         '<div style="display:flex;flex-wrap:wrap;gap:8px">' +
@@ -98,7 +126,7 @@ function _tabProfile(u) {
     })() +
 
     _sectionTitle('Calculated Metrics') +
-    '<div class="card card-solid mt-8" >' +
+    '<div class="card card-solid mt-8">' +
     '<div style="display:flex;flex-wrap:wrap;gap:12px">' +
     _infoStat('BMI', bmi.bmi+'', bmi.cat) +
     _infoStat('BMR', bmr+' kcal', 'At rest') +
@@ -110,17 +138,17 @@ function _tabProfile(u) {
     '</div></div>' +
 
     _sectionTitle('Injuries & Pain') +
-    '<div  class="mb-14">' +
+    '<div class="mb-14">' +
     (function() {
       const injuries = (S.g('user.injuries') || []).filter(function(i){ return i && typeof i === 'object'; });
       const active = injuries.filter(function(i){ return !i.recovered; });
       const assess = typeof InjuriesDB !== 'undefined' ? InjuriesDB.assessActive() : { messages: [], shouldRest: false };
       let html = '';
-      if (assess.shouldRest) html += '<div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);border-radius:12px;padding:12px;margin-bottom:12px;font-size:13px;color:#ff453a">⚠️ Consider a rest day — severe injury flagged</div>';
+      if (assess.shouldRest) html += '<div role="status" style="background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.22);border-radius:12px;padding:12px;margin-bottom:12px;font-size:13px;color:var(--c1);font-weight:600">Consider a rest day — severe injury flagged</div>';
       html += active.length
         ? '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.5">' + active.length + ' active ' + (active.length === 1 ? 'injury' : 'injuries') + ': ' + esc(active.map(function(i){ return i.bodyPart || i.id; }).join(', ')) + '</div>'
         : '<div style="font-size:13px;color:var(--txt3);margin-bottom:10px">No active injuries — workouts unrestricted.</div>';
-      html += '<button type="button" class="btn btn-secondary btn-sm w-full" onclick="go(\'rehab\')" style="display:inline-flex;align-items:center;justify-content:center;gap:6px">' + icon('bandage', 14) + ' Manage injuries in Rehab →</button>';
+      html += '<button type="button" class="btn btn-secondary btn-sm w-full" onclick="go(\'rehab\')" style="display:inline-flex;align-items:center;justify-content:center;gap:6px">' + icon('bandage', 14) + ' Manage injuries in Rehab</button>';
       return html;
     })() +
     '</div>' +
@@ -136,10 +164,10 @@ function _tabTraining(u) {
   const eqCount = (S.g('user.equipmentIds') || []).length;
   const eqLabel = S.g('user.equipmentConfigured') ? eqCount + ' items configured' : 'Not set up yet — tap to configure';
 
-  return '<div  class="pad-16">' +
-    (rec ? '<div style="background:linear-gradient(135deg,rgba(0,213,255,0.08),rgba(123,95,255,0.06));border:1px solid rgba(0,213,255,0.15);border-radius:14px;padding:14px;margin-bottom:16px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--c1);margin-bottom:6px">✨ Recommended for you</div>' +
-      '<div  class="row-title-15">'+esc(rec.name)+'</div>' +
+  return '<div class="pad-16">' +
+    (rec ? '<div class="card card-solid mb-14" style="border-color:rgba(var(--c1-rgb),0.22)">' +
+      '<div class="settings-section-title" style="margin-top:0">Recommended for you</div>' +
+      '<div class="row-title-15">'+esc(rec.name)+'</div>' +
       '<div style="font-size:12px;color:var(--txt3);margin-top:4px;line-height:1.45">'+esc(rec.reason)+'</div>' +
       '<button type="button" class="btn btn-secondary btn-sm" style="margin-top:10px" onclick="_setSetting(\'user.split\',\''+rec.id+'\');toast(\'Split updated\',\'ok\');go(\'settings\',{tab:\'training\'})">Apply suggestion</button></div>' : '') +
 
@@ -158,7 +186,7 @@ function _tabTraining(u) {
     '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">' +
     [{id:'mon',l:'Mon'},{id:'tue',l:'Tue'},{id:'wed',l:'Wed'},{id:'thu',l:'Thu'},{id:'fri',l:'Fri'},{id:'sat',l:'Sat'},{id:'sun',l:'Sun'}].map(function(d) {
       const on = (u.gymDays || []).includes(d.id);
-      return '<button type="button" onclick="toggleGymDay(\''+d.id+'\')" style="min-width:44px;padding:10px 12px;border-radius:12px;border:1.5px solid '+(on?'var(--c1)':'var(--border)')+';background:'+(on?'rgba(0,213,255,0.12)':'var(--bg3)')+';color:'+(on?'var(--c1)':'var(--txt3)')+';font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">'+d.l+'</button>';
+      return '<button type="button" onclick="toggleGymDay(\''+d.id+'\')" aria-pressed="'+(on?'true':'false')+'" style="min-width:44px;min-height:44px;padding:10px 12px;border-radius:12px;border:1.5px solid '+(on?'var(--c1)':'var(--border)')+';background:'+(on?'rgba(var(--c1-rgb),0.12)':'var(--bg3)')+';color:'+(on?'var(--c1)':'var(--txt3)')+';font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">'+d.l+'</button>';
     }).join('') +
     '</div>' +
 
@@ -206,7 +234,7 @@ function _renderWeekSchedule(u) {
     if (!isGym) {
       return '<div style="' + rowStyle + ';opacity:0.55">' +
         '<div style="font-size:13px;font-weight:700;color:var(--txt3)">' + labels[d] + (isToday ? ' · today' : '') + '</div>' +
-        '<div  class="muted-12">🌿 Rest</div></div>';
+        '<div class="muted-12">Rest</div></div>';
     }
     const sel = '<select class="field" style="width:auto;min-width:150px;padding:8px 10px;font-size:13px" onchange="setDayAssignment(\'' + d + '\', parseInt(this.value))">' +
       splitDays.map(function(sd, i) {
@@ -235,42 +263,36 @@ window.resetDayAssignments = function() {
   go('settings', { tab: 'training' });
 };
 
-function _tabSupplements() {
-  const userSupps = S.g('supplements') || [];
-  return '<div  class="pad-16">' +
-    _sectionTitle('My Stack') +
-    (userSupps.length ? userSupps.map(s =>
-      '<div class="toggle-row">' +
-      '<div class="toggle-info"><div class="toggle-label">'+esc(s.name)+'</div>' +
-      '<div class="toggle-sub">'+esc(s.timing)+' · '+esc(s.dose||'')+'</div></div>' +
-      '<button type="button" onclick="removeSupp('+jsArg(s.id)+')" style="color:#ff4444;background:none;border:none;cursor:pointer;padding:8px;font-size:13px;font-weight:600;min-height:44px">Remove</button>' +
-      '</div>'
-    ).join('') : '<div style="color:var(--txt3);padding:12px 0;font-size:14px">No supplements in stack. Add them via Nutrition.</div>') +
-    '<div class="spacer-sm"></div>' +
-    '<button type="button" class="btn btn-secondary btn-sm w-full" onclick="go(\'nutrition\')" >Manage in Nutrition →</button>' +
-    '</div>';
-}
-
-function _tabNutrition(u) {
+function _tabFuel(u) {
   const tdee = BodyEngine.tdee(u);
-  const macros = TDEEEngine.macroSplit(u.goal||'hypertrophy', tdee);
-  return '<div  class="pad-16">' +
+  const userSupps = S.g('supplements') || [];
+  return '<div class="pad-16">' +
     _sectionTitle('Daily Targets') +
-    _fieldWrap('Calories (kcal)', '<input class="field" type="number" value="'+(u.calorieTarget||2200)+'" oninput="_setSetting(\'user.calorieTarget\',parseInt(this.value))">') +
+    _fieldWrap('Calories (kcal)', '<input class="field" type="number" inputmode="numeric" value="'+(u.calorieTarget||2200)+'" oninput="_setSetting(\'user.calorieTarget\',parseInt(this.value))">') +
     '<div class="field-row">' +
-    _fieldWrap('Protein (g)', '<input class="field" type="number" value="'+(u.proteinTarget||165)+'" oninput="_setSetting(\'user.proteinTarget\',parseInt(this.value))">') +
-    _fieldWrap('Carbs (g)', '<input class="field" type="number" value="'+(u.carbTarget||220)+'" oninput="_setSetting(\'user.carbTarget\',parseInt(this.value))">') +
+    _fieldWrap('Protein (g)', '<input class="field" type="number" inputmode="numeric" value="'+(u.proteinTarget||165)+'" oninput="_setSetting(\'user.proteinTarget\',parseInt(this.value))">') +
+    _fieldWrap('Carbs (g)', '<input class="field" type="number" inputmode="numeric" value="'+(u.carbTarget||220)+'" oninput="_setSetting(\'user.carbTarget\',parseInt(this.value))">') +
     '</div>' +
     '<div class="field-row">' +
-    _fieldWrap('Fat (g)', '<input class="field" type="number" value="'+(u.fatTarget||70)+'" oninput="_setSetting(\'user.fatTarget\',parseInt(this.value))">') +
-    _fieldWrap('Water (glasses)', '<input class="field" type="number" value="'+(u.waterTarget||8)+'" min="4" max="20" oninput="_setSetting(\'user.waterTarget\',parseInt(this.value))">') +
+    _fieldWrap('Fat (g)', '<input class="field" type="number" inputmode="numeric" value="'+(u.fatTarget||70)+'" oninput="_setSetting(\'user.fatTarget\',parseInt(this.value))">') +
+    _fieldWrap('Water (glasses)', '<input class="field" type="number" inputmode="numeric" value="'+(u.waterTarget||8)+'" min="4" max="20" oninput="_setSetting(\'user.waterTarget\',parseInt(this.value))">') +
     '</div>' +
     _sectionTitle('Macro Presets') +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">' +
     [['hypertrophy','Muscle'],['fat_loss','Fat loss'],['strength','Strength'],['maintenance','Maintain'],['athletic','Athletic']].map(g =>
-      '<button type="button" class="btn btn-secondary btn-sm" onclick="applyMacroPreset(\''+g[0]+'\')" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:11px 8px">'+g[1]+'</button>'
+      '<button type="button" class="btn btn-secondary btn-sm" onclick="applyMacroPreset(\''+g[0]+'\')" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:11px 8px;min-height:44px">'+g[1]+'</button>'
     ).join('') + '</div>' +
     '<div style="padding:12px 0;font-size:13px;color:var(--txt3)">Calculated TDEE: '+tdee+' kcal/day</div>' +
+
+    _sectionTitle('Supplement Stack') +
+    (userSupps.length ? userSupps.map(s =>
+      '<div class="toggle-row">' +
+      '<div class="toggle-info"><div class="toggle-label">'+esc(s.name)+'</div>' +
+      '<div class="toggle-sub">'+esc(s.timing)+' · '+esc(s.dose||'')+'</div></div>' +
+      '<button type="button" onclick="removeSupp('+jsArg(s.id)+')" style="color:var(--c1);background:none;border:none;cursor:pointer;padding:8px;font-size:13px;font-weight:600;min-height:44px">Remove</button>' +
+      '</div>'
+    ).join('') : '<div style="color:var(--txt3);padding:12px 0;font-size:14px">No supplements in stack.</div>') +
+    '<button type="button" class="btn btn-secondary btn-sm w-full" onclick="go(\'nutrition\')">Open Nutrition log</button>' +
     '</div>';
 }
 
@@ -282,14 +304,14 @@ function _tabAppearance(u) {
     {id:'zen',e:'leaf',n:'Zen — Mindful Coach'},
     {id:'rex',e:'dumbbell',n:'Rex — The Powerlifter'}
   ];
-  const pinned = u.theme || u.mode;               /* null = following device */
+  const pinned = u.theme || u.mode;
   const cur = pinned ? (pinned === 'light' ? 'light' : 'dark') : 'auto';
   const curCoach = u.coachPersonality || 'maya';
 
   const seg = function(id, ic, label, onclick) {
     const on = cur === id;
-    return '<button type="button" onclick="' + onclick + '" ' +
-      'style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;border-radius:12px;cursor:pointer;touch-action:manipulation;' +
+    return '<button type="button" onclick="' + onclick + '" aria-pressed="' + on + '" ' +
+      'style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;padding:12px 6px;min-height:48px;border-radius:12px;cursor:pointer;touch-action:manipulation;' +
       'border:1.5px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';' +
       'background:' + (on ? 'rgba(var(--c1-rgb),0.10)' : 'var(--bg3)') + ';color:' + (on ? 'var(--c1)' : 'var(--txt2)') + '">' +
       '<span style="display:inline-flex">' + icon(ic, 20) + '</span>' +
@@ -297,9 +319,9 @@ function _tabAppearance(u) {
       '</button>';
   };
 
-  return '<div  class="pad-16">' +
-    _sectionTitle('Appearance') +
-    '<div style="display:flex;gap:8px;margin-bottom:8px">' +
+  return '<div class="pad-16">' +
+    _sectionTitle('Theme') +
+    '<div style="display:flex;gap:8px;margin-bottom:8px" role="group" aria-label="Theme">' +
     seg('auto', 'refresh', 'Auto', 'clearThemePref();go(\'settings\',{tab:\'appearance\'})') +
     seg('dark', 'moon', 'Dark', 'applyTheme(\'dark\');go(\'settings\',{tab:\'appearance\'})') +
     seg('light', 'sun', 'Light', 'applyTheme(\'light\');go(\'settings\',{tab:\'appearance\'})') +
@@ -308,15 +330,16 @@ function _tabAppearance(u) {
 
     _sectionTitle('Coach Personality') +
     coaches.map(c =>
-      '<div onclick="_setSetting(\'user.coachPersonality\',\''+c.id+'\');go(\'settings\',{tab:\'appearance\'})" ' +
-      'style="display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;margin-bottom:8px;cursor:pointer;touch-action:manipulation;' +
-      'background:var(--bg3);border:1.5px solid ' + (curCoach===c.id ? 'var(--c1)' : 'var(--border)') + '">' +
+      '<button type="button" onclick="_setSetting(\'user.coachPersonality\',\''+c.id+'\');go(\'settings\',{tab:\'appearance\'})" ' +
+      'aria-pressed="'+(curCoach===c.id)+'" ' +
+      'style="display:flex;width:100%;align-items:center;gap:12px;padding:12px 14px;border-radius:14px;margin-bottom:8px;cursor:pointer;touch-action:manipulation;text-align:left;' +
+      'background:var(--bg3);border:1.5px solid ' + (curCoach===c.id ? 'var(--c1)' : 'var(--border)') + ';color:inherit">' +
       '<div style="width:38px;height:38px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;color:var(--c1);flex-shrink:0">'+icon(c.e,18)+'</div>' +
       '<div style="flex:1;font-size:14px;font-weight:600;color:var(--txt)">'+esc(c.n)+'</div>' +
-      '<div style="width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;' +
+      '<div aria-hidden="true" style="width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;' +
       'border:2px solid ' + (curCoach===c.id ? 'var(--c1)' : 'var(--border2)') + ';background:' + (curCoach===c.id ? 'var(--c1)' : 'transparent') + '">' +
       (curCoach===c.id ? '<span style="color:#fff;font-size:11px;font-weight:800">✓</span>' : '') +
-      '</div></div>'
+      '</div></button>'
     ).join('') +
 
     _sectionTitle('Coach Tone') +
@@ -328,11 +351,11 @@ function _tabAppearance(u) {
         scientific:'"Deltoid recovery index: 92%. Optimal training window active."',
         hardcore:'"Shoulders are ready. No excuses. Get in there."'
       };
-      return '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px">' +
+      return '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:8px" role="group" aria-label="Coach tone">' +
         tones.map(t => {
           const on = curTone === t.v;
-          return '<button type="button" onclick="_setSetting(\'settings.coachTone\',\''+t.v+'\');go(\'settings\',{tab:\'appearance\'})" ' +
-            'style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:11px 4px;border-radius:12px;cursor:pointer;touch-action:manipulation;color:'+(on?'var(--c1)':'var(--txt2)')+';' +
+          return '<button type="button" onclick="_setSetting(\'settings.coachTone\',\''+t.v+'\');go(\'settings\',{tab:\'appearance\'})" aria-pressed="'+on+'" ' +
+            'style="display:flex;flex-direction:column;align-items:center;gap:6px;padding:11px 4px;min-height:48px;border-radius:12px;cursor:pointer;touch-action:manipulation;color:'+(on?'var(--c1)':'var(--txt2)')+';' +
             'border:1.5px solid '+(on?'var(--c1)':'var(--border)')+';background:'+(on?'rgba(var(--c1-rgb),0.10)':'var(--bg3)')+'">' +
             '<span style="display:inline-flex">'+icon(t.ic,18)+'</span>' +
             '<span style="font-size:11px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">'+t.l+'</span>' +
@@ -341,29 +364,34 @@ function _tabAppearance(u) {
         '</div>' +
         '<div style="font-size:13px;color:var(--txt3);font-style:italic;padding:10px 12px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;margin-bottom:4px">'+esc(examples[curTone]||examples.motivational)+'</div>';
     })() +
+    '</div>';
+}
 
+function _tabAccessibility(u) {
+  const units = u.units || 'metric';
+  return '<div class="pad-16">' +
     _sectionTitle('Units') +
-    '<div style="display:flex;gap:8px;margin-bottom:14px">' +
+    '<div style="display:flex;gap:8px;margin-bottom:14px" role="group" aria-label="Measurement units">' +
     ['metric','imperial'].map(unit =>
-      '<button type="button" class="btn btn-'+(u.units===unit?'primary':'secondary')+' btn-sm flex-1"  onclick="_setSetting(\'user.units\',\''+unit+'\');go(\'settings\',{tab:\'appearance\'})">'+unit.charAt(0).toUpperCase()+unit.slice(1)+'</button>'
+      '<button type="button" class="btn btn-'+(units===unit?'primary':'secondary')+' btn-sm flex-1" style="min-height:44px" aria-pressed="'+(units===unit)+'" onclick="_setSetting(\'user.units\',\''+unit+'\');go(\'settings\',{tab:\'accessibility\'})">'+unit.charAt(0).toUpperCase()+unit.slice(1)+'</button>'
     ).join('') + '</div>' +
+    '<div style="font-size:12px;color:var(--txt3);margin:-6px 0 16px;line-height:1.45">Affects weight, height, and plate displays. Stored values stay metric internally.</div>' +
 
-    _sectionTitle('Performance') +
+    _sectionTitle('Motion & performance') +
     _toggle('Low Power Mode', 'settings.lowPower', S.g('settings.lowPower') === true) +
     '<div style="font-size:12px;color:var(--txt3);margin:-6px 0 14px;padding:0 2px">Disables animated background for smoother scrolling on older phones.</div>' +
-
-    _sectionTitle('Navigation') +
-    '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.5">Fixed v5 IA tabs — not customizable.</div>' +
-    '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:14px 16px;font-size:13px;color:var(--txt);line-height:1.55;font-weight:600">' +
-    'Today · Train · Body · Learn · Me' +
+    '<div class="card card-solid mb-14">' +
+    '<div style="font-size:13px;color:var(--txt2);line-height:1.55">System <strong class="c-txt">Reduce Motion</strong> is honored automatically (OS setting). Screen transitions and background motion quiet down when it is on.</div>' +
     '</div>' +
-    '<div style="font-size:12px;color:var(--txt3);margin-top:8px;line-height:1.45">Nested screens light the parent tab. Browse full module list under Learn.</div>' +
 
+    _sectionTitle('Touch & focus') +
+    '<div style="font-size:13px;color:var(--txt2);line-height:1.55;margin-bottom:10px">Gym Floor Mode (larger targets) lives under Training. Beginner Mode simplifies Today and Learn — also under Training.</div>' +
+    '<button type="button" class="btn btn-secondary w-full" style="min-height:44px" onclick="go(\'settings\',{tab:\'training\'})">Open Training toggles</button>' +
     '</div>';
 }
 
 function _tabNotifications(u) {
-  return '<div  class="pad-16">' +
+  return '<div class="pad-16">' +
     _sectionTitle('Alerts') +
     _toggle('Supplement Reminders', 'user.suppReminders', u.suppReminders!==false) +
     _toggle('Rest Day Reminders', 'user.restDayReminders', u.restDayReminders!==false) +
@@ -372,45 +400,45 @@ function _tabNotifications(u) {
     _toggle('Daily Morning Briefing', 'settings.dailyBriefing', S.g('settings.dailyBriefing') !== false) +
     _sectionTitle('Rest timer') +
     '<div style="font-size:13px;color:var(--txt2);margin-bottom:10px;line-height:1.45">Background rest banners need PulseCap <strong>installed to Home Screen</strong> (iOS 16.4+). Enable here once — never mid-workout.</div>' +
-    '<button type="button" class="btn btn-secondary" onclick="_enableRestNotify()" style="width:100%;margin-bottom:14px">Enable rest notifications</button>' +
+    '<button type="button" class="btn btn-secondary" onclick="_enableRestNotify()" style="width:100%;margin-bottom:14px;min-height:44px">Enable rest notifications</button>' +
     _sectionTitle('Coach Update Frequency') +
-    '<div style="display:flex;gap:8px;margin-bottom:4px">' +
+    '<div style="display:flex;gap:8px;margin-bottom:4px" role="group" aria-label="Coach update frequency">' +
     ['daily','weekly'].map(function(freq) {
       const cur = S.g('settings.coachFrequency') || 'daily';
       const active = cur === freq;
-      return '<button type="button" onclick="_setSetting(\'settings.coachFrequency\',\''+freq+'\');go(\'settings\',{tab:\'notifications\'})" style="flex:1;padding:10px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(active?'var(--grad)':'var(--bg3)')+';color:'+(active?'#fff':'var(--txt3)')+'">'+freq.charAt(0).toUpperCase()+freq.slice(1)+'</button>';
+      return '<button type="button" onclick="_setSetting(\'settings.coachFrequency\',\''+freq+'\');go(\'settings\',{tab:\'notifications\'})" aria-pressed="'+active+'" style="flex:1;padding:10px;min-height:44px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(active?'var(--grad)':'var(--bg3)')+';color:'+(active?'#fff':'var(--txt3)')+'">'+freq.charAt(0).toUpperCase()+freq.slice(1)+'</button>';
     }).join('') +
     '</div>' +
     '<div style="font-size:12px;color:var(--txt3);margin-top:4px;padding:0 2px">Daily shows briefing every morning. Weekly shows full review on Mondays.</div>' +
     '</div>';
 }
 
-function _tabData() {
+function _tabPrivacy() {
   const ws = S.g('workouts') || [];
   const joinDate = S.g('user.joinDate');
-  return '<div  class="pad-16">' +
-    _sectionTitle('My Data') +
-    '<div class="card card-solid mb-14" >' +
+  return '<div class="pad-16">' +
+    _sectionTitle('On this device') +
+    '<div class="card card-solid mb-14">' +
     '<div style="display:flex;flex-wrap:wrap;gap:12px">' +
     _infoStat('Workouts', String(ws.length), 'logged') +
     _infoStat('Member since', joinDate ? new Date(joinDate).toLocaleDateString('en-GB',{month:'short',year:'numeric'}) : '—', '') +
-    _infoStat('Version', 'v' + (window.APP_VERSION || '5.4.0'), 'PulseCap') +
-    '</div></div>' +
+    '</div>' +
+    '<div style="font-size:12px;color:var(--txt3);margin-top:12px;line-height:1.5">All training data stays in this browser profile. No cloud account.</div>' +
+    '</div>' +
 
     _sectionTitle('Profiles') +
-    '<button type="button" class="btn btn-secondary mb-10" onclick="go(\'profiles\')" >Manage Profiles</button>' +
-    '<button type="button" class="btn btn-danger mb-10" onclick="confirmClearData()" >Reset This Profile</button>' +
+    '<button type="button" class="btn btn-secondary mb-10" style="min-height:44px" onclick="go(\'profiles\')">Manage Profiles</button>' +
 
     _sectionTitle('Exercise Library') +
     (function() {
       const st = typeof ExerciseLibrary !== 'undefined' ? ExerciseLibrary.status() : { cached: false, count: 0 };
       const exCount = typeof ExDB !== 'undefined' ? ExDB.db.length : 0;
-      return '<div class="card card-solid mb-14" >' +
+      return '<div class="card card-solid mb-14">' +
         '<div style="font-size:13px;color:var(--txt2);line-height:1.55;margin-bottom:12px">' +
         'Built-in: <strong class="c-txt">' + exCount + '</strong> exercises. ' +
         (st.cached ? 'wger metadata cache: <strong class="c-txt">' + st.count + '</strong>' + (st.mediaCount ? ' · ' + st.mediaCount + ' remote media links' : '') + '. Images and videos still need network access unless your browser has cached them.' : 'Optional sync from wger.de while online. Exercise metadata is cached on this device; remote images and videos are not guaranteed offline. Built-in FormLoops cues always work offline.') +
         '</div>' +
-        '<button type="button" id="ex-lib-sync-btn" class="btn btn-secondary w-full" onclick="syncExerciseLibrary(' + (st.cached ? 'true' : 'false') + ')" >' +
+        '<button type="button" id="ex-lib-sync-btn" class="btn btn-secondary w-full" style="min-height:44px" onclick="syncExerciseLibrary(' + (st.cached ? 'true' : 'false') + ')">' +
         (st.cached ? 'Re-sync wger library' : 'Sync wger library') +
         '</button>' +
         (st.cached && st.fetchedAt ? '<div class="muted-11" style="margin-top:8px">Last sync: ' + esc(new Date(st.fetchedAt).toLocaleString()) + '</div>' : '') +
@@ -418,16 +446,37 @@ function _tabData() {
     })() +
 
     _sectionTitle('Export & Import') +
-    '<button type="button" class="btn btn-secondary mb-10" onclick="exportData()" >Export Backup (JSON)</button>' +
+    '<button type="button" class="btn btn-secondary mb-10" style="min-height:44px" onclick="exportData()">Export Backup (JSON)</button>' +
     '<div class="field-wrap">' +
     '<label class="field-label">Import Backup</label>' +
     '<input class="field" type="file" accept=".json" onchange="importData(this)" style="font-size:14px">' +
     '</div>' +
 
     _sectionTitle('Danger Zone') +
-    '<button type="button" class="btn btn-danger" onclick="confirmClearData()">Clear All Data</button>' +
+    '<button type="button" class="btn btn-danger mb-10" style="min-height:44px" onclick="confirmClearData()">Reset this profile</button>' +
+    '<button type="button" class="btn btn-danger" style="min-height:44px" onclick="confirmClearData()">Clear all data</button>' +
+    '</div>';
+}
 
-    '<div style="margin-top:32px;text-align:center;color:var(--txt3);font-size:13px">PulseCap v' + esc(window.APP_VERSION || '5.4.0') + ' · by <strong>Shamikh Ahmed</strong></div>' +
+function _tabAbout() {
+  const ver = esc(window.APP_VERSION || '6.4.0');
+  return '<div class="pad-16">' +
+    _sectionTitle('PulseCap') +
+    '<div class="card card-solid mb-14">' +
+    '<div style="font-size:18px;font-weight:800;color:var(--txt);margin-bottom:4px">v' + ver + '</div>' +
+    '<div style="font-size:13px;color:var(--txt2);line-height:1.55">Offline-first Smart Coach fitness OS. Rule-based coaching — not cloud AI.</div>' +
+    '</div>' +
+
+    _sectionTitle('Navigation') +
+    '<div class="card card-solid mb-14">' +
+    '<div style="font-size:13px;color:var(--txt);line-height:1.55;font-weight:600;margin-bottom:6px">Today · Train · Body · Learn · Me</div>' +
+    '<div style="font-size:12px;color:var(--txt3);line-height:1.45">Fixed tabs — not customizable. Nested screens light the parent tab. Full module list under Learn.</div>' +
+    '</div>' +
+
+    _sectionTitle('Legal') +
+    '<button type="button" class="btn btn-secondary mb-10" style="min-height:44px" onclick="window.open(\'privacy.html\',\'_blank\')">Privacy</button>' +
+    '<button type="button" class="btn btn-secondary mb-10" style="min-height:44px" onclick="window.open(\'LICENSE\',\'_blank\')">License</button>' +
+    '<div style="margin-top:24px;text-align:center;color:var(--txt3);font-size:13px">PulseCap v' + ver + ' · by <strong>Shamikh Ahmed</strong></div>' +
     '</div>';
 }
 
@@ -503,7 +552,7 @@ window.toggleInjuryRecovered = function(idx) {
   }
   S.set('user.injuries', injuries);
   const curScr = typeof currentScreenId === 'function' && currentScreenId();
-  if (curScr === 'settings') go('settings', { tab: 'profile' });
+  if (curScr === 'settings') go('settings', { tab: 'account' });
   else go(curScr || 'rehab');
 };
 
@@ -515,7 +564,7 @@ window.setInjurySeverity = function(idx, severity) {
   S.set('user.injuries', injuries);
   /* Callable from Rehab or Settings — stay where the user is */
   const cur = typeof currentScreenId === 'function' && currentScreenId();
-  if (cur === 'settings') go('settings', { tab: 'profile' });
+  if (cur === 'settings') go('settings', { tab: 'account' });
   else go(cur || 'rehab');
 };
 
@@ -614,7 +663,7 @@ window.toggleSetting = function(key) {
 window.removeSupp = function(id) {
   const supps = (S.g('supplements')||[]).filter(s=>s.id!==id);
   S.set('supplements', supps);
-  go('settings', { tab: 'supplements' });
+  go('settings', { tab: 'fuel' });
 };
 
 window.applyMacroPreset = function(goal) {
@@ -625,7 +674,7 @@ window.applyMacroPreset = function(goal) {
   S.set('user.carbTarget', macros.carbs);
   S.set('user.fatTarget', macros.fat);
   toast('Macro preset applied for '+goal.replace('_',' '), 'ok');
-  go('settings', { tab: 'nutrition' });
+  go('settings', { tab: 'fuel' });
 };
 
 /* showLogWeight / saveWeight live in bodymap.js — settings.js loads later,
@@ -731,28 +780,10 @@ window.applyImportedData = function() {
 window.confirmClearData = function() {
   modal('Reset Profile?',
     '<div style="text-align:center;padding:16px 0">' +
-    '<div style="font-size:48px;margin-bottom:12px">⚠️</div>' +
     '<div style="font-size:16px;font-weight:700;color:var(--txt);margin-bottom:8px">This will delete all your data</div>' +
-    '<div style="font-size:14px;color:var(--txt3);line-height:1.6">Workouts, PRs, measurements, supplements and settings for this profile will be permanently deleted.</div>' +
+    '<div style="font-size:14px;color:var(--txt3);line-height:1.6">Workouts, PRs, measurements, supplements and settings for this profile will be permanently deleted. This cannot be undone.</div>' +
     '</div>',
-    '<button type="button" class="btn btn-danger mt-8" onclick="S.reset()" >Yes, Reset Everything</button>' +
-    '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()" >Cancel</button>'
+    '<button type="button" class="btn btn-danger mt-8" onclick="S.reset()">Yes, Reset Everything</button>' +
+    '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()">Cancel</button>'
   );
-};
-
-window.toggleNavTab = function(tab) {
-  const key = tab === 'coach' ? 'assistant' : tab;
-  const cur = (typeof _getNavTabIds === 'function' ? _getNavTabIds() : (S.g('settings.navTabs') || CORE_NAV_DEFAULT)).slice();
-  const idx = cur.indexOf(key);
-  if (idx >= 0) {
-    if (cur.length <= 3) { toast('Minimum 3 tabs required', 'warn'); return; }
-    cur.splice(idx, 1);
-  } else {
-    if (cur.length >= 5) { toast('Maximum 5 tabs in nav', 'warn'); return; }
-    cur.push(key);
-  }
-  const normalized = typeof _normalizeNavTabs === 'function' ? _normalizeNavTabs(cur) : cur;
-  S.set('settings.navTabs', normalized);
-  buildNav();
-  go('settings', { tab: 'appearance' });
 };

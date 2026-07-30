@@ -1,7 +1,7 @@
 # PulseCap — CLAUDE.md
 
 ## Current truth
-- Version: 6.3.0
+- Version: 6.4.0
 - App type: offline-first **PWA only**. No native shell, HealthKit, Live Activity, WidgetKit, or RevenueCat unless owner reverses.
 - Stack: vanilla JS, no framework, no bundler.
 - Router: `reg('screen', fn)` + synchronous `go('screen')`.
