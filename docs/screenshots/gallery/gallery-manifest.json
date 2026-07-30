@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.2.7",
-  "generated": "2026-07-20T10:41:05.111Z",
+  "version": "6.5.1",
+  "generated": "2026-07-30T13:43:59.881Z",
   "shots": [
     {
       "file": "dark-desktop-001-dashboard-scroll.png",
@@ -162,6 +162,16 @@
       "label": "Training Intel",
       "route": "go('training-intel', {\"tab\":\"intel\"})",
       "scroll": false
+    },
+    {
+      "file": "dark-desktop-009-training-style-scroll.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "training-style",
+      "label": "Training Style (scroll)",
+      "route": "go('training-intel', {\"tab\":\"style\"})",
+      "scroll": true
     },
     {
       "file": "dark-desktop-009-training-style.png",
@@ -484,6 +494,26 @@
       "scroll": false
     },
     {
+      "file": "dark-desktop-029-settings-account-scroll.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-account",
+      "label": "Settings · Account (scroll)",
+      "route": "go('settings', {\"tab\":\"account\"})",
+      "scroll": true
+    },
+    {
+      "file": "dark-desktop-029-settings-account.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-account",
+      "label": "Settings · Account",
+      "route": "go('settings', {\"tab\":\"account\"})",
+      "scroll": false
+    },
+    {
       "file": "dark-desktop-029-settings-profile-scroll.png",
       "theme": "dark",
       "viewport": "desktop",
@@ -524,6 +554,16 @@
       "scroll": false
     },
     {
+      "file": "dark-desktop-031-settings-fuel.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-fuel",
+      "label": "Settings · Fuel",
+      "route": "go('settings', {\"tab\":\"fuel\"})",
+      "scroll": false
+    },
+    {
       "file": "dark-desktop-031-settings-supplements.png",
       "theme": "dark",
       "viewport": "desktop",
@@ -534,6 +574,16 @@
       "scroll": false
     },
     {
+      "file": "dark-desktop-032-settings-appearance.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-appearance",
+      "label": "Settings · Appearance",
+      "route": "go('settings', {\"tab\":\"appearance\"})",
+      "scroll": false
+    },
+    {
       "file": "dark-desktop-032-settings-nutrition.png",
       "theme": "dark",
       "viewport": "desktop",
@@ -541,6 +591,16 @@
       "screenId": "settings-nutrition",
       "label": "Settings · Nutrition",
       "route": "go('settings', {\"tab\":\"nutrition\"})",
+      "scroll": false
+    },
+    {
+      "file": "dark-desktop-033-settings-accessibility.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-accessibility",
+      "label": "Settings · Access",
+      "route": "go('settings', {\"tab\":\"accessibility\"})",
       "scroll": false
     },
     {
@@ -594,6 +654,16 @@
       "scroll": false
     },
     {
+      "file": "dark-desktop-035-settings-privacy.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-privacy",
+      "label": "Settings · Privacy",
+      "route": "go('settings', {\"tab\":\"privacy\"})",
+      "scroll": false
+    },
+    {
       "file": "dark-desktop-036-profiles.png",
       "theme": "dark",
       "viewport": "desktop",
@@ -601,6 +671,16 @@
       "screenId": "profiles",
       "label": "Profiles",
       "route": "go('profiles')",
+      "scroll": false
+    },
+    {
+      "file": "dark-desktop-036-settings-about.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-about",
+      "label": "Settings · About",
+      "route": "go('settings', {\"tab\":\"about\"})",
       "scroll": false
     },
     {
@@ -615,6 +695,36 @@
     },
     {
       "file": "dark-desktop-037-equipment-setup.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "equipment-setup",
+      "label": "Equipment Setup",
+      "route": "go('equipment-setup')",
+      "scroll": false
+    },
+    {
+      "file": "dark-desktop-037-profiles.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "profiles",
+      "label": "Profiles",
+      "route": "go('profiles')",
+      "scroll": false
+    },
+    {
+      "file": "dark-desktop-038-equipment-setup-scroll.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "equipment-setup",
+      "label": "Equipment Setup (scroll)",
+      "route": "go('equipment-setup')",
+      "scroll": true
+    },
+    {
+      "file": "dark-desktop-038-equipment-setup.png",
       "theme": "dark",
       "viewport": "desktop",
       "section": "Me",
@@ -644,7 +754,37 @@
       "scroll": false
     },
     {
+      "file": "dark-desktop-039-split-builder.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "split-builder",
+      "label": "Split Builder",
+      "route": "go('split-builder')",
+      "scroll": false
+    },
+    {
+      "file": "dark-desktop-040-intro-1.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-1",
+      "label": "Welcome 1/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
       "file": "dark-desktop-040-intro-2.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-2",
+      "label": "Welcome 2/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
+      "file": "dark-desktop-041-intro-2.png",
       "theme": "dark",
       "viewport": "desktop",
       "section": "Onboarding",
@@ -664,6 +804,16 @@
       "scroll": false
     },
     {
+      "file": "dark-desktop-042-intro-3.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-3",
+      "label": "Welcome 3/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
       "file": "dark-desktop-042-intro-4.png",
       "theme": "dark",
       "viewport": "desktop",
@@ -674,7 +824,27 @@
       "scroll": false
     },
     {
+      "file": "dark-desktop-043-intro-4.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-4",
+      "label": "Welcome 4/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
       "file": "dark-desktop-043-onboarding-1.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-1",
+      "label": "Onboarding 1/7",
+      "route": "onboarding step 1",
+      "scroll": false
+    },
+    {
+      "file": "dark-desktop-044-onboarding-1.png",
       "theme": "dark",
       "viewport": "desktop",
       "section": "Onboarding",
@@ -704,7 +874,37 @@
       "scroll": false
     },
     {
+      "file": "dark-desktop-045-onboarding-2-scroll.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-2",
+      "label": "Onboarding 2/7 (scroll)",
+      "route": "onboarding step 2",
+      "scroll": true
+    },
+    {
+      "file": "dark-desktop-045-onboarding-2.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-2",
+      "label": "Onboarding 2/7",
+      "route": "onboarding step 2",
+      "scroll": false
+    },
+    {
       "file": "dark-desktop-045-onboarding-3.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-3",
+      "label": "Onboarding 3/7",
+      "route": "onboarding step 3",
+      "scroll": false
+    },
+    {
+      "file": "dark-desktop-046-onboarding-3.png",
       "theme": "dark",
       "viewport": "desktop",
       "section": "Onboarding",
@@ -724,6 +924,16 @@
       "scroll": false
     },
     {
+      "file": "dark-desktop-047-onboarding-4.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-4",
+      "label": "Onboarding 4/7",
+      "route": "onboarding step 4",
+      "scroll": false
+    },
+    {
       "file": "dark-desktop-047-onboarding-5.png",
       "theme": "dark",
       "viewport": "desktop",
@@ -734,7 +944,27 @@
       "scroll": false
     },
     {
+      "file": "dark-desktop-048-onboarding-5.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-5",
+      "label": "Onboarding 5/7",
+      "route": "onboarding step 5",
+      "scroll": false
+    },
+    {
       "file": "dark-desktop-048-onboarding-6.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-6",
+      "label": "Onboarding 6/7",
+      "route": "onboarding step 6",
+      "scroll": false
+    },
+    {
+      "file": "dark-desktop-049-onboarding-6.png",
       "theme": "dark",
       "viewport": "desktop",
       "section": "Onboarding",
@@ -765,6 +995,36 @@
     },
     {
       "file": "dark-desktop-050-active.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "active",
+      "label": "Active Workout",
+      "route": "startWorkout()",
+      "scroll": false
+    },
+    {
+      "file": "dark-desktop-050-onboarding-7.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-7",
+      "label": "Onboarding 7/7",
+      "route": "onboarding step 7",
+      "scroll": false
+    },
+    {
+      "file": "dark-desktop-051-active-scroll.png",
+      "theme": "dark",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "active",
+      "label": "Active Workout (scroll)",
+      "route": "startWorkout()",
+      "scroll": true
+    },
+    {
+      "file": "dark-desktop-051-active.png",
       "theme": "dark",
       "viewport": "desktop",
       "section": "Train",
@@ -932,6 +1192,16 @@
       "label": "Training Intel",
       "route": "go('training-intel', {\"tab\":\"intel\"})",
       "scroll": false
+    },
+    {
+      "file": "dark-mobile-009-training-style-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "training-style",
+      "label": "Training Style (scroll)",
+      "route": "go('training-intel', {\"tab\":\"style\"})",
+      "scroll": true
     },
     {
       "file": "dark-mobile-009-training-style.png",
@@ -1244,6 +1514,16 @@
       "scroll": false
     },
     {
+      "file": "dark-mobile-027-assistant-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "assistant",
+      "label": "Fitness Assistant (scroll)",
+      "route": "go('assistant')",
+      "scroll": true
+    },
+    {
       "file": "dark-mobile-027-assistant.png",
       "theme": "dark",
       "viewport": "mobile",
@@ -1271,6 +1551,26 @@
       "screenId": "academy",
       "label": "Academy",
       "route": "go('academy')",
+      "scroll": false
+    },
+    {
+      "file": "dark-mobile-029-settings-account-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-account",
+      "label": "Settings · Account (scroll)",
+      "route": "go('settings', {\"tab\":\"account\"})",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-029-settings-account.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-account",
+      "label": "Settings · Account",
+      "route": "go('settings', {\"tab\":\"account\"})",
       "scroll": false
     },
     {
@@ -1314,6 +1614,26 @@
       "scroll": false
     },
     {
+      "file": "dark-mobile-031-settings-fuel-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-fuel",
+      "label": "Settings · Fuel (scroll)",
+      "route": "go('settings', {\"tab\":\"fuel\"})",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-031-settings-fuel.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-fuel",
+      "label": "Settings · Fuel",
+      "route": "go('settings', {\"tab\":\"fuel\"})",
+      "scroll": false
+    },
+    {
       "file": "dark-mobile-031-settings-supplements.png",
       "theme": "dark",
       "viewport": "mobile",
@@ -1324,6 +1644,26 @@
       "scroll": false
     },
     {
+      "file": "dark-mobile-032-settings-appearance-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-appearance",
+      "label": "Settings · Appearance (scroll)",
+      "route": "go('settings', {\"tab\":\"appearance\"})",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-032-settings-appearance.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-appearance",
+      "label": "Settings · Appearance",
+      "route": "go('settings', {\"tab\":\"appearance\"})",
+      "scroll": false
+    },
+    {
       "file": "dark-mobile-032-settings-nutrition.png",
       "theme": "dark",
       "viewport": "mobile",
@@ -1331,6 +1671,16 @@
       "screenId": "settings-nutrition",
       "label": "Settings · Nutrition",
       "route": "go('settings', {\"tab\":\"nutrition\"})",
+      "scroll": false
+    },
+    {
+      "file": "dark-mobile-033-settings-accessibility.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-accessibility",
+      "label": "Settings · Access",
+      "route": "go('settings', {\"tab\":\"accessibility\"})",
       "scroll": false
     },
     {
@@ -1384,6 +1734,26 @@
       "scroll": false
     },
     {
+      "file": "dark-mobile-035-settings-privacy-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-privacy",
+      "label": "Settings · Privacy (scroll)",
+      "route": "go('settings', {\"tab\":\"privacy\"})",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-035-settings-privacy.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-privacy",
+      "label": "Settings · Privacy",
+      "route": "go('settings', {\"tab\":\"privacy\"})",
+      "scroll": false
+    },
+    {
       "file": "dark-mobile-036-profiles.png",
       "theme": "dark",
       "viewport": "mobile",
@@ -1391,6 +1761,16 @@
       "screenId": "profiles",
       "label": "Profiles",
       "route": "go('profiles')",
+      "scroll": false
+    },
+    {
+      "file": "dark-mobile-036-settings-about.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-about",
+      "label": "Settings · About",
+      "route": "go('settings', {\"tab\":\"about\"})",
       "scroll": false
     },
     {
@@ -1405,6 +1785,36 @@
     },
     {
       "file": "dark-mobile-037-equipment-setup.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "equipment-setup",
+      "label": "Equipment Setup",
+      "route": "go('equipment-setup')",
+      "scroll": false
+    },
+    {
+      "file": "dark-mobile-037-profiles.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "profiles",
+      "label": "Profiles",
+      "route": "go('profiles')",
+      "scroll": false
+    },
+    {
+      "file": "dark-mobile-038-equipment-setup-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "equipment-setup",
+      "label": "Equipment Setup (scroll)",
+      "route": "go('equipment-setup')",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-038-equipment-setup.png",
       "theme": "dark",
       "viewport": "mobile",
       "section": "Me",
@@ -1444,6 +1854,36 @@
       "scroll": false
     },
     {
+      "file": "dark-mobile-039-split-builder.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "split-builder",
+      "label": "Split Builder",
+      "route": "go('split-builder')",
+      "scroll": false
+    },
+    {
+      "file": "dark-mobile-040-intro-1-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-1",
+      "label": "Welcome 1/4 (scroll)",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-040-intro-1.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-1",
+      "label": "Welcome 1/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
       "file": "dark-mobile-040-intro-2-scroll.png",
       "theme": "dark",
       "viewport": "mobile",
@@ -1455,6 +1895,26 @@
     },
     {
       "file": "dark-mobile-040-intro-2.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-2",
+      "label": "Welcome 2/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
+      "file": "dark-mobile-041-intro-2-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-2",
+      "label": "Welcome 2/4 (scroll)",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-041-intro-2.png",
       "theme": "dark",
       "viewport": "mobile",
       "section": "Onboarding",
@@ -1484,6 +1944,26 @@
       "scroll": false
     },
     {
+      "file": "dark-mobile-042-intro-3-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-3",
+      "label": "Welcome 3/4 (scroll)",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-042-intro-3.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-3",
+      "label": "Welcome 3/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
       "file": "dark-mobile-042-intro-4-scroll.png",
       "theme": "dark",
       "viewport": "mobile",
@@ -1495,6 +1975,26 @@
     },
     {
       "file": "dark-mobile-042-intro-4.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-4",
+      "label": "Welcome 4/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
+      "file": "dark-mobile-043-intro-4-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-4",
+      "label": "Welcome 4/4 (scroll)",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-043-intro-4.png",
       "theme": "dark",
       "viewport": "mobile",
       "section": "Onboarding",
@@ -1524,6 +2024,26 @@
       "scroll": false
     },
     {
+      "file": "dark-mobile-044-onboarding-1-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-1",
+      "label": "Onboarding 1/7 (scroll)",
+      "route": "onboarding step 1",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-044-onboarding-1.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-1",
+      "label": "Onboarding 1/7",
+      "route": "onboarding step 1",
+      "scroll": false
+    },
+    {
       "file": "dark-mobile-044-onboarding-2-scroll.png",
       "theme": "dark",
       "viewport": "mobile",
@@ -1535,6 +2055,26 @@
     },
     {
       "file": "dark-mobile-044-onboarding-2.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-2",
+      "label": "Onboarding 2/7",
+      "route": "onboarding step 2",
+      "scroll": false
+    },
+    {
+      "file": "dark-mobile-045-onboarding-2-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-2",
+      "label": "Onboarding 2/7 (scroll)",
+      "route": "onboarding step 2",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-045-onboarding-2.png",
       "theme": "dark",
       "viewport": "mobile",
       "section": "Onboarding",
@@ -1564,6 +2104,26 @@
       "scroll": false
     },
     {
+      "file": "dark-mobile-046-onboarding-3-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-3",
+      "label": "Onboarding 3/7 (scroll)",
+      "route": "onboarding step 3",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-046-onboarding-3.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-3",
+      "label": "Onboarding 3/7",
+      "route": "onboarding step 3",
+      "scroll": false
+    },
+    {
       "file": "dark-mobile-046-onboarding-4-scroll.png",
       "theme": "dark",
       "viewport": "mobile",
@@ -1575,6 +2135,26 @@
     },
     {
       "file": "dark-mobile-046-onboarding-4.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-4",
+      "label": "Onboarding 4/7",
+      "route": "onboarding step 4",
+      "scroll": false
+    },
+    {
+      "file": "dark-mobile-047-onboarding-4-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-4",
+      "label": "Onboarding 4/7 (scroll)",
+      "route": "onboarding step 4",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-047-onboarding-4.png",
       "theme": "dark",
       "viewport": "mobile",
       "section": "Onboarding",
@@ -1604,6 +2184,26 @@
       "scroll": false
     },
     {
+      "file": "dark-mobile-048-onboarding-5-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-5",
+      "label": "Onboarding 5/7 (scroll)",
+      "route": "onboarding step 5",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-048-onboarding-5.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-5",
+      "label": "Onboarding 5/7",
+      "route": "onboarding step 5",
+      "scroll": false
+    },
+    {
       "file": "dark-mobile-048-onboarding-6-scroll.png",
       "theme": "dark",
       "viewport": "mobile",
@@ -1615,6 +2215,26 @@
     },
     {
       "file": "dark-mobile-048-onboarding-6.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-6",
+      "label": "Onboarding 6/7",
+      "route": "onboarding step 6",
+      "scroll": false
+    },
+    {
+      "file": "dark-mobile-049-onboarding-6-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-6",
+      "label": "Onboarding 6/7 (scroll)",
+      "route": "onboarding step 6",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-049-onboarding-6.png",
       "theme": "dark",
       "viewport": "mobile",
       "section": "Onboarding",
@@ -1664,6 +2284,46 @@
       "scroll": false
     },
     {
+      "file": "dark-mobile-050-onboarding-7-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-7",
+      "label": "Onboarding 7/7 (scroll)",
+      "route": "onboarding step 7",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-050-onboarding-7.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-7",
+      "label": "Onboarding 7/7",
+      "route": "onboarding step 7",
+      "scroll": false
+    },
+    {
+      "file": "dark-mobile-051-active-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "active",
+      "label": "Active Workout (scroll)",
+      "route": "startWorkout()",
+      "scroll": true
+    },
+    {
+      "file": "dark-mobile-051-active.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "active",
+      "label": "Active Workout",
+      "route": "startWorkout()",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-051-dashboard-scroll.png",
       "theme": "light",
       "viewport": "desktop",
@@ -1694,6 +2354,36 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-052-dashboard-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "dashboard",
+      "label": "Dashboard (scroll)",
+      "route": "go('dashboard')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-052-dashboard.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "dashboard",
+      "label": "Dashboard",
+      "route": "go('dashboard')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-053-briefing.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "briefing",
+      "label": "Morning Briefing",
+      "route": "go('briefing')",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-053-quests-scroll.png",
       "theme": "light",
       "viewport": "desktop",
@@ -1705,6 +2395,26 @@
     },
     {
       "file": "light-desktop-053-quests.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "quests",
+      "label": "Quests",
+      "route": "go('quests')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-054-quests-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Today",
+      "screenId": "quests",
+      "label": "Quests (scroll)",
+      "route": "go('quests')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-054-quests.png",
       "theme": "light",
       "viewport": "desktop",
       "section": "Today",
@@ -1754,6 +2464,26 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-055-workout-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "workout",
+      "label": "Workout Plan (scroll)",
+      "route": "go('workout')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-055-workout.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "workout",
+      "label": "Workout Plan",
+      "route": "go('workout')",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-056-calisthenics-scroll.png",
       "theme": "light",
       "viewport": "desktop",
@@ -1765,6 +2495,46 @@
     },
     {
       "file": "light-desktop-056-calisthenics.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "calisthenics",
+      "label": "Calisthenics",
+      "route": "go('calisthenics')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-056-cardio-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "cardio",
+      "label": "Cardio (scroll)",
+      "route": "go('cardio')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-056-cardio.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "cardio",
+      "label": "Cardio",
+      "route": "go('cardio')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-057-calisthenics-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "calisthenics",
+      "label": "Calisthenics (scroll)",
+      "route": "go('calisthenics')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-057-calisthenics.png",
       "theme": "light",
       "viewport": "desktop",
       "section": "Train",
@@ -1794,6 +2564,26 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-058-progress-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "progress",
+      "label": "Progress (scroll)",
+      "route": "go('progress')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-058-progress.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "progress",
+      "label": "Progress",
+      "route": "go('progress')",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-058-training-intel-scroll.png",
       "theme": "light",
       "viewport": "desktop",
@@ -1805,6 +2595,26 @@
     },
     {
       "file": "light-desktop-058-training-intel.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "training-intel",
+      "label": "Training Intel",
+      "route": "go('training-intel', {\"tab\":\"intel\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-059-training-intel-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "training-intel",
+      "label": "Training Intel (scroll)",
+      "route": "go('training-intel', {\"tab\":\"intel\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-059-training-intel.png",
       "theme": "light",
       "viewport": "desktop",
       "section": "Train",
@@ -1844,6 +2654,46 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-060-training-style-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "training-style",
+      "label": "Training Style (scroll)",
+      "route": "go('training-intel', {\"tab\":\"style\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-060-training-style.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "training-style",
+      "label": "Training Style",
+      "route": "go('training-intel', {\"tab\":\"style\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-061-bodymap-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "bodymap",
+      "label": "Body Map (scroll)",
+      "route": "go('bodymap')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-061-bodymap.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "bodymap",
+      "label": "Body Map",
+      "route": "go('bodymap')",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-061-nutrition-scroll.png",
       "theme": "light",
       "viewport": "desktop",
@@ -1855,6 +2705,26 @@
     },
     {
       "file": "light-desktop-061-nutrition.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "nutrition",
+      "label": "Nutrition",
+      "route": "go('nutrition')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-062-nutrition-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "nutrition",
+      "label": "Nutrition (scroll)",
+      "route": "go('nutrition')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-062-nutrition.png",
       "theme": "light",
       "viewport": "desktop",
       "section": "Body",
@@ -1904,6 +2774,46 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-063-recovery-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "recovery",
+      "label": "Recovery Check-in (scroll)",
+      "route": "go('recovery', {\"tab\":\"checkin\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-063-recovery.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "recovery",
+      "label": "Recovery Check-in",
+      "route": "go('recovery', {\"tab\":\"checkin\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-064-recovery-debt-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "recovery-debt",
+      "label": "Recovery Debt (scroll)",
+      "route": "go('recovery', {\"tab\":\"debt\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-064-recovery-debt.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "recovery-debt",
+      "label": "Recovery Debt",
+      "route": "go('recovery', {\"tab\":\"debt\"})",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-064-rehab-scroll.png",
       "theme": "light",
       "viewport": "desktop",
@@ -1944,6 +2854,26 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-065-rehab-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "rehab",
+      "label": "Rehab (scroll)",
+      "route": "go('rehab')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-065-rehab.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "rehab",
+      "label": "Rehab",
+      "route": "go('rehab')",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-066-body-intelligence-scroll.png",
       "theme": "light",
       "viewport": "desktop",
@@ -1961,6 +2891,26 @@
       "screenId": "body-intelligence",
       "label": "Body Intelligence",
       "route": "go('body-intelligence')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-066-injury-risk-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "injury-risk",
+      "label": "Injury Risk (scroll)",
+      "route": "go('injury-risk')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-066-injury-risk.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "injury-risk",
+      "label": "Injury Risk",
+      "route": "go('injury-risk')",
       "scroll": false
     },
     {
@@ -1984,7 +2934,57 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-067-body-intelligence-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "body-intelligence",
+      "label": "Body Intelligence (scroll)",
+      "route": "go('body-intelligence')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-067-body-intelligence.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "body-intelligence",
+      "label": "Body Intelligence",
+      "route": "go('body-intelligence')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-068-anatomy-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "anatomy",
+      "label": "Anatomy (scroll)",
+      "route": "go('anatomy')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-068-anatomy.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "anatomy",
+      "label": "Anatomy",
+      "route": "go('anatomy')",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-068-photos.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "photos",
+      "label": "Progress Photos",
+      "route": "go('photos')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-069-photos.png",
       "theme": "light",
       "viewport": "desktop",
       "section": "Body",
@@ -2024,6 +3024,36 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-070-physique-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "physique",
+      "label": "Physique Score (scroll)",
+      "route": "go('physique', {\"tab\":\"score\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-070-physique.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "physique",
+      "label": "Physique Score",
+      "route": "go('physique', {\"tab\":\"score\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-071-physique-archetype.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "physique-archetype",
+      "label": "Physique Archetype",
+      "route": "go('physique', {\"tab\":\"archetype\"})",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-071-physique-timeline-scroll.png",
       "theme": "light",
       "viewport": "desktop",
@@ -2054,7 +3084,47 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-072-physique-timeline-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "physique-timeline",
+      "label": "Physique Timeline (scroll)",
+      "route": "go('physique', {\"tab\":\"timeline\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-072-physique-timeline.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Body",
+      "screenId": "physique-timeline",
+      "label": "Physique Timeline",
+      "route": "go('physique', {\"tab\":\"timeline\"})",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-073-encyclopedia.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "encyclopedia",
+      "label": "Encyclopedia",
+      "route": "go('encyclopedia')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-073-hub.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "hub",
+      "label": "Learn Hub",
+      "route": "go('hub')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-074-encyclopedia.png",
       "theme": "light",
       "viewport": "desktop",
       "section": "Learn",
@@ -2094,6 +3164,36 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-075-search.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "search",
+      "label": "Search",
+      "route": "go('search')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-076-calculators-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "calculators",
+      "label": "Calculators (scroll)",
+      "route": "go('calculators')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-076-calculators.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "calculators",
+      "label": "Calculators",
+      "route": "go('calculators')",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-076-visualizations-scroll.png",
       "theme": "light",
       "viewport": "desktop",
@@ -2124,7 +3224,47 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-077-visualizations-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "visualizations",
+      "label": "Visualizations (scroll)",
+      "route": "go('visualizations')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-077-visualizations.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "visualizations",
+      "label": "Visualizations",
+      "route": "go('visualizations')",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-078-academy.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "academy",
+      "label": "Academy",
+      "route": "go('academy')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-078-assistant.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Learn",
+      "screenId": "assistant",
+      "label": "Fitness Assistant",
+      "route": "go('assistant')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-079-academy.png",
       "theme": "light",
       "viewport": "desktop",
       "section": "Learn",
@@ -2151,6 +3291,26 @@
       "screenId": "settings-profile",
       "label": "Settings · Profile",
       "route": "go('settings', {\"tab\":\"profile\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-080-settings-account-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-account",
+      "label": "Settings · Account (scroll)",
+      "route": "go('settings', {\"tab\":\"account\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-080-settings-account.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-account",
+      "label": "Settings · Account",
+      "route": "go('settings', {\"tab\":\"account\"})",
       "scroll": false
     },
     {
@@ -2184,6 +3344,36 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-081-settings-training-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-training",
+      "label": "Settings · Training (scroll)",
+      "route": "go('settings', {\"tab\":\"training\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-081-settings-training.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-training",
+      "label": "Settings · Training",
+      "route": "go('settings', {\"tab\":\"training\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-082-settings-fuel.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-fuel",
+      "label": "Settings · Fuel",
+      "route": "go('settings', {\"tab\":\"fuel\"})",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-082-settings-nutrition.png",
       "theme": "light",
       "viewport": "desktop",
@@ -2209,8 +3399,18 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-appearance",
-      "label": "Settings · Style",
+      "label": "Settings · Appearance",
       "route": "go('settings', {\"tab\":\"appearance\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-084-settings-accessibility.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-accessibility",
+      "label": "Settings · Access",
+      "route": "go('settings', {\"tab\":\"accessibility\"})",
       "scroll": false
     },
     {
@@ -2244,6 +3444,16 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-085-settings-notifications.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-notifications",
+      "label": "Settings · Alerts",
+      "route": "go('settings', {\"tab\":\"notifications\"})",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-086-profiles.png",
       "theme": "light",
       "viewport": "desktop",
@@ -2251,6 +3461,16 @@
       "screenId": "profiles",
       "label": "Profiles",
       "route": "go('profiles')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-086-settings-privacy.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-privacy",
+      "label": "Settings · Privacy",
+      "route": "go('settings', {\"tab\":\"privacy\"})",
       "scroll": false
     },
     {
@@ -2274,6 +3494,26 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-087-settings-about.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "settings-about",
+      "label": "Settings · About",
+      "route": "go('settings', {\"tab\":\"about\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-088-profiles.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "profiles",
+      "label": "Profiles",
+      "route": "go('profiles')",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-088-split-builder.png",
       "theme": "light",
       "viewport": "desktop",
@@ -2281,6 +3521,26 @@
       "screenId": "split-builder",
       "label": "Split Builder",
       "route": "go('split-builder')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-089-equipment-setup-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "equipment-setup",
+      "label": "Equipment Setup (scroll)",
+      "route": "go('equipment-setup')",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-089-equipment-setup.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "equipment-setup",
+      "label": "Equipment Setup",
+      "route": "go('equipment-setup')",
       "scroll": false
     },
     {
@@ -2304,12 +3564,42 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-090-split-builder.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Me",
+      "screenId": "split-builder",
+      "label": "Split Builder",
+      "route": "go('split-builder')",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-091-intro-1.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-1",
+      "label": "Welcome 1/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-091-intro-3.png",
       "theme": "light",
       "viewport": "desktop",
       "section": "Onboarding",
       "screenId": "intro-3",
       "label": "Welcome 3/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-092-intro-2.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-2",
+      "label": "Welcome 2/4",
       "route": "go('onboarding',{showIntro:true})",
       "scroll": false
     },
@@ -2324,6 +3614,16 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-093-intro-3.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-3",
+      "label": "Welcome 3/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-093-onboarding-1.png",
       "theme": "light",
       "viewport": "desktop",
@@ -2331,6 +3631,16 @@
       "screenId": "onboarding-1",
       "label": "Onboarding 1/7",
       "route": "onboarding step 1",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-094-intro-4.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "intro-4",
+      "label": "Welcome 4/4",
+      "route": "go('onboarding',{showIntro:true})",
       "scroll": false
     },
     {
@@ -2354,6 +3664,16 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-095-onboarding-1.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-1",
+      "label": "Onboarding 1/7",
+      "route": "onboarding step 1",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-095-onboarding-3.png",
       "theme": "light",
       "viewport": "desktop",
@@ -2361,6 +3681,26 @@
       "screenId": "onboarding-3",
       "label": "Onboarding 3/7",
       "route": "onboarding step 3",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-096-onboarding-2-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-2",
+      "label": "Onboarding 2/7 (scroll)",
+      "route": "onboarding step 2",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-096-onboarding-2.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-2",
+      "label": "Onboarding 2/7",
+      "route": "onboarding step 2",
       "scroll": false
     },
     {
@@ -2374,6 +3714,16 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-097-onboarding-3.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-3",
+      "label": "Onboarding 3/7",
+      "route": "onboarding step 3",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-097-onboarding-5.png",
       "theme": "light",
       "viewport": "desktop",
@@ -2384,6 +3734,16 @@
       "scroll": false
     },
     {
+      "file": "light-desktop-098-onboarding-4.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-4",
+      "label": "Onboarding 4/7",
+      "route": "onboarding step 4",
+      "scroll": false
+    },
+    {
       "file": "light-desktop-098-onboarding-6.png",
       "theme": "light",
       "viewport": "desktop",
@@ -2391,6 +3751,16 @@
       "screenId": "onboarding-6",
       "label": "Onboarding 6/7",
       "route": "onboarding step 6",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-099-onboarding-5.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-5",
+      "label": "Onboarding 5/7",
+      "route": "onboarding step 5",
       "scroll": false
     },
     {
@@ -2415,6 +3785,46 @@
     },
     {
       "file": "light-desktop-100-active.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "active",
+      "label": "Active Workout",
+      "route": "startWorkout()",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-100-onboarding-6.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-6",
+      "label": "Onboarding 6/7",
+      "route": "onboarding step 6",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-101-onboarding-7.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Onboarding",
+      "screenId": "onboarding-7",
+      "label": "Onboarding 7/7",
+      "route": "onboarding step 7",
+      "scroll": false
+    },
+    {
+      "file": "light-desktop-102-active-scroll.png",
+      "theme": "light",
+      "viewport": "desktop",
+      "section": "Train",
+      "screenId": "active",
+      "label": "Active Workout (scroll)",
+      "route": "startWorkout()",
+      "scroll": true
+    },
+    {
+      "file": "light-desktop-102-active.png",
       "theme": "light",
       "viewport": "desktop",
       "section": "Train",
@@ -2464,6 +3874,46 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-052-dashboard-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "dashboard",
+      "label": "Dashboard (scroll)",
+      "route": "go('dashboard')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-052-dashboard.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "dashboard",
+      "label": "Dashboard",
+      "route": "go('dashboard')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-053-briefing-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "briefing",
+      "label": "Morning Briefing (scroll)",
+      "route": "go('briefing')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-053-briefing.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "briefing",
+      "label": "Morning Briefing",
+      "route": "go('briefing')",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-053-quests-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -2475,6 +3925,26 @@
     },
     {
       "file": "light-mobile-053-quests.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "quests",
+      "label": "Quests",
+      "route": "go('quests')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-054-quests-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "quests",
+      "label": "Quests (scroll)",
+      "route": "go('quests')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-054-quests.png",
       "theme": "light",
       "viewport": "mobile",
       "section": "Today",
@@ -2524,6 +3994,26 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-055-workout-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "workout",
+      "label": "Workout Plan (scroll)",
+      "route": "go('workout')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-055-workout.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "workout",
+      "label": "Workout Plan",
+      "route": "go('workout')",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-056-calisthenics-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -2535,6 +4025,46 @@
     },
     {
       "file": "light-mobile-056-calisthenics.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "calisthenics",
+      "label": "Calisthenics",
+      "route": "go('calisthenics')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-056-cardio-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "cardio",
+      "label": "Cardio (scroll)",
+      "route": "go('cardio')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-056-cardio.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "cardio",
+      "label": "Cardio",
+      "route": "go('cardio')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-057-calisthenics-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "calisthenics",
+      "label": "Calisthenics (scroll)",
+      "route": "go('calisthenics')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-057-calisthenics.png",
       "theme": "light",
       "viewport": "mobile",
       "section": "Train",
@@ -2564,6 +4094,26 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-058-progress-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "progress",
+      "label": "Progress (scroll)",
+      "route": "go('progress')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-058-progress.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "progress",
+      "label": "Progress",
+      "route": "go('progress')",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-058-training-intel-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -2575,6 +4125,26 @@
     },
     {
       "file": "light-mobile-058-training-intel.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "training-intel",
+      "label": "Training Intel",
+      "route": "go('training-intel', {\"tab\":\"intel\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-059-training-intel-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "training-intel",
+      "label": "Training Intel (scroll)",
+      "route": "go('training-intel', {\"tab\":\"intel\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-059-training-intel.png",
       "theme": "light",
       "viewport": "mobile",
       "section": "Train",
@@ -2614,6 +4184,46 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-060-training-style-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "training-style",
+      "label": "Training Style (scroll)",
+      "route": "go('training-intel', {\"tab\":\"style\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-060-training-style.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "training-style",
+      "label": "Training Style",
+      "route": "go('training-intel', {\"tab\":\"style\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-061-bodymap-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "bodymap",
+      "label": "Body Map (scroll)",
+      "route": "go('bodymap')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-061-bodymap.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "bodymap",
+      "label": "Body Map",
+      "route": "go('bodymap')",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-061-nutrition-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -2625,6 +4235,26 @@
     },
     {
       "file": "light-mobile-061-nutrition.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "nutrition",
+      "label": "Nutrition",
+      "route": "go('nutrition')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-062-nutrition-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "nutrition",
+      "label": "Nutrition (scroll)",
+      "route": "go('nutrition')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-062-nutrition.png",
       "theme": "light",
       "viewport": "mobile",
       "section": "Body",
@@ -2674,6 +4304,46 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-063-recovery-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "recovery",
+      "label": "Recovery Check-in (scroll)",
+      "route": "go('recovery', {\"tab\":\"checkin\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-063-recovery.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "recovery",
+      "label": "Recovery Check-in",
+      "route": "go('recovery', {\"tab\":\"checkin\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-064-recovery-debt-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "recovery-debt",
+      "label": "Recovery Debt (scroll)",
+      "route": "go('recovery', {\"tab\":\"debt\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-064-recovery-debt.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "recovery-debt",
+      "label": "Recovery Debt",
+      "route": "go('recovery', {\"tab\":\"debt\"})",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-064-rehab-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -2714,6 +4384,26 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-065-rehab-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "rehab",
+      "label": "Rehab (scroll)",
+      "route": "go('rehab')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-065-rehab.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "rehab",
+      "label": "Rehab",
+      "route": "go('rehab')",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-066-body-intelligence-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -2731,6 +4421,26 @@
       "screenId": "body-intelligence",
       "label": "Body Intelligence",
       "route": "go('body-intelligence')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-066-injury-risk-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "injury-risk",
+      "label": "Injury Risk (scroll)",
+      "route": "go('injury-risk')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-066-injury-risk.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "injury-risk",
+      "label": "Injury Risk",
+      "route": "go('injury-risk')",
       "scroll": false
     },
     {
@@ -2754,7 +4464,57 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-067-body-intelligence-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "body-intelligence",
+      "label": "Body Intelligence (scroll)",
+      "route": "go('body-intelligence')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-067-body-intelligence.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "body-intelligence",
+      "label": "Body Intelligence",
+      "route": "go('body-intelligence')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-068-anatomy-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "anatomy",
+      "label": "Anatomy (scroll)",
+      "route": "go('anatomy')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-068-anatomy.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "anatomy",
+      "label": "Anatomy",
+      "route": "go('anatomy')",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-068-photos.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "photos",
+      "label": "Progress Photos",
+      "route": "go('photos')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-069-photos.png",
       "theme": "light",
       "viewport": "mobile",
       "section": "Body",
@@ -2804,6 +4564,46 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-070-physique-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "physique",
+      "label": "Physique Score (scroll)",
+      "route": "go('physique', {\"tab\":\"score\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-070-physique.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "physique",
+      "label": "Physique Score",
+      "route": "go('physique', {\"tab\":\"score\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-071-physique-archetype-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "physique-archetype",
+      "label": "Physique Archetype (scroll)",
+      "route": "go('physique', {\"tab\":\"archetype\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-071-physique-archetype.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "physique-archetype",
+      "label": "Physique Archetype",
+      "route": "go('physique', {\"tab\":\"archetype\"})",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-071-physique-timeline-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -2834,7 +4634,47 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-072-physique-timeline-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "physique-timeline",
+      "label": "Physique Timeline (scroll)",
+      "route": "go('physique', {\"tab\":\"timeline\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-072-physique-timeline.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Body",
+      "screenId": "physique-timeline",
+      "label": "Physique Timeline",
+      "route": "go('physique', {\"tab\":\"timeline\"})",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-073-encyclopedia.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "encyclopedia",
+      "label": "Encyclopedia",
+      "route": "go('encyclopedia')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-073-hub.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "hub",
+      "label": "Learn Hub",
+      "route": "go('hub')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-074-encyclopedia.png",
       "theme": "light",
       "viewport": "mobile",
       "section": "Learn",
@@ -2874,6 +4714,36 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-075-search.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "search",
+      "label": "Search",
+      "route": "go('search')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-076-calculators-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "calculators",
+      "label": "Calculators (scroll)",
+      "route": "go('calculators')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-076-calculators.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "calculators",
+      "label": "Calculators",
+      "route": "go('calculators')",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-076-visualizations-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -2904,6 +4774,26 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-077-visualizations-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "visualizations",
+      "label": "Visualizations (scroll)",
+      "route": "go('visualizations')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-077-visualizations.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "visualizations",
+      "label": "Visualizations",
+      "route": "go('visualizations')",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-078-academy-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -2915,6 +4805,46 @@
     },
     {
       "file": "light-mobile-078-academy.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "academy",
+      "label": "Academy",
+      "route": "go('academy')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-078-assistant-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "assistant",
+      "label": "Fitness Assistant (scroll)",
+      "route": "go('assistant')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-078-assistant.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "assistant",
+      "label": "Fitness Assistant",
+      "route": "go('assistant')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-079-academy-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Learn",
+      "screenId": "academy",
+      "label": "Academy (scroll)",
+      "route": "go('academy')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-079-academy.png",
       "theme": "light",
       "viewport": "mobile",
       "section": "Learn",
@@ -2941,6 +4871,26 @@
       "screenId": "settings-profile",
       "label": "Settings · Profile",
       "route": "go('settings', {\"tab\":\"profile\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-080-settings-account-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-account",
+      "label": "Settings · Account (scroll)",
+      "route": "go('settings', {\"tab\":\"account\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-080-settings-account.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-account",
+      "label": "Settings · Account",
+      "route": "go('settings', {\"tab\":\"account\"})",
       "scroll": false
     },
     {
@@ -2974,6 +4924,46 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-081-settings-training-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-training",
+      "label": "Settings · Training (scroll)",
+      "route": "go('settings', {\"tab\":\"training\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-081-settings-training.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-training",
+      "label": "Settings · Training",
+      "route": "go('settings', {\"tab\":\"training\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-082-settings-fuel-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-fuel",
+      "label": "Settings · Fuel (scroll)",
+      "route": "go('settings', {\"tab\":\"fuel\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-082-settings-fuel.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-fuel",
+      "label": "Settings · Fuel",
+      "route": "go('settings', {\"tab\":\"fuel\"})",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-082-settings-nutrition.png",
       "theme": "light",
       "viewport": "mobile",
@@ -2989,7 +4979,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-appearance",
-      "label": "Settings · Style (scroll)",
+      "label": "Settings · Appearance (scroll)",
       "route": "go('settings', {\"tab\":\"appearance\"})",
       "scroll": true
     },
@@ -2999,8 +4989,18 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-appearance",
-      "label": "Settings · Style",
+      "label": "Settings · Appearance",
       "route": "go('settings', {\"tab\":\"appearance\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-084-settings-accessibility.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-accessibility",
+      "label": "Settings · Access",
+      "route": "go('settings', {\"tab\":\"accessibility\"})",
       "scroll": false
     },
     {
@@ -3034,6 +5034,16 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-085-settings-notifications.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-notifications",
+      "label": "Settings · Alerts",
+      "route": "go('settings', {\"tab\":\"notifications\"})",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-086-profiles.png",
       "theme": "light",
       "viewport": "mobile",
@@ -3041,6 +5051,26 @@
       "screenId": "profiles",
       "label": "Profiles",
       "route": "go('profiles')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-086-settings-privacy-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-privacy",
+      "label": "Settings · Privacy (scroll)",
+      "route": "go('settings', {\"tab\":\"privacy\"})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-086-settings-privacy.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-privacy",
+      "label": "Settings · Privacy",
+      "route": "go('settings', {\"tab\":\"privacy\"})",
       "scroll": false
     },
     {
@@ -3064,6 +5094,26 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-087-settings-about.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "settings-about",
+      "label": "Settings · About",
+      "route": "go('settings', {\"tab\":\"about\"})",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-088-profiles.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "profiles",
+      "label": "Profiles",
+      "route": "go('profiles')",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-088-split-builder.png",
       "theme": "light",
       "viewport": "mobile",
@@ -3071,6 +5121,26 @@
       "screenId": "split-builder",
       "label": "Split Builder",
       "route": "go('split-builder')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-089-equipment-setup-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "equipment-setup",
+      "label": "Equipment Setup (scroll)",
+      "route": "go('equipment-setup')",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-089-equipment-setup.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "equipment-setup",
+      "label": "Equipment Setup",
+      "route": "go('equipment-setup')",
       "scroll": false
     },
     {
@@ -3114,6 +5184,36 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-090-split-builder.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Me",
+      "screenId": "split-builder",
+      "label": "Split Builder",
+      "route": "go('split-builder')",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-091-intro-1-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-1",
+      "label": "Welcome 1/4 (scroll)",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-091-intro-1.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-1",
+      "label": "Welcome 1/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-091-intro-3-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -3130,6 +5230,26 @@
       "section": "Onboarding",
       "screenId": "intro-3",
       "label": "Welcome 3/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-092-intro-2-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-2",
+      "label": "Welcome 2/4 (scroll)",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-092-intro-2.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-2",
+      "label": "Welcome 2/4",
       "route": "go('onboarding',{showIntro:true})",
       "scroll": false
     },
@@ -3154,6 +5274,26 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-093-intro-3-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-3",
+      "label": "Welcome 3/4 (scroll)",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-093-intro-3.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-3",
+      "label": "Welcome 3/4",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-093-onboarding-1-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -3171,6 +5311,26 @@
       "screenId": "onboarding-1",
       "label": "Onboarding 1/7",
       "route": "onboarding step 1",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-094-intro-4-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-4",
+      "label": "Welcome 4/4 (scroll)",
+      "route": "go('onboarding',{showIntro:true})",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-094-intro-4.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "intro-4",
+      "label": "Welcome 4/4",
+      "route": "go('onboarding',{showIntro:true})",
       "scroll": false
     },
     {
@@ -3194,6 +5354,26 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-095-onboarding-1-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-1",
+      "label": "Onboarding 1/7 (scroll)",
+      "route": "onboarding step 1",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-095-onboarding-1.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-1",
+      "label": "Onboarding 1/7",
+      "route": "onboarding step 1",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-095-onboarding-3-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -3211,6 +5391,26 @@
       "screenId": "onboarding-3",
       "label": "Onboarding 3/7",
       "route": "onboarding step 3",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-096-onboarding-2-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-2",
+      "label": "Onboarding 2/7 (scroll)",
+      "route": "onboarding step 2",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-096-onboarding-2.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-2",
+      "label": "Onboarding 2/7",
+      "route": "onboarding step 2",
       "scroll": false
     },
     {
@@ -3234,6 +5434,26 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-097-onboarding-3-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-3",
+      "label": "Onboarding 3/7 (scroll)",
+      "route": "onboarding step 3",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-097-onboarding-3.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-3",
+      "label": "Onboarding 3/7",
+      "route": "onboarding step 3",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-097-onboarding-5-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -3254,6 +5474,26 @@
       "scroll": false
     },
     {
+      "file": "light-mobile-098-onboarding-4-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-4",
+      "label": "Onboarding 4/7 (scroll)",
+      "route": "onboarding step 4",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-098-onboarding-4.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-4",
+      "label": "Onboarding 4/7",
+      "route": "onboarding step 4",
+      "scroll": false
+    },
+    {
       "file": "light-mobile-098-onboarding-6-scroll.png",
       "theme": "light",
       "viewport": "mobile",
@@ -3271,6 +5511,26 @@
       "screenId": "onboarding-6",
       "label": "Onboarding 6/7",
       "route": "onboarding step 6",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-099-onboarding-5-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-5",
+      "label": "Onboarding 5/7 (scroll)",
+      "route": "onboarding step 5",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-099-onboarding-5.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-5",
+      "label": "Onboarding 5/7",
+      "route": "onboarding step 5",
       "scroll": false
     },
     {
@@ -3305,6 +5565,66 @@
     },
     {
       "file": "light-mobile-100-active.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "active",
+      "label": "Active Workout",
+      "route": "startWorkout()",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-100-onboarding-6-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-6",
+      "label": "Onboarding 6/7 (scroll)",
+      "route": "onboarding step 6",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-100-onboarding-6.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-6",
+      "label": "Onboarding 6/7",
+      "route": "onboarding step 6",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-101-onboarding-7-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-7",
+      "label": "Onboarding 7/7 (scroll)",
+      "route": "onboarding step 7",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-101-onboarding-7.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Onboarding",
+      "screenId": "onboarding-7",
+      "label": "Onboarding 7/7",
+      "route": "onboarding step 7",
+      "scroll": false
+    },
+    {
+      "file": "light-mobile-102-active-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Train",
+      "screenId": "active",
+      "label": "Active Workout (scroll)",
+      "route": "startWorkout()",
+      "scroll": true
+    },
+    {
+      "file": "light-mobile-102-active.png",
       "theme": "light",
       "viewport": "mobile",
       "section": "Train",

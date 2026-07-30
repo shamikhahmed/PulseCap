@@ -15,11 +15,11 @@ const PhysiqueEngine = {
   vTaperScore(m) {
     if (!m || !m.shoulders || !m.waist) return null;
     const ratio = m.shoulders / m.waist;
-    if (ratio >= 1.618) return { score: 95, grade: 'Elite', color: '#30d158' };
-    if (ratio >= 1.55)  return { score: Math.round(75 + (ratio - 1.55) / 0.07 * 20), grade: 'Excellent', color: '#30d158' };
+    if (ratio >= 1.618) return { score: 95, grade: 'Elite', color: 'var(--success)' };
+    if (ratio >= 1.55)  return { score: Math.round(75 + (ratio - 1.55) / 0.07 * 20), grade: 'Excellent', color: 'var(--success)' };
     if (ratio >= 1.45)  return { score: Math.round(55 + (ratio - 1.45) / 0.1 * 20), grade: 'Good', color: 'var(--c1)' };
     if (ratio >= 1.35)  return { score: Math.round(35 + (ratio - 1.35) / 0.1 * 20), grade: 'Average', color: '#f5c842' };
-    return { score: Math.max(10, Math.round((ratio / 1.35) * 35)), grade: 'Below Average', color: '#ff9f0a' };
+    return { score: Math.max(10, Math.round((ratio / 1.35) * 35)), grade: 'Below Average', color: 'var(--warn)' };
   },
 
   symmetryScore(m) {
@@ -56,7 +56,7 @@ const PhysiqueEngine = {
 
     score = Math.max(10, Math.min(100, score));
     const grade = score >= 85 ? 'Elite Symmetry' : score >= 70 ? 'Good Symmetry' : score >= 55 ? 'Moderate' : 'Needs Work';
-    const color = score >= 85 ? '#30d158' : score >= 70 ? 'var(--c1)' : score >= 55 ? '#f5c842' : '#ff9f0a';
+    const color = score >= 85 ? 'var(--success)' : score >= 70 ? 'var(--c1)' : score >= 55 ? '#f5c842' : 'var(--warn)';
     return { score, grade, color, reasons };
   },
 
@@ -82,7 +82,7 @@ const PhysiqueEngine = {
     }
 
     const grade = score >= 85 ? 'Highly Muscular' : score >= 70 ? 'Muscular' : score >= 55 ? 'Moderately Muscular' : score >= 40 ? 'Average Build' : 'Developing';
-    const color = score >= 80 ? '#30d158' : score >= 65 ? 'var(--c1)' : score >= 50 ? '#f5c842' : '#ff9f0a';
+    const color = score >= 80 ? 'var(--success)' : score >= 65 ? 'var(--c1)' : score >= 50 ? '#f5c842' : 'var(--warn)';
     return { score, grade, color };
   },
 
@@ -98,7 +98,7 @@ const PhysiqueEngine = {
     else score = Math.max(5, Math.round(25 - (bf - 25) * 1.5));
 
     const grade = score >= 90 ? 'Competition Ready' : score >= 75 ? 'Lean & Athletic' : score >= 60 ? 'Fit' : score >= 45 ? 'Average' : 'Bulk Phase';
-    const color = score >= 80 ? '#30d158' : score >= 65 ? 'var(--c1)' : score >= 50 ? '#f5c842' : '#ff9f0a';
+    const color = score >= 80 ? 'var(--success)' : score >= 65 ? 'var(--c1)' : score >= 50 ? '#f5c842' : 'var(--warn)';
     return { score, grade, color, bf };
   },
 
@@ -126,7 +126,7 @@ const PhysiqueEngine = {
 
     score = Math.max(10, Math.min(100, score));
     const grade = score >= 85 ? 'Elite Athlete' : score >= 70 ? 'Advanced' : score >= 55 ? 'Intermediate' : score >= 40 ? 'Beginner-Intermediate' : 'Beginner';
-    const color = score >= 80 ? '#30d158' : score >= 65 ? 'var(--c1)' : score >= 50 ? '#f5c842' : '#ff9f0a';
+    const color = score >= 80 ? 'var(--success)' : score >= 65 ? 'var(--c1)' : score >= 50 ? '#f5c842' : 'var(--warn)';
     return { score, grade, color };
   },
 
@@ -142,7 +142,7 @@ const PhysiqueEngine = {
     const weighted = scores.reduce((a, x) => a + x.s * x.w, 0) / totalWeight;
     const score = Math.round(weighted);
     const grade = score >= 88 ? 'World Class' : score >= 78 ? 'Elite' : score >= 68 ? 'Excellent' : score >= 55 ? 'Good' : score >= 42 ? 'Average' : 'Developing';
-    const color = score >= 80 ? '#30d158' : score >= 65 ? 'var(--c1)' : score >= 50 ? '#f5c842' : '#ff9f0a';
+    const color = score >= 80 ? 'var(--success)' : score >= 65 ? 'var(--c1)' : score >= 50 ? '#f5c842' : 'var(--warn)';
     return { score, grade, color };
   },
 
@@ -238,7 +238,7 @@ const GrowthSimulator = {
       const weeklyVol = this.weeklyVolume(muscle);
       const velocity = this.growthVelocity(muscle, weeklyVol);
       const status = weeklyVol < 6 ? 'undertrained' : weeklyVol > 22 ? 'overtrained' : 'optimal';
-      const statusColor = status === 'optimal' ? '#30d158' : status === 'undertrained' ? '#ff9f0a' : '#af52de';
+      const statusColor = status === 'optimal' ? 'var(--success)' : status === 'undertrained' ? 'var(--warn)' : 'var(--c2)';
 
       return {
         muscle,
@@ -377,7 +377,7 @@ function _physiqueScoreBody() {
 
     (symmetry && symmetry.reasons && symmetry.reasons.length ? '<div class="card-block-sm">' +
       '<div  class="section-label-sm">Symmetry Issues</div>' +
-      symmetry.reasons.map(r => '<div style="font-size:13px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:flex-start"><span style="display:flex;color:var(--c5);flex-shrink:0;margin-top:1px">' + icon('alert', 14, '#ff9f0a') + '</span>' + esc(r) + '</div>').join('') +
+      symmetry.reasons.map(r => '<div style="font-size:13px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--border);display:flex;gap:8px;align-items:flex-start"><span style="display:flex;color:var(--c5);flex-shrink:0;margin-top:1px">' + icon('alert', 14, 'var(--warn)') + '</span>' + esc(r) + '</div>').join('') +
       '</div>' : '') +
 
     (weak ? '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(var(--c1-rgb),0.1),rgba(0,0,0,0.2));border:1px solid rgba(var(--c1-rgb),0.2);border-radius:16px;padding:14px">' +
@@ -389,12 +389,12 @@ function _physiqueScoreBody() {
     '<div  class="card-block">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:14px;display:flex;align-items:center;gap:6px">' + icon('chart', 14) + ' Muscle Growth Simulator</div>' +
 
-    (lagging.length ? '<div  class="mb-12"><div style="font-size:12px;font-weight:700;color:#ff9f0a;margin-bottom:8px;display:flex;align-items:center;gap:6px">' + icon('alert', 14, '#ff9f0a') + ' Lagging Muscles</div>' +
+    (lagging.length ? '<div  class="mb-12"><div style="font-size:12px;font-weight:700;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px">' + icon('alert', 14, 'var(--warn)') + ' Lagging Muscles</div>' +
       lagging.map(p => '<div style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)">' +
         '<div style="width:28px;display:flex;justify-content:center;color:var(--c1)">' + icon(p.icon, 20) + '</div>' +
         '<div  class="flex-1"><div  class="row-title">' + esc(p.label) + '</div>' +
         '<div  class="muted-11">' + p.weeklyVol + ' sets/wk · ' + esc(p.recommendation) + '</div></div>' +
-        '<div class="ta-right"><div style="font-size:12px;font-weight:700;color:#ff9f0a">+' + p.projected8wks + 'cm</div>' +
+        '<div class="ta-right"><div style="font-size:12px;font-weight:700;color:var(--warn)">+' + p.projected8wks + 'cm</div>' +
         '<div  class="muted-10">8 weeks</div></div>' +
         '</div>').join('') +
       '</div>' : '') +
@@ -405,7 +405,7 @@ function _physiqueScoreBody() {
       '<div  class="flex-1"><div  class="row-title">' + esc(p.label) + '</div>' +
       '<div style="font-size:10px;color:' + p.statusColor + '">' + p.weeklyVol + ' sets/wk · ' + esc(p.status) + '</div></div>' +
       '<div class="ta-right">' +
-      '<div style="font-size:13px;font-weight:700;color:' + (p.velocity > 0 ? '#30d158' : 'var(--txt3)') + '">' + (p.velocity > 0 ? '+' + p.projected8wks + 'cm' : 'No data') + '</div>' +
+      '<div style="font-size:13px;font-weight:700;color:' + (p.velocity > 0 ? 'var(--success)' : 'var(--txt3)') + '">' + (p.velocity > 0 ? '+' + p.projected8wks + 'cm' : 'No data') + '</div>' +
       '<div  class="muted-10">' + (p.velocity > 0 ? p.projected12wks + 'cm / 12wk' : '') + '</div>' +
       '</div></div>'
     ).join('') +

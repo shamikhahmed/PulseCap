@@ -490,7 +490,7 @@ function _stretchingScreen() {
         '</div>' +
         '<div style="font-size:11px;color:var(--c1);margin-bottom:4px">' + esc(s.duration) + '</div>' +
         '<div  class="muted-11">' + esc(s.cue) + '</div>' +
-        (s.contraindications ? '<div style="font-size:10px;color:#ff9f0a;margin-top:4px;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, '#ff9f0a') + '</span>Avoid if: ' + s.contraindications.join(', ') + '</div>' : '') +
+        (s.contraindications ? '<div style="font-size:10px;color:var(--warn);margin-top:4px;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, 'var(--warn)') + '</span>Avoid if: ' + s.contraindications.join(', ') + '</div>' : '') +
         '</div>').join('') +
       '</div>'
     ).join('') +
@@ -546,8 +546,8 @@ function _sportsScreen() {
       sport.strength_training.primary_lifts.map(l => '<span style="display:inline-block;background:rgba(var(--c1-rgb),0.12);color:var(--c1);padding:3px 8px;border-radius:8px;font-size:11px;font-weight:600;margin:2px">' + esc(l) + '</span>').join('') +
       '<div style="font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 6px">Conditioning</div>' +
       '<div  class="body-12">' + esc(sport.conditioning) + '</div>' +
-      '<div style="font-size:11px;font-weight:700;color:#ff453a;text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 6px">Injury Risks</div>' +
-      sport.injury_risks.map(r => '<div style="font-size:12px;color:#ff9f0a;padding:2px 0;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, '#ff9f0a') + '</span>' + esc(r) + '</div>').join('') +
+      '<div style="font-size:11px;font-weight:700;color:var(--danger);text-transform:uppercase;letter-spacing:0.06em;margin:10px 0 6px">Injury Risks</div>' +
+      sport.injury_risks.map(r => '<div style="font-size:12px;color:var(--warn);padding:2px 0;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, 'var(--warn)') + '</span>' + esc(r) + '</div>').join('') +
       '</div>'
     ).join('') +
     '<div  class="spacer-bottom"></div>';

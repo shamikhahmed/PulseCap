@@ -184,7 +184,7 @@ window.showSkillDetail = function(skillId) {
       var isDone = i < userLevel;
       var isCurrent = i === userLevel;
       return '<div style="display:flex;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);opacity:' + (i > userLevel + 1 ? '0.4' : '1') + '">' +
-        '<div style="width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:' + (isDone ? '#30d158' : isCurrent ? 'var(--c1)' : 'var(--bg4)') + ';color:' + (isDone || isCurrent ? '#000' : 'var(--txt3)') + '">' +
+        '<div style="width:24px;height:24px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;background:' + (isDone ? 'var(--success)' : isCurrent ? 'var(--c1)' : 'var(--bg4)') + ';color:' + (isDone || isCurrent ? '#000' : 'var(--txt3)') + '">' +
         (isDone ? '✓' : (i + 1)) + '</div>' +
         '<div  class="flex-1">' +
         '<div style="font-size:13px;font-weight:' + (isCurrent ? '700' : '500') + ';color:' + (isCurrent ? 'var(--txt)' : 'var(--txt2)') + '">' + lvl.name + '</div>' +

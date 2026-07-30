@@ -85,9 +85,9 @@ const TrainingStyleDetector = {
 
     var STYLE_META = {
       bodybuilder: { label: 'Bodybuilder', icon: 'dumbbell', color: '#f5c842', desc: 'High volume, moderate rep ranges, isolation work. You train for muscle size and aesthetics.' },
-      strength: { label: 'Strength Athlete', icon: 'dumbbell', color: '#ff453a', desc: 'Heavy compounds, low reps, strength-focused. You train to move maximum weight.' },
+      strength: { label: 'Strength Athlete', icon: 'dumbbell', color: 'var(--danger)', desc: 'Heavy compounds, low reps, strength-focused. You train to move maximum weight.' },
       hybrid: { label: 'Hybrid Athlete', icon: 'refresh', color: 'var(--c1)', desc: 'Balanced blend of strength and hypertrophy. Versatile, well-rounded training approach.' },
-      functional: { label: 'Functional Athlete', icon: 'target', color: '#30d158', desc: 'Movement quality, skills, conditioning. You train to perform, not just look good.' },
+      functional: { label: 'Functional Athlete', icon: 'target', color: 'var(--success)', desc: 'Movement quality, skills, conditioning. You train to perform, not just look good.' },
       endurance: { label: 'Endurance Athlete', icon: 'run', color: '#00c7ff', desc: 'High rep work, conditioning, cardio emphasis. You train for capacity and stamina.' },
       unknown: { label: 'Style Emerging', icon: 'leaf', color: 'var(--txt3)', desc: 'Log more workouts for style detection.' },
     };
@@ -291,10 +291,10 @@ window.renderTrainingStyleBody = function() {
     '<div  class="card-block">' +
     '<div  class="section-label" style="display:flex;align-items:center;gap:6px">' + icon('refresh', 14) + ' Smart Exercise Rotation</div>' +
     (rotation.length === 0 ?
-      '<div style="text-align:center;padding:20px 0;color:var(--txt3)"><div style="margin-bottom:8px;display:flex;justify-content:center;color:#30d158">' + icon('check', 32, '#30d158') + '</div><div style="font-size:13px">All exercises showing good progress<br>No rotations needed right now</div></div>' :
+      '<div style="text-align:center;padding:20px 0;color:var(--txt3)"><div style="margin-bottom:8px;display:flex;justify-content:center;color:var(--success)">' + icon('check', 32, 'var(--success)') + '</div><div style="font-size:13px">All exercises showing good progress<br>No rotations needed right now</div></div>' :
       rotation.map(function(s) {
         return '<div style="background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px">' +
-          '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#ff9f0a;margin-bottom:8px">Rotation Suggestion</div>' +
+          '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--warn);margin-bottom:8px">Rotation Suggestion</div>' +
           '<div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">' +
           '<div style="flex:1;background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.2);border-radius:10px;padding:10px;text-align:center">' +
           '<div style="font-size:11px;color:var(--txt3);margin-bottom:3px">Current</div>' +
@@ -303,12 +303,12 @@ window.renderTrainingStyleBody = function() {
           '<div class="fs-20">→</div>' +
           '<div style="flex:1;background:rgba(48,209,88,0.08);border:1px solid rgba(48,209,88,0.2);border-radius:10px;padding:10px;text-align:center">' +
           '<div style="font-size:11px;color:var(--txt3);margin-bottom:3px">Suggested</div>' +
-          '<div style="font-size:13px;font-weight:700;color:#30d158">' + esc(s.to) + '</div>' +
+          '<div style="font-size:13px;font-weight:700;color:var(--success)">' + esc(s.to) + '</div>' +
           '</div></div>' +
           '<div style="font-size:12px;color:var(--txt2);margin-bottom:8px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('book', 14) + '</span>' + esc(s.altReason) + '</div>' +
-          s.triggerReasons.map(function(r) { return '<div style="font-size:11px;color:#ff9f0a;margin-bottom:3px;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, '#ff9f0a') + '</span>' + esc(r) + '</div>'; }).join('') +
+          s.triggerReasons.map(function(r) { return '<div style="font-size:11px;color:var(--warn);margin-bottom:3px;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, 'var(--warn)') + '</span>' + esc(r) + '</div>'; }).join('') +
           '<div style="display:flex;gap:8px;margin-top:10px">' +
-          '<button type="button" onclick="this.parentElement.parentElement.style.display=\'none\'" style="flex:1;padding:10px;background:rgba(48,209,88,0.15);border:1px solid rgba(48,209,88,0.3);border-radius:10px;color:#30d158;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center;gap:6px">' + icon('check', 14, '#30d158') + ' Accept</button>' +
+          '<button type="button" onclick="this.parentElement.parentElement.style.display=\'none\'" style="flex:1;padding:10px;background:rgba(48,209,88,0.15);border:1px solid rgba(48,209,88,0.3);border-radius:10px;color:var(--success);font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center;gap:6px">' + icon('check', 14, 'var(--success)') + ' Accept</button>' +
           '<button type="button" onclick="this.parentElement.parentElement.style.opacity=\'0.4\'" style="flex:1;padding:10px;background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:10px;color:var(--txt3);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">Ignore</button>' +
           '</div></div>';
       }).join('')
@@ -317,8 +317,8 @@ window.renderTrainingStyleBody = function() {
 
     (proportion && proportion.weakPoints.length ?
       '<div style="margin:0 16px 14px;background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.2);border-radius:16px;padding:14px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#ff9f0a;margin-bottom:8px;display:flex;align-items:center;gap:6px">' + icon('ruler', 14, '#ff9f0a') + ' Proportion Weak Points</div>' +
-      proportion.weakPoints.map(function(w) { return '<div style="font-size:12px;color:var(--txt2);padding:4px 0;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, '#ff9f0a') + '</span>' + esc(w) + '</div>'; }).join('') +
+      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--warn);margin-bottom:8px;display:flex;align-items:center;gap:6px">' + icon('ruler', 14, 'var(--warn)') + ' Proportion Weak Points</div>' +
+      proportion.weakPoints.map(function(w) { return '<div style="font-size:12px;color:var(--txt2);padding:4px 0;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, 'var(--warn)') + '</span>' + esc(w) + '</div>'; }).join('') +
       '<button type="button" onclick="go(\'physique\',{tab:\'archetype\'})" style="margin-top:10px;width:100%;padding:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:10px;color:var(--c1);font-size:13px;font-weight:600;cursor:pointer">View Physique Archetype →</button>' +
       '</div>' : '') +
 

@@ -29,7 +29,7 @@ reg('profiles', function() {
       '<div style="font-size:16px;font-weight:700;color:var(--txt)">' + esc(p.name) + '</div>' +
       '<div  class="muted-12 mt-2">' +
       (isDemo ? '<span style="display:inline-flex;align-items:center;gap:6px">' + icon('sparkles', 14) + ' Demo data</span>' :
-        isActive ? '<span style="display:inline-flex;align-items:center;gap:6px">' + icon('check', 14, '#30d158') + ' Active profile</span>' :
+        isActive ? '<span style="display:inline-flex;align-items:center;gap:6px">' + icon('check', 14, 'var(--success)') + ' Active profile</span>' :
         'Tap to switch') +
       '</div></div>' +
       (isActive ? '<div style="color:var(--c1);font-size:20px">●</div>' :
@@ -48,7 +48,7 @@ reg('profiles', function() {
     '<button type="button" class="btn btn-secondary mb-10"  onclick="showCreateProfile()">+ New Profile</button>' +
     '<button type="button" class="btn btn-secondary mb-10" onclick="loadSamplePersonas()">Load sample athletes</button>' +
     (activeId === 'demo' ? '' :
-      '<button type="button" class="btn" style="background:rgba(123,95,255,0.1);border:1px solid rgba(123,95,255,0.25);color:#7b5fff;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="openDemoProfile()">' + icon('sparkles', 16, '#7b5fff') + ' Open demo profile</button>' +
+      '<button type="button" class="btn" style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.25);color:var(--c1);margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="openDemoProfile()">' + icon('sparkles', 16, 'var(--c1)') + ' Open demo profile</button>' +
       '<a href="?demo=1" class="btn btn-secondary" style="display:block;text-align:center;text-decoration:none;margin-bottom:0">Fresh demo snapshot ↗</a>') +
     '</div>' +
 

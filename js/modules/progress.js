@@ -40,7 +40,7 @@ function _monthlyReport(ws, prs, bodyStats) {
   const monthName = now.toLocaleDateString('en-GB', { month: 'long', year: 'numeric' });
   const weights = (bodyStats || []).filter(b => (b.date || '') >= monthStart && b.weight);
   const weightChange = weights.length >= 2 ? (weights[weights.length - 1].weight - weights[0].weight).toFixed(1) : null;
-  return '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(123,95,255,0.1),rgba(0,213,255,0.06));border:1px solid rgba(123,95,255,0.18);border-radius:20px;padding:16px">' +
+  return '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(255,69,58,0.1),rgba(255,69,58,0.06));border:1px solid rgba(255,69,58,0.18);border-radius:20px;padding:16px">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--c2);margin-bottom:4px">Monthly Report</div>' +
     '<div style="font-size:15px;font-weight:800;color:var(--txt);margin-bottom:12px">'+esc(monthName)+'</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px">' +
@@ -194,8 +194,8 @@ function _renderStrengthChart(ws, exName) {
   var dots = pts.map(function(p, i) {
     var isLast = i === pts.length - 1;
     var cx = toX(i), cy = toY(p.e1rm);
-    if (isLast) return '<circle cx="'+cx+'" cy="'+cy+'" r="8" fill="white" stroke="#00d5ff" stroke-width="2"/>';
-    return '<circle cx="'+cx+'" cy="'+cy+'" r="5" fill="#00d5ff"/>';
+    if (isLast) return '<circle cx="'+cx+'" cy="'+cy+'" r="8" fill="white" stroke="var(--c1)" stroke-width="2"/>';
+    return '<circle cx="'+cx+'" cy="'+cy+'" r="5" fill="var(--c1)"/>';
   }).join('');
 
   var xLabels = pts.map(function(p, i) {
@@ -221,12 +221,12 @@ function _renderStrengthChart(ws, exName) {
     trendHTML +
     '<svg width="100%" viewBox="0 0 '+W+' '+H+'" style="overflow:visible">' +
     '<defs><linearGradient id="'+gradId+'" x1="0" y1="0" x2="0" y2="1">' +
-    '<stop offset="0%" stop-color="#00d5ff" stop-opacity="0.3"/>' +
-    '<stop offset="100%" stop-color="#00d5ff" stop-opacity="0"/>' +
+    '<stop offset="0%" stop-color="var(--c1)" stop-opacity="0.3"/>' +
+    '<stop offset="100%" stop-color="var(--c1)" stop-opacity="0"/>' +
     '</linearGradient></defs>' +
     guideLines +
     '<polygon points="'+fillPts+'" fill="url(#'+gradId+')" />' +
-    '<polyline points="'+polyPts+'" fill="none" stroke="#00d5ff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
+    '<polyline points="'+polyPts+'" fill="none" stroke="var(--c1)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
     dots +
     xLabels +
     '</svg>' +
@@ -407,8 +407,8 @@ function _bodyStatsChart(bodyStats, user) {
   }).join('');
 
   var goalLine = (user && user.goalWeight) ?
-    '<line x1="'+padL+'" y1="'+toY(user.goalWeight)+'" x2="'+(W-padR)+'" y2="'+toY(user.goalWeight)+'" stroke="#30d158" stroke-width="1.5" stroke-dasharray="4,3"/>' +
-    '<text x="'+(W-padR-2)+'" y="'+(toY(user.goalWeight)-4)+'" font-size="9" fill="#30d158" text-anchor="end">Goal</text>' : '';
+    '<line x1="'+padL+'" y1="'+toY(user.goalWeight)+'" x2="'+(W-padR)+'" y2="'+toY(user.goalWeight)+'" stroke="var(--success)" stroke-width="1.5" stroke-dasharray="4,3"/>' +
+    '<text x="'+(W-padR-2)+'" y="'+(toY(user.goalWeight)-4)+'" font-size="9" fill="var(--success)" text-anchor="end">Goal</text>' : '';
 
   return sh('Weight Trend', '+ Log', 'go(\'bodymap\')') +
     '<div  class="pad-x-16-b">' +

@@ -25,7 +25,7 @@ Today (`dashboard`) · Train (`workout`) · Body (`bodymap`) · Learn (`hub`) ·
 
 ### Design system
 
-Tokens in `css/base.css` (`--c*`, `--bg*`, `--txt*`, `--space-*` in layout). Residual debt: ~1276 `style=` in modules, ~271 hex in JS, duplicate utility blocks in `layout.css`, light theme accent still blue/purple vs dark chalk-red DNA.
+Tokens in `css/base.css` (`--c*`, `--bg*`, `--txt*`, `--space-*` in layout). Residual debt: inline `style=` still high in deep modules; fad hex purged from hot paths, duplicate utility blocks in `layout.css`, marketing + Today fad closed in 6.5.1.
 
 ### Tests / deps
 

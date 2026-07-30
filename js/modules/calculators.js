@@ -3,9 +3,9 @@
 
 const _CAL_STATUS_COLORS = {
   /* var(--c1)/var(--c2) so light theme gets its darker accessible accents */
-  healthy: '#30d158', athletic: 'var(--c1)', elite: 'var(--c2)',
-  average: '#f5c842', elevated: '#ff9f0a', high: '#ff453a',
-  low: '#ff9f0a', needs_data: 'var(--txt3)'
+  healthy: 'var(--success)', athletic: 'var(--c1)', elite: 'var(--c2)',
+  average: '#f5c842', elevated: 'var(--warn)', high: 'var(--danger)',
+  low: 'var(--warn)', needs_data: 'var(--txt3)'
 };
 
 function _calMetric(label, value, sub, status) {
@@ -57,7 +57,7 @@ reg('calculators', function() {
   }) +
 
     '<div  class="pad-x-16-b">' +
-    '<div style="background:linear-gradient(135deg,rgba(0,213,255,0.1),rgba(123,95,255,0.08));border:1px solid rgba(0,213,255,0.2);border-radius:18px;padding:16px;margin-bottom:14px">' +
+    '<div style="background:linear-gradient(135deg,rgba(255,69,58,0.1),rgba(255,69,58,0.08));border:1px solid rgba(255,69,58,0.2);border-radius:18px;padding:16px;margin-bottom:14px">' +
     '<div style="font-size:13px;color:var(--txt2);line-height:1.55;margin-bottom:12px">Metrics use your profile, latest measurements, and training goal. Tap recalculate after logging new data.</div>' +
     '<button type="button" class="btn btn-primary btn-sm w-full" onclick="recalcCalculators()" >↻ Recalculate</button>' +
     '</div></div>' +

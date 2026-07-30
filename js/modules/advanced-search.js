@@ -228,9 +228,9 @@ reg('search', function(data) {
   window._srItems = results;
 
   const TYPE_COLORS = {
-    exercise: '#007aff', muscle: '#af52de', rehab: '#ff453a',
-    mobility: '#30d158', stretch: '#30d158', sport: '#f5c842',
-    history: '#00c7ff', skill: '#ff9f0a'
+    exercise: 'var(--c1)', muscle: 'var(--c2)', rehab: 'var(--danger)',
+    mobility: 'var(--success)', stretch: 'var(--success)', sport: '#f5c842',
+    history: '#00c7ff', skill: 'var(--warn)'
   };
   const TYPE_BADGE = {
     exercise: 'Exercise', muscle: 'Muscle', rehab: 'Rehab',

@@ -7,7 +7,7 @@ let _introSlide = 0;
 const INTRO_SLIDES = [
   {
     mark: true,
-    grad: 'linear-gradient(135deg, #FF453A, #FF3B30)',
+    grad: 'linear-gradient(135deg, var(--danger), #FF3B30)',
     title: 'PulseCap',
     sub: 'Your coach. In your pocket.',
     bullets: [
@@ -30,7 +30,7 @@ const INTRO_SLIDES = [
   },
   {
     ic: 'dumbbell',
-    grad: 'linear-gradient(135deg, #FF453A, #ff6b5e)',
+    grad: 'linear-gradient(135deg, var(--danger), #ff6b5e)',
     title: 'Logging that keeps up',
     sub: 'Made for one hand, mid-set, between breaths.',
     bullets: [

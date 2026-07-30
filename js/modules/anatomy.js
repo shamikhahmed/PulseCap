@@ -128,7 +128,7 @@ reg('anatomy', function() {
     '</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:12px 16px">' +
     filtered.map(function(m) {
-      var REGION_COLORS = { shoulder:'#0e7bff', back:'#00f2ff', chest:'#73ffcf', arms:'#ffe04a', core:'#ff9f0a', hips:'#ff4560', legs:'#30d158' };
+      var REGION_COLORS = { shoulder:'#0e7bff', back:'#00f2ff', chest:'#73ffcf', arms:'#ffe04a', core:'var(--warn)', hips:'#ff4560', legs:'var(--success)' };
       var rc = REGION_COLORS[m.region] || 'var(--c1)';
       return '<div onclick="showMuscleDetail(\''+m.id+'\')" style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;cursor:pointer;touch-action:manipulation;position:relative;overflow:hidden">' +
         '<div style="position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad)"></div>' +
@@ -155,7 +155,7 @@ window.showMuscleDetail = function(id) {
     '<div  class="type-caption type-caption-mb-xs">Best Exercises</div>' +
     '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">'+m.exercises.map(function(e){return '<div style="background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--c1)">'+e+'</div>';}).join('')+'</div>' +
     '<div  class="type-caption type-caption-mb-xs">Common Injuries</div>' +
-    '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">'+m.common_injuries.map(function(i){return '<div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);border-radius:8px;padding:4px 10px;font-size:11px;color:#ff453a">'+i+'</div>';}).join('')+'</div>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px">'+m.common_injuries.map(function(i){return '<div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--danger)">'+i+'</div>';}).join('')+'</div>' +
     '<div  class="flex-gap-8"><div style="flex:1;background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:18px;font-weight:800;color:var(--txt)">'+m.recovery_hrs+'h</div><div  class="muted-10">Recovery</div></div>' +
     '<div style="flex:1;background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div class="row-title-12">'+m.fiber_type+'</div><div  class="muted-10">Fiber Type</div></div></div>',
     '<button type="button" class="btn btn-ghost" onclick="closeModal()">Close</button>'

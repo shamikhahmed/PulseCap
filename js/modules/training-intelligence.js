@@ -135,15 +135,15 @@ var VolumeAllocationEngine = {
     Object.keys(current).forEach(function(muscle) {
       var sets = current[muscle];
       if (sets === 0) {
-        recs.push({ muscle: muscle, current: sets, status: 'neglected', priority: 'critical', action: 'Start training — add 10-12 sets/week minimum', addSets: 10, color: '#ff453a' });
+        recs.push({ muscle: muscle, current: sets, status: 'neglected', priority: 'critical', action: 'Start training — add 10-12 sets/week minimum', addSets: 10, color: 'var(--danger)' });
       } else if (sets < min) {
         var add = min - sets;
-        recs.push({ muscle: muscle, current: sets, status: 'undertrained', priority: 'high', action: 'Add ' + add + ' sets/week to reach minimum effective volume', addSets: add, color: '#ff9f0a' });
+        recs.push({ muscle: muscle, current: sets, status: 'undertrained', priority: 'high', action: 'Add ' + add + ' sets/week to reach minimum effective volume', addSets: add, color: 'var(--warn)' });
       } else if (sets > max + 5) {
         var reduce = sets - max;
-        recs.push({ muscle: muscle, current: sets, status: 'excessive', priority: 'medium', action: 'Reduce by ' + reduce + ' sets/week — diminishing returns zone', addSets: -reduce, color: '#af52de' });
+        recs.push({ muscle: muscle, current: sets, status: 'excessive', priority: 'medium', action: 'Reduce by ' + reduce + ' sets/week — diminishing returns zone', addSets: -reduce, color: 'var(--c2)' });
       } else {
-        recs.push({ muscle: muscle, current: sets, status: 'optimal', priority: 'low', action: 'Volume in optimal range', addSets: 0, color: '#30d158' });
+        recs.push({ muscle: muscle, current: sets, status: 'optimal', priority: 'low', action: 'Volume in optimal range', addSets: 0, color: 'var(--success)' });
       }
     });
 
@@ -204,7 +204,7 @@ var ExerciseResponseEngine = {
     score = Math.max(0, Math.min(100, Math.round(score)));
 
     var trend = gainPct > 10 ? 'excellent' : gainPct > 3 ? 'good' : gainPct > -3 ? 'stagnant' : 'declining';
-    var color = score >= 75 ? '#30d158' : score >= 55 ? 'var(--c1)' : score >= 40 ? '#f5c842' : '#ff9f0a';
+    var color = score >= 75 ? 'var(--success)' : score >= 55 ? 'var(--c1)' : score >= 40 ? '#f5c842' : 'var(--warn)';
 
     return { score: score, trend: trend, color: color, sessions: instances.length, gainPct: Math.round(gainPct), currentE1RM: Math.round(last), startE1RM: Math.round(first), prCount: exPRs };
   },
@@ -375,7 +375,7 @@ window.renderTrainingIntelBody = function() {
   var imb = VolumeAllocationEngine.imbalances();
   var undertrained = imb.undertrained;
 
-  var ageColor = age.tier === 'elite' ? '#30d158' : age.tier === 'advanced' ? 'var(--c1)' : age.tier === 'intermediate' ? '#f5c842' : '#ff9f0a';
+  var ageColor = age.tier === 'elite' ? 'var(--success)' : age.tier === 'advanced' ? 'var(--c1)' : age.tier === 'intermediate' ? '#f5c842' : 'var(--warn)';
 
   var forecastExercises = ['Barbell Bench Press','Back Squat','Deadlift'];
   var forecasts = forecastExercises.map(function(ex) {
@@ -408,14 +408,14 @@ window.renderTrainingIntelBody = function() {
           '<div class="ta-right">' +
           '<div  class="muted-13">' + f.current + 'kg</div>' +
           '<div  class="muted-12">→</div>' +
-          '<div style="font-size:15px;font-weight:800;color:#30d158">' + f.projected + 'kg</div>' +
+          '<div style="font-size:15px;font-weight:800;color:var(--success)">' + f.projected + 'kg</div>' +
           '</div></div>';
       }).join('') +
       '</div>' : '') +
 
     '<div  class="card-block">' +
     '<div  class="section-label">Volume Allocation Analysis</div>' +
-    (undertrained.length ? '<div  class="mb-10"><div style="font-size:12px;font-weight:700;color:#ff9f0a;margin-bottom:6px">Undertrained Muscles</div>' +
+    (undertrained.length ? '<div  class="mb-10"><div style="font-size:12px;font-weight:700;color:var(--warn);margin-bottom:6px">Undertrained Muscles</div>' +
       undertrained.map(function(r) {
         return '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">' +
           '<div><div  class="row-title">' + esc(r.muscle) + '</div>' +
@@ -426,7 +426,7 @@ window.renderTrainingIntelBody = function() {
     volRecs.filter(function(r) { return r.status === 'optimal'; }).map(function(r) {
       return '<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid var(--border)">' +
         '<div style="font-size:13px;color:var(--txt)">' + esc(r.muscle) + '</div>' +
-        '<div style="font-size:11px;color:#30d158;display:flex;align-items:center;gap:4px">' + icon('check', 12, '#30d158') + ' ' + r.current + ' sets/wk</div></div>';
+        '<div style="font-size:11px;color:var(--success);display:flex;align-items:center;gap:4px">' + icon('check', 12, 'var(--success)') + ' ' + r.current + ' sets/wk</div></div>';
     }).join('') +
     '</div>' +
 
@@ -443,11 +443,11 @@ window.renderTrainingIntelBody = function() {
       '</div>' : '') +
 
     (lowEx.length ? '<div style="margin:0 16px 14px;background:rgba(255,159,10,0.06);border:1px solid rgba(255,159,10,0.2);border-radius:20px;padding:16px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#ff9f0a;margin-bottom:12px;display:flex;align-items:center;gap:6px">' + icon('alert', 14, '#ff9f0a') + ' Consider Replacing</div>' +
+      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--warn);margin-bottom:12px;display:flex;align-items:center;gap:6px">' + icon('alert', 14, 'var(--warn)') + ' Consider Replacing</div>' +
       lowEx.map(function(ex) {
         return '<div style="display:flex;align-items:center;gap:12px;padding:8px 0;border-bottom:1px solid var(--border)">' +
           '<div  class="flex-1"><div  class="row-title">' + esc(ex.name) + '</div>' +
-          '<div style="font-size:11px;color:#ff9f0a">Effectiveness: ' + ex.score + '/100 · ' + esc(ex.trend) + '</div></div>' +
+          '<div style="font-size:11px;color:var(--warn)">Effectiveness: ' + ex.score + '/100 · ' + esc(ex.trend) + '</div></div>' +
           '<button type="button" onclick="go(\'workout\')" style="font-size:11px;color:var(--c1);background:none;border:none;cursor:pointer;font-weight:600">Swap →</button>' +
           '</div>';
       }).join('') +
@@ -489,7 +489,7 @@ var _trainingStyleLoadState = 'idle';
 
 function _trainingStyleStatusBody() {
   if (_trainingStyleLoadState === 'error') {
-    return '<div style="padding:24px;color:#ff453a"><strong>Could not load Training Style.</strong><br><button type="button" class="btn btn-secondary" onclick="_retryTrainingStyle()" style="margin-top:14px">Retry</button></div>';
+    return '<div style="padding:24px;color:var(--danger)"><strong>Could not load Training Style.</strong><br><button type="button" class="btn btn-secondary" onclick="_retryTrainingStyle()" style="margin-top:14px">Retry</button></div>';
   }
   return '<div style="padding:24px;color:var(--txt3)">Loading Training Style…</div>';
 }

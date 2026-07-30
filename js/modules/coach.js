@@ -27,14 +27,14 @@ reg('briefing', function() {
   const timeGreeting = hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening';
   const name = (user.name || 'Athlete').split(' ')[0];
 
-  const scoreColor = score >= 80 ? '#30d158' : score >= 60 ? 'var(--c1)' : score >= 40 ? '#ff9f0a' : '#ff453a';
+  const scoreColor = score >= 80 ? 'var(--success)' : score >= 60 ? 'var(--c1)' : score >= 40 ? 'var(--warn)' : 'var(--danger)';
 
   const coachMsg = ReadinessEngine.coachQuote(score, personality);
 
   const injuryAlert = injuries.length ?
     '<div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);border-radius:14px;padding:14px;margin:0 16px 14px;display:flex;gap:12px">' +
-    '<span style="flex-shrink:0;color:#ff453a">' + icon('alert', 20) + '</span>' +
-    '<div><div style="font-size:13px;font-weight:700;color:#ff453a;margin-bottom:4px">'+injuries.length+' Active Injur'+(injuries.length>1?'ies':'y')+'</div>' +
+    '<span style="flex-shrink:0;color:var(--danger)">' + icon('alert', 20) + '</span>' +
+    '<div><div style="font-size:13px;font-weight:700;color:var(--danger);margin-bottom:4px">'+injuries.length+' Active Injur'+(injuries.length>1?'ies':'y')+'</div>' +
     '<div class="body-12-lh">Some exercises have been flagged. Check coach screen for modifications.</div>' +
     '<button type="button" onclick="go(\'settings\',{tab:\'profile\'})" style="margin-top:8px;font-size:12px;color:var(--c1);font-weight:600;background:none;border:none;cursor:pointer;touch-action:manipulation">Manage injuries →</button>' +
     '</div></div>' : '';

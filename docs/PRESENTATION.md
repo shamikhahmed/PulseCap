@@ -94,7 +94,7 @@ Families, coaches, clients — one install.
 ## Slide 9 — Design
 
 - Appearance: **Auto / Dark / Light** (device default supported)
-- Brand accent cyan (`#00d5ff`) on dark cinematic shell
+- Brand accent chalk-red (`#FF453A`) on dark cinematic shell
 - iPhone-optimised 390px → 16 Pro Max; safe-area aware floating nav
 - Stroke icon system (chrome); content emoji purged from primary UI
 

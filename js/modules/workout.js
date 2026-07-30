@@ -51,9 +51,9 @@ const GUIDANCE = {
     return spotted.includes(exerciseName);
   },
   diffLabel(diff) {
-    return diff >= 3 ? { l:'Advanced', c:'#ff453a' } :
-           diff === 2 ? { l:'Intermediate', c:'#ff9f0a' } :
-                        { l:'Beginner', c:'#30d158' };
+    return diff >= 3 ? { l:'Advanced', c:'var(--danger)' } :
+           diff === 2 ? { l:'Intermediate', c:'var(--warn)' } :
+                        { l:'Beginner', c:'var(--success)' };
   }
 };
 window.GUIDANCE = GUIDANCE;
@@ -473,7 +473,7 @@ const CARDIO_PROTOCOLS = {
     name: 'HIIT',
     full: 'High-Intensity Interval Training',
     icon: 'sparkles',
-    color: '#ff453a',
+    color: 'var(--danger)',
     tagline: 'Maximum burn in minimum time',
     duration: '20–30 min total',
     difficulty: 3,
@@ -526,7 +526,7 @@ const CARDIO_PROTOCOLS = {
     name: 'LISS',
     full: 'Low-Intensity Steady-State',
     icon: 'walk',
-    color: '#30d158',
+    color: 'var(--success)',
     tagline: 'Fat burning without muscle loss',
     duration: '30–60 min',
     difficulty: 1,
@@ -570,7 +570,7 @@ const CARDIO_PROTOCOLS = {
     name: 'MISS',
     full: 'Moderate-Intensity Steady-State',
     icon: 'run',
-    color: '#ff9f0a',
+    color: 'var(--warn)',
     tagline: 'The middle ground — aerobic base building',
     duration: '20–40 min',
     difficulty: 2,
@@ -614,7 +614,7 @@ const CARDIO_PROTOCOLS = {
     name: 'SIT',
     full: 'Sprint Interval Training',
     icon: 'flame',
-    color: '#ff453a',
+    color: 'var(--danger)',
     tagline: 'All-out sprints. Maximum adaptation.',
     duration: '15–20 min total (short but brutal)',
     difficulty: 3,
@@ -831,7 +831,7 @@ reg('workout', function() {
       '<div  class="row-title-14">'+esc(name)+'</div>' +
       (swap ? '<span style="font-size:10px;font-weight:700;color:var(--c5);background:rgba(255,159,10,0.12);border-radius:4px;padding:2px 6px">↔ '+esc(swap.original)+'</span>' : '') +
       (diff ? '<span style="font-size:10px;font-weight:700;color:'+diff.c+';text-transform:uppercase;letter-spacing:0.06em">'+diff.l+'</span>' : '') +
-      (needsSpot ? '<span style="font-size:10px;color:#ff453a;font-weight:700;display:inline-flex;align-items:center;gap:3px">'+icon('alert',11,'#ff453a')+'SPOTTER</span>' : '') +
+      (needsSpot ? '<span style="font-size:10px;color:var(--danger);font-weight:700;display:inline-flex;align-items:center;gap:3px">'+icon('alert',11,'var(--danger)')+'SPOTTER</span>' : '') +
       '</div>' +
       (ex?'<div  class="muted-12 mt-2">'+esc(ex.pri)+(ex.sec?', '+ex.sec:'')+'</div>':'') +
       (prev?'<div style="font-size:12px;color:var(--c1);margin-top:2px">'+esc(prev)+'</div>':'') +
@@ -885,7 +885,7 @@ reg('workout', function() {
     '<button type="button" class="btn btn-primary" onclick="startWorkout()">Start Workout</button>' +
     '<button type="button" class="btn btn-secondary" style="margin-top:10px" onclick="startQuickWorkout()">Quick Workout (20 min)</button>' +
     '<button type="button" class="btn btn-secondary" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="showBrowseExercises()">' + icon('search', 16) + ' Browse All Exercises</button>' +
-    '<button type="button" class="btn" style="margin-top:10px;background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);color:#ff453a;font-weight:700" onclick="go(\'cardio\')">Cardio Protocols</button>' +
+    '<button type="button" class="btn" style="margin-top:10px;background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);color:var(--danger);font-weight:700" onclick="go(\'cardio\')">Cardio Protocols</button>' +
     '<button type="button" class="btn" style="margin-top:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);color:var(--c1)" onclick="showAddCustomExercise()">+ Add Custom Exercise</button>' +
     '</div>' +
     '<div  class="spacer-bottom"></div>';
@@ -909,7 +909,7 @@ reg('cardio', function() {
     const key = keys[idx];
     const rec = isRecommended(p);
     const diffLabel = p.difficulty >= 3 ? 'Advanced' : p.difficulty === 2 ? 'Intermediate' : 'Beginner';
-    const diffColor = p.difficulty >= 3 ? '#ff453a' : p.difficulty === 2 ? '#ff9f0a' : '#30d158';
+    const diffColor = p.difficulty >= 3 ? 'var(--danger)' : p.difficulty === 2 ? 'var(--warn)' : 'var(--success)';
     return '<div onclick="showCardioProtocol(\''+key+'\')" ' +
       'style="background:var(--bg3);border:1.5px solid '+(rec?p.color:'var(--border)')+';border-radius:18px;padding:16px;margin-bottom:12px;cursor:pointer;touch-action:manipulation;position:relative">' +
       (rec ? '<div style="position:absolute;top:14px;right:14px;background:rgba(var(--c1-rgb),0.15);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--c1)">RECOMMENDED</div>' : '') +
@@ -967,7 +967,7 @@ reg('active', function() {
     '<div  class="flex-gap-8">' +
     (typeof VoiceLogger !== 'undefined' && VoiceLogger.supported() ?
       '<button type="button" onclick="voiceLogCurrentSet()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:var(--bg3);color:var(--txt2)" aria-label="Voice log set">Mic</button>' : '') +
-    '<button type="button" onclick="flagPainDuringWorkout()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid rgba(255,69,58,0.35);background:rgba(255,69,58,0.08);color:#ff453a">Pain</button>' +
+    '<button type="button" onclick="flagPainDuringWorkout()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid rgba(255,69,58,0.35);background:rgba(255,69,58,0.08);color:var(--danger)">Pain</button>' +
     '<button type="button" onclick="toggleSupersetMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_supersetMode?'var(--grad)':'var(--bg3)')+';color:'+(_supersetMode?'#fff':'var(--txt3)')+'">SS</button>' +
     '<button type="button" onclick="toggleFocusMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_focusMode?'var(--c1)':'var(--bg3)')+';color:'+(_focusMode?'#fff':'var(--txt3)')+'">'+(_focusMode?'Exit':'Focus')+'</button>' +
     '<button type="button" onclick="confirmFinishWorkout()" style="padding:8px 16px;border-radius:20px;background:var(--grad);color:#fff;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;border:none">Finish</button>' +
@@ -1018,7 +1018,7 @@ reg('active', function() {
         '<button type="button" class="set-check'+(isDone?' done':'')+'" onclick="_doneSet('+exIdx+','+sIdx+')" aria-label="'+(isDone?'Set done':'Mark set done')+'">' +
         (isDone ? (typeof icon === 'function' ? icon('check', 16, isPR ? '#000' : 'currentColor') : '✓') : '') +
         '</button>' +
-        (isPR ? '<div style="position:absolute;top:-8px;right:40px;background:linear-gradient(135deg,#ffd60a,#ff9f0a);color:#000;font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;letter-spacing:0.06em;animation:prBounce 0.4s var(--spring) both">PR!</div>' : '') +
+        (isPR ? '<div style="position:absolute;top:-8px;right:40px;background:linear-gradient(135deg,#ffd60a,var(--warn));color:#000;font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;letter-spacing:0.06em;animation:prBounce 0.4s var(--spring) both">PR!</div>' : '') +
         '</div>';
     }).join('');
 
@@ -1048,7 +1048,7 @@ reg('active', function() {
       '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
       '<div  class="row-title-15">'+esc(ex.name)+'</div>' +
       (diff ? '<span style="font-size:9px;font-weight:700;color:'+diff.c+';text-transform:uppercase">'+diff.l+'</span>' : '') +
-      (needsSpot ? '<span style="font-size:9px;color:#ff453a;font-weight:700">SPOTTER</span>' : '') +
+      (needsSpot ? '<span style="font-size:9px;color:var(--danger);font-weight:700">SPOTTER</span>' : '') +
       '</div>' +
       (prev ? '<div style="font-size:12px;color:var(--c1);margin-top:2px">'+esc(prev)+'</div>' : '') +
       (typeof AutoregEngine !== 'undefined' && AutoregEngine.nextWeightDelta ?
@@ -1061,7 +1061,7 @@ reg('active', function() {
       '</div>' +
       '</div>' +
       (ex.rxNote ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(var(--c1-rgb),0.12);color:var(--c1);padding:4px 10px;border-radius:10px">'+esc(ex.rxNote)+'</span></div>' :
-       (suggest && !_focusMode ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(48,209,88,0.12);color:#30d158;padding:4px 10px;border-radius:10px">Try '+suggest+'kg ↑</span></div>' : '')) +
+       (suggest && !_focusMode ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(48,209,88,0.12);color:var(--success);padding:4px 10px;border-radius:10px">Try '+suggest+'kg ↑</span></div>' : '')) +
       warmupHTML +
       '<div style="display:grid;grid-template-columns:28px 1fr 36px;gap:8px;padding:8px 16px 4px;border-bottom:1px solid var(--border)">' +
       '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">SET</div>' +
@@ -1599,8 +1599,8 @@ function showExerciseDetail(name) {
 
     (needsSpotter || ex.assistanceRequired ?
       '<div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.25);border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px">' +
-      '<span style="display:flex;color:#ff453a">'+(typeof icon==='function'?icon('alert',18,'#ff453a'):'!')+'</span>' +
-      '<div style="font-size:13px;color:#ff453a;line-height:1.5">' +
+      '<span style="display:flex;color:var(--danger)">'+(typeof icon==='function'?icon('alert',18,'var(--danger)'):'!')+'</span>' +
+      '<div style="font-size:13px;color:var(--danger);line-height:1.5">' +
       (needsSpotter ? '<strong>Spotter recommended</strong> for this exercise. Do not attempt heavy sets alone.' :
         '<strong>Assistance required.</strong> Ensure proper coaching before loading.') +
       '</div></div>' : '') +
@@ -1627,7 +1627,7 @@ function showExerciseDetail(name) {
     '</div>' +
 
     '<div  class="mb-14">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:#ff9f0a;margin-bottom:6px">Common Mistakes</div>' +
+    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--warn);margin-bottom:6px">Common Mistakes</div>' +
     '<div class="body-14">'+esc(ex.mistakes)+'</div>' +
     '</div>' +
 
@@ -1652,10 +1652,10 @@ function showExerciseDetail(name) {
       '</div>' : '') +
 
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">' +
-    '<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#30d158;margin-bottom:6px">Progressions</div>' +
+    '<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--success);margin-bottom:6px">Progressions</div>' +
     (ex.progressions||[]).map(function(p){return '<div style="font-size:12px;color:var(--txt2);padding:3px 0">↑ '+esc(p)+'</div>';}).join('') +
     '</div>' +
-    '<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:#ff9f0a;margin-bottom:6px">Regressions</div>' +
+    '<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--warn);margin-bottom:6px">Regressions</div>' +
     (ex.regressions||[]).map(function(r){return '<div style="font-size:12px;color:var(--txt2);padding:3px 0">↓ '+esc(r)+'</div>';}).join('') +
     '</div></div>' +
 
@@ -1664,7 +1664,7 @@ function showExerciseDetail(name) {
     '<div style="display:flex;flex-wrap:wrap;gap:6px">' +
     Object.entries(ex.joint||{}).filter(function(e){return e[1]>0;}).map(function(e){
       const j = e[0], v = e[1];
-      const c = v >= 3 ? '#ff453a' : v >= 2 ? '#ff9f0a' : '#30d158';
+      const c = v >= 3 ? 'var(--danger)' : v >= 2 ? 'var(--warn)' : 'var(--success)';
       return '<div style="background:rgba(0,0,0,0.2);border:1px solid '+c+';border-radius:8px;padding:4px 10px;font-size:11px;font-weight:600;color:'+c+'">' +
         j.charAt(0).toUpperCase()+j.slice(1)+' ●'.repeat(v)+'</div>';
     }).join('') +
@@ -1808,7 +1808,7 @@ function showBrowseExercises(filterGrp, filterQuery) {
       '<div style="font-size:12px;margin-top:2px">' +
       '<span style="color:'+diff.c+';font-weight:600">'+diff.l+'</span>' +
       '<span class="c-muted"> · '+esc(ex.pri)+'</span>' +
-      (needsSpot ? '<span style="color:#ff453a;font-weight:700"> · Spotter</span>' : '') +
+      (needsSpot ? '<span style="color:var(--danger);font-weight:700"> · Spotter</span>' : '') +
       '</div></div>' +
       '<div style="color:var(--txt3);font-size:16px">›</div>' +
       '</div>';
@@ -1850,7 +1850,7 @@ window.showCardioProtocol = function(key) {
   if (!p) return;
 
   const diffLabel = p.difficulty >= 3 ? 'Advanced' : p.difficulty === 2 ? 'Intermediate' : 'Beginner';
-  const diffColor = p.difficulty >= 3 ? '#ff453a' : p.difficulty === 2 ? '#ff9f0a' : '#30d158';
+  const diffColor = p.difficulty >= 3 ? 'var(--danger)' : p.difficulty === 2 ? 'var(--warn)' : 'var(--success)';
 
   const protocolCards = p.protocols.map(function(pr, i) {
     return '<div style="background:var(--bg4);border-radius:14px;padding:14px;margin-bottom:12px;border:1px solid var(--border)">' +
@@ -1916,7 +1916,7 @@ window.showCardioProtocol = function(key) {
 
     sh('Warnings') +
     '<div  class="pad-x-16-b">' +
-    p.warnings.map(function(w){return '<div style="font-size:13px;color:#ff9f0a;padding:6px 0;border-bottom:1px solid var(--border)">'+esc(w)+'</div>';}).join('') +
+    p.warnings.map(function(w){return '<div style="font-size:13px;color:var(--warn);padding:6px 0;border-bottom:1px solid var(--border)">'+esc(w)+'</div>';}).join('') +
     '</div>' +
 
     '</div>' +

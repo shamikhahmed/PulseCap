@@ -90,7 +90,7 @@ const InjuryRiskEngine = {
 
     score = Math.max(0, Math.min(100, score));
     var level = score >= 80 ? 'Low Risk' : score >= 60 ? 'Moderate Risk' : score >= 40 ? 'Elevated Risk' : 'High Risk';
-    var color = score >= 80 ? '#30d158' : score >= 60 ? '#f5c842' : score >= 40 ? '#ff9f0a' : '#ff453a';
+    var color = score >= 80 ? 'var(--success)' : score >= 60 ? '#f5c842' : score >= 40 ? 'var(--warn)' : 'var(--danger)';
 
     return { joint: joint, score: score, level: level, color: color, risks: risks, warnings: warnings, weeklyLoad: weeklyFreq };
   },
@@ -122,7 +122,7 @@ reg('injury-risk', function() {
   var joints = InjuryRiskEngine.allJoints();
   var overall = InjuryRiskEngine.overallRisk();
   var critical = InjuryRiskEngine.criticalWarnings();
-  var overallColor = overall.score >= 80 ? '#30d158' : overall.score >= 60 ? '#f5c842' : overall.score >= 40 ? '#ff9f0a' : '#ff453a';
+  var overallColor = overall.score >= 80 ? 'var(--success)' : overall.score >= 60 ? '#f5c842' : overall.score >= 40 ? 'var(--warn)' : 'var(--danger)';
 
   return moduleTopbar('Injury Risk', { backScreen: 'bodymap' }) +
 
@@ -133,11 +133,11 @@ reg('injury-risk', function() {
     '</div>' +
 
     (critical.length ? '<div style="margin:0 16px 14px;background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.25);border-radius:16px;padding:14px">' +
-      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:#ff453a;margin-bottom:10px;display:flex;align-items:center;gap:6px">' + icon('alert', 14) + ' Critical Warnings</div>' +
+      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--danger);margin-bottom:10px;display:flex;align-items:center;gap:6px">' + icon('alert', 14) + ' Critical Warnings</div>' +
       critical.map(function(j) {
         return '<div class="mb-8"><div class="row-title-14" style="display:flex;align-items:center;gap:6px">' + icon(j.icon, 16) + esc(j.label) + ' — ' + j.score + '/100</div>' +
-          j.risks.map(function(r) { return '<div style="font-size:12px;color:#ff453a;margin-top:3px">• ' + esc(r) + '</div>'; }).join('') +
-          j.warnings.map(function(w) { return '<div style="font-size:12px;color:#ff9f0a;margin-top:3px">• ' + esc(w) + '</div>'; }).join('') +
+          j.risks.map(function(r) { return '<div style="font-size:12px;color:var(--danger);margin-top:3px">• ' + esc(r) + '</div>'; }).join('') +
+          j.warnings.map(function(w) { return '<div style="font-size:12px;color:var(--warn);margin-top:3px">• ' + esc(w) + '</div>'; }).join('') +
           '</div>';
       }).join('') +
       '</div>' : '') +
@@ -154,7 +154,7 @@ reg('injury-risk', function() {
         '<div style="font-size:11px;color:' + j.color + ';font-weight:600;margin-bottom:6px">' + esc(j.level) + '</div>' +
         '<div style="width:100%;height:4px;background:rgba(255,255,255,0.06);border-radius:2px"><div style="width:' + j.score + '%;height:4px;border-radius:2px;background:' + j.color + '"></div></div>' +
         '<div style="font-size:10px;color:var(--txt3);margin-top:6px">' + j.weeklyLoad + ' sets/wk this joint</div>' +
-        (j.warnings.length ? '<div style="font-size:10px;color:#ff9f0a;margin-top:4px;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12) + '</span>' + esc(j.warnings[0]) + '</div>' : '') +
+        (j.warnings.length ? '<div style="font-size:10px;color:var(--warn);margin-top:4px;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12) + '</span>' + esc(j.warnings[0]) + '</div>' : '') +
         '</div>';
     }).join('') +
     '</div>' +

@@ -1,14 +1,16 @@
-# PulseCap iPhone soak checklist (v6.2.0)
+# PulseCap iPhone soak checklist (v6.5.1)
 
-Real-device pass — Playwright covers shell + safe-area math, not Dynamic Island / A2HS / Notifications delivery.
+Real-device pass — Playwright covers shell + safe-area math + brand tokens + logger path (`tests/iphone-soak.spec.js`). Not Dynamic Island / A2HS / Notifications delivery.
 
 ## Automated in CI (do not skip)
+
 - [x] 320 / 375 / 393 / 430 phone shells — no horizontal overflow (`tests/viewport.spec.js`)
 - [x] Floating nav clearance ≥ 100px padding-bottom on `#view` with simulated `--safe`
 - [x] Light-theme `--txt3` contrast tokens stronger than 0.42 alpha
 - [x] Gallery walk: every screen/tab/intro/onboarding/active, dark+light × mobile+desktop — visual integrity (no fatal chrome, no empty screen)
 - [x] Functional battery: settings tabs, theme cycle, weight/meals/water, recovery, workout save, search, calculators, assistant, rehab, anatomy, quests, profiles, cardio, equipment, export
 - [x] Persona sweep: demo + 5 sample athletes × every registered route
+- [x] iPhone soak slice: Today boot, theme, startWorkout path, Notification API, offline banner helper (`tests/iphone-soak.spec.js`)
 
 ## Manual (real iPhone)
 1. Open https://shamikhahmed.github.io/PulseCap on iPhone Safari.

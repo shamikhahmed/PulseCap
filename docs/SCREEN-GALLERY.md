@@ -1,6 +1,6 @@
 # PulseCap — Documented Screen Gallery
 
-> v6.4.0 · Captures via `npm run gallery` → `docs/screenshots/gallery/` · Viewer: `screen-gallery.html`
+> v6.5.1 · Captures via `npm run gallery` → `docs/screenshots/gallery/` · Viewer: `screen-gallery.html`
 
 ## How state is kept
 
@@ -61,7 +61,7 @@ Today · Train · Body · Learn · Me — fixed. Nested screens light parent (`N
 | beginner on | Advanced rows hidden |
 | assistant | Offline Q&A history in `assistantHistory` |
 
-## Me (Settings) — v6.4.0 groups
+## Me (Settings) — v6.5.1 groups
 
 | Tab | States to capture | Selection | Persist |
 |-----|-------------------|-----------|---------|

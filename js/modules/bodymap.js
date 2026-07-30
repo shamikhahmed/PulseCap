@@ -171,8 +171,8 @@ function _bodyMapSection(colors, user) {
       '<stop offset="100%" stop-color="#000000" stop-opacity="0.10"/>' +
       '</linearGradient>' +
       '<radialGradient id="bodyGlow" cx="0.5" cy="0.35" r="0.65">' +
-      '<stop offset="0%" stop-color="rgba(0,213,255,0.10)"/>' +
-      '<stop offset="100%" stop-color="rgba(0,213,255,0)"/>' +
+      '<stop offset="0%" stop-color="rgba(255,69,58,0.10)"/>' +
+      '<stop offset="100%" stop-color="rgba(255,69,58,0)"/>' +
       '</radialGradient>' +
       '</defs>' +
       '<rect x="0" y="0" width="200" height="420" fill="url(#bodyGlow)"/>' +
@@ -204,9 +204,9 @@ function _bodyMapSection(colors, user) {
     (isBack ? 'Posterior (Back)' : 'Anterior (Front)') + '</div>' +
     '<p class="cap-sr-only" id="bodymap-summary">Body recovery map. Colored regions show muscle recovery. Tap a region for details. ' + esc((user && user.name) || 'Athlete') + ' profile.</p>' +
     '<div style="display:flex;gap:6px;align-items:center">' +
-    '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:#30d158"></div><div  class="muted-10">Ready</div></div>' +
-    '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:#ff9f0a"></div><div  class="muted-10">Recovering</div></div>' +
-    '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:#ff453a"></div><div  class="muted-10">Sore</div></div>' +
+    '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:var(--success)"></div><div  class="muted-10">Ready</div></div>' +
+    '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:var(--warn)"></div><div  class="muted-10">Recovering</div></div>' +
+    '<div style="display:flex;align-items:center;gap:4px"><div style="width:10px;height:10px;border-radius:50%;background:var(--danger)"></div><div  class="muted-10">Sore</div></div>' +
     '</div></div>' +
     '<div style="display:flex;justify-content:center">' +
     (isBack ? backSVG : frontSVG) +
@@ -226,7 +226,7 @@ window.showMuscleInfo = function(groupName) {
   var group = status.find(function(m) { return m.name.toLowerCase() === groupName.toLowerCase(); });
   if (!group) return;
 
-  var statusColor = group.status === 'fresh' ? '#30d158' : group.status === 'recovering' ? '#ff9f0a' : '#ff453a';
+  var statusColor = group.status === 'fresh' ? 'var(--success)' : group.status === 'recovering' ? 'var(--warn)' : 'var(--danger)';
   var statusText = group.status === 'fresh' ? 'Ready to train' : group.status === 'recovering' ? 'Recovering — moderate volume' : 'Sore — consider rest or light session';
   var pctText = group.hrs ? Math.round(group.hrs) + 'h since last trained' : 'Not trained recently';
 
@@ -255,11 +255,11 @@ function _muscleStatusGrid(muscleStatus) {
 
   var banner = injured.length ?
     '<button type="button" onclick="go(\'rehab\')" class="list-row" style="margin:0 16px 10px;width:calc(100% - 32px);border:1px solid rgba(255,69,58,0.25);border-radius:14px;background:rgba(255,69,58,0.08);border-bottom:1px solid rgba(255,69,58,0.25)" aria-label="Open rehab for injured muscles">' +
-    '<span class="list-row__icon" style="color:#ff453a;display:flex;justify-content:center">' + icon('bandage', 20) + '</span>' +
-    '<span class="list-row__body"><span class="list-row__title" style="color:#ff453a">' +
+    '<span class="list-row__icon" style="color:var(--danger);display:flex;justify-content:center">' + icon('bandage', 20) + '</span>' +
+    '<span class="list-row__body"><span class="list-row__title" style="color:var(--danger)">' +
     injured.map(function(m){ return esc(m.name); }).join(', ') + ' held back by injury</span>' +
     '<span class="list-row__sub">Recovery here follows your rehab, not the clock · Rehab →</span></span>' +
-    '<span class="list-row__chev" style="color:#ff453a" aria-hidden="true">›</span></button>' : '';
+    '<span class="list-row__chev" style="color:var(--danger)" aria-hidden="true">›</span></button>' : '';
 
   var chips = muscleStatus.map(function(m) {
     var isInjured = m.status === 'injured';
@@ -297,7 +297,7 @@ function _measurementsSection(latest, prev, user) {
     if (!cur || !prv) return '';
     var d = Math.round((cur - prv) * 10) / 10;
     if (d === 0) return '<span class="c-muted"> (=)</span>';
-    var col = d > 0 ? '#ff9f0a' : '#30d158';
+    var col = d > 0 ? 'var(--warn)' : 'var(--success)';
     return '<span style="color:'+col+'"> ('+(d>0?'+':'')+d+(isImperial?'"':'cm')+')</span>';
   }
 
@@ -453,11 +453,11 @@ function _bodyStatsSection(user) {
   var changeStr = '';
   if (bodyStats.length >= 2) {
     var wDiff = Math.round((bodyStats[bodyStats.length-1].weight - bodyStats[bodyStats.length-2].weight) * 10) / 10;
-    var wCol = (wDiff <= 0 && user.goal === 'fat_loss') || (wDiff >= 0 && user.goal !== 'fat_loss') ? '#30d158' : '#ff9f0a';
+    var wCol = (wDiff <= 0 && user.goal === 'fat_loss') || (wDiff >= 0 && user.goal !== 'fat_loss') ? 'var(--success)' : 'var(--warn)';
     changeStr = '<span style="color:'+wCol+'"> ('+(wDiff>0?'+':'')+wDiff+'kg)</span>';
   }
 
-  var bmiColor = bmiData.bmi < 18.5 ? '#ff9f0a' : bmiData.bmi < 25 ? '#30d158' : bmiData.bmi < 30 ? '#ff9f0a' : '#ff453a';
+  var bmiColor = bmiData.bmi < 18.5 ? 'var(--warn)' : bmiData.bmi < 25 ? 'var(--success)' : bmiData.bmi < 30 ? 'var(--warn)' : 'var(--danger)';
 
   var heightBtns = ['cm','in','ft'].map(function(u) {
     return '<button type="button" onclick="setHeightDisplay(\''+u+'\')" style="flex:1;padding:8px;border-radius:10px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(curHeightMode===u?'var(--grad)':'var(--bg4)')+';color:'+(curHeightMode===u?'#fff':'var(--txt3)')+'">'+u+'</button>';

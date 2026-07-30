@@ -587,7 +587,7 @@ reg('split-builder', function() {
     return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;margin:0 16px 12px">' +
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">' +
       '<input class="field" value="' + esc(d.n || '') + '" placeholder="Day name (e.g. Push)" style="flex:1;font-size:14px;font-weight:700;padding:9px 12px" oninput="sbRename(' + di + ', this.value)">' +
-      (_sbDays.length > 1 ? '<button type="button" onclick="sbDelDay(' + di + ')" style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.25);border-radius:10px;color:#ff453a;font-size:12px;font-weight:600;padding:9px 12px;cursor:pointer;touch-action:manipulation">Delete</button>' : '') +
+      (_sbDays.length > 1 ? '<button type="button" onclick="sbDelDay(' + di + ')" style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.25);border-radius:10px;color:var(--danger);font-size:12px;font-weight:600;padding:9px 12px;cursor:pointer;touch-action:manipulation">Delete</button>' : '') +
       '</div>' +
       exRows +
       ((d.exercises || []).length === 0 ? '<div style="font-size:12px;color:var(--txt3);padding:8px 0">No exercises yet — search below.</div>' : '') +

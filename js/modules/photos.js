@@ -186,7 +186,7 @@ window.deleteProgressPhoto = function(id) {
   modal('Delete this photo?',
     '<div style="font-size:14px;color:var(--txt2)">Gone for good — there\'s no cloud copy (that\'s the point).</div>',
     '<div style="display:flex;gap:8px;margin-top:12px">' +
-    '<button type="button" class="btn btn-primary" style="flex:1;background:#ff453a" onclick="_doDeletePhoto(' + jsArg(id) + ')">Delete</button>' +
+    '<button type="button" class="btn btn-primary" style="flex:1;background:var(--danger)" onclick="_doDeletePhoto(' + jsArg(id) + ')">Delete</button>' +
     '<button type="button" class="btn btn-ghost" onclick="closeModal()">Keep</button></div>');
 };
 window._doDeletePhoto = function(id) {

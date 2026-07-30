@@ -107,7 +107,7 @@ function _mySuppsSection(userSupps, logs) {
       const dbEntry = SupplementDB.find(d=>d.id===s.id)||{};
       const cafWarn = dbEntry.caffeine ? SupplementEngine.checkCaffeineWarning(dbEntry,22) : null;
       return '<div class="supp-card'+(taken?' taken':'')+'">' +
-        '<div class="supp-icon" style="color:'+(taken?'#30d158':'var(--c1)')+'">'+icon(taken?'check':'pill',22)+'</div>' +
+        '<div class="supp-icon" style="color:'+(taken?'var(--success)':'var(--c1)')+'">'+icon(taken?'check':'pill',22)+'</div>' +
         '<div class="supp-info">' +
         '<div class="supp-name">'+esc(s.name)+'</div>' +
         '<div class="supp-timing">'+esc(s.timing)+' · '+esc(s.dose||dbEntry.dose||'')+'</div>' +

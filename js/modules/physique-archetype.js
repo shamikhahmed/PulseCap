@@ -52,7 +52,7 @@ const PhysiqueArchetypes = {
     athletic: {
       id: 'athletic', name: 'Athletic / Functional', icon: 'run',
       description: 'Performance-based physique. Strong, explosive, capable. Think sprinter or NBA player body.',
-      color: '#30d158',
+      color: 'var(--success)',
       targets: {
         shoulderToWaist: 1.55,
         chestToWaist: 1.28,
@@ -73,7 +73,7 @@ const PhysiqueArchetypes = {
     v_taper: {
       id: 'v_taper', name: 'V-Taper', icon: 'target',
       description: 'Maximum width-to-waist contrast. Wide lats, capped shoulders, tiny waist. The ultimate taper.',
-      color: '#af52de',
+      color: 'var(--c2)',
       targets: {
         shoulderToWaist: 1.75,
         chestToWaist: 1.42,
@@ -93,7 +93,7 @@ const PhysiqueArchetypes = {
     strength_athlete: {
       id: 'strength_athlete', name: 'Strength Athlete', icon: 'dumbbell',
       description: 'Raw strength and power. Think powerlifter. Functional mass, not aesthetic focus.',
-      color: '#ff453a',
+      color: 'var(--danger)',
       targets: {
         shoulderToWaist: 1.42,
         chestToWaist: 1.20,
@@ -113,7 +113,7 @@ const PhysiqueArchetypes = {
     lean_functional: {
       id: 'lean_functional', name: 'Lean & Functional', icon: 'target',
       description: 'Low body fat, visible abs, capable. Crossfit/triathlete aesthetic.',
-      color: '#ff9f0a',
+      color: 'var(--warn)',
       targets: {
         shoulderToWaist: 1.50,
         chestToWaist: 1.25,
@@ -179,13 +179,13 @@ const PhysiqueArchetypes = {
       var swCurrent = m.shoulders / m.waist;
       var swTarget = archetype.targets.shoulderToWaist;
       var swPct = Math.min(100, Math.round((swCurrent / swTarget) * 100));
-      ratios.push({ label: 'Shoulder-to-Waist', current: swCurrent.toFixed(2), target: swTarget.toFixed(2), pct: swPct, color: swPct >= 90 ? '#30d158' : swPct >= 75 ? '#f5c842' : '#ff9f0a' });
+      ratios.push({ label: 'Shoulder-to-Waist', current: swCurrent.toFixed(2), target: swTarget.toFixed(2), pct: swPct, color: swPct >= 90 ? 'var(--success)' : swPct >= 75 ? '#f5c842' : 'var(--warn)' });
     }
     if (m && m.chest && m.waist) {
       var cwCurrent = m.chest / m.waist;
       var cwTarget = archetype.targets.chestToWaist;
       var cwPct = Math.min(100, Math.round((cwCurrent / cwTarget) * 100));
-      ratios.push({ label: 'Chest-to-Waist', current: cwCurrent.toFixed(2), target: cwTarget.toFixed(2), pct: cwPct, color: cwPct >= 90 ? '#30d158' : cwPct >= 75 ? '#f5c842' : '#ff9f0a' });
+      ratios.push({ label: 'Chest-to-Waist', current: cwCurrent.toFixed(2), target: cwTarget.toFixed(2), pct: cwPct, color: cwPct >= 90 ? 'var(--success)' : cwPct >= 75 ? '#f5c842' : 'var(--warn)' });
     }
 
     var withData = result.filter(function(r) { return r.current; });
@@ -289,7 +289,7 @@ const PhysiquePreview = {
 
   bodySVG(scales, opts) {
     opts = opts || {};
-    var color = opts.color || 'rgba(0,213,255,0.55)';
+    var color = opts.color || 'rgba(255,69,58,0.55)';
     var stroke = opts.stroke || 'rgba(255,255,255,0.22)';
     var uid = 'pp' + Math.random().toString(36).slice(2, 8);
     var s = scales || { shoulders: 1, chest: 1, waist: 1, arms: 1, thighs: 1, calves: 1, neck: 1 };
@@ -444,7 +444,7 @@ window.renderPhysiqueArchetypeBody = function(data) {
             (m.current ? m.current + 'cm → <span style="color:' + arch.color + ';font-weight:700">' + m.target + 'cm target</span>' : '<span class="c-muted">No data — add in Settings</span>') +
             '</div></div>' +
             (m.current ? '<div style="width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + Math.min(m.pct, 100) + '%;height:6px;border-radius:3px;background:' + arch.color + '"></div></div>' +
-            '<div style="font-size:11px;margin-top:4px;color:' + (m.status === 'on_target' ? '#30d158' : m.status === 'below' ? '#ff9f0a' : '#af52de') + '">' +
+            '<div style="font-size:11px;margin-top:4px;color:' + (m.status === 'on_target' ? 'var(--success)' : m.status === 'below' ? 'var(--warn)' : 'var(--c2)') + '">' +
             (m.status === 'on_target' ? '✓ On target' : m.status === 'below' ? '↑ ' + Math.abs(m.diff).toFixed(1) + 'cm below target' : '↓ ' + Math.abs(m.diff).toFixed(1) + 'cm above target') +
             '</div>' : '') +
             '</div>';
@@ -488,10 +488,10 @@ window.renderPhysiqueArchetypeBody = function(data) {
           '<div style="display:flex;color:var(--c1)">' + icon(r.icon, 16) + '</div>' +
           '<div  class="flex-1"><div style="font-size:12px;font-weight:600;color:var(--txt)">' + esc(r.name) + '</div>' +
           '<div  class="muted-11">' + esc(r.tip) + '</div></div>' +
-          '<div style="font-size:13px;font-weight:700;color:' + (r.status === 'excellent' ? '#30d158' : r.status === 'good' ? 'var(--c1)' : '#f5c842') + '">' + r.value + '</div>' +
+          '<div style="font-size:13px;font-weight:700;color:' + (r.status === 'excellent' ? 'var(--success)' : r.status === 'good' ? 'var(--c1)' : '#f5c842') + '">' + r.value + '</div>' +
           '</div>';
       }).join('') +
-      (proportion.weakPoints.length ? '<div style="margin-top:10px">' + proportion.weakPoints.map(function(w) { return '<div style="font-size:11px;color:#ff9f0a;padding:3px 0;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, '#ff9f0a') + '</span>' + esc(w) + '</div>'; }).join('') + '</div>' : '') +
+      (proportion.weakPoints.length ? '<div style="margin-top:10px">' + proportion.weakPoints.map(function(w) { return '<div style="font-size:11px;color:var(--warn);padding:3px 0;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, 'var(--warn)') + '</span>' + esc(w) + '</div>'; }).join('') + '</div>' : '') +
       '</div>' : '') +
 
     Object.values(archetypes).map(function(a) {

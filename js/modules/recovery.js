@@ -144,7 +144,7 @@ function _sleepInsights() {
     '<div class="card card-solid">' +
     '<div style="font-size:28px;font-weight:900;color:var(--c1)">'+avgSleep+'<span style="font-size:14px;color:var(--txt3);font-weight:500"> hrs avg</span></div>' +
     '<div style="font-size:13px;color:var(--txt2);margin-top:8px;line-height:1.6">' +
-    (parseFloat(avgSleep) >= 8 ? '<span style="display:inline-flex;align-items:center;gap:6px;color:#30d158">' + icon('check', 14, '#30d158') + ' Excellent sleep average — optimising recovery and performance.</span>' :
+    (parseFloat(avgSleep) >= 8 ? '<span style="display:inline-flex;align-items:center;gap:6px;color:var(--success)">' + icon('check', 14, 'var(--success)') + ' Excellent sleep average — optimising recovery and performance.</span>' :
      parseFloat(avgSleep) >= 7 ? '<span style="display:inline-flex;align-items:center;gap:6px">' + icon('check', 14) + ' Good sleep average. Aim for 8+ for optimal performance.</span>' :
      '<span style="display:inline-flex;align-items:center;gap:6px;color:var(--c5)">' + icon('alert', 14, 'var(--c5)') + ' Below recommended. Even 30 more minutes per night makes a significant difference.</span>') +
     '</div></div>';

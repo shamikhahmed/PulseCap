@@ -18,7 +18,7 @@ function _muscleHeatmap() {
   const tiles = keys.map(key => {
     const m = muscleMap[key];
     const pct = Math.round(m ? m.pct : 100);
-    const color = pct >= 90 ? '#30d158' : pct >= 70 ? '#f5c842' : pct >= 50 ? '#ff9f0a' : '#ff453a';
+    const color = pct >= 90 ? 'var(--success)' : pct >= 70 ? '#f5c842' : pct >= 50 ? 'var(--warn)' : 'var(--danger)';
     const label = prettyMuscle(m ? m.name : key);
     return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 10px;' +
       'display:flex;flex-direction:column;gap:8px">' +
@@ -32,7 +32,7 @@ function _muscleHeatmap() {
   }).join('');
 
   const legend = '<div style="display:flex;gap:14px;justify-content:center;margin-top:14px;flex-wrap:wrap">' +
-    [['#30d158','90-100% Ready'],['#f5c842','70-89% Recovering'],['#ff9f0a','50-69% Fatigued'],['#ff453a','< 50% Rest']].map(([c, l]) =>
+    [['var(--success)','90-100% Ready'],['#f5c842','70-89% Recovering'],['var(--warn)','50-69% Fatigued'],['var(--danger)','< 50% Rest']].map(([c, l]) =>
       '<div style="display:flex;align-items:center;gap:6px"><div style="width:10px;height:10px;border-radius:50%;background:' + c + '"></div><div  class="muted-11">' + l + '</div></div>'
     ).join('') +
     '</div>';
@@ -139,13 +139,13 @@ function _progressionRadar() {
 
   const labels = display.map((m, i) => {
     const p = getXY(i, maxR + 16);
-    const color = m.pct >= 90 ? '#30d158' : m.pct >= 70 ? '#f5c842' : '#ff9f0a';
+    const color = m.pct >= 90 ? 'var(--success)' : m.pct >= 70 ? '#f5c842' : 'var(--warn)';
     return '<text x="' + p.x + '" y="' + p.y + '" text-anchor="middle" font-size="9" font-weight="700" fill="' + color + '" dominant-baseline="middle">' + esc(m.name) + '</text>';
   }).join('');
 
   const dots = display.map((m, i) => {
     const p = getXY(i, (m.pct / 100) * maxR);
-    const color = m.pct >= 90 ? '#30d158' : m.pct >= 70 ? '#f5c842' : '#ff9f0a';
+    const color = m.pct >= 90 ? 'var(--success)' : m.pct >= 70 ? '#f5c842' : 'var(--warn)';
     return '<circle cx="' + p.x + '" cy="' + p.y + '" r="4" fill="' + color + '"/>';
   }).join('');
 
@@ -165,22 +165,22 @@ function _weaknessMap() {
   const undertrained = volRecs.filter(r => r.status === 'undertrained' || r.status === 'neglected');
 
   if (!weak.length && !undertrained.length) {
-    return '<div style="padding:16px;display:flex;align-items:center;justify-content:center;gap:8px;color:#30d158;font-weight:700">' + icon('check', 18, '#30d158') + 'No significant weaknesses detected</div>';
+    return '<div style="padding:16px;display:flex;align-items:center;justify-content:center;gap:8px;color:var(--success);font-weight:700">' + icon('check', 18, 'var(--success)') + 'No significant weaknesses detected</div>';
   }
 
   let html = '';
 
   if (weak.length) {
-    html += '<div  class="mb-12"><div style="font-size:11px;font-weight:700;color:#ff453a;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Fatigued / Recovering</div>' +
+    html += '<div  class="mb-12"><div style="font-size:11px;font-weight:700;color:var(--danger);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Fatigued / Recovering</div>' +
       weak.map(m => '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">' +
         '<div style="font-size:13px;font-weight:600;color:var(--txt);flex:1">' + esc(m.name) + '</div>' +
-        '<div style="width:80px;height:6px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + m.pct + '%;height:6px;border-radius:3px;background:' + (m.pct < 50 ? '#ff453a' : '#ff9f0a') + '"></div></div>' +
-        '<div style="font-size:12px;font-weight:700;color:' + (m.pct < 50 ? '#ff453a' : '#ff9f0a') + ';width:36px;text-align:right">' + Math.round(m.pct) + '%</div>' +
+        '<div style="width:80px;height:6px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + m.pct + '%;height:6px;border-radius:3px;background:' + (m.pct < 50 ? 'var(--danger)' : 'var(--warn)') + '"></div></div>' +
+        '<div style="font-size:12px;font-weight:700;color:' + (m.pct < 50 ? 'var(--danger)' : 'var(--warn)') + ';width:36px;text-align:right">' + Math.round(m.pct) + '%</div>' +
         '</div>').join('') + '</div>';
   }
 
   if (undertrained.length) {
-    html += '<div><div style="font-size:11px;font-weight:700;color:#ff9f0a;text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Undertrained This Month</div>' +
+    html += '<div><div style="font-size:11px;font-weight:700;color:var(--warn);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Undertrained This Month</div>' +
       undertrained.map(r => '<div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)">' +
         '<div  class="flex-1"><div  class="row-title">' + esc(r.muscle) + '</div>' +
         '<div style="font-size:11px;color:' + r.color + '">' + esc(r.action) + '</div></div>' +

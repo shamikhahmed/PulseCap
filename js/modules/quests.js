@@ -451,9 +451,9 @@ const KnowledgeAcademy = {
   level() {
     const xp = this.totalXP();
     if (xp >= 5000) return { level: 10, title: 'Elite', color: '#f5c842' };
-    if (xp >= 3000) return { level: 8, title: 'Advanced', color: '#af52de' };
+    if (xp >= 3000) return { level: 8, title: 'Advanced', color: 'var(--c2)' };
     if (xp >= 1500) return { level: 6, title: 'Intermediate', color: 'var(--c1)' };
-    if (xp >= 500) return { level: 4, title: 'Developing', color: '#30d158' };
+    if (xp >= 500) return { level: 4, title: 'Developing', color: 'var(--success)' };
     return { level: 1, title: 'Novice', color: 'var(--txt3)' };
   },
 
@@ -589,7 +589,7 @@ reg('quests', function() {
 
   return moduleBackTopbar('Quests & Missions') +
 
-    '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(245,200,66,0.1),rgba(175,82,222,0.08));border:1px solid rgba(245,200,66,0.2);border-radius:16px;padding:14px">' +
+    '<div style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(245,200,66,0.1),rgba(255,59,48,0.08));border:1px solid rgba(245,200,66,0.2);border-radius:16px;padding:14px">' +
     '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">' +
     '<div><div style="font-size:14px;font-weight:800;color:' + level.color + '">Level ' + level.level + ' · ' + esc(level.title) + '</div>' +
     '<div  class="muted-11">' + xp + ' total XP</div></div>' +
@@ -613,8 +613,8 @@ reg('quests', function() {
           '<div style="width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;margin-bottom:10px">' +
           '<div style="width:' + pct + '%;height:6px;border-radius:3px;background:var(--c1);transition:width 0.6s ease"></div></div>' +
           q.goals.map(g => '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border)">' +
-            '<div style="display:flex;width:16px;height:16px;align-items:center;justify-content:center;border-radius:5px;' + (g.completed ? 'background:#30d158;color:#fff' : 'border:1.5px solid var(--border)') + '">' + (g.completed && typeof icon==='function' ? icon('check', 11, '#fff') : '') + '</div>' +
-            '<div style="flex:1;font-size:12px;color:' + (g.completed ? '#30d158' : 'var(--txt2)') + '">' + esc(g.label) + '</div>' +
+            '<div style="display:flex;width:16px;height:16px;align-items:center;justify-content:center;border-radius:5px;' + (g.completed ? 'background:var(--success);color:#fff' : 'border:1.5px solid var(--border)') + '">' + (g.completed && typeof icon==='function' ? icon('check', 11, '#fff') : '') + '</div>' +
+            '<div style="flex:1;font-size:12px;color:' + (g.completed ? 'var(--success)' : 'var(--txt2)') + '">' + esc(g.label) + '</div>' +
             (g.target ? '<div  class="muted-11">' + Math.min(g.progress||0, g.target) + '/' + g.target + '</div>' : '') +
             '</div>').join('') +
           '<div style="margin-top:10px;padding:8px 12px;background:rgba(var(--c1-rgb),0.08);border-radius:10px">' +
@@ -647,10 +647,10 @@ reg('quests', function() {
 
     (StreakProtection.needsProtection() && !StreakProtection.isTodaySaved() ?
       '<div style="margin:0 16px 14px;background:rgba(255,159,10,0.08);border:1px solid rgba(255,159,10,0.3);border-radius:16px;padding:14px">' +
-      '<div style="font-size:14px;font-weight:800;color:#ff9f0a;margin-bottom:6px">Protect Your Streak</div>' +
+      '<div style="font-size:14px;font-weight:800;color:var(--warn);margin-bottom:6px">Protect Your Streak</div>' +
       '<div style="font-size:12px;color:var(--txt2);margin-bottom:12px">No workout logged today. Complete a quick recovery session to save your streak.</div>' +
       '<div style="display:flex;flex-direction:column;gap:8px">' +
-      StreakProtection.PROTECTION_EXERCISES.map(s => '<button type="button" onclick="StreakProtection.saveStreak(\'' + s.id + '\');go(\'quests\')" style="padding:10px 14px;background:rgba(255,159,10,0.1);border:1px solid rgba(255,159,10,0.3);border-radius:12px;color:#ff9f0a;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;text-align:left">' + esc(s.name) + ' <span style="font-size:11px;opacity:0.7">(' + s.duration + ')</span></button>').join('') +
+      StreakProtection.PROTECTION_EXERCISES.map(s => '<button type="button" onclick="StreakProtection.saveStreak(\'' + s.id + '\');go(\'quests\')" style="padding:10px 14px;background:rgba(255,159,10,0.1);border:1px solid rgba(255,159,10,0.3);border-radius:12px;color:var(--warn);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;text-align:left">' + esc(s.name) + ' <span style="font-size:11px;opacity:0.7">(' + s.duration + ')</span></button>').join('') +
       '</div></div>' : '') +
 
     '<div  class="spacer-bottom"></div>';
@@ -678,7 +678,7 @@ reg('academy', function(data) {
       '<div style="font-size:18px;font-weight:800;color:var(--txt);margin-bottom:8px">' + esc(lesson.title) + '</div>' +
       '<div style="font-size:13px;color:var(--txt2);line-height:1.8;white-space:pre-line;margin-bottom:16px">' + esc(lesson.content) + '</div>' +
 
-      (isCompleted ? '<div style="background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.3);border-radius:12px;padding:12px;text-align:center"><div style="font-size:13px;font-weight:700;color:#30d158;display:flex;align-items:center;justify-content:center;gap:6px">' + (typeof icon==='function'?icon('check',15,'#30d158'):'') + 'Lesson Completed · +' + lesson.xp + ' XP earned</div></div>' :
+      (isCompleted ? '<div style="background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.3);border-radius:12px;padding:12px;text-align:center"><div style="font-size:13px;font-weight:700;color:var(--success);display:flex;align-items:center;justify-content:center;gap:6px">' + (typeof icon==='function'?icon('check',15,'var(--success)'):'') + 'Lesson Completed · +' + lesson.xp + ' XP earned</div></div>' :
 
       lesson.quiz ?
         '<div style="background:rgba(var(--c1-rgb),0.06);border:1px solid rgba(var(--c1-rgb),0.2);border-radius:12px;padding:14px">' +
@@ -724,7 +724,7 @@ reg('academy', function(data) {
             '<div  class="row-title-14">' + esc(l.title) + '</div>' +
             '<div  class="muted-11">' + esc(l.summary) + ' · ' + l.xp + ' XP</div>' +
             '</div>' +
-            '<div class="fs-20" style="display:flex">' + (done && typeof icon==='function' ? icon('check', 20, '#30d158') : '<span style="color:var(--txt3)">›</span>') + '</div>' +
+            '<div class="fs-20" style="display:flex">' + (done && typeof icon==='function' ? icon('check', 20, 'var(--success)') : '<span style="color:var(--txt3)">›</span>') + '</div>' +
             '</div>';
         }).join('') +
         '</div>';
@@ -759,7 +759,7 @@ window.renderPhysiqueTimelineBody = function() {
           { label: 'Waist', val: changes.waistChange, unit: 'cm', positive: false },
         ].filter(c => c.val !== null).map(c => {
           const isGood = c.positive ? c.val > 0 : c.val < 0;
-          const color = c.val === 0 ? 'var(--txt3)' : isGood ? '#30d158' : '#ff453a';
+          const color = c.val === 0 ? 'var(--txt3)' : isGood ? 'var(--success)' : 'var(--danger)';
           return '<div style="background:rgba(255,255,255,0.03);border-radius:12px;padding:12px">' +
             '<div  class="micro-label mb-6">' + esc(c.label) + '</div>' +
             '<div style="font-size:20px;font-weight:900;color:' + color + '">' + (c.val > 0 ? '+' : '') + c.val + c.unit + '</div>' +

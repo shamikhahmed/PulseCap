@@ -266,12 +266,12 @@ reg('rehab', function() {
         }
         var daysSince = inj.date ? Math.floor((Date.now() - new Date(inj.date)) / 86400000) : 0;
         var weeksSince = Math.floor(daysSince / 7);
-        var phase = 'acute', phaseColor = '#ff453a', phaseLabel = 'Early-stage guide';
+        var phase = 'acute', phaseColor = 'var(--danger)', phaseLabel = 'Early-stage guide';
         if (protocol) {
           if (weeksSince >= protocol.acute_phase.duration_weeks + protocol.subacute_phase.duration_weeks) {
-            phase = 'remodeling'; phaseColor = '#30d158'; phaseLabel = 'Later-stage guide';
+            phase = 'remodeling'; phaseColor = 'var(--success)'; phaseLabel = 'Later-stage guide';
           } else if (weeksSince >= protocol.acute_phase.duration_weeks) {
-            phase = 'subacute'; phaseColor = '#ff9f0a'; phaseLabel = 'Mid-stage guide';
+            phase = 'subacute'; phaseColor = 'var(--warn)'; phaseLabel = 'Mid-stage guide';
           }
         }
         var injId = inj.id || (protocol ? protocol.id : '');
@@ -288,16 +288,16 @@ reg('rehab', function() {
             var lbl = typeof InjuriesDB !== 'undefined' ? (InjuriesDB.severities.find(function(x){return x.id===s;})||{}).label : s;
             return '<button type="button" onclick="setInjurySeverity(' + item.idx + ',' + s + ')" style="flex:1;padding:6px;border-radius:8px;font-size:11px;font-weight:600;border:1px solid ' + (sev===s?'var(--c1)':'var(--border)') + ';background:' + (sev===s?'rgba(var(--c1-rgb),0.15)':'transparent') + ';color:var(--txt);cursor:pointer;touch-action:manipulation">' + lbl + '</button>';
           }).join('') + '</div>' +
-          (phaseData ? '<div style="font-size:12px;color:var(--txt2);line-height:1.7;margin-bottom:6px">' + phaseData.do.slice(0, 2).map(function(d) { return icon('check',12,'#30d158') + ' ' + esc(d); }).join('<br>') + '</div>' +
-            '<div style="font-size:12px;color:#ff453a;line-height:1.7;margin-bottom:10px">' + phaseData.avoid.slice(0, 2).map(function(d) { return icon('alert',12,'#ff453a') + ' ' + esc(d); }).join('<br>') + '</div>' : '') +
+          (phaseData ? '<div style="font-size:12px;color:var(--txt2);line-height:1.7;margin-bottom:6px">' + phaseData.do.slice(0, 2).map(function(d) { return icon('check',12,'var(--success)') + ' ' + esc(d); }).join('<br>') + '</div>' +
+            '<div style="font-size:12px;color:var(--danger);line-height:1.7;margin-bottom:10px">' + phaseData.avoid.slice(0, 2).map(function(d) { return icon('alert',12,'var(--danger)') + ' ' + esc(d); }).join('<br>') + '</div>' : '') +
           '<div  class="flex-gap-8">' +
           '<button type="button" onclick="showInjuryProtocol(\'' + injId + '\')" style="flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:10px;border-radius:12px;background:var(--bg4);border:1px solid var(--border);color:var(--txt);font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation">' + icon('book',14) + ' Full Protocol</button>' +
-          '<button type="button" onclick="markInjuryRecovered(' + jsArg(inj.bodyPart || '') + ')" style="display:flex;align-items:center;gap:6px;padding:10px 14px;border-radius:12px;background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.3);color:#30d158;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation">' + icon('check',14,'#30d158') + ' Recovered</button>' +
+          '<button type="button" onclick="markInjuryRecovered(' + jsArg(inj.bodyPart || '') + ')" style="display:flex;align-items:center;gap:6px;padding:10px 14px;border-radius:12px;background:rgba(48,209,88,0.1);border:1px solid rgba(48,209,88,0.3);color:var(--success);font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation">' + icon('check',14,'var(--success)') + ' Recovered</button>' +
           '</div></div>';
       }).join('') + '</div>';
   } else {
     activeSection = '<div style="margin:0 16px 14px;padding:16px;background:var(--bg3);border:1px solid var(--border);border-radius:16px;text-align:center">' +
-      '<div style="width:48px;height:48px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;background:rgba(48,209,88,0.12);color:#30d158">'+icon('check',26,'#30d158')+'</div>' +
+      '<div style="width:48px;height:48px;border-radius:50%;margin:0 auto 8px;display:flex;align-items:center;justify-content:center;background:rgba(48,209,88,0.12);color:var(--success)">'+icon('check',26,'var(--success)')+'</div>' +
       '<div  class="row-title-14">No active injuries logged</div>' +
       '<div style="font-size:12px;color:var(--txt3);margin-top:4px">Use pain and function—not this screen alone—to decide whether to train.</div></div>';
   }
@@ -309,14 +309,14 @@ reg('rehab', function() {
     sh('Injury Library') +
     '<div  class="pad-x-16">' +
     Object.values(INJURY_DB).map(function(inj) {
-      var sevColor = inj.severity === 'mild' ? '#30d158' : inj.severity === 'moderate' ? '#ff9f0a' : '#ff453a';
+      var sevColor = inj.severity === 'mild' ? 'var(--success)' : inj.severity === 'moderate' ? 'var(--warn)' : 'var(--danger)';
       return '<div onclick="showInjuryProtocol(\'' + inj.id + '\')" style="display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
         '<div style="width:34px;height:34px;border-radius:10px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:' + sevColor + '1f;color:' + sevColor + '">' + icon('bandage',18,sevColor) + '</div>' +
         '<div  class="flex-1">' +
         '<div  class="row-strong">' + inj.name + '</div>' +
         '<div  class="muted-12">Published recovery range: around ' + inj.return_to_gym_weeks.typical + ' weeks; individual clearance varies</div>' +
         '</div>' +
-        '<div style="padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;background:' + (inj.severity === 'mild' ? 'rgba(48,209,88,.1)' : inj.severity === 'moderate' ? 'rgba(255,159,10,.1)' : 'rgba(255,69,58,.1)') + ';color:' + (inj.severity === 'mild' ? '#30d158' : inj.severity === 'moderate' ? '#ff9f0a' : '#ff453a') + '">' + inj.severity + '</div>' +
+        '<div style="padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;background:' + (inj.severity === 'mild' ? 'rgba(48,209,88,.1)' : inj.severity === 'moderate' ? 'rgba(255,159,10,.1)' : 'rgba(255,69,58,.1)') + ';color:' + (inj.severity === 'mild' ? 'var(--success)' : inj.severity === 'moderate' ? 'var(--warn)' : 'var(--danger)') + '">' + inj.severity + '</div>' +
         '<div style="color:var(--txt3);font-size:16px;margin-left:4px">›</div>' +
         '</div>';
     }).join('') +
@@ -328,32 +328,32 @@ window.showInjuryProtocol = function(id) {
   if (!inj) return;
   modal(inj.name,
     '<div style="background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.2);border-radius:10px;padding:10px;margin-bottom:10px">' +
-    '<div style="font-size:10px;font-weight:700;color:#ff453a;margin-bottom:5px">CHECK RED FLAGS FIRST</div>' +
+    '<div style="font-size:10px;font-weight:700;color:var(--danger);margin-bottom:5px">CHECK RED FLAGS FIRST</div>' +
     inj.red_flags.map(function(f) { return '<div style="font-size:11px;color:var(--txt2);margin-bottom:2px">• ' + esc(f) + '</div>'; }).join('') +
     '</div>' +
     '<div style="font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:14px">' + esc(inj.anatomy) + '</div>' +
     '<div style="background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.2);border-radius:12px;padding:12px;margin-bottom:8px">' +
-    '<div style="font-size:11px;font-weight:700;color:#ff453a;margin-bottom:6px">PHASE 1 — ACUTE (0-' + inj.acute_phase.duration_weeks + ' weeks)</div>' +
-    inj.acute_phase.do.map(function(d) { return '<div style="font-size:12px;color:var(--txt2);margin-bottom:2px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('check', 12, '#30d158') + '</span>' + esc(d) + '</div>'; }).join('') +
-    inj.acute_phase.avoid.map(function(d) { return '<div style="font-size:12px;color:#ff453a;margin-bottom:2px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, '#ff453a') + '</span>' + esc(d) + '</div>'; }).join('') +
+    '<div style="font-size:11px;font-weight:700;color:var(--danger);margin-bottom:6px">PHASE 1 — ACUTE (0-' + inj.acute_phase.duration_weeks + ' weeks)</div>' +
+    inj.acute_phase.do.map(function(d) { return '<div style="font-size:12px;color:var(--txt2);margin-bottom:2px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('check', 12, 'var(--success)') + '</span>' + esc(d) + '</div>'; }).join('') +
+    inj.acute_phase.avoid.map(function(d) { return '<div style="font-size:12px;color:var(--danger);margin-bottom:2px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, 'var(--danger)') + '</span>' + esc(d) + '</div>'; }).join('') +
     '</div>' +
     '<div style="background:rgba(255,159,10,0.08);border:1px solid rgba(255,159,10,0.2);border-radius:12px;padding:12px;margin-bottom:8px">' +
-    '<div style="font-size:11px;font-weight:700;color:#ff9f0a;margin-bottom:6px">PHASE 2 — SUB-ACUTE (weeks ' + inj.acute_phase.duration_weeks + '-' + (inj.acute_phase.duration_weeks + inj.subacute_phase.duration_weeks) + ')</div>' +
-    inj.subacute_phase.do.map(function(d) { return '<div style="font-size:12px;color:var(--txt2);margin-bottom:2px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('check', 12, '#30d158') + '</span>' + esc(d) + '</div>'; }).join('') +
-    inj.subacute_phase.avoid.map(function(d) { return '<div style="font-size:12px;color:#ff453a;margin-bottom:2px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, '#ff453a') + '</span>' + esc(d) + '</div>'; }).join('') +
+    '<div style="font-size:11px;font-weight:700;color:var(--warn);margin-bottom:6px">PHASE 2 — SUB-ACUTE (weeks ' + inj.acute_phase.duration_weeks + '-' + (inj.acute_phase.duration_weeks + inj.subacute_phase.duration_weeks) + ')</div>' +
+    inj.subacute_phase.do.map(function(d) { return '<div style="font-size:12px;color:var(--txt2);margin-bottom:2px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('check', 12, 'var(--success)') + '</span>' + esc(d) + '</div>'; }).join('') +
+    inj.subacute_phase.avoid.map(function(d) { return '<div style="font-size:12px;color:var(--danger);margin-bottom:2px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, 'var(--danger)') + '</span>' + esc(d) + '</div>'; }).join('') +
     '</div>' +
     '<div style="background:rgba(48,209,88,0.08);border:1px solid rgba(48,209,88,0.2);border-radius:12px;padding:12px;margin-bottom:8px">' +
-    '<div style="font-size:11px;font-weight:700;color:#30d158;margin-bottom:6px">PHASE 3 — REMODELING (weeks ' + (inj.acute_phase.duration_weeks + inj.subacute_phase.duration_weeks) + '+)</div>' +
-    inj.remodeling_phase.do.map(function(d) { return '<div style="font-size:12px;color:var(--txt2);margin-bottom:2px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('check', 12, '#30d158') + '</span>' + esc(d) + '</div>'; }).join('') +
-    inj.remodeling_phase.avoid.map(function(d) { return '<div style="font-size:12px;color:#ff453a;margin-bottom:2px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, '#ff453a') + '</span>' + esc(d) + '</div>'; }).join('') +
+    '<div style="font-size:11px;font-weight:700;color:var(--success);margin-bottom:6px">PHASE 3 — REMODELING (weeks ' + (inj.acute_phase.duration_weeks + inj.subacute_phase.duration_weeks) + '+)</div>' +
+    inj.remodeling_phase.do.map(function(d) { return '<div style="font-size:12px;color:var(--txt2);margin-bottom:2px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('check', 12, 'var(--success)') + '</span>' + esc(d) + '</div>'; }).join('') +
+    inj.remodeling_phase.avoid.map(function(d) { return '<div style="font-size:12px;color:var(--danger);margin-bottom:2px;display:flex;align-items:flex-start;gap:6px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 12, 'var(--danger)') + '</span>' + esc(d) + '</div>'; }).join('') +
     '</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:10px">' +
-    '<div style="background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:16px;font-weight:800;color:#30d158">' + inj.return_to_gym_weeks.optimistic + 'w</div><div class="muted-9">Best case</div></div>' +
+    '<div style="background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:16px;font-weight:800;color:var(--success)">' + inj.return_to_gym_weeks.optimistic + 'w</div><div class="muted-9">Best case</div></div>' +
     '<div style="background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:16px;font-weight:800;color:var(--c1)">' + inj.return_to_gym_weeks.typical + 'w</div><div class="muted-9">Typical</div></div>' +
-    '<div style="background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:16px;font-weight:800;color:#ff9f0a">' + inj.return_to_gym_weeks.conservative + 'w</div><div class="muted-9">Conservative</div></div>' +
+    '<div style="background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:16px;font-weight:800;color:var(--warn)">' + inj.return_to_gym_weeks.conservative + 'w</div><div class="muted-9">Conservative</div></div>' +
     '</div>' +
     '<div style="background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.2);border-radius:10px;padding:10px;margin-bottom:10px">' +
-    '<div style="font-size:10px;font-weight:700;color:#ff453a;margin-bottom:5px;display:flex;align-items:center;gap:6px">' + icon('alert', 12, '#ff453a') + ' SEE A DOCTOR IF:</div>' +
+    '<div style="font-size:10px;font-weight:700;color:var(--danger);margin-bottom:5px;display:flex;align-items:center;gap:6px">' + icon('alert', 12, 'var(--danger)') + ' SEE A DOCTOR IF:</div>' +
     inj.red_flags.map(function(f) { return '<div style="font-size:11px;color:var(--txt2);margin-bottom:2px">• ' + f + '</div>'; }).join('') +
     '</div>' +
     '<div style="font-size:10px;color:var(--txt3);font-style:italic">' + inj.evidence_source + '</div>',

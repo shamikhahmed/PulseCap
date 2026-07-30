@@ -326,7 +326,7 @@ const PlateEngine = {
     }).join('');
     return '<div style="font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Plates per side · bar ' + r.bar + r.unit + '</div>' +
       '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">' + (chips || '<span style="color:var(--txt3);font-size:13px">Bar only</span>') + '</div>' +
-      (r.remainder > 0.01 ? '<div style="font-size:11px;color:#ff9f0a">~' + r.remainder + r.unit + ' leftover per side — microplates or round</div>' : '') +
+      (r.remainder > 0.01 ? '<div style="font-size:11px;color:var(--warn)">~' + r.remainder + r.unit + ' leftover per side — microplates or round</div>' : '') +
       '<div style="font-size:12px;color:var(--c1);font-weight:600;margin-top:4px">' + esc(r.label) + '</div>';
   }
 };
@@ -1418,7 +1418,7 @@ const MuscleEngine = {
             label: sev >= 3 ? 'Injured — avoid' : sev === 2 ? 'Injured — light only' : 'Injured — caution',
             pct: sev >= 3 ? 0 : sev === 2 ? 30 : 60,
             hrs: null, injury: inj.name, severity: sev,
-            color: sev >= 3 ? '#ff453a' : '#ff9f0a'
+            color: sev >= 3 ? 'var(--danger)' : 'var(--warn)'
           };
         }
         const hrs = lastTrained[name] || null;
@@ -1566,7 +1566,7 @@ const CoachEngine = {
             'Biomechanical load restriction active for '+injuries.length+' region'+(injuries.length>1?'s':'')+'. Exercise selection algorithm has filtered high-risk movements.',
             injuries.length+' injuries. Work around them — not through them. Modified plan is active.'
           ),
-          i:'⚠️',c:'#ff453a'});
+          i:'⚠️',c:'var(--danger)'});
       }
 
       const sleep = r.sleep || 7.5;
@@ -1574,12 +1574,12 @@ const CoachEngine = {
         m:m3('Under 6 hours hurts muscle protein synthesis and performance. 8+ hours tonight is the priority.',
              'Sub-6h sleep: MPS reduced ~18%, cortisol elevated, CNS recovery incomplete. Sleep is the primary intervention tonight.',
              'Under 6 hours. Weak. Fix it — sleep is where you grow.'),
-        i:'😴',c:'#ff453a'});
+        i:'😴',c:'var(--danger)'});
       else if (sleep >= 8) msgs.push({t:'Optimal Recovery',
         m:m3('8+ hours logged — your body is primed. Peak output is available today.',
              '8h+ sleep: full GH release window, complete MPS cycle, optimal CNS state.',
              '8 hours. Now perform. No excuses today.'),
-        i:'⚡',c:'#30d158'});
+        i:'⚡',c:'var(--success)'});
 
       if (goal === 'fat_loss') {
         const calories = S.g('nutrition.todayCalories') || 0;
@@ -1588,7 +1588,7 @@ const CoachEngine = {
           m:m3('You\'re at or above your calorie target. Keep activity high and consider a short cardio session after training.',
                'Caloric intake approaching target threshold. Post-training LISS recommended for additional deficit.',
                'At your calories. Don\'t blow it. Hit the cardio after training.'),
-          i:'🔥',c:'#ff9f0a'});
+          i:'🔥',c:'var(--warn)'});
       }
 
       if (goal === 'strength') {
@@ -1597,7 +1597,7 @@ const CoachEngine = {
           m:m3('CNS is recovered after 2+ rest days. Today is an excellent day to attempt heavy singles or PRs.',
                '48h+ post-training: phosphocreatine resynthesis complete, neural drive optimal. Ideal for maximal effort.',
                'Rested. Load the bar heavy. Today\'s the day for big numbers.'),
-          i:'💪',c:'#30d158'});
+          i:'💪',c:'var(--success)'});
       }
 
       if (goal === 'hypertrophy') {
@@ -1633,7 +1633,7 @@ const CoachEngine = {
         m:m3('Recovery metrics solid. Execute the plan, track every set, keep the streak alive.',
              'All recovery indices nominal. Execute planned progressive overload protocol.',
              'Metrics solid. No excuses. Train hard, track everything.'),
-        i:'✅',c:'#30d158'});
+        i:'✅',c:'var(--success)'});
 
       return msgs.slice(0,4);
     } catch(e) { return []; }

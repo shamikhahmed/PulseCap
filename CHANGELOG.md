@@ -1,3 +1,10 @@
+## 6.5.1 — 2026-07-30
+- Brand: kill residual cyan/purple fad on Today, progress charts, exercise-done chrome, marketing pages (landing/pitch/presentation/gallery/privacy/changelog).
+- Tokens: dashboard chrome → shared `.dash-*` / `.icon-flex-*` classes; semantic status hex → `--success`/`--warn`/`--danger` in modules.
+- Light backdrop blue wash → chalk-red tint.
+- QA: `tests/iphone-soak.spec.js` automates soak slice; gallery captions → 6.5.1.
+- SW `pulsecap-v84`.
+
 ## 6.5.0 — 2026-07-30
 - Close quality checklist gaps: PERF.md budgets + live measures; QA-MATRIX.md interactive audit; calc correctness tests; a11y + offline/update specs.
 - Design foundations: type/motion/elevation semantic tokens; offline banner to CSS; intro slides chalk-red (no cyan/purple fad).

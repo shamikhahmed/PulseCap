@@ -487,9 +487,9 @@ a.stat-pill:active, button.stat-pill:active { transform: scale(0.97); }
 .stat-pill-icon { display: flex; align-items: center; justify-content: center; width: 2rem; height: 2rem; border-radius: 10px; background: var(--color-accent-muted); color: var(--color-accent); }
 .stat-pill-label { font-size: 0.625rem; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase; color: var(--color-text-tertiary); }
 .stat-pill-value { font-size: 1.25rem; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
-.stat-pill--hot .stat-pill-icon { background: rgba(255, 149, 0, 0.15); color: #ff9f0a; }
-.stat-pill--warn .stat-pill-icon { background: rgba(255, 159, 10, 0.15); color: #ff9f0a; }
-.stat-pill--good .stat-pill-icon { background: rgba(48, 209, 88, 0.15); color: #30d158; }
+.stat-pill--hot .stat-pill-icon { background: rgba(255, 149, 0, 0.15); color: var(--warn); }
+.stat-pill--warn .stat-pill-icon { background: rgba(255, 159, 10, 0.15); color: var(--warn); }
+.stat-pill--good .stat-pill-icon { background: rgba(48, 209, 88, 0.15); color: var(--success); }
 
 /* Floating tab bar */
 .floating-tab-shell {
@@ -1311,8 +1311,8 @@ body.cap-has-scene > #root {
   max-width: min(420px, calc(100vw - 24px));
   padding: 8px 14px;
   border-radius: var(--cap-radius-pill, 999px);
-  background: color-mix(in srgb, var(--cap-warning, #ff9f0a) 18%, var(--cap-surface-1, #1c1c1e));
-  border: 1px solid color-mix(in srgb, var(--cap-warning, #ff9f0a) 35%, transparent);
+  background: color-mix(in srgb, var(--cap-warning, var(--warn)) 18%, var(--cap-surface-1, #1c1c1e));
+  border: 1px solid color-mix(in srgb, var(--cap-warning, var(--warn)) 35%, transparent);
   color: var(--cap-text, #f5f5f7);
   font: 500 var(--cap-text-xs, 0.75rem) var(--cap-font-body, system-ui);
   text-align: center;

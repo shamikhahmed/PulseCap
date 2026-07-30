@@ -8,7 +8,7 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--accent:#00f2ff;
-  --bg:#0d0d0f;--bg2:#12121a;--cyan:#00d5ff;--purple:#6b5fff;--pink:#ff4d9e;
+  --bg:#0d0d0f;--bg2:#12121a;--cyan:#FF453A;--purple:#FF3B30;--pink:#ff4d9e;
   --green:#00ffaa;--orange:#ff9500;--muted:#888899;--border:rgba(255,255,255,0.08);
   --glass:rgba(255,255,255,0.04);font-size:16px}
 html{scroll-behavior:smooth}
@@ -25,7 +25,7 @@ body{font-family:Inter,-apple-system,sans-serif;background:var(--bg);color:#e8e8
 .delay-1{transition-delay:.1s}.delay-2{transition-delay:.2s}.delay-3{transition-delay:.35s}.delay-4{transition-delay:.5s}
 #nav-dots{position:fixed;right:16px;top:50%;transform:translateY(-50%);z-index:100;display:flex;flex-direction:column;gap:8px}
 .nav-dot{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,.2);cursor:pointer;transition:all .3s}
-.nav-dot.active{background:var(--cyan);transform:scale(1.4);box-shadow:0 0 8px rgba(0,213,255,0.5)}
+.nav-dot.active{background:var(--cyan);transform:scale(1.4);box-shadow:0 0 8px rgba(255,69,58,0.5)}
 #export-btn{position:fixed;top:16px;right:16px;z-index:100;background:rgba(255,255,255,.06);border:1px solid var(--border);color:#e8e8f0;padding:8px 16px;border-radius:99px;font-size:12px;cursor:pointer;font-family:inherit}
 h1{font-size:clamp(3rem,12vw,7rem);font-weight:900;letter-spacing:-.05em;line-height:1}
 h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;margin-bottom:1rem}
@@ -35,19 +35,19 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
 .overline{font-size:11px;letter-spacing:.15em;text-transform:uppercase;color:var(--cyan);font-weight:600;margin-bottom:12px}
 .badges{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 .badge{background:var(--glass);border:1px solid var(--border);border-radius:99px;padding:10px 18px;font-size:.85rem;font-weight:600}
-.badge-cyan{border-color:rgba(0,213,255,0.25);box-shadow:0 0 16px rgba(0,213,255,0.08)}
+.badge-cyan{border-color:rgba(255,69,58,0.25);box-shadow:0 0 16px rgba(255,69,58,0.08)}
 .cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;max-width:760px;width:100%;margin-top:2rem;text-align:left}
 @media(max-width:600px){.cards{grid-template-columns:1fr}}
 .card{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:20px;transition:border-color .3s,transform .3s}
 .card:hover{transform:translateY(-4px)}
-.card-cyan{border-color:rgba(0,213,255,0.25);box-shadow:0 0 20px rgba(0,213,255,0.06)}
-.card-purple{border-color:rgba(107,95,255,0.25);box-shadow:0 0 20px rgba(107,95,255,0.06)}
+.card-cyan{border-color:rgba(255,69,58,0.25);box-shadow:0 0 20px rgba(255,69,58,0.06)}
+.card-purple{border-color:rgba(255,59,48,0.25);box-shadow:0 0 20px rgba(255,59,48,0.06)}
 .card-green{border-color:rgba(0,255,170,0.25)}
 .card h3{font-size:1rem;margin-bottom:.4rem}
 .card p{font-size:.85rem;color:var(--muted);line-height:1.55}
 .btn-row{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:2rem}
 .btn{padding:16px 28px;border-radius:14px;font-weight:700;font-size:.95rem;text-decoration:none;border:none;cursor:pointer;font-family:inherit;display:inline-flex;align-items:center;gap:8px;transition:transform .2s,filter .2s}
-.btn-p{background:linear-gradient(135deg,var(--cyan),rgba(0,213,255,0.7));color:#000;box-shadow:0 8px 28px rgba(0,213,255,0.3)}
+.btn-p{background:linear-gradient(128deg,var(--cyan),rgba(255,59,48,0.7));color:#000;box-shadow:0 8px 28px rgba(255,69,58,0.3)}
 .btn-s{background:var(--glass);border:1px solid var(--border);color:#e8e8f0}
 .btn:hover{transform:translateY(-2px);filter:brightness(1.1)}
 .section-title{font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;margin-bottom:2rem}
@@ -70,24 +70,24 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
 .flow-box.hl3{border-color:rgba(0,255,170,0.4);color:var(--green)}
 .flow-arrow{font-size:18px;color:var(--muted)}
 .body-map{width:min(100%,200px);height:280px;margin:0 auto;background:var(--glass);
-  border:1px solid rgba(0,213,255,0.2);border-radius:16px;position:relative;overflow:hidden}
-.muscle{position:absolute;border-radius:50%;background:rgba(0,213,255,0.15);border:1px solid rgba(0,213,255,0.3)}
+  border:1px solid rgba(255,69,58,0.2);border-radius:16px;position:relative;overflow:hidden}
+.muscle{position:absolute;border-radius:50%;background:rgba(255,69,58,0.15);border:1px solid rgba(255,69,58,0.3)}
 .equip-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:480px;margin:0 auto}
 .equip{background:var(--glass);border:1px solid var(--border);border-radius:10px;padding:12px 8px;font-size:11px;font-weight:600;text-align:center}
-.equip.on{border-color:rgba(0,213,255,0.4);color:var(--cyan)}
+.equip.on{border-color:rgba(255,69,58,0.4);color:var(--cyan)}
 .quest-card{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:16px;text-align:left;max-width:320px;margin:0 auto}
 .quest-bar{height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-top:8px}
 .quest-fill{height:100%;background:linear-gradient(90deg,var(--cyan),var(--purple));border-radius:3px}
 .archetype{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 .arch{background:var(--glass);border:1px solid var(--border);border-radius:14px;padding:16px 20px;min-width:130px;text-align:center}
-.arch.on{border-color:rgba(107,95,255,0.5);box-shadow:0 0 20px rgba(107,95,255,0.15)}
+.arch.on{border-color:rgba(255,59,48,0.5);box-shadow:0 0 20px rgba(255,59,48,0.15)}
 .arch .icon{font-size:2rem;margin-bottom:6px}
 .arch h3{font-size:13px;font-weight:700}
 .ex-count{font-size:clamp(3rem,10vw,5rem);font-weight:900;line-height:1}
-#s1{background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(107,95,255,0.12) 0%,transparent 70%)}
+#s1{background:radial-gradient(ellipse 80% 60% at 50% 40%,rgba(255,59,48,0.12) 0%,transparent 70%)}
 .glow-ring{position:absolute;width:400px;height:400px;border-radius:50%;
-  background:radial-gradient(circle,rgba(0,213,255,0.06) 0%,transparent 70%);pointer-events:none;animation:pulse 3s ease-in-out infinite}
-@keyframes pulse{0%,100%{box-shadow:0 0 40px rgba(0,213,255,0.2)}50%{box-shadow:0 0 80px rgba(107,95,255,0.3)}}
+  background:radial-gradient(circle,rgba(255,69,58,0.06) 0%,transparent 70%);pointer-events:none;animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 40px rgba(255,69,58,0.2)}50%{box-shadow:0 0 80px rgba(255,59,48,0.3)}}
 @media print{#nav-dots,#export-btn,#orb-canvas{display:none!important}.slide{page-break-after:always;min-height:100vh}.reveal,.reveal-left,.reveal-right{opacity:1!important;transform:none!important}}
 
 .deck-shot{display:block;width:100%;height:auto;margin:0;object-fit:cover;object-position:top center}
@@ -382,7 +382,7 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
     <div class="overline reveal">Platform</div>
     <h2 class="reveal delay-1">Offline-First <span class="grad">PWA</span></h2>
     <div class="cards reveal delay-2">
-      <div class="card card-cyan"><h3>📴 100% offline</h3><p>Service worker cache-first pulsecap-v83</p></div>
+      <div class="card card-cyan"><h3>📴 100% offline</h3><p>Service worker cache-first pulsecap-v84</p></div>
       <div class="card"><h3>👤 Multi-profile</h3><p>Unlimited isolated localStorage namespaces</p></div>
       <div class="card card-purple"><h3>🎨 Dark & Light</h3><p>Match device or pin Dark / Light in Settings</p></div>
       <div class="card"><h3>📤 JSON export</h3><p>Full backup before device reset</p></div>
@@ -392,9 +392,9 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
 
 <section class="slide" id="s13">
   <div style="max-width:700px;width:100%">
-    <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,rgba(0,213,255,0.2),rgba(107,95,255,0.2));
-      border:2px solid rgba(0,213,255,0.4);display:flex;align-items:center;justify-content:center;
-      font-size:2rem;font-weight:800;margin:0 auto 1.5rem;box-shadow:0 0 40px rgba(0,213,255,0.2)" class="reveal">SA</div>
+    <div style="width:100px;height:100px;border-radius:50%;background:linear-gradient(135deg,rgba(255,69,58,0.2),rgba(255,59,48,0.2));
+      border:2px solid rgba(255,69,58,0.4);display:flex;align-items:center;justify-content:center;
+      font-size:2rem;font-weight:800;margin:0 auto 1.5rem;box-shadow:0 0 40px rgba(255,69,58,0.2)" class="reveal">SA</div>
     <h2 class="reveal delay-1">Shamikh Ahmed</h2>
     <p class="sub reveal delay-2" style="font-style:italic;border-left:3px solid var(--cyan);padding-left:16px;text-align:left">
       "Generic apps couldn't adapt to my injuries, equipment, or goals — and I refused to let a corporation own my health data."
@@ -456,7 +456,7 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
 (function(){
 var c=document.getElementById('orb-canvas'),ctx=c.getContext('2d'),orbs=[];
 function resize(){c.width=innerWidth;c.height=innerHeight}
-function init(){orbs=[];var cols=['rgba(0,213,255,','rgba(107,95,255,','rgba(255,77,158,'];
+function init(){orbs=[];var cols=['rgba(255,69,58,','rgba(255,59,48,','rgba(255,77,158,'];
 for(var i=0;i<8;i++)orbs.push({x:Math.random()*c.width,y:Math.random()*c.height,r:120+Math.random()*160,
 vx:(Math.random()-.5)*.4,vy:(Math.random()-.5)*.4,color:cols[i%3],alpha:.04+Math.random()*.05})}
 function draw(){ctx.clearRect(0,0,c.width,c.height);orbs.forEach(function(o){

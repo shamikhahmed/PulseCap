@@ -187,7 +187,7 @@ const ExerciseDNA = {
       prCount: exPRs,
       currentE1RM: Math.round(last),
       trend: gainPct > 15 ? 'excellent' : gainPct > 5 ? 'good' : gainPct > -2 ? 'stagnant' : 'declining',
-      color: score >= 75 ? '#30d158' : score >= 55 ? 'var(--c1)' : score >= 40 ? '#f5c842' : '#ff453a'
+      color: score >= 75 ? 'var(--success)' : score >= 55 ? 'var(--c1)' : score >= 40 ? '#f5c842' : 'var(--danger)'
     };
   },
 
@@ -284,11 +284,11 @@ const MuscleRecoveryTimeline = {
   },
 
   status(pct) {
-    if (pct >= 95) return { label: 'Ready', color: '#30d158', statusIcon: 'check', canTrain: true };
-    if (pct >= 80) return { label: 'Almost Ready', color: '#30d158', statusIcon: 'check', canTrain: true };
+    if (pct >= 95) return { label: 'Ready', color: 'var(--success)', statusIcon: 'check', canTrain: true };
+    if (pct >= 80) return { label: 'Almost Ready', color: 'var(--success)', statusIcon: 'check', canTrain: true };
     if (pct >= 60) return { label: 'Recovering', color: '#f5c842', statusIcon: 'clock', canTrain: false };
-    if (pct >= 40) return { label: 'Fatigued', color: '#ff9f0a', statusIcon: 'alert', canTrain: false };
-    return { label: 'Rest', color: '#ff453a', statusIcon: 'alert', canTrain: false };
+    if (pct >= 40) return { label: 'Fatigued', color: 'var(--warn)', statusIcon: 'alert', canTrain: false };
+    return { label: 'Rest', color: 'var(--danger)', statusIcon: 'alert', canTrain: false };
   },
 
   fullTimeline() {
@@ -428,7 +428,7 @@ const JointHealthEngine = {
 
     score = Math.max(0, Math.min(100, score));
     const label = score >= 85 ? 'Excellent' : score >= 70 ? 'Good' : score >= 55 ? 'Moderate' : score >= 40 ? 'Elevated Risk' : 'High Risk';
-    const color = score >= 70 ? '#30d158' : score >= 55 ? '#f5c842' : score >= 40 ? '#ff9f0a' : '#ff453a';
+    const color = score >= 70 ? 'var(--success)' : score >= 55 ? '#f5c842' : score >= 40 ? 'var(--warn)' : 'var(--danger)';
     return { joint, score, label, color, warnings, risks, weekSets, meta };
   },
 
@@ -446,8 +446,8 @@ const JointHealthEngine = {
   trend(joint) {
     const thisWeek = this._setsForJoint(joint, 7);
     const lastWeek = this._setsForJoint(joint, 14) - thisWeek;
-    if (thisWeek > lastWeek * 1.3) return { dir: 'up', label: 'Increasing load', color: '#ff9f0a' };
-    if (thisWeek < lastWeek * 0.7) return { dir: 'down', label: 'Decreasing load', color: '#30d158' };
+    if (thisWeek > lastWeek * 1.3) return { dir: 'up', label: 'Increasing load', color: 'var(--warn)' };
+    if (thisWeek < lastWeek * 0.7) return { dir: 'down', label: 'Decreasing load', color: 'var(--success)' };
     return { dir: 'stable', label: 'Stable', color: 'var(--c1)' };
   }
 };
@@ -512,7 +512,7 @@ reg('body-intelligence', function() {
   const recs = RecoveryRecommendations.generate();
   const dna = ExerciseDNA.dnaProfile();
 
-  const jColor = jointHealth >= 80 ? '#30d158' : jointHealth >= 60 ? '#f5c842' : '#ff453a';
+  const jColor = jointHealth >= 80 ? 'var(--success)' : jointHealth >= 60 ? '#f5c842' : 'var(--danger)';
 
   function miniGauge(score, color) {
     return '<div style="width:100%;height:6px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + score + '%;height:6px;border-radius:3px;background:' + color + '"></div></div>';
@@ -545,7 +545,7 @@ reg('body-intelligence', function() {
       '<div style="font-size:11px;font-weight:700;color:' + m.color + ';display:flex;align-items:center;gap:4px">' + icon(m.statusIcon, 12, m.color) + ' ' + m.pct + '%</div>' +
       '</div>' +
       '<div style="width:100%;height:5px;background:rgba(255,255,255,0.06);border-radius:3px"><div style="width:' + m.pct + '%;height:5px;border-radius:3px;background:' + m.color + ';transition:width 0.6s ease"></div></div>' +
-      (m.hoursLeft > 0 ? '<div style="font-size:10px;color:var(--txt3);margin-top:3px">' + Math.round(m.hoursLeft) + 'h until ready</div>' : '<div style="font-size:10px;color:#30d158;margin-top:3px">Ready to train ✓</div>') +
+      (m.hoursLeft > 0 ? '<div style="font-size:10px;color:var(--txt3);margin-top:3px">' + Math.round(m.hoursLeft) + 'h until ready</div>' : '<div style="font-size:10px;color:var(--success);margin-top:3px">Ready to train ✓</div>') +
       '</div></div>'
     ).join('') +
     '</div>' +
@@ -567,7 +567,7 @@ reg('body-intelligence', function() {
       '<span style="font-size:10px;color:' + j.color + ';font-weight:600">' + j.score + '</span>' +
       '<span  class="muted-10">' + esc(j.label) + '</span>' +
       '</div>' +
-      (j.warnings && j.warnings.length ? '<div style="font-size:9px;color:#ff9f0a;margin-top:4px;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 10, '#ff9f0a') + '</span>' + esc(j.warnings[0]) + '</div>' : '') +
+      (j.warnings && j.warnings.length ? '<div style="font-size:9px;color:var(--warn);margin-top:4px;display:flex;align-items:flex-start;gap:4px"><span style="display:flex;flex-shrink:0;margin-top:1px">' + icon('alert', 10, 'var(--warn)') + '</span>' + esc(j.warnings[0]) + '</div>' : '') +
       '</div>'
     ).join('') +
     '</div>' +
