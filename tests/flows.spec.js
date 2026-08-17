@@ -188,21 +188,21 @@ test.describe('PulseCap flows', () => {
     expect(out.barbell).toBeTruthy();
   });
 
-  test('dashboard prompt queue caps at 2 on first paint', async ({ page }) => {
+  test('Today shows one session CTA and one insight', async ({ page }) => {
     const out = await page.evaluate(() => {
       // @ts-ignore
       const w = window;
-      w.S.set('recapDismissed', null);
-      // Force many prompts: no weigh-in, no check-in, equipment pending
-      w.S.set('user.equipmentConfigured', false);
-      w.S.set('settings.equipmentSetupPending', true);
-      w.S.set('recovery', {});
       w.go('dashboard');
       const view = document.getElementById('view');
-      const details = view && view.querySelector('details');
-      return { hasMore: !!(details && /More for today/i.test(details.textContent || '')) };
+      const text = (view && view.innerText) || '';
+      const session = !!(view && view.querySelector('.dash-session'));
+      const cta = /Start workout|Start light session|Recovery check-in|Train anyway/i.test(text);
+      const insight = !!(view && view.querySelector('.banner'));
+      return { session, cta, insight };
     });
-    expect(out.hasMore).toBeTruthy();
+    expect(out.session).toBeTruthy();
+    expect(out.cta).toBeTruthy();
+    expect(out.insight).toBeTruthy();
   });
 
   test('program weight setup gates first strength start', async ({ page }) => {

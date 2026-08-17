@@ -6,8 +6,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 |-------|--------|--------|-------|
 | 1 Foundation | done | fc02e87 | Tokens, system fonts, quarantine → `js/_deprecated/`, 5-tab shell, alias redirects |
 | 2 Spine | done | 569871d | `profile.js` + `engine.js` + export/import + owner seed |
-| 3 Onboarding | done | pending | 1 intro + 4 steps, calibration, educational disclaimer |
-| 4 Today | pending | — | One session CTA + one insight |
+| 3 Onboarding | done | 2cd634e | 1 intro + 4 steps, calibration, educational disclaimer |
+| 4 Today | done | pending | One session CTA + one insight |
 | 5 Log | pending | — | 2-tap sets, WakeLock rest, per-side |
 | 6 Progress | pending | — | SVG self-vs-self |
 | 7 Programs | pending | — | Templates + library + import |

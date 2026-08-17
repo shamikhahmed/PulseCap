@@ -1,3 +1,6 @@
+## 6.10.0 — 2026-08-17 — Ember rebuild Phase 4
+- Today is one session card, one CTA, and one Smart Coach insight line. Prompt-queue chrome removed. SW `pulsecap-v90`.
+
 ## 6.9.0 — 2026-08-17 — Ember rebuild Phase 3
 - Onboarding cut to one intro + four steps (name/goal, calibration, limitations + educational disclaimer, confirm). Optional Machine-Only PPL seed. SW `pulsecap-v89`.
 
