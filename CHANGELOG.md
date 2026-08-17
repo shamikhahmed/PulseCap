@@ -1,3 +1,9 @@
+## 6.15.0 — 2026-08-17 — Ember rebuild Phase 9
+- Hard-deleted `js/_deprecated/` (calculators, quests, physique, Capricorn/GSAP runtime, etc.). Removed dead Capricorn script tags from marketing HTML. SW `pulsecap-v95`.
+
+## 6.14.0 — 2026-08-17 — Ember rebuild Phase 8
+- Me: Ember 5-tab About copy; Training-tab limitations wired into `Profile.deriveContext` (Today/Log/Programs). Interlink Playwright coverage. SW `pulsecap-v94`.
+
 ## 6.13.0 — 2026-08-17 — Ember rebuild Phase 7
 - Programs tab (was My Plan back-stack): templates, local PDF/JSON import, safety ack. SW `pulsecap-v93`.
 

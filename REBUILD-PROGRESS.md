@@ -10,9 +10,9 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 4 Today | done | df61a32 | One session CTA + one insight |
 | 5 Log | done | e5a1dc2 | Per-side loads, WakeLock rest, limitation banner |
 | 6 Progress | done | b2625e4 | SVG self-vs-self (best set load, no 1RM) |
-| 7 Programs | done | pending | Tab chrome, templates, local import |
-| 8 Me + audit | pending | — | Interlink tests |
-| 9 PWA | pending | — | Purge deprecated, offline/perf |
+| 7 Programs | done | 03abd81 | Tab chrome, templates, local import |
+| 8 Me + audit | done | 45eacf4 | Limitations on Training tab + interlink tests |
+| 9 PWA | done | pending | Purged deprecated modules, dropped dead marketing scripts |
 | 10 Polish | pending | — | A11y, docs, screenshots |
 
 ## Phase 1 checklist
@@ -65,6 +65,21 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 - [x] Machine-only PPL template + local import + safety ack
 - [x] Version `6.13.0` / `pulsecap-v93`
 
-## Quarantined (Phase 9 hard-delete)
+## Phase 8 checklist
 
-See `js/_deprecated/` — calculators, quests, physique*, hub, encyclopedia, anatomy, bodymap, Capricorn/GSAP/vendor, etc.
+- [x] About nav copy: Today · Train · Progress · Programs · Me
+- [x] Limitations chips on Training tab, synced to injuries
+- [x] `deriveContext` reads `user.limitations` / `user.injuries`
+- [x] Interlink tests in `tests/ember-rebuild.spec.js`
+- [x] Version `6.14.0` / `pulsecap-v94`
+
+## Phase 9 checklist
+
+- [x] Hard-delete `js/_deprecated/`
+- [x] Drop dead Capricorn `<script>` tags from landing/pitch/presentation/privacy/changelog
+- [x] SW allowlist unchanged (never listed quarantine paths)
+- [x] Version `6.15.0` / `pulsecap-v95`
+
+## Quarantined (deleted in Phase 9)
+
+Removed calculators, quests, physique*, hub, encyclopedia, anatomy, bodymap, Capricorn/GSAP/vendor, etc.

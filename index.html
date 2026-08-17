@@ -220,7 +220,7 @@ window.updateOfflineBanner = updateOfflineBanner;
   <script src="js/modules/photos.js"></script>
   <script src="js/modules/my-plan.js"></script>
   <script src="js/modules/equipment-setup.js"></script>
-  <!-- Quarantined modules live in js/_deprecated/ (Phase 9 purge) -->
+  <!-- Ember survivors only — quarantined modules were deleted in Phase 9 -->
 
   <script>
     (function() {
@@ -308,7 +308,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=94').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=95').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {

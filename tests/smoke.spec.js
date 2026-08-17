@@ -207,7 +207,7 @@ test.describe('PulseCap smoke', () => {
         ver: window.APP_VERSION
       };
     });
-    expect(out.ver).toBe('6.14.0');
+    expect(out.ver).toBe('6.15.0');
     expect(out.tabs).toEqual(['Account', 'Training', 'Fuel', 'Appearance', 'Access', 'Alerts', 'Privacy', 'About']);
     expect(out.accountOn).toBeTruthy();
     expect(out.alias).toBe('privacy');
