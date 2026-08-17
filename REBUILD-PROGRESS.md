@@ -22,7 +22,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 16 History ids + dedupe | done | 8ab5a56 | **History key = exercise name string** (`ex.name` on workouts, PRs, calibrations). Duplicates did not split history — they merged. Schema v6 adds `exId` slug; 302→265 unique; never deletes sets |
 | 17 Wrist/neck/ankle | done | 19d5ace | Eight joint keys on every lift. Wrist/neck/ankle ≥3 now filter. Persistent cautions on Log |
 | 18 Patterns + swaps | done | 05e0f0a | Pattern vocab + ≥2 real substitutions + Progress push/pull line |
-| 19 Sports + MET | done |  | Plyo reclass, cricket + sports, Compendium MET sources. Chromium 108 passed |
+| 19 Sports + MET | done | e1850dc | Plyo reclass, cricket + sports, Compendium MET sources. Chromium 108 passed |
+| 20 Foods | done |  | 35→235 sourced foods incl. Karachi staples; labelled portions; lite guidance |
 
 ## Phase 1 checklist
 

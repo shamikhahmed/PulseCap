@@ -130,7 +130,7 @@
 | nutrition | button "Lunch" | visible control ≥40px min edge + accessible name (or hidden) | 106×38 name=true | pass |
 | nutrition | button "Dinner" | visible control ≥40px min edge + accessible name (or hidden) | 106×38 name=true | pass |
 | nutrition | button "Snacks" | visible control ≥40px min edge + accessible name (or hidden) | 106×38 name=true | pass |
-| nutrition | input "Search chicken, oats, whey…" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
+| nutrition | input "Search roti, karahi, oats…" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
 | nutrition | button "Scan with camera" | visible control ≥40px min edge + accessible name (or hidden) | 448×44 name=true | pass |
 | nutrition | div[role=button] "0/8 glasses" | visible control ≥40px min edge + accessible name (or hidden) | 73×24 name=true | pass |
 | nutrition | button "Glass 1" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
@@ -171,19 +171,19 @@
 | progress | select "Barbell Bench PressOverhead PressIncline Dumbbell PressDeadliftBarbell RowLat Pu" | visible control ≥40px min edge + accessible name (or hidden) | 448×39 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 15 Jul9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 17 Jul5555kg · 52m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 17 Jul5555kg · 1h 7" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 22 Jul9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 24 Jul5555kg · 1h 5" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 24 Jul5555kg · 52m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 29 Jul9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 31 Jul5555kg · 51m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 5 Aug9110kg" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 7 Aug5555kg · 54m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 7 Aug5555kg · 1h 3m" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 12 Aug9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 14 Aug5555kg · 55m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 14 Aug5555kg · 1h 2" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressS" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "+ Log" | visible control ≥40px min edge + accessible name (or hidden) | 35×24 name=true | pass |
 | progress | button "Progress photos" | visible control ≥40px min edge + accessible name (or hidden) | 448×44 name=true | pass |

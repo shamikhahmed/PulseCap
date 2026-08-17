@@ -172,4 +172,27 @@ test.describe('Exercise content integrity', () => {
     expect(out.sportsCount).toBeGreaterThanOrEqual(10);
     expect(out.hasBadminton).toBeTruthy();
   });
+
+  test('food library is sourced, portioned, and includes Karachi staples', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => window.FOODS_DB && window.FOODS_DB.length);
+    const out = await page.evaluate(() => {
+      const db = window.FOODS_DB;
+      const missing = db.filter(function(f) {
+        return !f.id || !f.name || f.cal == null || f.p == null || !f.portion || !f.source;
+      }).map(function(f) { return f.id || f.name; });
+      const ids = db.map(function(f) { return f.id; });
+      const need = ['roti', 'daal_chana', 'chicken_karahi', 'nihari', 'biryani_chicken', 'haleem', 'seekh_kebab'];
+      return {
+        count: db.length,
+        missing: missing.slice(0, 8),
+        hasKarachi: need.every(function(id) { return ids.indexOf(id) >= 0; }),
+        searchRoti: window.FoodEngine.search('roti').length
+      };
+    });
+    expect(out.missing).toEqual([]);
+    expect(out.count).toBeGreaterThanOrEqual(200);
+    expect(out.hasKarachi).toBeTruthy();
+    expect(out.searchRoti).toBeGreaterThan(0);
+  });
 });

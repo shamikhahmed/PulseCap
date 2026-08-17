@@ -1,3 +1,6 @@
+## 6.26.0 — 2026-08-18 — Ember rebuild Phase 20
+- Food library 35 → 235 items with labelled portions and a source on every row (USDA FDC ids, or component estimates for mixed Karachi dishes). Roti, daal, karahi, nihari, biryani and office-lunch plates are in the search. Lite guidance — not a calorie tracker. SW `pulsecap-v106`.
+
 ## 6.25.0 — 2026-08-18 — Ember rebuild Phase 19
 - Box jump family moved to plyometrics. Cricket (batting/bowling/fielding) plus other sports added. MET values sourced from the Compendium of Physical Activities and labelled as estimates. SW `pulsecap-v105`.
 

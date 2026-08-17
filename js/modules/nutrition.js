@@ -23,7 +23,6 @@ reg('nutrition', function() {
     _mealPresets() +
     _foodSearch() +
     _barcodeFood() +
-    _nutritionStreak(meals) +
     _waterSection(todayWater, waterTarget) +
     _mealHistory(meals) +
     _dueSuppsSection(dueSupps) +
@@ -189,9 +188,9 @@ function _mealPresets() {
 function _foodSearch() {
   return sh('Food library (offline)') +
     '<div class="pad-x-16-b">' +
-    '<input id="food-q" class="field" placeholder="Search chicken, oats, whey…" oninput="renderFoodHits(this.value)" style="margin-bottom:8px">' +
+    '<input id="food-q" class="field" placeholder="Search roti, karahi, oats…" oninput="renderFoodHits(this.value)" style="margin-bottom:8px">' +
     '<div id="food-hits"></div>' +
-    '<div class="muted-11">Local macros only — no barcode API. Serving = listed portion.</div>' +
+    '<div class="muted-11">Lite guidance — estimates per labelled portion, not a calorie tracker. No barcode API.</div>' +
     '</div>';
 }
 
@@ -202,7 +201,8 @@ window.renderFoodHits = function(q) {
   el.innerHTML = hits.map(function(f) {
     return '<button type="button" onclick="addFoodMeal(\'' + f.id + '\',1)" style="width:100%;text-align:left;padding:10px 12px;margin-bottom:6px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;cursor:pointer;touch-action:manipulation">' +
       '<div style="font-size:13px;font-weight:700;color:var(--txt)">' + esc(f.name) + '</div>' +
-      '<div class="muted-11">' + f.cal + ' kcal · P' + f.p + ' C' + f.c + ' F' + f.f + '</div></button>';
+      '<div class="muted-11">~' + f.cal + ' kcal est. · P' + f.p + ' C' + f.c + ' F' + f.f +
+      (f.portion ? ' · ' + esc(f.portion) : '') + '</div></button>';
   }).join('') || '<div class="muted-12">No matches</div>';
 };
 
