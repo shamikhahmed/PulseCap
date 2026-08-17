@@ -9,8 +9,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 3 Onboarding | done | 2cd634e | 1 intro + 4 steps, calibration, educational disclaimer |
 | 4 Today | done | df61a32 | One session CTA + one insight |
 | 5 Log | done | e5a1dc2 | Per-side loads, WakeLock rest, limitation banner |
-| 6 Progress | done | pending | SVG self-vs-self (best set load, no 1RM) |
-| 7 Programs | pending | — | Templates + library + import |
+| 6 Progress | done | b2625e4 | SVG self-vs-self (best set load, no 1RM) |
+| 7 Programs | done | pending | Tab chrome, templates, local import |
 | 8 Me + audit | pending | — | Interlink tests |
 | 9 PWA | pending | — | Purge deprecated, offline/perf |
 | 10 Polish | pending | — | A11y, docs, screenshots |
@@ -58,6 +58,12 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 - [x] SVG self-vs-self (best set load, no 1RM)
 - [x] Optional BW chart + progress photos
 - [x] Version `6.12.0` / `pulsecap-v92`
+
+## Phase 7 checklist
+
+- [x] Programs topbar (not Settings back)
+- [x] Machine-only PPL template + local import + safety ack
+- [x] Version `6.13.0` / `pulsecap-v93`
 
 ## Quarantined (Phase 9 hard-delete)
 

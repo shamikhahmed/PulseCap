@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.12.0",
-  "swCache": "pulsecap-v92",
+  "version": "6.13.0",
+  "swCache": "pulsecap-v93",
   "updated": "2026-08-17",
-  "notes": "Ember rebuild Phase 6 — Progress SVG self-vs-self (no 1RM)"
+  "notes": "Ember rebuild Phase 7 — Programs tab chrome + templates/import"
 }

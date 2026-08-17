@@ -26,7 +26,7 @@ const SCREENS = [
   { stateId: 'photos', label: 'Progress Photos', section: 'Progress', go: ['photos'] },
 
   // Programs
-  { stateId: 'my-plan', label: 'My Plan', section: 'Programs', go: ['my-plan'] },
+  { stateId: 'my-plan', label: 'Programs', section: 'Programs', go: ['my-plan'] },
   { stateId: 'plan-import', label: 'Plan Import Review', section: 'Programs', go: ['plan-import'] },
 
   // Body (kept nested under Me for now; Phase 4–8 may fold)

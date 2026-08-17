@@ -28,12 +28,12 @@ reg('my-plan', function() {
   const p = active ? engine.get() : null;
   const sess = active ? engine.todaySession() : null;
   const review = active ? engine.review() : null;
-  const top = moduleBackTopbar('My Plan', 'settings');
+  const top = '<div class="topbar"><div class="topbar-title">Programs</div></div>';
 
   if (!active) {
     return top +
       '<div class="pad-16">' +
-      moduleLede('Install a built-in program or import a text PDF / JSON. Smart Coach stays on-device — this is not a cloud AI planner.') +
+      '<p class="mod-lede">Your current split stays until you install or import. Workout history is never replaced by a plan.</p>' +
       '<div class="card card-solid mb-14">' +
       '<div class="row-title-15">Machine-only PPL (shoulder-safe)</div>' +
       '<div class="body-13" style="margin:8px 0 12px">6-day Push/Pull/Legs A/B, Sunday rest, week-5 deload, prehab, ROM limits, logged starting loads. Machines and cables first.</div>' +
@@ -75,7 +75,7 @@ reg('my-plan', function() {
     '<div class="row-title" style="margin:6px 0 8px">' + esc(isRest ? 'Full rest' : (sess && sess.name) || 'Session') + '</div>' +
     '<div class="body-13" style="margin-bottom:12px">' + esc(isRest ? (sess.reason || 'Sunday rest.') : ((sess.exercises || []).length + ' lifts · cardio after lifting · log RPE')) + '</div>' +
     cta +
-    (!isRest ? '<button type="button" class="btn btn-ghost" style="width:100%;min-height:44px;margin-top:8px" onclick="go(\'workout\')">Open Train hub</button>' : '') +
+    (!isRest ? '<button type="button" class="btn btn-ghost" style="width:100%;min-height:44px;margin-top:8px" onclick="go(\'workout\')">Open Train</button>' : '') +
     '</div>' +
     uiSection('This week') +
     '<div class="mb-14" style="display:flex;flex-wrap:wrap;gap:8px">' + pick + '</div>' +
@@ -93,8 +93,8 @@ reg('plan-import', function() {
   const parsed = _planDraft();
   const top = moduleBackTopbar('Review import', 'my-plan');
   if (!parsed || !parsed.draft) {
-    return top + '<div class="pad-16">' + moduleLede('No import waiting. Choose a file from My Plan.') +
-      '<button type="button" class="btn btn-primary" style="min-height:44px" onclick="go(\'my-plan\')">Back to My Plan</button></div>';
+    return top + '<div class="pad-16">' + moduleLede('No import waiting. Choose a file from Programs.') +
+      '<button type="button" class="btn btn-primary" style="min-height:44px" onclick="go(\'my-plan\')">Back to Programs</button></div>';
   }
   const d = parsed.draft;
   const sessions = Object.keys(d.sessions || {}).map(function(id) { return d.sessions[id]; });

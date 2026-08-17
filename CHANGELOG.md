@@ -1,3 +1,6 @@
+## 6.13.0 — 2026-08-17 — Ember rebuild Phase 7
+- Programs tab (was My Plan back-stack): templates, local PDF/JSON import, safety ack. SW `pulsecap-v93`.
+
 ## 6.12.0 — 2026-08-17 — Ember rebuild Phase 6
 - Progress: Training Block + this-lift-vs-itself SVG (best set load, not e1RM) + history/empty + optional bodyweight/photos. SW `pulsecap-v92`.
 
