@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.15.0",
-  "swCache": "pulsecap-v95",
+  "version": "6.16.0",
+  "swCache": "pulsecap-v96",
   "updated": "2026-08-17",
-  "notes": "Ember rebuild Phase 9 — purge deprecated modules, drop dead marketing scripts"
+  "notes": "Ember rebuild Phase 10 — a11y polish + docs sync"
 }

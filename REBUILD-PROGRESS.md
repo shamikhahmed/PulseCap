@@ -12,8 +12,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 6 Progress | done | b2625e4 | SVG self-vs-self (best set load, no 1RM) |
 | 7 Programs | done | 03abd81 | Tab chrome, templates, local import |
 | 8 Me + audit | done | 45eacf4 | Limitations on Training tab + interlink tests |
-| 9 PWA | done | pending | Purged deprecated modules, dropped dead marketing scripts |
-| 10 Polish | pending | — | A11y, docs, screenshots |
+| 9 PWA | done | c0b7220 | Purged deprecated modules, dropped dead marketing scripts |
+| 10 Polish | done | pending | A11y + docs synced to 6.16.0 |
 
 ## Phase 1 checklist
 
@@ -79,6 +79,13 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 - [x] Drop dead Capricorn `<script>` tags from landing/pitch/presentation/privacy/changelog
 - [x] SW allowlist unchanged (never listed quarantine paths)
 - [x] Version `6.15.0` / `pulsecap-v95`
+
+## Phase 10 checklist
+
+- [x] 48px named exercise-detail targets
+- [x] Docs: CHANGELOG, changelog.html, CLAUDE, HANDOVER, README, GUIDE
+- [x] Version `6.16.0` / `pulsecap-v96`
+- [ ] Gallery regen optional (`npm run gallery`) — not run (heavy)
 
 ## Quarantined (deleted in Phase 9)
 

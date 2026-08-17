@@ -4,11 +4,11 @@
 > Last updated: 2026-08-17 · Fleet-wide standard: `capricorn-tooling/shared/CAP-STANDARD.md`
 
 ## What this is
-Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Activity / widgets planned). Workouts, nutrition, recovery, anatomy, 30+ modules.
+Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Activity / widgets planned). Ember IA: Today · Train · Progress · Programs · Me.
 
 ## Facts
-**Version:** 6.8.0
-**SW cache:** `pulsecap-v88`
+**Version:** 6.16.0
+**SW cache:** `pulsecap-v96`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.
@@ -28,7 +28,7 @@ open screen-gallery.html      # Dark/Light + viewport + section filters
 - UI: Profiles → "Load sample athletes". QA: `tests/functional.spec.js` sweeps every screen + core actions per profile.
 
 ## Screen gallery
-- Matrix = every screen + sub-tab + welcome/intro + 7 onboarding steps + active workout, in **dark & light × mobile & desktop**.
+- Matrix = every screen + sub-tab + 1 intro + 4 onboarding steps + active workout, in **dark & light × mobile & desktop**.
 - **VaultCap-style scroll:** when `#view` overflows ≥80px, companion `*-scroll.png` (bottom of scroll). Viewer: Include scroll / Scroll only.
 - Driven by `tests/gallery.spec.js` (`CAPTURE_GALLERY=1` / `npm run gallery`).
 - Manifest fields: `theme`, `viewport`, `section`, `screenId`, `label`, `route`, `scroll`.
@@ -41,10 +41,12 @@ open screen-gallery.html      # Dark/Light + viewport + section filters
 - `js/plan-import.js` — local JSON / text-PDF / paste → review UI. No upload. No OCR (scanned PDFs rejected).
 - `js/gym-tools.js` — WakeLock / VoiceLogger / BarcodeFood / MobilityFlow / PainFlag
 - `js/data/foods-db.js` — offline food macros
-- `js/modules/` — feature screens (Learn deep-screens load on demand)
+- `js/modules/` — Ember screens (Today / Train / Progress / Programs / Me)
 - `js/data/form-loops.js` — honest offline form **cues** (not videos) + `isBarbell()`
 - `js/data/exercise-library.js` — optional wger.de download for real form clips
-- Desktop sidebar + mobile glass tab bar (Today · Train · Body · Learn · Me)
+- Desktop sidebar + mobile tab bar (Today · Train · Progress · Programs · Me)
+- `js/core/profile.js` — deriveContext spine
+- `js/core/engine.js` — EmberEngine facade
 
 ## Cap Standard status (2026-07-18)
 | Cap Standard item | Status |

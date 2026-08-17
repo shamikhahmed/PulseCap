@@ -1,14 +1,15 @@
 # PulseCap — CLAUDE.md
 
 ## Current truth
-- Version: 6.8.0
+- Version: 6.16.0
 - App type: offline-first **PWA only**. No native shell, HealthKit, Live Activity, WidgetKit, or RevenueCat unless owner reverses.
 - Stack: vanilla JS, no framework, no bundler.
 - Router: `reg('screen', fn)` + synchronous `go('screen')`.
 - Data: `localStorage` via `S`; IndexedDB only for progress photos.
 - Security: CSP meta exists in `index.html`; keep it aligned with wger sync.
 - Coach naming: **Smart Coach** / Coach Insights. Do not use unbacked AI claims unless a real LLM is integrated.
-- v6 spine: `js/coach-kernel.js` + `js/training-plan.js` + `js/gym-tools.js` + `js/data/foods-db.js` (see `docs/V6-NORTHSTAR.md`).
+- v6 spine: `js/core/profile.js` + `js/core/engine.js` + `js/coach-kernel.js` + `js/training-plan.js` + `js/gym-tools.js` + `js/data/foods-db.js` (see `docs/V6-NORTHSTAR.md`).
+- Ember IA: Today · Train · Progress · Programs · Me. No 1RM estimator. Smart Coach = rules.
 
 ## Required checks
 - `node --check` changed JS.
@@ -18,6 +19,8 @@
 
 ## Key files
 - `js/app.js` — router + engines
+- `js/core/profile.js` — Profile.get/set + deriveContext
+- `js/core/engine.js` — EmberEngine facade
 - `js/storage.js` — profile/localStorage data
 - `js/training-plan.js` — opt-in training plans
 - `js/plan-import.js` — local PDF/JSON import
@@ -37,4 +40,4 @@
 - Rest notifications only work after Add to Home Screen on iOS.
 - Form cues are not videos; real clips require wger library download.
 - Plan import: text PDF/JSON/paste only — scanned PDFs unsupported (no OCR); no upload.
-- My Plan / Rehab / Smart Coach = educational, not medical clearance.
+- Programs / Rehab / Smart Coach = educational, not medical clearance.

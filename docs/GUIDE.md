@@ -3,14 +3,14 @@
 PulseCap is your **Smart Coach fitness operating system** — an offline-first PWA for workouts, cardio, body tracking, nutrition, and rule-based coaching.
 
 **Live app:** https://shamikhahmed.github.io/PulseCap  
-**Version:** 6.6.0 · SW `pulsecap-v86`
+**Version:** 6.16.0 · SW `pulsecap-v96`
 
 ---
 
 ## Getting started
 
 1. Open PulseCap in Safari (recommended on iPhone).
-2. Watch the **4 intro slides**, then complete **7-step onboarding** (goals, equipment, injuries, split).
+2. Watch the **1 intro slide**, then complete **4-step onboarding** (name/goal, calibration, limitations + educational disclaimer, confirm).
 3. Land on **Today** with your daily decision and readiness.
 4. Install: **Share → Add to Home Screen**.
 

@@ -1,3 +1,6 @@
+## 6.16.0 — 2026-08-17 — Ember rebuild Phase 10
+- A11y: 48px named exercise-detail targets. Docs/HANDOVER/CLAUDE/README/changelog.html synced. Ember rebuild Phases 1–10 complete. SW `pulsecap-v96`.
+
 ## 6.15.0 — 2026-08-17 — Ember rebuild Phase 9
 - Hard-deleted `js/_deprecated/` (calculators, quests, physique, Capricorn/GSAP runtime, etc.). Removed dead Capricorn script tags from marketing HTML. SW `pulsecap-v95`.
 
