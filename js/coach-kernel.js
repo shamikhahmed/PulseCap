@@ -331,7 +331,7 @@ const CoachKernel = {
     }
     const over = (s.joints || []).filter(function(j) { return j.status === 'over'; });
     if (over.length) {
-      return { title: 'Protect ' + over[0].joint, body: 'Weekly joint budget blown — prefer machine / cable variants.', go: 'injury-risk' };
+      return { title: 'Protect ' + over[0].joint, body: 'Weekly joint budget blown — prefer machine / cable variants.', go: 'rehab' };
     }
     if (s.volume.low && s.volume.low[0]) {
       const m = s.volume.low[0];

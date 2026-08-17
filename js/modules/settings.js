@@ -734,6 +734,7 @@ function _validateBackup(data) {
   });
   return data;
 }
+window._validateBackup = _validateBackup;
 
 window.importData = function(input) {
   const file = input.files[0];

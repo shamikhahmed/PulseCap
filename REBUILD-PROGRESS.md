@@ -4,8 +4,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 
 | Phase | Status | Commit | Notes |
 |-------|--------|--------|-------|
-| 1 Foundation | done | (this commit) | Tokens, system fonts, quarantine → `js/_deprecated/`, 5-tab shell, alias redirects |
-| 2 Spine | pending | — | `profile.js` + `engine.js` + export/import + owner seed |
+| 1 Foundation | done | fc02e87 | Tokens, system fonts, quarantine → `js/_deprecated/`, 5-tab shell, alias redirects |
+| 2 Spine | done | pending | `profile.js` + `engine.js` + export/import + owner seed |
 | 3 Onboarding | pending | — | &lt;90s + calibration + disclaimer |
 | 4 Today | pending | — | One session CTA + one insight |
 | 5 Log | pending | — | 2-tap sets, WakeLock rest, per-side |

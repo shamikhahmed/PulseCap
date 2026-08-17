@@ -1,3 +1,8 @@
+## 6.8.0 — 2026-08-17 — Ember rebuild Phase 2
+- Profile spine: `Profile.get/set` + `deriveContext` (plan, session, limitations, readiness, insight).
+- Engine facade over rotation / RPE load suggest / skip / volume. Schema v4.
+- `?owner=1` seeds Machine-Only PPL + shoulder cautions (same template remains public). Export→wipe→import roundtrip test. SW `pulsecap-v88`.
+
 ## 6.7.0 — 2026-08-17 — Ember rebuild Phase 1
 - Identity: Ember tokens (near-black + `#FF7A1A`); system fonts; Google Fonts and Capricorn/GSAP app runtime removed from boot.
 - IA: 5 tabs Today · Train · Progress · Programs · Me. Quarantined Learn/Body bloat to `js/_deprecated/` (hard-delete in Phase 9).

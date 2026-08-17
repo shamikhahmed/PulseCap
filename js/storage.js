@@ -4,7 +4,7 @@ const S = {
   _metaKey: 'fos_meta',
   _pid: null,
   d: {},
-  SCHEMA_VERSION: 3,
+  SCHEMA_VERSION: 4,
 
   /* ── Meta (profile list) ── */
   getMeta() {
@@ -327,6 +327,12 @@ const S = {
       }
     }
     if (current < 3 && this.d.trainingPlan == null) this.d.trainingPlan = null;
+    if (current < 4) {
+      const u = this.d.user || {};
+      if (!Array.isArray(u.limitations)) u.limitations = [];
+      this.d.user = u;
+      if (this.d.trainingPlan === undefined) this.d.trainingPlan = null;
+    }
     this.d._schemaVersion = this.SCHEMA_VERSION;
     this._save();
     return true;

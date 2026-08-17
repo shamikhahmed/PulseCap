@@ -1,6 +1,6 @@
 # PulseCap — QA Matrix
 
-> Generated 2026-08-17 · demo profile · 17 screens · 340 checks · **333 pass / 7 fail**
+> Generated 2026-08-17 · demo profile · 17 screens · 341 checks · **334 pass / 7 fail**
 
 | Screen | Element | Expected | Actual | Status |
 |--------|---------|----------|--------|--------|
@@ -19,7 +19,7 @@
 | briefing | button "Session 4: Push B — Chest & Side Delts" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
 | briefing | button "Session 5: Pull B — Upper Back & Rear Delts" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
 | briefing | button "Session 6: Legs B — Hamstrings & Glutes" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
-| briefing | button "Start Workout" | visible control ≥40px min edge + accessible name (or hidden) | 25×59 name=true | pass |
+| briefing | button "Start Workout" | visible control ≥40px min edge + accessible name (or hidden) | 24×58 name=true | pass |
 | briefing | button "Can't train today?" | visible control ≥40px min edge + accessible name (or hidden) | 16×61 name=true | fail |
 | briefing | button "Start" | visible control ≥40px min edge + accessible name (or hidden) | 58×88 name=true | pass |
 | briefing | button "Check In" | visible control ≥40px min edge + accessible name (or hidden) | 61×88 name=true | pass |
@@ -31,8 +31,8 @@
 | briefing | div[role=button] "Chest88%" | visible control ≥40px min edge + accessible name (or hidden) | hidden | pass |
 | briefing | button "Set up your equipmentHome, gym, Life Fitness machines — get matched workouts›" | visible control ≥40px min edge + accessible name (or hidden) | 32×211 name=true | pass |
 | briefing | button "Open" | visible control ≥40px min edge + accessible name (or hidden) | 64×40 name=true | pass |
-| briefing | div[role=button] "Start a Quest→" | visible control ≥40px min edge + accessible name (or hidden) | 31×79 name=true | pass |
-| briefing | div[role=button] "Push A — Upper Chest2026-07-13 · 65min · 4293kg›" | visible control ≥40px min edge + accessible name (or hidden) | 30×166 name=true | pass |
+| briefing | div[role=button] "Start a Quest→" | visible control ≥40px min edge + accessible name (or hidden) | 30×78 name=true | pass |
+| briefing | div[role=button] "Push A — Upper Chest2026-07-13 · 64min · 4293kg›" | visible control ≥40px min edge + accessible name (or hidden) | 30×166 name=true | pass |
 | briefing | button "Programs" | visible control ≥40px min edge + accessible name (or hidden) | 105×42 name=true | pass |
 | briefing | button "Progress" | visible control ≥40px min edge + accessible name (or hidden) | 100×42 name=true | pass |
 | briefing | button "Overhead Press70kg5 reps · Sat 15 Aug" | visible control ≥40px min edge + accessible name (or hidden) | 212×75 name=true | pass |
@@ -41,12 +41,12 @@
 | briefing | button "Barbell Bench Press100kg5 reps · Mon 10 Aug" | visible control ≥40px min edge + accessible name (or hidden) | 212×75 name=true | pass |
 | briefing | button "All PRs →" | visible control ≥40px min edge + accessible name (or hidden) | 57×31 name=true | pass |
 | cardio | button "←" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
-| cardio | div[role=button] "HIITHigh-Intensity Interval TrainingMaximum burn in minimum timeAdvanced20–30 mi" | visible control ≥40px min edge + accessible name (or hidden) | 448×138 name=true | pass |
-| cardio | div[role=button] "RECOMMENDEDLISSLow-Intensity Steady-StateFat burning without muscle lossBeginner" | visible control ≥40px min edge + accessible name (or hidden) | 448×138 name=true | pass |
-| cardio | div[role=button] "RECOMMENDEDMISSModerate-Intensity Steady-StateThe middle ground — aerobic base b" | visible control ≥40px min edge + accessible name (or hidden) | 448×138 name=true | pass |
-| cardio | div[role=button] "SITSprint Interval TrainingAll-out sprints. Maximum adaptation.Advanced15–20 min" | visible control ≥40px min edge + accessible name (or hidden) | 448×138 name=true | pass |
-| cardio | div[role=button] "RECOMMENDEDFartlekFartlek Training (Speed Play)Unstructured speed play — listen " | visible control ≥40px min edge + accessible name (or hidden) | 448×138 name=true | pass |
-| cardio | div[role=button] "Circuit TrainingCircuit TrainingResistance + cardio combined — maximum efficienc" | visible control ≥40px min edge + accessible name (or hidden) | 448×138 name=true | pass |
+| cardio | div[role=button] "HIITHigh-Intensity Interval TrainingMaximum burn in minimum timeAdvanced20–30 mi" | visible control ≥40px min edge + accessible name (or hidden) | 448×137 name=true | pass |
+| cardio | div[role=button] "RECOMMENDEDLISSLow-Intensity Steady-StateFat burning without muscle lossBeginner" | visible control ≥40px min edge + accessible name (or hidden) | 448×137 name=true | pass |
+| cardio | div[role=button] "RECOMMENDEDMISSModerate-Intensity Steady-StateThe middle ground — aerobic base b" | visible control ≥40px min edge + accessible name (or hidden) | 448×137 name=true | pass |
+| cardio | div[role=button] "SITSprint Interval TrainingAll-out sprints. Maximum adaptation.Advanced15–20 min" | visible control ≥40px min edge + accessible name (or hidden) | 448×137 name=true | pass |
+| cardio | div[role=button] "RECOMMENDEDFartlekFartlek Training (Speed Play)Unstructured speed play — listen " | visible control ≥40px min edge + accessible name (or hidden) | 448×137 name=true | pass |
+| cardio | div[role=button] "Circuit TrainingCircuit TrainingResistance + cardio combined — maximum efficienc" | visible control ≥40px min edge + accessible name (or hidden) | 448×137 name=true | pass |
 | dashboard | button "Switch →" | visible control ≥40px min edge + accessible name (or hidden) | 79×44 name=true | pass |
 | dashboard | button "Train" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
 | dashboard | div[role=button] "Profiles" | visible control ≥40px min edge + accessible name (or hidden) | 32×32 name=true | pass |
@@ -62,7 +62,7 @@
 | dashboard | button "Session 4: Push B — Chest & Side Delts" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
 | dashboard | button "Session 5: Pull B — Upper Back & Rear Delts" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
 | dashboard | button "Session 6: Legs B — Hamstrings & Glutes" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
-| dashboard | button "Start Workout" | visible control ≥40px min edge + accessible name (or hidden) | 25×59 name=true | pass |
+| dashboard | button "Start Workout" | visible control ≥40px min edge + accessible name (or hidden) | 24×58 name=true | pass |
 | dashboard | button "Can't train today?" | visible control ≥40px min edge + accessible name (or hidden) | 16×61 name=true | fail |
 | dashboard | button "Start" | visible control ≥40px min edge + accessible name (or hidden) | 58×88 name=true | pass |
 | dashboard | button "Check In" | visible control ≥40px min edge + accessible name (or hidden) | 61×88 name=true | pass |
@@ -74,8 +74,8 @@
 | dashboard | div[role=button] "Chest88%" | visible control ≥40px min edge + accessible name (or hidden) | hidden | pass |
 | dashboard | button "Set up your equipmentHome, gym, Life Fitness machines — get matched workouts›" | visible control ≥40px min edge + accessible name (or hidden) | 32×211 name=true | pass |
 | dashboard | button "Open" | visible control ≥40px min edge + accessible name (or hidden) | 64×40 name=true | pass |
-| dashboard | div[role=button] "Start a Quest→" | visible control ≥40px min edge + accessible name (or hidden) | 31×79 name=true | pass |
-| dashboard | div[role=button] "Push A — Upper Chest2026-07-13 · 65min · 4293kg›" | visible control ≥40px min edge + accessible name (or hidden) | 30×166 name=true | pass |
+| dashboard | div[role=button] "Start a Quest→" | visible control ≥40px min edge + accessible name (or hidden) | 30×78 name=true | pass |
+| dashboard | div[role=button] "Push A — Upper Chest2026-07-13 · 64min · 4293kg›" | visible control ≥40px min edge + accessible name (or hidden) | 30×166 name=true | pass |
 | dashboard | button "Programs" | visible control ≥40px min edge + accessible name (or hidden) | 105×42 name=true | pass |
 | dashboard | button "Progress" | visible control ≥40px min edge + accessible name (or hidden) | 100×42 name=true | pass |
 | dashboard | button "Overhead Press70kg5 reps · Sat 15 Aug" | visible control ≥40px min edge + accessible name (or hidden) | 212×75 name=true | pass |
@@ -94,15 +94,15 @@
 | equipment-setup | button "Home Basics" | visible control ≥40px min edge + accessible name (or hidden) | 147×40 name=true | pass |
 | equipment-setup | button "Bodyweight" | visible control ≥40px min edge + accessible name (or hidden) | 145×40 name=true | pass |
 | equipment-setup | button[role=tab] "All" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
-| equipment-setup | button[role=tab] "Free Weights" | visible control ≥40px min edge + accessible name (or hidden) | 97×44 name=true | pass |
-| equipment-setup | button[role=tab] "Racks" | visible control ≥40px min edge + accessible name (or hidden) | 59×44 name=true | pass |
-| equipment-setup | button[role=tab] "Benches" | visible control ≥40px min edge + accessible name (or hidden) | 73×44 name=true | pass |
-| equipment-setup | button[role=tab] "Cables" | visible control ≥40px min edge + accessible name (or hidden) | 64×44 name=true | pass |
-| equipment-setup | button[role=tab] "Machines" | visible control ≥40px min edge + accessible name (or hidden) | 78×44 name=true | pass |
-| equipment-setup | button[role=tab] "Legs" | visible control ≥40px min edge + accessible name (or hidden) | 53×44 name=true | pass |
-| equipment-setup | button[role=tab] "Cardio" | visible control ≥40px min edge + accessible name (or hidden) | 62×44 name=true | pass |
-| equipment-setup | button[role=tab] "BW" | visible control ≥40px min edge + accessible name (or hidden) | 46×44 name=true | pass |
-| equipment-setup | button[role=tab] "Accessories" | visible control ≥40px min edge + accessible name (or hidden) | 91×44 name=true | pass |
+| equipment-setup | button[role=tab] "Free Weights" | visible control ≥40px min edge + accessible name (or hidden) | 109×44 name=true | pass |
+| equipment-setup | button[role=tab] "Racks" | visible control ≥40px min edge + accessible name (or hidden) | 65×44 name=true | pass |
+| equipment-setup | button[role=tab] "Benches" | visible control ≥40px min edge + accessible name (or hidden) | 81×44 name=true | pass |
+| equipment-setup | button[role=tab] "Cables" | visible control ≥40px min edge + accessible name (or hidden) | 70×44 name=true | pass |
+| equipment-setup | button[role=tab] "Machines" | visible control ≥40px min edge + accessible name (or hidden) | 87×44 name=true | pass |
+| equipment-setup | button[role=tab] "Legs" | visible control ≥40px min edge + accessible name (or hidden) | 58×44 name=true | pass |
+| equipment-setup | button[role=tab] "Cardio" | visible control ≥40px min edge + accessible name (or hidden) | 69×44 name=true | pass |
+| equipment-setup | button[role=tab] "BW" | visible control ≥40px min edge + accessible name (or hidden) | 49×44 name=true | pass |
+| equipment-setup | button[role=tab] "Accessories" | visible control ≥40px min edge + accessible name (or hidden) | 103×44 name=true | pass |
 | equipment-setup | div[role=button] "No Equipment (Bodyweight only)bodyweight" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Resistance Bandsaccessory" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Barbell & Platesfree weights" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
@@ -183,6 +183,7 @@
 | nutrition | button "Dinner" | visible control ≥40px min edge + accessible name (or hidden) | 106×38 name=true | pass |
 | nutrition | button "Snacks" | visible control ≥40px min edge + accessible name (or hidden) | 106×38 name=true | pass |
 | nutrition | input "Search chicken, oats, whey…" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
+| nutrition | button "Scan with camera" | visible control ≥40px min edge + accessible name (or hidden) | 448×44 name=true | pass |
 | nutrition | div[role=button] "5/8 glasses" | visible control ≥40px min edge + accessible name (or hidden) | 73×24 name=true | pass |
 | nutrition | button "Glass 1" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
 | nutrition | button "Glass 2" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
@@ -244,19 +245,19 @@
 | progress | div[role=button] "31" | visible control ≥40px min edge + accessible name (or hidden) | 61×61 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 15 Jul9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 17 Jul5555kg · 1h 1" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 17 Jul5555kg · 1h 7" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 22 Jul9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 24 Jul5555kg · 56m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 24 Jul5555kg · 54m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 29 Jul9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 31 Jul5555kg · 1h 5" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 31 Jul5555kg · 48m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 5 Aug9110kg" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 7 Aug5555kg · 1h 7m" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 7 Aug5555kg · 1h 13" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 12 Aug9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 14 Aug5555kg · 1h 7" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 14 Aug5555kg · 55m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressS" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "+ Log" | visible control ≥40px min edge + accessible name (or hidden) | 35×24 name=true | pass |
 | progress | div[role=button] "4/21" | visible control ≥40px min edge + accessible name (or hidden) | 27×24 name=true | pass |
@@ -295,14 +296,14 @@
 | rehab | div[role=button] "Wrist SprainPublished recovery range: around 5 weeks; individual clearance varie" | visible control ≥40px min edge + accessible name (or hidden) | 448×72 name=true | pass |
 | rehab | div[role=button] "Shoulder ImpingementPublished recovery range: around 8 weeks; individual clearan" | visible control ≥40px min edge + accessible name (or hidden) | 448×72 name=true | pass |
 | rehab | div[role=button] "Shin Splints (MTSS)Published recovery range: around 5 weeks; individual clearanc" | visible control ≥40px min edge + accessible name (or hidden) | 448×72 name=true | pass |
-| settings | button[role=tab] "Account" | visible control ≥40px min edge + accessible name (or hidden) | 71×44 name=true | pass |
-| settings | button[role=tab] "Training" | visible control ≥40px min edge + accessible name (or hidden) | 70×44 name=true | pass |
-| settings | button[role=tab] "Fuel" | visible control ≥40px min edge + accessible name (or hidden) | 50×44 name=true | pass |
-| settings | button[role=tab] "Appearance" | visible control ≥40px min edge + accessible name (or hidden) | 91×44 name=true | pass |
-| settings | button[role=tab] "Access" | visible control ≥40px min edge + accessible name (or hidden) | 65×44 name=true | pass |
-| settings | button[role=tab] "Alerts" | visible control ≥40px min edge + accessible name (or hidden) | 59×44 name=true | pass |
-| settings | button[role=tab] "Privacy" | visible control ≥40px min edge + accessible name (or hidden) | 66×44 name=true | pass |
-| settings | button[role=tab] "About" | visible control ≥40px min edge + accessible name (or hidden) | 59×44 name=true | pass |
+| settings | button[role=tab] "Account" | visible control ≥40px min edge + accessible name (or hidden) | 79×44 name=true | pass |
+| settings | button[role=tab] "Training" | visible control ≥40px min edge + accessible name (or hidden) | 77×44 name=true | pass |
+| settings | button[role=tab] "Fuel" | visible control ≥40px min edge + accessible name (or hidden) | 54×44 name=true | pass |
+| settings | button[role=tab] "Appearance" | visible control ≥40px min edge + accessible name (or hidden) | 103×44 name=true | pass |
+| settings | button[role=tab] "Access" | visible control ≥40px min edge + accessible name (or hidden) | 72×44 name=true | pass |
+| settings | button[role=tab] "Alerts" | visible control ≥40px min edge + accessible name (or hidden) | 64×44 name=true | pass |
+| settings | button[role=tab] "Privacy" | visible control ≥40px min edge + accessible name (or hidden) | 73×44 name=true | pass |
+| settings | button[role=tab] "About" | visible control ≥40px min edge + accessible name (or hidden) | 65×44 name=true | pass |
 | settings | input "Your name" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
 | settings | input "INPUT" | visible control ≥40px min edge + accessible name (or hidden) | 219×48 name=true | pass |
 | settings | select "Gender" | visible control ≥40px min edge + accessible name (or hidden) | 219×48 name=true | pass |
@@ -325,12 +326,12 @@
 | workout | button "Cardio" | visible control ≥40px min edge + accessible name (or hidden) | 106×37 name=true | pass |
 | workout | button "Skills" | visible control ≥40px min edge + accessible name (or hidden) | 106×37 name=true | pass |
 | workout | button "Intel" | visible control ≥40px min edge + accessible name (or hidden) | 106×37 name=true | pass |
-| workout | button "Session 1: Push A — Upper Chest & Front Delts" | visible control ≥40px min edge + accessible name (or hidden) | 70×44 name=true | pass |
-| workout | button "Session 2: Pull A — Lats & Bicep Thickness" | visible control ≥40px min edge + accessible name (or hidden) | 63×44 name=true | pass |
-| workout | button "Session 3: Legs A — Quads & Calves" | visible control ≥40px min edge + accessible name (or hidden) | 69×44 name=true | pass |
-| workout | button "Session 4: Push B — Chest & Side Delts" | visible control ≥40px min edge + accessible name (or hidden) | 69×44 name=true | pass |
-| workout | button "Session 5: Pull B — Upper Back & Rear Delts" | visible control ≥40px min edge + accessible name (or hidden) | 63×44 name=true | pass |
-| workout | button "Session 6: Legs B — Hamstrings & Glutes" | visible control ≥40px min edge + accessible name (or hidden) | 68×44 name=true | pass |
+| workout | button "Session 1: Push A — Upper Chest & Front Delts" | visible control ≥40px min edge + accessible name (or hidden) | 69×44 name=true | pass |
+| workout | button "Session 2: Pull A — Lats & Bicep Thickness" | visible control ≥40px min edge + accessible name (or hidden) | 62×44 name=true | pass |
+| workout | button "Session 3: Legs A — Quads & Calves" | visible control ≥40px min edge + accessible name (or hidden) | 68×44 name=true | pass |
+| workout | button "Session 4: Push B — Chest & Side Delts" | visible control ≥40px min edge + accessible name (or hidden) | 68×44 name=true | pass |
+| workout | button "Session 5: Pull B — Upper Back & Rear Delts" | visible control ≥40px min edge + accessible name (or hidden) | 62×44 name=true | pass |
+| workout | button "Session 6: Legs B — Hamstrings & Glutes" | visible control ≥40px min edge + accessible name (or hidden) | 67×44 name=true | pass |
 | workout | button "Exercise details" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | fail |
 | workout | button "Exercise details" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | fail |
 | workout | button "Exercise details" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | fail |

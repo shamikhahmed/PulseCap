@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.7.0';
+window.APP_VERSION = '6.8.0';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -326,7 +326,7 @@ function bootDeepLink() {
     }
     if (goTo === 'exercises' || goTo === 'encyclopedia') {
       _pendingDeepLink = function() {
-        if (typeof go === 'function') go(S.g('onboarded') ? 'encyclopedia' : 'onboarding', S.g('onboarded') ? undefined : { showIntro: true });
+        if (typeof go === 'function') go(S.g('onboarded') ? 'my-plan' : 'onboarding', S.g('onboarded') ? undefined : { showIntro: true });
       };
       return true;
     }

@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.7.0",
-  "swCache": "pulsecap-v87",
+  "version": "6.8.0",
+  "swCache": "pulsecap-v88",
   "updated": "2026-08-17",
-  "notes": "Ember rebuild Phase 1 — tokens, 5-tab shell, quarantine"
+  "notes": "Ember rebuild Phase 2 — Profile.deriveContext + engine facade + owner seed"
 }
