@@ -713,7 +713,9 @@ reg('workout', function() {
     '</div>' +
 
     sh('Today\'s Plan') +
+    '<div class="screen-pad" style="padding-top:0;padding-bottom:0">' +
     (typeof renderSplitDayPicker === 'function' ? renderSplitDayPicker({ mode: 'train' }) : '') +
+    '</div>' +
     '<div class="card card-solid">' +
     '<div style="font-size:18px;font-weight:800;color:var(--txt);margin-bottom:4px">'+esc(splitDay.n||'Rest Day')+'</div>' +
     '<div style="font-size:13px;color:var(--txt3);margin-bottom:16px">'+esc(prettyMuscles(splitDay.muscles))+'</div>' +

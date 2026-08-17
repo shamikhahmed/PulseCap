@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.29.0",
-  "swCache": "pulsecap-v109",
+  "version": "6.30.0",
+  "swCache": "pulsecap-v110",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 23 — one #view padding rule; Today uses the lower third"
+  "notes": "Ember Phase 24 — Settings gutter + single-row tab bar"
 }

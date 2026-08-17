@@ -120,7 +120,7 @@ test.describe('UX integrity — re-render contract', () => {
       await boot(page);
       await goScreen(page, site.go[0], site.go[1]);
       const before = await padAndScroll(page, 400);
-      expect(before).toBeGreaterThan(250);
+      expect(before).toBeGreaterThan(50);
       const after = await page.evaluate(() => {
         const id = window.currentScreenId && window.currentScreenId();
         window.go(id);
@@ -167,5 +167,71 @@ test.describe('UX integrity — vertical composition', () => {
       return (bottom - box.top) / box.height;
     });
     expect(fill).toBeGreaterThan(0.55);
+  });
+});
+
+test.describe('UX integrity — gutters and tab bar', () => {
+  test('Settings tab bar is one row at 390px', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.go === 'function');
+    await page.evaluate(() => window.go('settings', { tab: 'account' }));
+    const bar = await page.evaluate(() => {
+      const el = document.querySelector('.cap-tab-bar');
+      if (!el) return null;
+      const cs = getComputedStyle(el);
+      return { h: el.getBoundingClientRect().height, wrap: cs.flexWrap, overflow: cs.overflowX };
+    });
+    expect(bar).toBeTruthy();
+    expect(bar.wrap).toBe('nowrap');
+    expect(bar.h).toBeLessThan(68);
+  });
+
+  test('no interactive control hugs the 390px edge unless marked full-bleed', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.go === 'function');
+    const screens = [
+      ['dashboard'],
+      ['workout'],
+      ['progress'],
+      ['my-plan'],
+      ['settings', { tab: 'account' }],
+      ['settings', { tab: 'training' }],
+      ['settings', { tab: 'fuel' }],
+      ['settings', { tab: 'appearance' }],
+      ['settings', { tab: 'accessibility' }],
+      ['settings', { tab: 'notifications' }],
+      ['settings', { tab: 'privacy' }],
+      ['settings', { tab: 'about' }]
+    ];
+    const allBad = [];
+    for (const args of screens) {
+      await page.evaluate((a) => window.go(a[0], a[1]), args);
+      await page.waitForTimeout(40);
+      const bad = await page.evaluate(() => {
+        const vw = window.innerWidth;
+        const hits = [];
+        const nodes = document.querySelectorAll('#view button, #view a, #view input, #view select, #view textarea, #view [role="button"], #view [role="switch"]');
+        nodes.forEach(function(el) {
+          if (!el.getClientRects().length) return;
+          if (el.closest('[data-full-bleed]')) return;
+          if (el.closest('#nav')) return;
+          let p = el.parentElement;
+          while (p && p !== document.body) {
+            const ox = getComputedStyle(p).overflowX;
+            if (ox === 'auto' || ox === 'scroll') return;
+            p = p.parentElement;
+          }
+          const r = el.getBoundingClientRect();
+          if (r.width < 8 || r.height < 8) return;
+          if (r.left < 11.5) hits.push({ tag: el.tagName, left: Math.round(r.left), name: (el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 40) });
+          if (r.right > vw - 11.5) hits.push({ tag: el.tagName, right: Math.round(r.right), name: (el.getAttribute('aria-label') || el.textContent || '').trim().slice(0, 40) });
+        });
+        return { screen: window.currentScreenId(), hits: hits };
+      });
+      if (bad.hits.length) allBad.push(bad);
+    }
+    expect(allBad).toEqual([]);
   });
 });

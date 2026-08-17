@@ -171,16 +171,16 @@
 | progress | select "Barbell Bench PressOverhead PressIncline Dumbbell PressDeadliftBarbell RowLat Pu" | visible control ≥40px min edge + accessible name (or hidden) | 448×39 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 15 Jul9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 17 Jul5555kg · 58m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 17 Jul5555kg · 1h 1" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 22 Jul9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 24 Jul5555kg · 1h 1" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 29 Jul9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 31 Jul5555kg · 52m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 31 Jul5555kg · 1h 8" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 5 Aug9110kg" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 7 Aug5555kg · 1h 9m" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 7 Aug5555kg · 1h 1m" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 12 Aug9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 14 Aug5555kg · 1h 1" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
@@ -239,10 +239,10 @@
 | settings | select "Sex" | visible control ≥40px min edge + accessible name (or hidden) | 219×48 name=true | pass |
 | settings | input "INPUT" | visible control ≥40px min edge + accessible name (or hidden) | 219×48 name=true | pass |
 | settings | input "INPUT" | visible control ≥40px min edge + accessible name (or hidden) | 219×48 name=true | pass |
-| settings | select "23456" | visible control ≥40px min edge + accessible name (or hidden) | 480×48 name=true | pass |
-| settings | select "Build MuscleLose FatGain WeightGet HealthierRecompositionStrengthAthleticCardio " | visible control ≥40px min edge + accessible name (or hidden) | 480×48 name=true | pass |
-| settings | select "BeginnerIntermediateAdvancedAthlete" | visible control ≥40px min edge + accessible name (or hidden) | 480×48 name=true | pass |
-| settings | select "SedentaryLight ActiveModerately ActiveVery ActiveExtremely Active" | visible control ≥40px min edge + accessible name (or hidden) | 480×48 name=true | pass |
+| settings | select "23456" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
+| settings | select "Build MuscleLose FatGain WeightGet HealthierRecompositionStrengthAthleticCardio " | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
+| settings | select "BeginnerIntermediateAdvancedAthlete" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
+| settings | select "SedentaryLight ActiveModerately ActiveVery ActiveExtremely Active" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
 | settings | button "Log Weight Today" | visible control ≥40px min edge + accessible name (or hidden) | 191×40 name=true | pass |
 | settings | button "Manage injuries in Rehab" | visible control ≥40px min edge + accessible name (or hidden) | 253×40 name=true | pass |
 | settings | click smoke "Account" | responds without pageerror | ok | pass |

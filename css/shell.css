@@ -194,3 +194,30 @@ body.cap-desktop-nav .app-frame {
     transition: none;
   }
 }
+
+/* Horizontal gutter — one primitive for Settings and other stacked forms */
+.screen-pad {
+  padding: var(--space-4, 16px);
+  box-sizing: border-box;
+}
+
+/* Settings / picker tab strips: one scrolling row, never wrap */
+.cap-tab-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: stretch;
+  gap: 4px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding: 6px 16px 10px;
+  box-sizing: border-box;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 12px, #000 calc(100% - 12px), transparent);
+}
+.cap-tab-bar::-webkit-scrollbar { display: none; }
+.cap-tab-bar .cap-tab {
+  flex: 0 0 auto;
+  white-space: nowrap;
+}

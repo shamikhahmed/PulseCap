@@ -47,7 +47,7 @@ reg('settings', function(opts) {
     about: 'About'
   };
 
-  const tabBar = '<div class="cap-tab-bar" role="tablist" aria-label="Settings">' +
+  const tabBar = '<div class="cap-tab-bar" data-full-bleed="1" role="tablist" aria-label="Settings">' +
     tabList.map(function(t) {
       const active = _settingsTab === t;
       return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" aria-controls="settings-panel" id="settings-tab-' + t + '" data-focus-key="settings-tab-' + t + '" onclick="go(\'settings\',{tab:\''+t+'\',resetScroll:true})">' +
@@ -77,7 +77,7 @@ function _tabAccount(u) {
   const healthyMax = weightFromKg(healthyRange.max, u);
   const rd = (typeof ReadinessEngine !== 'undefined' && ReadinessEngine.display) ? ReadinessEngine.display() : { word: 'Ready', hideScore: true };
 
-  return '<div class="pad-16">' +
+  return '<div class="screen-pad">' +
     _sectionTitle('Identity') +
     _fieldWrap('Name', '<input class="field" type="text" name="name" autocomplete="name" value="'+esc(u.name||'')+'" oninput="_setSetting(\'user.name\',this.value)" placeholder="Your name">') +
     '<div class="field-row">' +
@@ -87,7 +87,6 @@ function _tabAccount(u) {
     '<div class="field-row">' +
     _fieldWrap(hLabel, '<input class="field" type="number" inputmode="decimal" value="'+heightValue+'" min="'+(imperial?36:90)+'" max="'+(imperial?96:245)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.height\',this.value,\'height\')">') +
     _fieldWrap(wLabel, '<input class="field" type="number" inputmode="decimal" value="'+weightValue+'" min="'+(imperial?55:25)+'" max="'+(imperial?1100:500)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.weight\',this.value,\'weight\')">') +
-    '</div>' +
     '</div>' +
     _selectWrap('Days per week', 'user.daysPerWeek', String(u.daysPerWeek || u.weeklyGoal || 4), [
       {v:'2',l:'2'},{v:'3',l:'3'},{v:'4',l:'4'},{v:'5',l:'5'},{v:'6',l:'6'}
@@ -162,7 +161,7 @@ function _tabTraining(u) {
   const eqCount = (S.g('user.equipmentIds') || []).length;
   const eqLabel = S.g('user.equipmentConfigured') ? eqCount + ' items configured' : 'Not set up yet — tap to configure';
 
-  return '<div class="pad-16">' +
+  return '<div class="screen-pad">' +
     (rec ? '<div class="card card-solid mb-14" style="border-color:rgba(var(--c1-rgb),0.22)">' +
       '<div class="settings-section-title" style="margin-top:0">Recommended for you</div>' +
       '<div class="row-title-15">'+esc(rec.name)+'</div>' +
@@ -255,13 +254,13 @@ function _renderWeekSchedule(u) {
         '<div style="font-size:13px;font-weight:700;color:var(--txt3)">' + labels[d] + (isToday ? ' · today' : '') + '</div>' +
         '<div class="muted-12">Rest</div></div>';
     }
-    const sel = '<select class="field" style="width:auto;min-width:150px;padding:8px 10px;font-size:13px" onchange="setDayAssignment(\'' + d + '\', parseInt(this.value))">' +
+    const sel = '<select class="field" style="width:auto;max-width:58%;min-width:0;padding:8px 10px;font-size:13px" onchange="setDayAssignment(\'' + d + '\', parseInt(this.value))">' +
       splitDays.map(function(sd, i) {
         const num = i + 1;
         return '<option value="' + num + '"' + (map[d] === num ? ' selected' : '') + '>' + esc(sd.n || ('Day ' + num)) + '</option>';
       }).join('') + '</select>';
     return '<div style="' + rowStyle + '">' +
-      '<div  class="row-title">' + labels[d] + (isToday ? ' · today' : '') + '</div>' + sel + '</div>';
+      '<div class="row-title" style="min-width:0;overflow:hidden;text-overflow:ellipsis">' + labels[d] + (isToday ? ' · today' : '') + '</div>' + sel + '</div>';
   }).join('');
   html += '<button type="button" class="btn btn-secondary btn-sm" style="width:100%;margin:4px 0 14px" onclick="resetDayAssignments()">↺ Reset to automatic order</button>';
   return html;
@@ -290,7 +289,7 @@ function _tabFuel(u) {
   const fat = u.macrosPinned ? (u.fatTarget || (n && n.fat) || 70) : ((n && n.fat) || 70);
   const tdee = (n && n.tdee) || BodyEngine.tdee(u);
   const userSupps = S.g('supplements') || [];
-  return '<div class="pad-16">' +
+  return '<div class="screen-pad">' +
     _sectionTitle('Daily Targets') +
     (n && n.line ? '<div class="muted-12" style="margin-bottom:12px;line-height:1.45">' + esc(n.line) + '</div>' : '') +
     _fieldWrap('Calories (kcal)', '<input class="field" type="number" inputmode="numeric" value="'+cal+'" oninput="_setSetting(\'user.calorieTarget\',parseInt(this.value))">') +
@@ -345,7 +344,7 @@ function _tabAppearance(u) {
       '</button>';
   };
 
-  return '<div class="pad-16">' +
+  return '<div class="screen-pad">' +
     _sectionTitle('Theme') +
     '<div style="display:flex;gap:8px;margin-bottom:8px" role="group" aria-label="Theme">' +
     seg('auto', 'refresh', 'Auto', 'clearThemePref();go(\'settings\',{tab:\'appearance\'})') +
@@ -395,7 +394,7 @@ function _tabAppearance(u) {
 
 function _tabAccessibility(u) {
   const units = u.units || 'metric';
-  return '<div class="pad-16">' +
+  return '<div class="screen-pad">' +
     _sectionTitle('Units') +
     '<div style="display:flex;gap:8px;margin-bottom:14px" role="group" aria-label="Measurement units">' +
     ['metric','imperial'].map(unit =>
@@ -417,7 +416,7 @@ function _tabAccessibility(u) {
 }
 
 function _tabNotifications(u) {
-  return '<div class="pad-16">' +
+  return '<div class="screen-pad">' +
     _sectionTitle('Alerts') +
     _toggle('Supplement Reminders', 'user.suppReminders', u.suppReminders!==false) +
     _toggle('Rest Day Reminders', 'user.restDayReminders', u.restDayReminders!==false) +
@@ -442,7 +441,7 @@ function _tabNotifications(u) {
 function _tabPrivacy() {
   const ws = S.g('workouts') || [];
   const joinDate = S.g('user.joinDate');
-  return '<div class="pad-16">' +
+  return '<div class="screen-pad">' +
     _sectionTitle('On this device') +
     '<div class="card card-solid mb-14">' +
     '<div style="display:flex;flex-wrap:wrap;gap:12px">' +
@@ -487,7 +486,7 @@ function _tabPrivacy() {
 
 function _tabAbout() {
   const ver = esc(window.APP_VERSION || '6.4.0');
-  return '<div class="pad-16">' +
+  return '<div class="screen-pad">' +
     _sectionTitle('PulseCap') +
     '<div class="card card-solid mb-14">' +
     '<div style="font-size:18px;font-weight:800;color:var(--txt);margin-bottom:4px">v' + ver + '</div>' +

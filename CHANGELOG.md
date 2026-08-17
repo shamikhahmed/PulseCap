@@ -1,3 +1,6 @@
+## 6.30.0 — 2026-08-18 — Ember rebuild Phase 24
+- One `.screen-pad` gutter. Settings Account no longer leaks selects to the screen edge. Settings tabs are a single horizontally scrolling row (no wrap). SW `pulsecap-v110`.
+
 ## 6.29.0 — 2026-08-18 — Ember rebuild Phase 23
 - One `#view` padding rule in the shell: `calc(var(--nav-h) + max(var(--safe), 12px))`. Short screens fill the column; Today uses last-session, next-up, and weekly consistency instead of leaving a void. SW `pulsecap-v109`.
 
