@@ -69,7 +69,25 @@ const Profile = {
       ? ReadinessEngine.display()
       : { word: workouts.length >= 3 ? 'Ready' : 'Ready', hideScore: workouts.length < 3, score: readinessRaw };
     const insight = (typeof CoachKernel !== 'undefined' && CoachKernel.oneThing) ? CoachKernel.oneThing() : null;
-    const limitations = this.get('user.limitations') || this.get('user.injuries') || [];
+    const limitationsRaw = this.get('user.limitations');
+    const injuriesRaw = this.get('user.injuries') || [];
+    let limitations = Array.isArray(limitationsRaw) ? limitationsRaw.slice() : [];
+    if (!limitations.length && Array.isArray(injuriesRaw)) {
+      limitations = injuriesRaw.filter(function(i) { return typeof i !== 'object' || !i.recovered; });
+    } else if (typeof InjuriesDB !== 'undefined' && InjuriesDB.jointFrom) {
+      const seen = {};
+      limitations.forEach(function(l) {
+        const j = InjuriesDB.jointFrom(l);
+        if (j) seen[j] = true;
+      });
+      injuriesRaw.forEach(function(inj) {
+        if (typeof inj === 'object' && inj.recovered) return;
+        const j = InjuriesDB.jointFrom(inj);
+        if (!j || seen[j]) return;
+        seen[j] = true;
+        limitations.push({ id: j, joint: j, note: 'Train around this — stop on sharp pain.' });
+      });
+    }
     const equipment = Array.isArray(user.equipment) && user.equipment.length
       ? user.equipment
       : ((typeof Equipment !== 'undefined' && Equipment.tagsForKit) ? Equipment.tagsForKit(user.equipmentKit || 'full_gym') : []);

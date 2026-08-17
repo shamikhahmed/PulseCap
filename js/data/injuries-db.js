@@ -1,7 +1,69 @@
 'use strict';
-/* Injury database — severity, rest guidance, exercise modifications */
+/* Canonical limitation model = 8 joints (same as Equipment.JOINTS).
+   Named rows (tennis_elbow, left_shoulder, rotator_cuff, …) map onto those
+   eight. Left/right is educational copy only — the filter is bilateral.
+   Rehab encyclopedia (INJURY_DB) also maps here via jointFrom. */
 
 window.InjuriesDB = {
+  CANONICAL: ['shoulder', 'knee', 'spine', 'wrist', 'elbow', 'hip', 'neck', 'ankle'],
+  ALIAS: {
+    left_shoulder: 'shoulder', right_shoulder: 'shoulder', rotator_cuff: 'shoulder',
+    rotator_cuff_tear: 'shoulder', shoulder_dislocation: 'shoulder', shoulder_impingement: 'shoulder',
+    left_knee: 'knee', right_knee: 'knee', runners_knee: 'knee', patellar_tendinitis: 'knee',
+    acl_tear: 'knee', meniscus_tear: 'knee', quad_strain: 'knee',
+    lower_back: 'spine', upper_back: 'spine', herniated_disc: 'spine', lower_back_strain: 'spine',
+    low_back: 'spine', lowback: 'spine',
+    left_wrist: 'wrist', right_wrist: 'wrist', wrist_sprain: 'wrist',
+    left_elbow: 'elbow', right_elbow: 'elbow', tennis_elbow: 'elbow', golfers_elbow: 'elbow',
+    bicep_tendon_tear: 'elbow',
+    left_hip: 'hip', right_hip: 'hip', hamstring_strain: 'hip', hip_flexor_strain: 'hip', groin_strain: 'hip',
+    left_ankle: 'ankle', right_ankle: 'ankle', plantar_fasciitis: 'ankle',
+    ankle_sprain_mild: 'ankle', ankle_sprain_severe: 'ankle', achilles_tendinopathy: 'ankle', shin_splints: 'ankle'
+  },
+
+  jointFrom: function(raw) {
+    if (raw == null) return null;
+    let id = '';
+    let joint = '';
+    if (typeof raw === 'string') {
+      id = raw.toLowerCase();
+    } else {
+      joint = String(raw.joint || '').toLowerCase();
+      id = String(raw.id || raw.bodyPart || '').toLowerCase();
+    }
+    const strip = function(s) {
+      return String(s || '').toLowerCase()
+        .replace(/^left[_ -]?/, '').replace(/^right[_ -]?/, '')
+        .replace(/\s+/g, '_').replace('low_back', 'spine').replace('lowback', 'spine');
+    };
+    const cand = [joint, id, strip(joint), strip(id)];
+    for (let i = 0; i < cand.length; i++) {
+      const k = cand[i];
+      if (!k) continue;
+      if (InjuriesDB.CANONICAL.indexOf(k) >= 0) return k;
+      if (InjuriesDB.ALIAS[k]) return InjuriesDB.ALIAS[k];
+    }
+    return null;
+  },
+
+  flags: function() {
+    const map = {};
+    const push = function(raw, severity) {
+      const j = InjuriesDB.jointFrom(raw);
+      if (!j) return;
+      const sev = severity || 2;
+      if (!map[j] || sev > map[j].severity) map[j] = { joint: j, severity: sev, raw: raw };
+    };
+    try {
+      (S.g('user.limitations') || []).forEach(function(l) { push(l, 2); });
+      (S.g('user.injuries') || []).forEach(function(inj) {
+        if (typeof inj === 'object' && inj.recovered) return;
+        push(inj, (typeof inj === 'object' && inj.severity) || 2);
+      });
+    } catch (e) {}
+    return Object.keys(map).map(function(k) { return map[k]; });
+  },
+
   severities: [
     { id: 1, label: 'Mild', desc: 'Occasional discomfort. Can train with modifications.', restDays: 0, volumeReduce: 0.2 },
     { id: 2, label: 'Moderate', desc: 'Pain during some movements. Reduce load significantly.', restDays: 1, volumeReduce: 0.5 },
@@ -33,12 +95,17 @@ window.InjuriesDB = {
 
   byId(id) { return this.injuries.find(i => i.id === id); },
 
-  /* Resolve any logged injury (Rehab conditions carry a `joint`, legacy
-     entries carry a body-part id) to an avoid/modify entry. */
   resolve(inj) {
-    if (!inj || typeof inj !== 'object') return null;
-    return this.byId(inj.id || inj.bodyPart) ||
-      (inj.joint ? this.injuries.find(i => i.joint === inj.joint) : null);
+    if (inj == null) return null;
+    if (typeof inj === 'string') inj = { id: inj };
+    const hit = this.byId(inj.id || inj.bodyPart);
+    if (hit) return hit;
+    const j = this.jointFrom(inj);
+    if (!j) return null;
+    return this.injuries.find(i => i.joint === j) || {
+      id: j, name: j, joint: j, avoid: [],
+      modify: 'Reduce load on this joint. Stop on sharp pain.'
+    };
   },
 
   assessActive() {
@@ -65,24 +132,20 @@ window.InjuriesDB = {
   },
 
   shouldAvoidExercise(exName) {
-    const list = S.g('user.injuries') || [];
-    for (let i = 0; i < list.length; i++) {
-      const inj = list[i];
-      if (typeof inj !== 'object' || inj.recovered) continue;
-      const db = this.resolve(inj);
-      if (!db) continue;
-      const sev = inj.severity || 1;
-      if (sev >= 2 && db.avoid.some(a => exName.toLowerCase().includes(a.toLowerCase().split(' ')[0]))) {
-        return { avoid: true, reason: db.modify, injury: inj.bodyPart || db.name };
+    const flags = this.flags();
+    const ex = (typeof ExDB !== 'undefined' && ExDB.byName) ? ExDB.byName(exName) : null;
+    for (let i = 0; i < flags.length; i++) {
+      const f = flags[i];
+      const db = this.resolve(f.raw) || { joint: f.joint, avoid: [], modify: 'Reduce load on this joint. Stop on sharp pain.', name: f.joint };
+      const sev = f.severity || 2;
+      if (sev >= 2 && db.avoid && db.avoid.some(a => exName.toLowerCase().includes(a.toLowerCase().split(' ')[0]))) {
+        return { avoid: true, reason: db.modify, injury: db.name || f.joint };
       }
-      /* Joint-stress check: the exercise library rates each movement 0-3 per
-         joint — high stress on an injured joint gets swapped out too. */
-      if (sev >= 2 && typeof ExDB !== 'undefined') {
-        const ex = ExDB.byName(exName);
-        const joint = db.joint || inj.joint;
-        const stress = ex && ex.joint && joint ? (ex.joint[joint] || 0) : 0;
+      if (sev >= 2 && ex && ex.joint) {
+        const joint = f.joint;
+        const stress = ex.joint[joint] || 0;
         if (stress >= 3 || (sev >= 3 && stress >= 2)) {
-          return { avoid: true, reason: db.modify || ('High ' + joint + ' stress'), injury: inj.bodyPart || db.name };
+          return { avoid: true, reason: db.modify || ('High ' + joint + ' stress'), injury: db.name || f.joint };
         }
       }
     }

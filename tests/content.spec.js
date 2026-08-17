@@ -195,4 +195,104 @@ test.describe('Exercise content integrity', () => {
     expect(out.hasKarachi).toBeTruthy();
     expect(out.searchRoti).toBeGreaterThan(0);
   });
+
+  test('named injuries collapse to eight joints; tennis elbow and left-shoulder filter', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => window.InjuriesDB && window.Equipment && window.ExDB);
+    const out = await page.evaluate(() => {
+      const map = {
+        left_shoulder: window.InjuriesDB.jointFrom('left_shoulder'),
+        right_shoulder: window.InjuriesDB.jointFrom('right_shoulder'),
+        tennis_elbow: window.InjuriesDB.jointFrom({ id: 'tennis_elbow' }),
+        rotator_cuff_tear: window.InjuriesDB.jointFrom({ id: 'rotator_cuff_tear', joint: 'shoulder' }),
+        plantar: window.InjuriesDB.jointFrom('plantar_fasciitis')
+      };
+      window.S.set('user.limitations', []);
+      window.S.set('user.injuries', [{ id: 'tennis_elbow', joint: 'elbow', severity: 2, recovered: false }]);
+      const user = Object.assign({}, window.S.g('user'), {
+        equipmentKit: 'full_gym', equipmentConfigured: true,
+        equipment: window.Equipment.tagsForKit('full_gym'),
+        limitations: [],
+        injuries: window.S.g('user.injuries')
+      });
+      const blocked = window.ExDB.db.filter(function(ex) { return !window.Equipment.jointOk(ex, user); });
+      const avoidPull = window.InjuriesDB.shouldAvoidExercise('Pull-Ups');
+      return {
+        map: map,
+        blockedElbow: blocked.filter(function(e) { return (e.joint.elbow || 0) >= 3; }).length,
+        open: window.Equipment.availableExercises(user).length,
+        avoidPull: avoidPull.avoid
+      };
+    });
+    expect(out.map.left_shoulder).toBe('shoulder');
+    expect(out.map.right_shoulder).toBe('shoulder');
+    expect(out.map.tennis_elbow).toBe('elbow');
+    expect(out.map.rotator_cuff_tear).toBe('shoulder');
+    expect(out.map.plantar).toBe('ankle');
+    expect(out.blockedElbow).toBeGreaterThan(0);
+    expect(out.open).toBeGreaterThan(20);
+    expect(out.avoidPull).toBeTruthy();
+  });
+
+  test('every kit × joint still has a trainable chest/back/legs/shoulders pool', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => window.Equipment && window.ExDB);
+    const out = await page.evaluate(() => {
+      const kits = Object.keys(window.Equipment.KITS);
+      const joints = window.Equipment.JOINTS;
+      const gaps = [];
+      kits.forEach(function(kit) {
+        joints.forEach(function(j) {
+          const user = {
+            equipmentKit: kit,
+            equipmentConfigured: true,
+            equipment: window.Equipment.tagsForKit(kit),
+            limitations: [{ id: j, joint: j }]
+          };
+          const open = window.Equipment.availableExercises(user);
+          const has = {
+            chest: open.some(function(e) { return e.grp === 'chest'; }),
+            back: open.some(function(e) { return e.grp === 'back'; }),
+            legs: open.some(function(e) { return e.grp === 'legs' || e.grp === 'glutes'; }),
+            shoulders: open.some(function(e) { return e.grp === 'shoulders'; })
+          };
+          ['chest', 'back', 'legs', 'shoulders'].forEach(function(g) {
+            if (!has[g]) gaps.push(kit + '+' + j + ':' + g);
+          });
+        });
+      });
+      return { gaps: gaps, combos: kits.length * joints.length };
+    });
+    expect(out.gaps).toEqual([]);
+    expect(out.combos).toBe(32);
+  });
+
+  test('all SplitsDB ids produce a coherent day list; catalog stays a separate layer', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => window.SplitsDB && window.SplitEngine && window.PlanCatalog);
+    const out = await page.evaluate(() => {
+      const ids = window.SplitsDB.splits.map(function(s) { return s.id; });
+      const unresolved = [];
+      const empty = [];
+      ids.forEach(function(id) {
+        const days = window.SplitEngine.listSplitDays(id);
+        if (!days || !days.length) empty.push(id);
+        (days || []).forEach(function(d, i) {
+          (d.exercises || []).forEach(function(n) {
+            if (!window.ExDB.byName(n)) unresolved.push(id + ' d' + (i + 1) + ': ' + n);
+          });
+        });
+      });
+      return {
+        splitCount: ids.length,
+        catalogCount: window.PlanCatalog.all().length,
+        unresolved: unresolved,
+        empty: empty
+      };
+    });
+    expect(out.splitCount).toBeGreaterThanOrEqual(20);
+    expect(out.catalogCount).toBeGreaterThanOrEqual(6);
+    expect(out.unresolved).toEqual([]);
+    expect(out.empty).toEqual([]);
+  });
 });

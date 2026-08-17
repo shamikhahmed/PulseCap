@@ -1,3 +1,6 @@
+## 6.27.0 — 2026-08-18 — Ember rebuild Phase 21
+- One injury model: eight joints everywhere. Named conditions (tennis elbow, rotator cuff, left/right) map onto those joints; the filter is bilateral, not side-aware. Rehab logs now actually change the library. All 21 splits stay live. Coverage test: every kit × joint still has chest/back/legs/shoulders. SW `pulsecap-v107`.
+
 ## 6.26.0 — 2026-08-18 — Ember rebuild Phase 20
 - Food library 35 → 235 items with labelled portions and a source on every row (USDA FDC ids, or component estimates for mixed Karachi dishes). Roti, daal, karahi, nihari, biryani and office-lunch plates are in the search. Lite guidance — not a calorie tracker. SW `pulsecap-v106`.
 

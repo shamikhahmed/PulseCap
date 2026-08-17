@@ -41,11 +41,16 @@ const Equipment = {
     const seen = {};
     const lines = [];
     (limitations || []).forEach(function(l) {
-      let j = String((typeof l === 'string' ? l : (l.joint || l.id || '')) || '').toLowerCase().replace('low back', 'low_back');
-      if (j === 'low_back') j = 'spine';
+      let j;
+      if (typeof InjuriesDB !== 'undefined' && InjuriesDB.jointFrom) {
+        j = InjuriesDB.jointFrom(l);
+      } else {
+        j = String((typeof l === 'string' ? l : (l.joint || l.id || '')) || '').toLowerCase().replace('low back', 'low_back');
+        if (j === 'low_back') j = 'spine';
+      }
       if (!j || seen[j]) return;
       seen[j] = true;
-      const msg = Equipment.CAUTIONS[j];
+      const msg = Equipment.CAUTIONS[j] || Equipment.CAUTIONS[j === 'spine' ? 'low_back' : j];
       if (msg) lines.push(msg);
     });
     if (!lines.length) return '';
@@ -110,13 +115,23 @@ const Equipment = {
 
   jointOk: function(exercise, profile) {
     const ctx = this._profile(profile);
-    const lims = ctx.limitations || (ctx.user && ctx.user.limitations) || [];
+    const user = ctx.user || {};
     const joints = {};
-    (lims || []).forEach(function(l) {
-      const j = String((typeof l === 'string' ? l : (l.joint || l.id || '')) || '').toLowerCase().replace('low_back', 'spine').replace('low back', 'spine');
+    const add = function(raw) {
+      if (raw == null) return;
+      if (typeof raw === 'object' && raw.recovered) return;
+      let j;
+      if (typeof InjuriesDB !== 'undefined' && InjuriesDB.jointFrom) {
+        j = InjuriesDB.jointFrom(raw);
+      } else {
+        j = String((typeof raw === 'string' ? raw : (raw.joint || raw.id || '')) || '').toLowerCase()
+          .replace('low_back', 'spine').replace('low back', 'spine');
+      }
       if (j) joints[j] = true;
-      if (j === 'low_back') joints.spine = true;
-    });
+    };
+    (ctx.limitations || []).forEach(add);
+    (user.limitations || []).forEach(add);
+    (user.injuries || []).forEach(add);
     if (!Object.keys(joints).length) return true;
     let ex = exercise;
     if (typeof exercise === 'string') {

@@ -1,5 +1,8 @@
 'use strict';
-/* All major training splits — offline, with smart recommendations */
+/* Training-split metadata for Settings recommenders.
+   These 20 ids are live in SplitEngine._getSplitDays (including custom).
+   PlanCatalog templates (fullbody_3, ppl_6, machine_ppl_shoulder, …) are a
+   separate prescribed-load layer — not a subset of this list. */
 
 window.SplitsDB = {
   splits: [

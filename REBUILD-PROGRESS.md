@@ -23,7 +23,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 17 Wrist/neck/ankle | done | 19d5ace | Eight joint keys on every lift. Wrist/neck/ankle ≥3 now filter. Persistent cautions on Log |
 | 18 Patterns + swaps | done | 05e0f0a | Pattern vocab + ≥2 real substitutions + Progress push/pull line |
 | 19 Sports + MET | done | e1850dc | Plyo reclass, cricket + sports, Compendium MET sources. Chromium 108 passed |
-| 20 Foods | done |  | 35→235 sourced foods incl. Karachi staples; labelled portions; lite guidance |
+| 20 Foods | done | 674acba | 35→235 sourced foods incl. Karachi staples; labelled portions; lite guidance |
+| 21 Injuries + coverage | done |  | Canonical 8 joints; named conditions wired; 21 splits live; kit×joint coverage test |
 
 ## Phase 1 checklist
 
@@ -110,3 +111,24 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 ## Quarantined (deleted in Phase 9)
 
 Removed calculators, quests, physique*, hub, encyclopedia, anatomy, bodymap, Capricorn/GSAP/vendor, etc.
+
+## Phase 16–21 content layer — final report
+
+History key (traced before any dedupe): logged sets keyed on **exercise name string**. Same-name duplicates merged history; they did not split it. Schema v6 stamps `exId` and never deletes sets.
+
+| Dataset | v6.21.0 audit | After 16–21 |
+|---------|--------------:|------------:|
+| Exercises | 302 (37 duplicate names) | **290** unique ids |
+| Duplicate names | 37 | **0** |
+| Joint keys | 5 of 8 | **8 of 8** on every lift |
+| Movement `pattern` | 0 | **290 / 290** |
+| Sports (`grp:sports`) | 5 real + 4 mislabelled plyos | **27** sports; **4** plyos |
+| Foods | 35, no local cuisine | **235**, sourced + portioned, Karachi staples in |
+| Splits (`splits-db.js`) | 21 claimed | **20** live in SplitEngine (audit over-counted by 1). None deleted. `custom` has a default day until the user builds one. |
+| Plan templates | 7 | **7** — separate prescribed-load layer, not dead splits |
+| Injury model | 26 / 8 / 8 / 5 disagreeing | **8 canonical joints**. 20 named rows (L/R + conditions) map onto them. Filter is **bilateral** (no side). Rehab `INJURY_DB` maps via `jointFrom`. |
+
+Tests added (`tests/content.spec.js` unless noted): uniqueness + Hack Squat restore; eight joint keys; wrist library/Swap; pattern vocab + ≥2 subs; plyo/cricket/MET source; foods ≥200 + Karachi; named-injury collapse + tennis elbow; kit × joint coverage (4 kits × 8 joints); all SplitsDB ids resolve (`tests/flows.spec.js` also includes `custom`).
+
+Could not verify from this machine: clinical review of cues/joint ratings; Compendium line-by-line for every pre-existing MET (sports + outliers corrected; resistance work cited as CPA 02052/02054 band); USDA FDC for mixed Karachi plates (those are labelled component estimates); real iPhone A2HS / lock-screen rest / VoiceOver / Dynamic Type 200%; live 6.6.0 backup migration (export from Me before overlay).
+

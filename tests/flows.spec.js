@@ -95,7 +95,7 @@ test.describe('PulseCap flows', () => {
     const problems = await page.evaluate(() => {
       // @ts-ignore
       const w = window;
-      const splits = ['ppl','ppl_5','ul','ul_3','fb','fb_2','bro','str','home','arnold','phul','phat','push_pull','powerbuilding','cardio_strength','starting_strength','stronglifts','531','upper_lower_fb'];
+      const splits = ['ppl','ppl_5','ul','ul_3','fb','fb_2','bro','str','home','arnold','phul','phat','push_pull','powerbuilding','cardio_strength','starting_strength','stronglifts','531','upper_lower_fb','custom'];
       const out = [];
       for (const sp of splits) {
         w.SplitEngine.listSplitDays(sp).forEach((d, i) => {
