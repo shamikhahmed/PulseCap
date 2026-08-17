@@ -5,8 +5,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | Phase | Status | Commit | Notes |
 |-------|--------|--------|-------|
 | 1 Foundation | done | fc02e87 | Tokens, system fonts, quarantine → `js/_deprecated/`, 5-tab shell, alias redirects |
-| 2 Spine | done | pending | `profile.js` + `engine.js` + export/import + owner seed |
-| 3 Onboarding | pending | — | &lt;90s + calibration + disclaimer |
+| 2 Spine | done | 569871d | `profile.js` + `engine.js` + export/import + owner seed |
+| 3 Onboarding | done | pending | 1 intro + 4 steps, calibration, educational disclaimer |
 | 4 Today | pending | — | One session CTA + one insight |
 | 5 Log | pending | — | 2-tap sets, WakeLock rest, per-side |
 | 6 Progress | pending | — | SVG self-vs-self |
@@ -29,6 +29,16 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 - [x] `node --check` + Playwright green
 - [x] Boot / 390px sanity
 - [x] Phase 1 commit
+
+## Phase 3 checklist
+
+- [x] One intro slide (Skip still works)
+- [x] Four steps: name+goal → calibration → limitations + disclaimer → confirm/optional Machine-Only PPL
+- [x] Educational, not medical — checkbox required
+- [x] Keep `__pcOnboardingState`, `obSelect`, `_finishOnboarding` for tests
+- [x] Gallery `INTRO_COUNT = 1`, `OB_STEPS = 4`
+- [x] Version `6.9.0` / `pulsecap-v89`
+- [x] Chromium Playwright green
 
 ## Quarantined (Phase 9 hard-delete)
 

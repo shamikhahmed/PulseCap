@@ -1,3 +1,6 @@
+## 6.9.0 — 2026-08-17 — Ember rebuild Phase 3
+- Onboarding cut to one intro + four steps (name/goal, calibration, limitations + educational disclaimer, confirm). Optional Machine-Only PPL seed. SW `pulsecap-v89`.
+
 ## 6.8.0 — 2026-08-17 — Ember rebuild Phase 2
 - Profile spine: `Profile.get/set` + `deriveContext` (plan, session, limitations, readiness, insight).
 - Engine facade over rotation / RPE load suggest / skip / volume. Schema v4.

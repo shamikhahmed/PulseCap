@@ -49,8 +49,8 @@ const SCREENS = [
 ];
 
 /* First-run flow — intro slides + onboarding steps. Driven via __pcOnboardingState. */
-const INTRO_COUNT = 4;
-const OB_STEPS = 7;
+const INTRO_COUNT = 1;
+const OB_STEPS = 4;
 const OB_SEED = {
   name: 'Alex', goal: 'hypertrophy', exp: 'intermediate', gender: 'male',
   age: 26, units: 'metric', height: 180, weight: 82, goalWeight: 78,

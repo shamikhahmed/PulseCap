@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.8.0",
-  "swCache": "pulsecap-v88",
+  "version": "6.9.0",
+  "swCache": "pulsecap-v89",
   "updated": "2026-08-17",
-  "notes": "Ember rebuild Phase 2 — Profile.deriveContext + engine facade + owner seed"
+  "notes": "Ember rebuild Phase 3 — 4-step onboarding + calibration + educational disclaimer"
 }
