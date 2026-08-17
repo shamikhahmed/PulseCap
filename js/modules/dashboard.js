@@ -97,8 +97,10 @@ reg('dashboard', function() {
       '<div class="dash-week" aria-hidden="true">' + weekDots + '</div>' +
       '<div class="dash-meta__sub">Rest days count. This is consistency, not a streak that punishes rest.</div></div>';
 
+    const gapHtml = (typeof Equipment !== 'undefined' && Equipment.gapBanner) ? Equipment.gapBanner(ctx) : '';
+
     return '<div class="dash-screen">' + demoBanner + topbar +
-      '<div class="dash-hero">' + sessionCard + insightLine + '</div>' +
+      '<div class="dash-hero">' + sessionCard + insightLine + gapHtml + '</div>' +
       '<div class="dash-lower">' + lastBlock + nextBlock + weekBlock +
       '<div style="padding:0 16px 8px"><button type="button" class="btn btn-secondary" style="width:100%" onclick="go(\'progress\')">Progress</button></div>' +
       '</div></div>';

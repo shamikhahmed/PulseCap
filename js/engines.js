@@ -905,7 +905,15 @@ const SplitEngine = {
   _resolveDay(day) {
     if (!day) return day;
     const resolved = this.resolveExercises(day.exercises || []);
-    return Object.assign({}, day, { exercises: resolved.exercises, _swaps: resolved.swaps });
+    let exercises = resolved.exercises || [];
+    if (!exercises.length && typeof Equipment !== 'undefined' && Equipment.alternativesForDay) {
+      exercises = Equipment.alternativesForDay(day);
+    }
+    return Object.assign({}, day, {
+      exercises: exercises,
+      _swaps: resolved.swaps,
+      _equipmentGap: !exercises.length
+    });
   },
   listSplitDays(split) {
     const user = S.g('user') || {};

@@ -295,4 +295,56 @@ test.describe('Exercise content integrity', () => {
     expect(out.unresolved).toEqual([]);
     expect(out.empty).toEqual([]);
   });
+
+  test('specific machines override kit: leg press + lat pulldown only', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => window.Equipment && window.ExDB && window.EquipmentDB);
+    const out = await page.evaluate(() => {
+      const user = {
+        equipmentConfigured: true,
+        equipmentKit: 'full_gym',
+        equipment: window.Equipment.tagsForKit('full_gym'),
+        equipmentIds: ['leg_press', 'lat_pulldown']
+      };
+      const open = window.Equipment.availableExercises(user);
+      const loaded = open.filter(function(ex) { return !ex.bw; });
+      const names = loaded.map(function(ex) { return ex.n; });
+      const types = loaded.map(function(ex) {
+        return window.Equipment.needTypes(ex) || window.Equipment.typeFromName(ex.n);
+      });
+      const allowedType = function(t) {
+        if (!t) return false;
+        const list = Array.isArray(t) ? t : [t];
+        return list.some(function(x) { return x === 'leg_press' || x === 'lat_pulldown' || x === 'cable_station'; });
+      };
+      const stray = loaded.filter(function(ex, i) {
+        const t = types[i];
+        if (t) return !allowedType(t);
+        const eq = ex.eq || [];
+        if (eq.indexOf('machine') >= 0 || eq.indexOf('cables') >= 0 || eq.indexOf('barbell') >= 0) return true;
+        return false;
+      }).map(function(ex) { return ex.n; });
+      const gaps = window.Equipment.loadedGaps(user);
+      const banner = window.Equipment.gapBanner(user);
+      const hasLeg = names.some(function(n) { return /leg press/i.test(n); });
+      const hasLat = names.some(function(n) { return /lat pulldown/i.test(n); });
+      const hasChestPress = names.some(function(n) { return /chest press/i.test(n); });
+      return {
+        loaded: names.length,
+        stray: stray,
+        gaps: gaps,
+        banner: banner,
+        hasLeg: hasLeg,
+        hasLat: hasLat,
+        hasChestPress: hasChestPress
+      };
+    });
+    expect(out.hasLeg).toBeTruthy();
+    expect(out.hasLat).toBeTruthy();
+    expect(out.hasChestPress).toBeFalsy();
+    expect(out.stray).toEqual([]);
+    expect(out.gaps.length).toBeGreaterThan(0);
+    expect(out.gaps).toContain('chest');
+    expect(out.banner).toMatch(/chest|shoulders|arms/i);
+  });
 });

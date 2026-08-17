@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'pulsecap-v110';
+const CACHE = 'pulsecap-v111';
 const ASSETS = [
   './',
   './index.html',

@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.30.0",
-  "swCache": "pulsecap-v110",
+  "version": "6.31.0",
+  "swCache": "pulsecap-v111",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 24 — Settings gutter + single-row tab bar"
+  "notes": "Ember Phase 25 — equipmentIds drive plans by machine type"
 }

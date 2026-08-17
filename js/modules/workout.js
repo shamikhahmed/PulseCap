@@ -713,6 +713,7 @@ reg('workout', function() {
     '</div>' +
 
     sh('Today\'s Plan') +
+    (typeof Equipment !== 'undefined' && Equipment.gapBanner ? Equipment.gapBanner() : '') +
     '<div class="screen-pad" style="padding-top:0;padding-bottom:0">' +
     (typeof renderSplitDayPicker === 'function' ? renderSplitDayPicker({ mode: 'train' }) : '') +
     '</div>' +

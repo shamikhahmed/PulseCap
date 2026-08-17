@@ -1,3 +1,6 @@
+## 6.31.0 — 2026-08-18 — Ember rebuild Phase 25
+- `user.equipmentIds` now drives `canPerform`. Machine *type* is the key; brand never blocks. Kit remains the fallback when the picker is unused. Sparse gyms get a plain-language gap banner, not an empty session. SW `pulsecap-v111`.
+
 ## 6.30.0 — 2026-08-18 — Ember rebuild Phase 24
 - One `.screen-pad` gutter. Settings Account no longer leaks selects to the screen edge. Settings tabs are a single horizontally scrolling row (no wrap). SW `pulsecap-v110`.
 

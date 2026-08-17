@@ -27,7 +27,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 21 Injuries + coverage | done | 79dde28 | Canonical 8 joints; named conditions wired; 20 splits live; kit×joint coverage test |
 | 22 Re-render contract | done | 0e13988 | Same-screen go() preserves scrollTop + focus; resetScroll / tab change still reset. SCROLL_PRESERVE_SCREENS deleted |
 | 23 Vertical layout | done | fafa734 | One #view padding in shell.css. Today: last session + next + weekly consistency. .screen min-height 100% flex column |
-| 24 Gutter + tabs | done | | `.screen-pad` primitive; Account fields no longer full-bleed; Settings tab bar nowrap + scroll |
+| 24 Gutter + tabs | done | 9b8e7e7 | `.screen-pad` primitive; Account fields no longer full-bleed; Settings tab bar nowrap + scroll |
+| 25 equipmentIds | done | | Specific machines override kit via machine type. Gap banner. Empty session fills with alternatives |
 
 ## Phase 1 checklist
 
@@ -155,4 +156,11 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 - `.cap-tab-bar` is nowrap + horizontal scroll + edge fade. Height ~60px (one row), not 88px wrap.
 - Guard test: interactive controls at 390px stay ≥12px from the edge unless `data-full-bleed` or inside a horizontal scroller.
 - Chromium: **127 passed**, 1 skipped.
+
+## Phase 25 — equipmentIds (v6.31.0 / pulsecap-v111)
+
+- `Equipment.canPerform` reads `user.equipmentIds`. Type match (leg_press, lat_pulldown, …) is required for machines; brand is metadata. Kit tags remain the fallback when ids are empty. `applyKit` clears ids so coarse chips still work.
+- Empty resolved sessions fill from `alternativesForDay`. Gap banner on Today and Train lists loaded groups the current gym cannot cover.
+- Test: only leg press + lat pulldown → those families only, chest press excluded, banner names missing groups.
+- Chromium: **128 passed**, 1 skipped.
 

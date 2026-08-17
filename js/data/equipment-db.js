@@ -124,6 +124,7 @@ window.EquipmentDB = {
   },
 
   exerciseMatches(ex) {
+    if (typeof Equipment !== 'undefined' && Equipment.canPerform) return Equipment.canPerform(ex);
     const ids = S.g('user.equipmentIds') || [];
     if (!S.g('user.equipmentConfigured') || !ids.length) return true;
     if (ids.includes('none')) return !!ex.bw;
