@@ -1,7 +1,7 @@
 # PulseCap — CLAUDE.md
 
 ## Current truth
-- Version: 6.21.0
+- Version: 6.27.0
 - App type: offline-first **PWA only**. No native shell, HealthKit, Live Activity, WidgetKit, or RevenueCat unless owner reverses.
 - Stack: vanilla JS, no framework, no bundler.
 - Router: `reg('screen', fn)` + synchronous `go('screen')`.
@@ -28,7 +28,8 @@
 - `js/plan-import.js` — local PDF/JSON import
 - `js/coach-kernel.js` — autoreg / volume / joints / meso / GymFloor
 - `js/gym-tools.js` — WakeLock / VoiceLogger / BarcodeFood / MobilityFlow / PainFlag
-- `js/modules/workout.js` — exercise DB + active logger
+- `js/data/exercise-db.js` — canonical ExDB (ids, joints, patterns, MET sources)
+- `js/modules/workout.js` — ExDB methods + active logger
 - `js/modules/dashboard.js` — Today screen
 - `js/modules/coach.js` — Smart Coach screen
 - `js/data/exercise-library.js` — wger sync

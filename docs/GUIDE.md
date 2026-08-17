@@ -3,7 +3,7 @@
 PulseCap is your **Smart Coach fitness operating system** — an offline-first PWA for workouts, cardio, body tracking, nutrition, and rule-based coaching.
 
 **Live app:** https://shamikhahmed.github.io/PulseCap  
-**Version:** 6.21.0 · SW `pulsecap-v101`
+**Version:** 6.27.0 · SW `pulsecap-v107`
 
 ---
 
@@ -18,17 +18,15 @@ PulseCap is your **Smart Coach fitness operating system** — an offline-first P
 
 ## Main navigation
 
-Default tabs (v5 IA):
+Default tabs (Ember IA):
 
 | Tab | Purpose |
 |-----|---------|
-| **Today** | Daily decision, readiness, prompts, quick actions |
-| **Train** | Workout plans, active logger, cardio, calisthenics |
-| **Body** | Body map, measurements, recovery, rehab, physique |
-| **Learn** | Hub, encyclopedia, assistant, academy, calculators |
-| **Me** | Progress, settings, profiles, equipment, custom split, **My Plan** |
-
-Pin extra screens via **Settings → Navigation** (min 3 tabs).
+| **Today** | One session CTA + one insight |
+| **Train** | Split picker, library, active logger |
+| **Progress** | This-lift-vs-itself (no 1RM), history, optional bodyweight |
+| **Programs** | Templates, custom builder, local import |
+| **Me** | Limitations, equipment, settings, profiles |
 
 ---
 
@@ -117,7 +115,8 @@ Macro logging, water, supplements with timing. Quick-add meals + offline food se
 ## Settings essentials
 
 - **Appearance** — Auto / Dark / Light (device default supported)
-- **Training** — split, gym days, **My Plan**, **Gym Floor Mode**, **Beginner Mode**, programs, equipment, manual RHR/HRV
+- **Training** — split, gym days, **Programs**, **Gym Floor Mode**, equipment, eight joint limitations
+- **Foods** — search roti, karahi, oats… Macros are estimates per labelled portion.
 - **Privacy / Data** — export/import, optional wger form-media pack sync
 - **Profiles** — multi-profile + Demo + “Load sample athletes”
 
@@ -126,7 +125,7 @@ Macro logging, water, supplements with timing. Quick-add meals + offline food se
 ## Offline & data
 
 - All data in localStorage (`fos_profiles_[id]`); photos in IndexedDB
-- Service worker cache-first (`pulsecap-v86`)
+- Service worker cache-first (`pulsecap-v107`)
 - No backend required · no account · no cloud sync
 - Export JSON before device reset
 

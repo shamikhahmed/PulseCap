@@ -24,7 +24,7 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 18 Patterns + swaps | done | 05e0f0a | Pattern vocab + ≥2 real substitutions + Progress push/pull line |
 | 19 Sports + MET | done | e1850dc | Plyo reclass, cricket + sports, Compendium MET sources. Chromium 108 passed |
 | 20 Foods | done | 674acba | 35→235 sourced foods incl. Karachi staples; labelled portions; lite guidance |
-| 21 Injuries + coverage | done |  | Canonical 8 joints; named conditions wired; 21 splits live; kit×joint coverage test |
+| 21 Injuries + coverage | done | 79dde28 | Canonical 8 joints; named conditions wired; 20 splits live; kit×joint coverage test |
 
 ## Phase 1 checklist
 

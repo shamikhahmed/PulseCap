@@ -109,10 +109,10 @@ Families, coaches, clients — one install.
 
 ```
 app.js / engines.js / coach-kernel.js / training-plan.js / plan-import.js / gym-tools.js
-modules/            — Today · Train · Body · Learn · Me
+modules/            — Today · Train · Progress · Programs · Me
 storage.js          — Multi-profile S + seedPersonas
 foods-db.js         — Offline macros
-sw.js               — cache-first PWA (pulsecap-v86)
+sw.js               — cache-first PWA (pulsecap-v107)
 ```
 
 Vanilla JS. Zero framework. Core tracking works offline. **v6.6.0**.

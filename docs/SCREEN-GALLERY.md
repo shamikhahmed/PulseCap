@@ -1,13 +1,13 @@
 # PulseCap — Documented Screen Gallery
 
-> v6.6.0 · Captures via `npm run gallery -- --project=chromium` → `docs/screenshots/gallery/` · Viewer: `screen-gallery.html`  
-> Latest matrix: **348** shots (212 viewport + 136 scroll) · includes **My Plan** + **Plan Import Review**
+> v6.27.0 · Captures via `npm run gallery -- --project=chromium` → `docs/screenshots/gallery/` · Viewer: `screen-gallery.html`  
+> Latest matrix: **178** shots (108 viewport + 70 scroll) · v6.27.0 capture · includes **My Plan**, **Plan Import Review**, active logger
 
 ## How state is kept
 
 | Concern | Store | Key / notes |
 |---------|-------|-------------|
-| Profile blob | `localStorage` via `S` | `fos_profiles_<id>` · schema v3 (`trainingPlan`) |
+| Profile blob | `localStorage` via `S` | `fos_profiles_<id>` · schema v6 (`exId` on logged sets) |
 | Active profile | `localStorage` | `fos_meta.activeId` |
 | Theme pin | profile `user.theme` / `user.mode` | null = follow system |
 | Settings tab | in-memory `_activeSettingsTab` | not persisted; deep link `go('settings',{tab})` |
@@ -16,7 +16,7 @@
 
 ## Nav (every matrix shot)
 
-Today · Train · Body · Learn · Me — fixed. Nested screens light parent (`NAV_PARENT`).
+Today · Train · Progress · Programs · Me — fixed. Nested screens light parent (`NAV_PARENT`).
 
 ---
 

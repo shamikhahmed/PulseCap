@@ -1,6 +1,6 @@
 # PulseCap
 
-**Version:** 6.21.0
+**Version:** 6.27.0
 
 **Your Smart Coach fitness operating system — by Capricorn Systems, built as a single offline-first PWA.**
 
@@ -21,8 +21,8 @@ Built by Shamikh Ahmed across 14 development sessions as a production-grade pers
 
 ### 🏋️ Workout System
 - **My Plan** — opt-in training program: built-in **machine-only, shoulder-safe PPL**, or **local** text-PDF / JSON / paste import with mandatory review (no upload, no OCR; scanned PDFs unsupported). Prescribes today’s session into the logger.
-- **300+ exercise database** with coaching cues, setup, common mistakes, breathing, joint stress heatmap
-- **Active workout logger** — set-by-set tracking with KG/reps inputs, circular checkmark, PR detection
+- **290 unique exercises** with coaching cues, setup, common mistakes, breathing, eight-joint stress, movement pattern, and sourced MET
+- **Active workout logger** — set-by-set tracking with KG/reps inputs, circular checkmark. Compare a lift only against itself (no 1RM estimator)
 - **Rest timer** — SVG ring countdown with Skip and +30s controls
 - **PR detection** — automatic personal record tracking with 🏆 badge
 - **Superset mode** — SS toggle for paired exercises
@@ -76,7 +76,7 @@ Built by Shamikh Ahmed across 14 development sessions as a production-grade pers
 
 ### ⚙️ Settings
 - **Dark & light modes** — Settings → Appearance
-- **5-tab IA** — Today · Train · Body · Learn · Me (fixed; customization retired)
+- **5-tab IA** — Today · Train · Progress · Programs · Me (fixed)
 - **18 training splits + build-your-own** — PPL, Upper/Lower, Full Body, Arnold, PHUL, PHAT & more, plus a custom split builder with live exercise search
 - **Real strength programs** — Stronglifts/Starting Strength linear progression (+2.5kg, auto-deload) and 5/3/1 training-max waves, prescribed straight into the logger
 - **Weekly schedule** — split days auto-map to your gym days (Monday shows Monday's workout), editable per weekday; non-gym days give active-recovery guidance with a "Train anyway" option
@@ -143,7 +143,7 @@ manifest.json       — PWA manifest
 
 ## Roadmap
 
-Shipped through **v6.21.0** (see `CHANGELOG.md`): Ember rebuild Phases 1–15 (tokens, 5-tab shell, computing Profile.deriveContext, 4-step onboarding with equipment/days/sex, slim Today/Log/Progress/Programs/Me, templates + builder, honesty/a11y). Personalized training plans with on-device PDF/JSON import remain. Smart Coach is rules-based — not an LLM. No 1RM estimator.
+Shipped through **v6.27.0** (see `CHANGELOG.md`): Ember rebuild Phases 1–21. Personalization spine computes calories/protein from you. Content layer: stable exercise ids, eight joints that actually filter, movement patterns, cricket + sports, 235 sourced foods including Karachi staples. Smart Coach is rules-based — not an LLM. No 1RM estimator.
 
 Still open / honest gaps (owner constraints):
 
@@ -168,12 +168,12 @@ PulseCap is educational fitness software. My Plan, Smart Coach, and Rehab tips a
 
 ## iPhone test checklist
 
-- [ ] Intro slides and 7-step onboarding complete
-- [ ] Bottom nav: Today · Train · Body · Learn · Me
+- [ ] Intro slide and 4-step onboarding complete
+- [ ] Bottom nav: Today · Train · Progress · Programs · Me
 - [ ] Active workout logger: sets, rest timer, PR badge
 - [ ] My Plan: install machine PPL or review-first local import
-- [ ] Body map taps show muscle recovery detail
-- [ ] Coach daily briefing renders with selected personality
+- [ ] Progress: this-lift-vs-itself chart (no 1RM)
+- [ ] Me: eight joint limitations change the library
 - [ ] Import/export JSON works in Settings
 - [ ] App works offline after first load
 - [ ] No huge blank gap under content above floating nav (v6.0.0+)
