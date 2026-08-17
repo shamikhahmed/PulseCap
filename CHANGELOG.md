@@ -1,3 +1,6 @@
+## 6.29.0 — 2026-08-18 — Ember rebuild Phase 23
+- One `#view` padding rule in the shell: `calc(var(--nav-h) + max(var(--safe), 12px))`. Short screens fill the column; Today uses last-session, next-up, and weekly consistency instead of leaving a void. SW `pulsecap-v109`.
+
 ## 6.28.0 — 2026-08-18 — Ember rebuild Phase 22
 - Same-screen `go()` is a state update: scroll and focus are preserved unless `resetScroll: true` (or the Settings tab actually changes). The old two-item allow-list is gone — including the dead `bodymap` key. Tapping gym days no longer jumps to the top. SW `pulsecap-v108`.
 

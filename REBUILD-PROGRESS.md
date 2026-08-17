@@ -25,7 +25,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 19 Sports + MET | done | e1850dc | Plyo reclass, cricket + sports, Compendium MET sources. Chromium 108 passed |
 | 20 Foods | done | 674acba | 35→235 sourced foods incl. Karachi staples; labelled portions; lite guidance |
 | 21 Injuries + coverage | done | 79dde28 | Canonical 8 joints; named conditions wired; 20 splits live; kit×joint coverage test |
-| 22 Re-render contract | done | | Same-screen go() preserves scrollTop + focus; resetScroll / tab change still reset. SCROLL_PRESERVE_SCREENS deleted |
+| 22 Re-render contract | done | 0e13988 | Same-screen go() preserves scrollTop + focus; resetScroll / tab change still reset. SCROLL_PRESERVE_SCREENS deleted |
+| 23 Vertical layout | done | | One #view padding in shell.css. Today: last session + next + weekly consistency. .screen min-height 100% flex column |
 
 ## Phase 1 checklist
 
@@ -139,4 +140,11 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 - Deleted `SCROLL_PRESERVE_SCREENS` (the `bodymap` key was dead because the alias resolves before `_renderScreen`).
 - Tests: `tests/ux-integrity.spec.js` — gym-day + accessibility toggle keep ~400px scroll and focus; weekly `<select>` keeps focus; eight self-re-render screens assert `preserveScroll`; cross-screen nav still resets.
 - `npx playwright test --project=chromium`: **124 passed**, 1 skipped (device-matrix). Console boot via smoke suite: no fatal errors, Today reachable.
+
+## Phase 23 — Vertical layout (v6.29.0 / pulsecap-v109)
+
+- Deleted duplicate `#view { padding-bottom }` rules in `css/layout.css` (including the `:has(#nav.cap-premium-nav)` copy). Shell owns `calc(var(--nav-h) + max(var(--safe), 12px))`.
+- `#view > .screen` is a min-height 100% flex column. Today composes last session, next-up, and this-week consistency in the lower third — no spacer filler.
+- Test: Today content bottom / viewport > 0.55 at 390×844 in demo.
+- Chromium: **125 passed**, 1 skipped.
 

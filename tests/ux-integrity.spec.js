@@ -149,3 +149,23 @@ test.describe('UX integrity — re-render contract', () => {
     expect(after).toBeLessThan(20);
   });
 });
+
+test.describe('UX integrity — vertical composition', () => {
+  test('Today fills the viewport with real blocks, not a void', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.go === 'function');
+    await page.evaluate(() => window.go('dashboard'));
+    const fill = await page.evaluate(() => {
+      const v = document.getElementById('view');
+      const nodes = v.querySelectorAll('.dash-session, .dash-meta, .banner, .btn');
+      let bottom = 0;
+      nodes.forEach(function(el) {
+        bottom = Math.max(bottom, el.getBoundingClientRect().bottom);
+      });
+      const box = v.getBoundingClientRect();
+      return (bottom - box.top) / box.height;
+    });
+    expect(fill).toBeGreaterThan(0.55);
+  });
+});

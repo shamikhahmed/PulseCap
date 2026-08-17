@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.28.0",
-  "swCache": "pulsecap-v108",
+  "version": "6.29.0",
+  "swCache": "pulsecap-v109",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 22 — same-screen re-render preserves scroll and focus"
+  "notes": "Ember Phase 23 — one #view padding rule; Today uses the lower third"
 }

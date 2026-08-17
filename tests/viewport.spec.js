@@ -40,15 +40,17 @@ test.describe('PulseCap viewport contract', () => {
     await assertCapSharedMobile(page, expect);
     const clearance = await page.evaluate(() => {
       const view = document.getElementById('view');
-      if (!view) return { pb: 0, spacer: 0 };
+      if (!view) return { pb: 0, spacer: 0, expected: 0 };
       const pb = parseFloat(getComputedStyle(view).paddingBottom) || 0;
       const sp = document.querySelector('.spacer-bottom');
       const spacer = sp ? (parseFloat(getComputedStyle(sp).height) || 0) : 0;
-      return { pb, spacer };
+      const root = getComputedStyle(document.documentElement);
+      const navH = parseFloat(root.getPropertyValue('--nav-h')) || 64;
+      const safe = parseFloat(root.getPropertyValue('--safe')) || 0;
+      return { pb, spacer, expected: navH + Math.max(safe, 12) };
     });
-    // Must clear floating pill (~60) + safe (34) without double-counting spacer
-    expect(clearance.pb).toBeGreaterThanOrEqual(100);
-    expect(clearance.pb).toBeLessThan(130);
+    // One rule: nav height + max(safe-area, 12). Must not double-count spacer.
+    expect(Math.abs(clearance.pb - clearance.expected)).toBeLessThan(2);
     expect(clearance.spacer).toBeLessThanOrEqual(16);
   });
 

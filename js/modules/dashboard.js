@@ -52,8 +52,56 @@ reg('dashboard', function() {
       '<strong>' + esc(insight.title || 'Insight') + '</strong> — ' + esc(insight.body || '') +
       '</div>';
 
-    return demoBanner + topbar + sessionCard + insightLine +
-      '<div style="padding:0 16px 24px"><button type="button" class="btn btn-secondary" style="width:100%" onclick="go(\'progress\')">Progress</button></div>';
+    const ws = S.g('workouts') || [];
+    const last = ws.slice().sort(function(a, b) {
+      return String(b.date || '').localeCompare(String(a.date || ''));
+    })[0];
+    const weekN = (typeof StreakEngine !== 'undefined' && StreakEngine.weekWorkouts)
+      ? StreakEngine.weekWorkouts().length : 0;
+    const planned = Math.max(1, (user.gymDays && user.gymDays.length) || user.daysPerWeek || user.weeklyGoal || 4);
+    const weekDots = Array.apply(null, { length: planned }).map(function(_, i) {
+      return '<span class="' + (i < weekN ? 'on' : '') + '"></span>';
+    }).join('');
+
+    let lastBlock = '';
+    if (last) {
+      const sets = (last.exercises || []).reduce(function(n, ex) {
+        return n + ((ex.sets || []).filter(function(s) { return s.done; }).length);
+      }, 0);
+      const when = last.date ? new Date(last.date).toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'short' }) : '';
+      lastBlock = '<div class="dash-meta">' +
+        '<div class="dash-meta__kicker">Last session</div>' +
+        '<div class="dash-meta__title">' + esc(last.name || 'Workout') + '</div>' +
+        '<div class="dash-meta__sub">' + esc(when) +
+          (sets ? ' · ' + sets + ' sets' : '') +
+          (last.duration ? ' · ' + last.duration + ' min' : '') +
+        '</div></div>';
+    }
+
+    let nextBlock = '';
+    if (typeof SplitEngine !== 'undefined' && SplitEngine.listSplitDays) {
+      const days = SplitEngine.listSplitDays() || [];
+      const cur = typeof SplitEngine.todayDayNumber === 'function' ? SplitEngine.todayDayNumber() : 1;
+      const nxt = days.length ? days[cur % days.length] : null;
+      if (nxt && (isRest || last)) {
+        nextBlock = '<div class="dash-meta">' +
+          '<div class="dash-meta__kicker">Next up</div>' +
+          '<div class="dash-meta__title">' + esc(nxt.n || nxt.name || 'Next session') + '</div>' +
+          '<div class="dash-meta__sub">' + esc(prettyMuscles(nxt.muscles, 3) || 'As planned') + '</div></div>';
+      }
+    }
+
+    const weekBlock = '<div class="dash-meta">' +
+      '<div class="dash-meta__kicker">This week</div>' +
+      '<div class="dash-meta__title">' + weekN + ' of ' + planned + ' sessions logged</div>' +
+      '<div class="dash-week" aria-hidden="true">' + weekDots + '</div>' +
+      '<div class="dash-meta__sub">Rest days count. This is consistency, not a streak that punishes rest.</div></div>';
+
+    return '<div class="dash-screen">' + demoBanner + topbar +
+      '<div class="dash-hero">' + sessionCard + insightLine + '</div>' +
+      '<div class="dash-lower">' + lastBlock + nextBlock + weekBlock +
+      '<div style="padding:0 16px 8px"><button type="button" class="btn btn-secondary" style="width:100%" onclick="go(\'progress\')">Progress</button></div>' +
+      '</div></div>';
   } catch (e) {
     console.error('dashboard', e);
     return '<div class="pad-16"><strong>Today error</strong><div class="muted-11">' + esc(e.message) + '</div>' +

@@ -20,9 +20,6 @@
   flex: 1; min-height: 0;
   overflow-y: auto; overflow-x: hidden;
   -webkit-overflow-scrolling: touch;
-  /* Floating pill sits at bottom:max(12px, safe). Clearance = pill (~60px) +
-     that offset + small buffer. Do NOT also bake safe into .spacer-bottom. */
-  padding-bottom: calc(72px + max(12px, var(--safe)));
   overscroll-behavior: contain;
   position: relative;
 }
@@ -619,13 +616,6 @@ body[data-cap-app="1"] .topbar {
 #nav:not(.cap-premium-nav) {
   border-radius: 0;
   clip-path: none;
-}
-/* Keep in sync with #view base padding — pill + float gap + buffer. */
-body:has(#nav.cap-premium-nav) #view {
-  padding-bottom: calc(72px + max(12px, var(--safe)));
-}
-@supports not selector(body:has(a)) {
-  #view { padding-bottom: calc(72px + max(12px, var(--safe))); }
 }
 
 @media (prefers-reduced-motion: reduce) {
