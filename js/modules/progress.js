@@ -3,25 +3,13 @@
 
 reg('progress', function() {
   const ws = S.g('workouts') || [];
-  const prs = S.g('prs') || [];
   const bodyStats = S.g('bodyStats') || [];
-  const earned = S.g('achievements') || [];
-  const streak = StreakEngine.get();
-  const totalVol = StreakEngine.totalVolume();
 
   return '<div class="topbar"><div class="topbar-title">Progress</div></div>' +
     _periodizationBlock(ws) +
-    _weeklySummary(ws, prs) +
-    _monthlyReport(ws, prs, bodyStats) +
-    _heroStats(ws, prs, streak, totalVol) +
-    _strengthLineChart(ws) +
-    _workoutCalendar(ws) +
+    (ws.length ? _strengthLineChart(ws) : '') +
     _workoutHistory(ws) +
-    _volumeChart(ws) +
-    _prBoard(prs) +
-    _strengthCharts(ws, prs) +
     _bodyStatsChart(bodyStats, S.g('user')) +
-    _achievementWall(earned) +
     '<div class="pad-x-16-b16"><button type="button" class="btn btn-secondary w-full" onclick="go(\'photos\')" style="display:flex;align-items:center;justify-content:center;gap:8px">' + icon('camera', 18) + ' Progress photos</button></div>' +
     '<div  class="spacer-bottom"></div>';
 });
@@ -133,7 +121,7 @@ function _strengthLineChart(ws) {
     _renderStrengthChart(ws, firstEx) +
     '</div>';
 
-  return sh('Strength Curve') + selectorHTML + chartHTML;
+  return sh('This lift vs itself') + selectorHTML + chartHTML;
 }
 
 function _getExerciseSessions(ws, exName) {
@@ -141,23 +129,23 @@ function _getExerciseSessions(ws, exName) {
   ws.forEach(function(wo) {
     (wo.exercises || []).forEach(function(ex) {
       if (ex.name !== exName) return;
-      var maxE1rm = 0;
+      var bestLoad = 0;
       (ex.sets || []).forEach(function(s) {
-        if (s.done && s.weight && s.reps) {
-          var e = ProgEngine.epley(s.weight, s.reps);
-          if (e > maxE1rm) maxE1rm = e;
+        if (s.done && s.weight) {
+          var load = Number(s.weight) || 0;
+          if (load > bestLoad) bestLoad = load;
         }
       });
-      if (maxE1rm > 0) {
+      if (bestLoad > 0) {
         var dateKey = (wo.date || '').slice(0, 10);
-        if (!sessionMap[dateKey] || sessionMap[dateKey] < maxE1rm) {
-          sessionMap[dateKey] = maxE1rm;
+        if (!sessionMap[dateKey] || sessionMap[dateKey] < bestLoad) {
+          sessionMap[dateKey] = bestLoad;
         }
       }
     });
   });
   var pts = Object.keys(sessionMap).sort().map(function(d) {
-    return { date: d, e1rm: Math.round(sessionMap[d]) };
+    return { date: d, load: Math.round(sessionMap[d] * 10) / 10 };
   });
   return pts.slice(-10);
 }
@@ -171,17 +159,17 @@ function _renderStrengthChart(ws, exName) {
 
   var W = 320, H = 200, padL = 48, padB = 28, padT = 24, padR = 16;
   var chartW = W - padL - padR, chartH = H - padT - padB;
-  var e1rms = pts.map(function(p) { return p.e1rm; });
-  var minE = Math.max(0, Math.min.apply(null, e1rms) - 5);
-  var maxE = Math.max.apply(null, e1rms) + 5;
+  var loads = pts.map(function(p) { return p.load; });
+  var minE = Math.max(0, Math.min.apply(null, loads) - 5);
+  var maxE = Math.max.apply(null, loads) + 5;
 
   var toX = function(i) { return padL + (pts.length > 1 ? i / (pts.length - 1) : 0.5) * chartW; };
   var toY = function(v) { return padT + (1 - (v - minE) / (maxE - minE || 1)) * chartH; };
 
-  var polyPts = pts.map(function(p, i) { return toX(i) + ',' + toY(p.e1rm); }).join(' ');
+  var polyPts = pts.map(function(p, i) { return toX(i) + ',' + toY(p.load); }).join(' ');
 
   var gradId = 'scg' + Date.now();
-  var fillPts = pts.map(function(p, i) { return toX(i) + ',' + toY(p.e1rm); }).join(' ') +
+  var fillPts = pts.map(function(p, i) { return toX(i) + ',' + toY(p.load); }).join(' ') +
     ' ' + toX(pts.length - 1) + ',' + (padT + chartH) + ' ' + padL + ',' + (padT + chartH);
 
   var guides = [minE + (maxE - minE) * 0.8, minE + (maxE - minE) * 0.5, minE + (maxE - minE) * 0.2];
@@ -193,7 +181,7 @@ function _renderStrengthChart(ws, exName) {
 
   var dots = pts.map(function(p, i) {
     var isLast = i === pts.length - 1;
-    var cx = toX(i), cy = toY(p.e1rm);
+    var cx = toX(i), cy = toY(p.load);
     if (isLast) return '<circle cx="'+cx+'" cy="'+cy+'" r="8" fill="white" stroke="var(--c1)" stroke-width="2"/>';
     return '<circle cx="'+cx+'" cy="'+cy+'" r="5" fill="var(--c1)"/>';
   }).join('');
@@ -207,7 +195,7 @@ function _renderStrengthChart(ws, exName) {
 
   var trendHTML = '';
   if (pts.length >= 2) {
-    var first = pts[0].e1rm, last = pts[pts.length - 1].e1rm;
+    var first = pts[0].load, last = pts[pts.length - 1].load;
     var pctChange = first > 0 ? Math.round(((last - first) / first) * 100) : 0;
     var trendColor = pctChange >= 0 ? '#10B981' : '#ef4444';
     var arrow = pctChange >= 0 ? '↑' : '↓';
@@ -230,7 +218,7 @@ function _renderStrengthChart(ws, exName) {
     dots +
     xLabels +
     '</svg>' +
-    '<div style="text-align:center;font-size:11px;color:var(--txt3);margin-top:4px">e1RM ('+_progressUnit()+')</div>' +
+    '<div style="text-align:center;font-size:11px;color:var(--txt3);margin-top:4px">Best set load ('+_progressUnit()+') — this lift vs itself</div>' +
     '</div>';
 }
 

@@ -1,3 +1,6 @@
+## 6.12.0 — 2026-08-17 — Ember rebuild Phase 6
+- Progress: Training Block + this-lift-vs-itself SVG (best set load, not e1RM) + history/empty + optional bodyweight/photos. SW `pulsecap-v92`.
+
 ## 6.11.0 — 2026-08-17 — Ember rebuild Phase 5
 - Log: per-side L/R loads averaged into the set, WakeLock rest timer kept, shoulder caution banner from `Profile.deriveContext`. SW `pulsecap-v91`.
 

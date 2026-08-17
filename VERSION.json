@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.11.0",
-  "swCache": "pulsecap-v91",
+  "version": "6.12.0",
+  "swCache": "pulsecap-v92",
   "updated": "2026-08-17",
-  "notes": "Ember rebuild Phase 5 — Log: per-side loads, rest WakeLock, limitation banner"
+  "notes": "Ember rebuild Phase 6 — Progress SVG self-vs-self (no 1RM)"
 }

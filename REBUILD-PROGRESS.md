@@ -8,8 +8,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 2 Spine | done | 569871d | `profile.js` + `engine.js` + export/import + owner seed |
 | 3 Onboarding | done | 2cd634e | 1 intro + 4 steps, calibration, educational disclaimer |
 | 4 Today | done | df61a32 | One session CTA + one insight |
-| 5 Log | done | pending | Per-side loads, WakeLock rest, limitation banner |
-| 6 Progress | pending | — | SVG self-vs-self |
+| 5 Log | done | e5a1dc2 | Per-side loads, WakeLock rest, limitation banner |
+| 6 Progress | done | pending | SVG self-vs-self (best set load, no 1RM) |
 | 7 Programs | pending | — | Templates + library + import |
 | 8 Me + audit | pending | — | Interlink tests |
 | 9 PWA | pending | — | Purge deprecated, offline/perf |
@@ -44,6 +44,20 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 
 - [x] One session card + one CTA + one insight
 - [x] Version `6.10.0` / `pulsecap-v90`
+
+## Phase 5 checklist
+
+- [x] Per-side L/R inputs when `kg_per_side`
+- [x] WakeLock + rest timer
+- [x] Limitation caution banner on active logger
+- [x] Version `6.11.0` / `pulsecap-v91`
+
+## Phase 6 checklist
+
+- [x] Keep Training Block + empty “No workouts yet”
+- [x] SVG self-vs-self (best set load, no 1RM)
+- [x] Optional BW chart + progress photos
+- [x] Version `6.12.0` / `pulsecap-v92`
 
 ## Quarantined (Phase 9 hard-delete)
 
