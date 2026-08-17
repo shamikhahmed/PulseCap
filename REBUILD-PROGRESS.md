@@ -25,6 +25,7 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 19 Sports + MET | done | e1850dc | Plyo reclass, cricket + sports, Compendium MET sources. Chromium 108 passed |
 | 20 Foods | done | 674acba | 35→235 sourced foods incl. Karachi staples; labelled portions; lite guidance |
 | 21 Injuries + coverage | done | 79dde28 | Canonical 8 joints; named conditions wired; 20 splits live; kit×joint coverage test |
+| 22 Re-render contract | done | | Same-screen go() preserves scrollTop + focus; resetScroll / tab change still reset. SCROLL_PRESERVE_SCREENS deleted |
 
 ## Phase 1 checklist
 
@@ -131,4 +132,11 @@ History key (traced before any dedupe): logged sets keyed on **exercise name str
 Tests added (`tests/content.spec.js` unless noted): uniqueness + Hack Squat restore; eight joint keys; wrist library/Swap; pattern vocab + ≥2 subs; plyo/cricket/MET source; foods ≥200 + Karachi; named-injury collapse + tennis elbow; kit × joint coverage (4 kits × 8 joints); all SplitsDB ids resolve (`tests/flows.spec.js` also includes `custom`).
 
 Could not verify from this machine: clinical review of cues/joint ratings; Compendium line-by-line for every pre-existing MET (sports + outliers corrected; resistance work cited as CPA 02052/02054 band); USDA FDC for mixed Karachi plates (those are labelled component estimates); real iPhone A2HS / lock-screen rest / VoiceOver / Dynamic Type 200%; live 6.6.0 backup migration (export from Me before overlay).
+
+## Phase 22 — Re-render contract (v6.28.0 / pulsecap-v108)
+
+- Inverted default in `js/app.js` `_renderScreen`: same-screen `go()` preserves `scrollTop` and restores focus (`id` / `data-focus-key` + caret). Real navigation still resets to 0. `resetScroll: true` or a Settings tab change also reset.
+- Deleted `SCROLL_PRESERVE_SCREENS` (the `bodymap` key was dead because the alias resolves before `_renderScreen`).
+- Tests: `tests/ux-integrity.spec.js` — gym-day + accessibility toggle keep ~400px scroll and focus; weekly `<select>` keeps focus; eight self-re-render screens assert `preserveScroll`; cross-screen nav still resets.
+- `npx playwright test --project=chromium`: **124 passed**, 1 skipped (device-matrix). Console boot via smoke suite: no fatal errors, Today reachable.
 

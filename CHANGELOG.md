@@ -1,3 +1,6 @@
+## 6.28.0 — 2026-08-18 — Ember rebuild Phase 22
+- Same-screen `go()` is a state update: scroll and focus are preserved unless `resetScroll: true` (or the Settings tab actually changes). The old two-item allow-list is gone — including the dead `bodymap` key. Tapping gym days no longer jumps to the top. SW `pulsecap-v108`.
+
 ## 6.27.0 — 2026-08-18 — Ember rebuild Phase 21
 - One injury model: eight joints everywhere. Named conditions (tennis elbow, rotator cuff, left/right) map onto those joints; the filter is bilateral, not side-aware. Rehab logs now actually change the library. All 21 splits stay live. Coverage test: every kit × joint still has chest/back/legs/shoulders. SW `pulsecap-v107`.
 

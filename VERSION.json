@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.27.0",
-  "swCache": "pulsecap-v107",
+  "version": "6.28.0",
+  "swCache": "pulsecap-v108",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 21 — canonical 8-joint injuries, live splits, coverage guarantee"
+  "notes": "Ember Phase 22 — same-screen re-render preserves scroll and focus"
 }

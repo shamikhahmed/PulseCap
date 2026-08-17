@@ -50,7 +50,7 @@ reg('settings', function(opts) {
   const tabBar = '<div class="cap-tab-bar" role="tablist" aria-label="Settings">' +
     tabList.map(function(t) {
       const active = _settingsTab === t;
-      return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" aria-controls="settings-panel" id="settings-tab-' + t + '" onclick="go(\'settings\',{tab:\''+t+'\'})">' +
+      return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" aria-controls="settings-panel" id="settings-tab-' + t + '" data-focus-key="settings-tab-' + t + '" onclick="go(\'settings\',{tab:\''+t+'\',resetScroll:true})">' +
         (labels[t]||t) + '</button>';
     }).join('') + '</div>';
 
@@ -186,7 +186,7 @@ function _tabTraining(u) {
     '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">' +
     [{id:'mon',l:'Mon'},{id:'tue',l:'Tue'},{id:'wed',l:'Wed'},{id:'thu',l:'Thu'},{id:'fri',l:'Fri'},{id:'sat',l:'Sat'},{id:'sun',l:'Sun'}].map(function(d) {
       const on = (u.gymDays || []).includes(d.id);
-      return '<button type="button" onclick="toggleGymDay(\''+d.id+'\')" aria-pressed="'+(on?'true':'false')+'" style="min-width:44px;min-height:44px;padding:10px 12px;border-radius:12px;border:1.5px solid '+(on?'var(--c1)':'var(--border)')+';background:'+(on?'rgba(var(--c1-rgb),0.12)':'var(--bg3)')+';color:'+(on?'var(--c1)':'var(--txt3)')+';font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">'+d.l+'</button>';
+      return '<button type="button" data-focus-key="gym-day-'+d.id+'" onclick="toggleGymDay(\''+d.id+'\')" aria-pressed="'+(on?'true':'false')+'" style="min-width:44px;min-height:44px;padding:10px 12px;border-radius:12px;border:1.5px solid '+(on?'var(--c1)':'var(--border)')+';background:'+(on?'rgba(var(--c1-rgb),0.12)':'var(--bg3)')+';color:'+(on?'var(--c1)':'var(--txt3)')+';font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">'+d.l+'</button>';
     }).join('') +
     '</div>' +
 
@@ -524,7 +524,7 @@ function _selectWrap(label, key, current, opts) {
 function _toggle(label, key, current) {
   return '<div class="toggle-row">' +
     '<div class="toggle-info"><div class="toggle-label">'+esc(label)+'</div></div>' +
-    '<button type="button" class="toggle'+(current?' on':'')+'" role="switch" aria-checked="'+(current?'true':'false')+'" aria-label="'+esc(label)+'" onclick="toggleSetting(\''+key+'\')"></button>' +
+    '<button type="button" class="toggle'+(current?' on':'')+'" role="switch" data-focus-key="toggle-'+esc(key)+'" aria-checked="'+(current?'true':'false')+'" aria-label="'+esc(label)+'" onclick="toggleSetting(\''+key+'\')"></button>' +
     '</div>';
 }
 function _infoStat(label, val, sub) {

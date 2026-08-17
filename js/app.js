@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.27.0';
+window.APP_VERSION = '6.28.0';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -22,8 +22,76 @@ function _runRouteCleanup(id) {
 }
 window.registerRouteCleanup = registerRouteCleanup;
 
+function _fnvKey(src) {
+  let h = 2166136261;
+  const s = String(src || '');
+  for (let i = 0; i < s.length; i++) {
+    h ^= s.charCodeAt(i);
+    h = Math.imul(h, 16777619);
+  }
+  return 'fk-' + (h >>> 0).toString(36);
+}
+
+function stampFocusKeys(root) {
+  if (!root) return;
+  const nodes = root.querySelectorAll('button, a, input, select, textarea, [onclick], [role="button"], [role="switch"], [role="tab"]');
+  for (let i = 0; i < nodes.length; i++) {
+    const el = nodes[i];
+    if (el.getAttribute('data-focus-key')) continue;
+    if (el.id) {
+      el.setAttribute('data-focus-key', el.id);
+      continue;
+    }
+    const oc = el.getAttribute('onclick') || el.getAttribute('onchange') || '';
+    const name = el.getAttribute('name') || '';
+    const aria = el.getAttribute('aria-label') || '';
+    const src = oc || name || aria || (el.tagName + ':' + String(el.textContent || '').trim().slice(0, 40));
+    el.setAttribute('data-focus-key', _fnvKey(src));
+  }
+}
+
+function _captureFocus(root) {
+  const ae = document.activeElement;
+  if (!ae || ae === document.body || ae === document.documentElement) return null;
+  if (!root || (ae !== root && !root.contains(ae))) return null;
+  return {
+    key: ae.getAttribute('data-focus-key') || ae.id || '',
+    name: ae.getAttribute('name') || '',
+    tag: ae.tagName,
+    start: (typeof ae.selectionStart === 'number') ? ae.selectionStart : null,
+    end: (typeof ae.selectionEnd === 'number') ? ae.selectionEnd : null
+  };
+}
+
+function _attrSel(s) {
+  return String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
+function _restoreFocus(root, snap) {
+  if (!snap || !root) return;
+  let el = null;
+  if (snap.key) {
+    try { el = root.querySelector('[data-focus-key="' + _attrSel(snap.key) + '"]'); } catch (e) { el = null; }
+    if (!el && /^[A-Za-z][\w:-]*$/.test(snap.key)) {
+      try { el = root.querySelector('#' + (window.CSS && CSS.escape ? CSS.escape(snap.key) : snap.key)); } catch (e2) { el = null; }
+    }
+  }
+  if (!el && snap.name) {
+    try { el = root.querySelector('[name="' + _attrSel(snap.name) + '"]'); } catch (e3) { el = null; }
+  }
+  if (!el) {
+    el = root.querySelector('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])') || root;
+  }
+  if (!el || typeof el.focus !== 'function') return;
+  try { el.focus({ preventScroll: true }); } catch (e4) { el.focus(); }
+  if (snap.start != null && typeof el.setSelectionRange === 'function') {
+    try { el.setSelectionRange(snap.start, snap.end); } catch (e5) { /* password / unsupported */ }
+  }
+}
+
 function upgradeInteractiveMarkup(root) {
   if (!root) return;
+  stampFocusKeys(root);
   root.querySelectorAll('[onclick]').forEach(function(el) {
     if (/^(BUTTON|A|INPUT|SELECT|TEXTAREA|SUMMARY)$/.test(el.tagName) || el.dataset.keyboardClick === 'true') return;
     if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
@@ -111,6 +179,7 @@ window.listScreens = function() {
   return Object.keys(set).sort();
 };
 window.currentScreenId = function() { return _currentScreen; };
+let _lastRenderTab = null;
 
 /* ── Icon system: minimalist stroke icons (SF-symbol flavor) ──
    Chrome/actions use these, not emoji. Emoji stays only in celebratory or
@@ -206,20 +275,25 @@ window.loadScript = loadScript;
 
 function _renderScreen(id, data) {
   const sameScreen = id === _currentScreen;
-  const SCROLL_PRESERVE_SCREENS = { bodymap: 1, recovery: 1 };
-  const preserveScroll = sameScreen && (
-    (data && data.preserveScroll) || (!data && SCROLL_PRESERVE_SCREENS[id])
-  );
+  const nextTab = data && data.tab;
+  const tabChanged = !!(sameScreen && nextTab && _lastRenderTab && nextTab !== _lastRenderTab);
+  /* Same-screen go() is a state update, not navigation. Preserve scroll and
+     focus unless the caller asks to reset, or the Settings (etc.) tab changed. */
+  const preserveScroll = sameScreen && !(data && data.resetScroll) && !tabChanged;
+  window.__pcRenderMeta = { id: id, sameScreen: sameScreen, preserveScroll: preserveScroll, tabChanged: tabChanged, intendedScroll: preserveScroll ? -1 : 0 };
   if (!sameScreen) {
     _runRouteCleanup(_currentScreen);
     if (typeof haptic === 'function') haptic(10);
   }
   _currentScreen = id;
+  _lastRenderTab = nextTab || (sameScreen ? _lastRenderTab : null);
   document.title = (id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ')) + ' — PulseCap';
   const html = _screens[id](data) || '';
   const v = document.getElementById('view');
   if (!v) return;
   const scrollY = preserveScroll ? v.scrollTop : 0;
+  window.__pcRenderMeta.intendedScroll = scrollY;
+  const focusSnap = preserveScroll ? _captureFocus(v) : null;
   const fastApp = document.body && document.body.getAttribute('data-cap-app') === '1';
   if (!v.querySelector('.screen')) v.innerHTML = '';
   const div = document.createElement('div');
@@ -231,6 +305,20 @@ function _renderScreen(id, data) {
   v.appendChild(div);
   if (sameScreen) {
     v.scrollTop = scrollY;
+    if (preserveScroll) {
+      _restoreFocus(div, focusSnap);
+      v.scrollTop = scrollY;
+      requestAnimationFrame(function() {
+        if (document.getElementById('view') === v) v.scrollTop = scrollY;
+      });
+    } else if (tabChanged) {
+      const tabBtn = div.querySelector('.cap-tab.on, [role="tab"][aria-selected="true"]');
+      if (tabBtn && typeof tabBtn.focus === 'function') {
+        try { tabBtn.focus({ preventScroll: true }); } catch (e) { tabBtn.focus(); }
+      }
+      v.scrollTop = 0;
+    }
+    window.__pcRenderMeta.appliedScroll = v.scrollTop;
   } else {
     v.scrollTop = 0;
     if (!fastApp) {
