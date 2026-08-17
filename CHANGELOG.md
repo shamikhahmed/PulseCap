@@ -1,3 +1,7 @@
+## 6.17.0 — 2026-08-17 — Ember rebuild Phase 11
+- Log: slim Active header (name + timer + Finish; Pain/Superset/Focus/Mic behind ⋯). Session warm-up collapsed. Set rows are one grid line at 375–430px with steppers; per-side L/R inside the KG stepper. Last/plates use `--text-2`. Taps no longer full-rerender the logger.
+- Train: dropped Progress/Cardio/Skills/Intel chips; split picker is a segmented control or dropdown. SW `pulsecap-v97`.
+
 ## 6.16.0 — 2026-08-17 — Ember rebuild Phase 10
 - A11y: 48px named exercise-detail targets. Docs/HANDOVER/CLAUDE/README/changelog.html synced. Ember rebuild Phases 1–10 complete. SW `pulsecap-v96`.
 

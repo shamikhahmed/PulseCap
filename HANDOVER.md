@@ -7,8 +7,8 @@
 Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Activity / widgets planned). Ember IA: Today · Train · Progress · Programs · Me.
 
 ## Facts
-**Version:** 6.16.0
-**SW cache:** `pulsecap-v96`
+**Version:** 6.17.0
+**SW cache:** `pulsecap-v97`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.

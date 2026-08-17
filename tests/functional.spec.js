@@ -81,10 +81,20 @@ test.describe('Functional — every screen as every user type', () => {
     ctx = 'nutrition';
     await page.evaluate(() => window.go('nutrition'));
     await waitReady(page);
-    const waterBefore = await page.evaluate(() => (window.S.g('water') || []).length);
-    await page.evaluate(() => window.logWater((window.S.g('water') || []).length + 1));
+    const waterBefore = await page.evaluate(() => {
+      const t = window.today();
+      return (window.S.g('water') || []).filter(function(w) { return w.date === t; }).length;
+    });
+    await page.evaluate(() => {
+      const t = window.today();
+      const n = (window.S.g('water') || []).filter(function(w) { return w.date === t; }).length;
+      window.logWater(n + 1);
+    });
     await waitReady(page);
-    const waterAfter = await page.evaluate(() => (window.S.g('water') || []).length);
+    const waterAfter = await page.evaluate(() => {
+      const t = window.today();
+      return (window.S.g('water') || []).filter(function(w) { return w.date === t; }).length;
+    });
     expect(waterAfter).toBe(waterBefore + 1);
 
     await page.evaluate(() => window.go('nutrition'));

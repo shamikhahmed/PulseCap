@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.16.0",
-  "swCache": "pulsecap-v96",
+  "version": "6.17.0",
+  "swCache": "pulsecap-v97",
   "updated": "2026-08-17",
-  "notes": "Ember rebuild Phase 10 — a11y polish + docs sync"
+  "notes": "Ember rebuild Phase 11 — Log + Train constitution pass"
 }

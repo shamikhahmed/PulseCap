@@ -13,7 +13,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 7 Programs | done | 03abd81 | Tab chrome, templates, local import |
 | 8 Me + audit | done | 45eacf4 | Limitations on Training tab + interlink tests |
 | 9 PWA | done | c0b7220 | Purged deprecated modules, dropped dead marketing scripts |
-| 10 Polish | done | pending | A11y + docs synced to 6.16.0 |
+| 10 Polish | done | 66bfc9c | A11y + docs synced to 6.16.0 |
+| 11 Log + Train | done | pending | Slim Active header, set-row grid, Train picker, logger perf |
 
 ## Phase 1 checklist
 
@@ -86,6 +87,16 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 - [x] Docs: CHANGELOG, changelog.html, CLAUDE, HANDOVER, README, GUIDE
 - [x] Version `6.16.0` / `pulsecap-v96`
 - [ ] Gallery regen optional (`npm run gallery`) — not run (heavy)
+
+## Phase 11 checklist
+
+- [x] Active header: name + timer + Finish; ⋯ menu for Pain / Superset / Focus / Mic
+- [x] Session warm-up collapsed by default
+- [x] Last / plates use `--text-2`
+- [x] Set row one line at 375/390/430 with steppers; per-side L/R in KG stepper
+- [x] Train: no Progress/Cardio/Skills/Intel chips; split is segmented or `<select>`
+- [x] Perf: `_addSet` DOM patch, deferred `AchEngine.check`, ExDB name index
+- [x] Version `6.17.0` / `pulsecap-v97`
 
 ## Quarantined (deleted in Phase 9)
 

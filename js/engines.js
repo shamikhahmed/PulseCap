@@ -604,15 +604,20 @@ const ProgEngine = {
   },
   prevString(name) {
     const ws = S.g('workouts') || [];
-    for (let i=ws.length-1; i>=0; i--) {
-      const ex = (ws[i].exercises||[]).find(e=>e.name===name);
-      if (ex && ex.sets && ex.sets.length) {
-        const s = ex.sets[0];
-        const u = S.g('user.units')==='imperial'?'lb':'kg';
-        return 'Last: '+(s.weight||0)+u+' × '+(s.reps||0)+' reps';
+    if (!this._prevMap || this._prevLen !== ws.length) {
+      this._prevLen = ws.length;
+      const map = Object.create(null);
+      const u = S.g('user.units') === 'imperial' ? 'lb' : 'kg';
+      for (let i = ws.length - 1; i >= 0; i--) {
+        (ws[i].exercises || []).forEach(function(ex) {
+          if (!ex || !ex.name || map[ex.name] || !ex.sets || !ex.sets.length) return;
+          const s = ex.sets[0];
+          map[ex.name] = 'Last: ' + (s.weight || 0) + u + ' × ' + (s.reps || 0);
+        });
       }
+      this._prevMap = map;
     }
-    return null;
+    return this._prevMap[name] || null;
   },
   doubleProgression(name, goal) {
     const ws = S.g('workouts') || [];
@@ -1141,18 +1146,35 @@ window.renderSplitDayPicker = function(opts) {
   const days = SplitEngine.listSplitDays();
   const active = user.splitDay || 1;
   const compact = !!opts.compact;
+  const restNote = SplitEngine.isScheduledRestDay()
+    ? '<div style="font-size:12px;color:var(--c5);margin-bottom:10px;line-height:1.45">Not a scheduled gym day — pick any session below or train anyway.</div>'
+    : '';
+  const heading = '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Choose today\'s session</div>';
+  if (opts.mode === 'train') {
+    if (days.length <= 4) {
+      const segs = days.map(function(d, i) {
+        const num = i + 1;
+        const on = num === active;
+        const label = (d.n.split('—')[0].split(' - ')[0].trim().slice(0, 10));
+        return '<button type="button" onclick="pickSplitDay(' + num + ')" aria-pressed="' + on + '" aria-label="Session ' + num + (d.n ? ': ' + esc(d.n) : '') + '">' + esc(label) + '</button>';
+      }).join('');
+      return '<div class="mb-14">' + heading + restNote + '<div class="segmented split-seg" role="tablist">' + segs + '</div></div>';
+    }
+    const options = days.map(function(d, i) {
+      const num = i + 1;
+      return '<option value="' + num + '"' + (num === active ? ' selected' : '') + '>' + esc((d.n || ('Session ' + num)).slice(0, 42)) + '</option>';
+    }).join('');
+    return '<div class="mb-14">' + heading + restNote +
+      '<label class="split-select-wrap"><span class="log-sr">Today\'s session</span>' +
+      '<select class="split-select" onchange="pickSplitDay(+this.value)">' + options + '</select></label></div>';
+  }
   const chips = days.map(function(d, i) {
     const num = i + 1;
     const on = num === active;
     const label = compact ? String(num) : (d.n.split('—')[0].split(' - ')[0].trim().slice(0, 14));
-    return '<button type="button" onclick="pickSplitDay(' + num + ')" aria-pressed="' + on + '" aria-label="Session ' + num + (d.n ? ': ' + esc(d.n) : '') + '" style="flex-shrink:0;min-height:44px;min-width:44px;padding:' + (compact ? '10px 14px' : '10px 14px') + ';border-radius:12px;border:1.5px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'rgba(var(--c1-rgb),0.12)' : 'var(--bg3)') + ';color:' + (on ? 'var(--c1)' : 'var(--txt2)') + ';font-size:' + (compact ? '12px' : '11px') + ';font-weight:700;cursor:pointer;touch-action:manipulation;white-space:nowrap">' + esc(label) + '</button>';
+    return '<button type="button" onclick="pickSplitDay(' + num + ')" aria-pressed="' + on + '" aria-label="Session ' + num + (d.n ? ': ' + esc(d.n) : '') + '" style="flex-shrink:0;min-height:44px;min-width:44px;padding:10px 14px;border-radius:12px;border:1.5px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'rgba(var(--c1-rgb),0.12)' : 'var(--bg3)') + ';color:' + (on ? 'var(--c1)' : 'var(--txt2)') + ';font-size:' + (compact ? '12px' : '11px') + ';font-weight:700;cursor:pointer;touch-action:manipulation;white-space:nowrap">' + esc(label) + '</button>';
   }).join('');
-  const restNote = SplitEngine.isScheduledRestDay()
-    ? '<div style="font-size:12px;color:var(--c5);margin-bottom:10px;line-height:1.45">📅 Not a scheduled gym day — pick any session below or train anyway.</div>'
-    : '';
-  return '<div  class="mb-14">' +
-    '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Choose today\'s session</div>' +
-    restNote +
+  return '<div  class="mb-14">' + heading + restNote +
     '<div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;-webkit-overflow-scrolling:touch">' + chips + '</div>' +
     '</div>';
 };

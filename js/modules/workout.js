@@ -500,10 +500,22 @@ const ExDB = {
     'Bodyweight Back Extension': 'Back Extension',
     'Single-Leg Cable Curl': 'Leg Curl'
   },
+  _index: null,
+  invalidateIndex() { this._index = null; },
+  _ensureIndex() {
+    if (this._index) return;
+    const map = Object.create(null);
+    for (let i = 0; i < this.db.length; i++) {
+      const row = this.db[i];
+      if (row && row.n) map[row.n] = row;
+    }
+    this._index = map;
+  },
   byName(name) {
-    return this.db.find(e => e.n === name) ||
-      (this.ALIASES[name] ? this.db.find(e => e.n === this.ALIASES[name]) : null) ||
-      null;
+    this._ensureIndex();
+    if (this._index[name]) return this._index[name];
+    const alias = this.ALIASES[name];
+    return alias ? (this._index[alias] || null) : null;
   },
   byGroup(grp) { return this.db.filter(e => e.grp === grp); },
   search(q) { const s = q.toLowerCase(); return this.db.filter(e => e.n.toLowerCase().includes(s) || (e.pri||'').toLowerCase().includes(s)); }
@@ -838,6 +850,150 @@ window.discardWorkoutDraft = function() {
   toast('Workout draft discarded', 'info');
 };
 
+function _fillTrainInsight() {
+  const slot = document.getElementById('train-insight-slot');
+  if (!slot || (typeof currentScreenId === 'function' && currentScreenId() !== 'workout')) return;
+  try {
+    const suggestion = CoachEngine.insights()[0];
+    if (!suggestion) { slot.innerHTML = ''; return; }
+    slot.innerHTML = '<div class="ai-msg"><div class="ai-msg-header"><span class="ai-msg-label">Coach Insight</span></div><div class="ai-msg-text">'+esc(suggestion.m)+'</div></div>';
+  } catch (e) { slot.innerHTML = ''; }
+}
+
+function _logMoreMenu() {
+  const mic = (typeof VoiceLogger !== 'undefined' && VoiceLogger.supported())
+    ? '<button type="button" onclick="_closeLogMore();voiceLogCurrentSet()">Voice log</button>' : '';
+  return '<details class="log-more">' +
+    '<summary aria-label="More session actions">⋯</summary>' +
+    '<div class="log-more__menu">' +
+    '<button type="button" class="log-more__pain" onclick="_closeLogMore();flagPainDuringWorkout()">Flag pain</button>' +
+    '<button type="button" onclick="_closeLogMore();toggleSupersetMode()" aria-pressed="'+(_supersetMode?'true':'false')+'">'+(_supersetMode?'Superset on':'Superset')+'</button>' +
+    '<button type="button" onclick="_closeLogMore();toggleFocusMode()" aria-pressed="'+(_focusMode?'true':'false')+'">'+(_focusMode?'Exit focus':'Focus')+'</button>' +
+    mic +
+    '</div></details>';
+}
+window._closeLogMore = function() {
+  document.querySelectorAll('.log-more[open]').forEach(function(el) { el.removeAttribute('open'); });
+};
+
+function _weightDisplayForSet(ex, set, user) {
+  const perSide = !!(ex._plan && ex._plan.unit === 'kg_per_side');
+  if (perSide) {
+    const side = set._editSide === 'R' ? 'R' : 'L';
+    const kg = side === 'R'
+      ? (set.weightR != null ? set.weightR : set.weight)
+      : (set.weightL != null ? set.weightL : set.weight);
+    return kg ? weightFromKg(kg, user) : '';
+  }
+  return set.weight ? weightFromKg(set.weight, user) : '';
+}
+
+function _setRowHTML(ex, exIdx, set, sIdx, suggestKg) {
+  const user = S.g('user') || {};
+  const goal = user.goal || 'hypertrophy';
+  const rec = GUIDANCE.setsReps(goal);
+  const perSide = !!(ex._plan && ex._plan.unit === 'kg_per_side');
+  const isDone = !!set.done;
+  const isPR = !!set._isPR;
+  const suggest = suggestKg != null ? suggestKg : WeightEngine.suggest(ex.name, user);
+  const displaySuggest = suggest ? weightFromKg(suggest, user) : 0;
+  const displayWeight = _weightDisplayForSet(ex, set, user);
+  const side = set._editSide === 'R' ? 'R' : 'L';
+  const sideToggle = perSide
+    ? '<div class="set-step__side" role="group" aria-label="Per-side load">' +
+      '<button type="button" data-side="L" aria-pressed="'+(side==='L'?'true':'false')+'" onclick="_toggleEditSide('+exIdx+','+sIdx+',\'L\')">L</button>' +
+      '<button type="button" data-side="R" aria-pressed="'+(side==='R'?'true':'false')+'" onclick="_toggleEditSide('+exIdx+','+sIdx+',\'R\')">R</button>' +
+      '</div>'
+    : '';
+  return '<div class="set-row' + (isDone?' done':'') + (isPR?' pr':'') + '" id="set-'+exIdx+'-'+sIdx+'">' +
+    '<div class="set-num">'+(sIdx+1)+'</div>' +
+    '<div class="set-step'+(perSide?' set-step--side':'')+'">' +
+    sideToggle +
+    '<button type="button" class="set-step__btn" onclick="_stepVal('+exIdx+','+sIdx+',\'weight\',-1)" aria-label="Decrease weight">−</button>' +
+    '<input type="number" class="set-step__inp" data-field="weight" aria-label="'+(perSide?(side==='R'?'Right':'Left')+' side load':'Weight')+'" placeholder="'+displaySuggest+'" value="'+displayWeight+'" inputmode="decimal" onchange="_onWeightInput('+exIdx+','+sIdx+',this.value)">' +
+    '<button type="button" class="set-step__btn" onclick="_stepVal('+exIdx+','+sIdx+',\'weight\',1)" aria-label="Increase weight">+</button>' +
+    '</div>' +
+    '<div class="set-x">×</div>' +
+    '<div class="set-step">' +
+    '<button type="button" class="set-step__btn" onclick="_stepVal('+exIdx+','+sIdx+',\'reps\',-1)" aria-label="Decrease reps">−</button>' +
+    '<input type="number" class="set-step__inp" data-field="reps" aria-label="Reps" placeholder="'+(rec.reps.split('-')[0])+'" value="'+(set.reps||'')+'" inputmode="numeric" onchange="_setVal('+exIdx+','+sIdx+',\'reps\',parseInt(this.value,10)||0)">' +
+    '<button type="button" class="set-step__btn" onclick="_stepVal('+exIdx+','+sIdx+',\'reps\',1)" aria-label="Increase reps">+</button>' +
+    '</div>' +
+    '<div class="set-at">@</div>' +
+    '<input type="number" class="set-rpe" data-field="rpe" aria-label="RPE" placeholder="8" value="'+(set.rpe||'')+'" min="5" max="10" step="0.5" inputmode="decimal" onchange="_setVal('+exIdx+','+sIdx+',\'rpe\',parseFloat(this.value)||0)">' +
+    '<button type="button" class="set-check'+(isDone?' done':'')+'" onclick="_doneSet('+exIdx+','+sIdx+')" aria-label="'+(isDone?'Set done':'Mark set done')+'">' +
+    (isDone ? (typeof icon === 'function' ? icon('check', 16, isPR ? '#fff' : 'currentColor') : '✓') : '') +
+    '</button>' +
+    (isPR ? '<div class="set-pr-flag">PR</div>' : '') +
+    '</div>';
+}
+
+window._onWeightInput = function(exIdx, sIdx, raw) {
+  if (!_wkt || !_wkt.exercises[exIdx] || !_wkt.exercises[exIdx].sets[sIdx]) return;
+  const ex = _wkt.exercises[exIdx];
+  const set = ex.sets[sIdx];
+  if (ex._plan && ex._plan.unit === 'kg_per_side') {
+    _setSide(exIdx, sIdx, set._editSide === 'R' ? 'R' : 'L', raw);
+  } else {
+    _setVal(exIdx, sIdx, 'weight', weightToKg(parseFloat(raw) || 0));
+  }
+};
+
+window._toggleEditSide = function(exIdx, sIdx, side) {
+  if (!_wkt || !_wkt.exercises[exIdx] || !_wkt.exercises[exIdx].sets[sIdx]) return;
+  _wkt.exercises[exIdx].sets[sIdx]._editSide = side === 'R' ? 'R' : 'L';
+  _syncSetInputs(exIdx, sIdx);
+};
+
+window._stepVal = function(exIdx, sIdx, field, dir) {
+  if (!_wkt || !_wkt.exercises[exIdx] || !_wkt.exercises[exIdx].sets[sIdx]) return;
+  const ex = _wkt.exercises[exIdx];
+  const set = ex.sets[sIdx];
+  const user = S.g('user') || {};
+  const stepW = usesImperial(user) ? 5 : 2.5;
+  if (field === 'weight' && ex._plan && ex._plan.unit === 'kg_per_side') {
+    const side = set._editSide === 'R' ? 'R' : 'L';
+    const kg = side === 'R'
+      ? (set.weightR != null ? set.weightR : set.weight || 0)
+      : (set.weightL != null ? set.weightL : set.weight || 0);
+    const next = Math.max(0, Math.round((weightFromKg(kg, user) + dir * stepW) * 10) / 10);
+    _setSide(exIdx, sIdx, side, String(next));
+    _syncSetInputs(exIdx, sIdx);
+    return;
+  }
+  if (field === 'weight') {
+    const next = Math.max(0, Math.round((weightFromKg(set.weight || 0, user) + dir * stepW) * 10) / 10);
+    set.weight = weightToKg(next, user);
+  } else if (field === 'reps') {
+    set.reps = Math.max(0, (parseInt(set.reps, 10) || 0) + dir);
+  } else if (field === 'rpe') {
+    set.rpe = Math.max(5, Math.min(10, (parseFloat(set.rpe) || 8) + dir * 0.5));
+  }
+  _checkpointWorkout();
+  _syncSetInputs(exIdx, sIdx);
+};
+
+function _syncSetInputs(exIdx, sIdx) {
+  const row = document.getElementById('set-' + exIdx + '-' + sIdx);
+  if (!row || !_wkt) return;
+  const ex = _wkt.exercises[exIdx];
+  const set = ex.sets[sIdx];
+  const user = S.g('user') || {};
+  const wInp = row.querySelector('[data-field="weight"]');
+  const rInp = row.querySelector('[data-field="reps"]');
+  const pInp = row.querySelector('[data-field="rpe"]');
+  if (wInp) wInp.value = _weightDisplayForSet(ex, set, user);
+  if (rInp) rInp.value = set.reps || '';
+  if (pInp) pInp.value = set.rpe || '';
+  const side = set._editSide === 'R' ? 'R' : 'L';
+  row.querySelectorAll('[data-side]').forEach(function(btn) {
+    btn.setAttribute('aria-pressed', btn.getAttribute('data-side') === side ? 'true' : 'false');
+  });
+  if (wInp && ex._plan && ex._plan.unit === 'kg_per_side') {
+    wInp.setAttribute('aria-label', (side === 'R' ? 'Right' : 'Left') + ' side load');
+  }
+}
+
 /* ── WORKOUT HOME SCREEN ── */
 reg('workout', function() {
   const user = S.g('user') || {};
@@ -845,8 +1001,8 @@ reg('workout', function() {
   const score = ReadinessEngine.score();
   const cardioRec = CoachEngine.cardioRec(splitDay, score);
   const readiness = ReadinessEngine.label(score);
-  const suggestion = CoachEngine.insights()[0];
   const draft = _workoutDraft();
+  setTimeout(_fillTrainInsight, 0);
   const draftBanner = draft && draft.workout
     ? '<div class="card-block"><div class="section-label">Workout in progress</div>' +
       '<div class="body-13">' + esc(draft.workout.name || 'Workout') + ' · saved ' + esc(fmtDate(new Date(draft.savedAt || Date.now()))) + '</div>' +
@@ -877,7 +1033,7 @@ reg('workout', function() {
       (needsSpot ? '<span style="font-size:10px;color:var(--danger);font-weight:700;display:inline-flex;align-items:center;gap:3px">'+icon('alert',11,'var(--danger)')+'SPOTTER</span>' : '') +
       '</div>' +
       (ex?'<div  class="muted-12 mt-2">'+esc(ex.pri)+(ex.sec?', '+ex.sec:'')+'</div>':'') +
-      (prev?'<div style="font-size:12px;color:var(--c1);margin-top:2px">'+esc(prev)+'</div>':'') +
+      (prev?'<div class="log-last" style="margin-top:2px">'+esc(prev)+'</div>':'') +
       '</div>' +
       '<button type="button" onclick="showExerciseDetail('+jsArg(name)+')" aria-label="Details for '+esc(name)+'" ' +
       'style="min-width:48px;min-height:48px;width:48px;height:48px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);' +
@@ -888,19 +1044,14 @@ reg('workout', function() {
   return '<div class="topbar">' +
     '<div><div class="topbar-title">Train</div><div class="topbar-date">'+esc(new Date().toLocaleDateString('en-GB',{weekday:'long',month:'short',day:'numeric'}))+'</div></div>' +
     '<div class="topbar-right"><button type="button" class="topbar-icon" onclick="go(\'workout\',{search:true})" aria-label="Exercise search" style="display:flex;align-items:center;justify-content:center">' + icon('search', 18) + '</button></div></div>' +
-    '<div class="mod-chip-row">' +
-    '<button type="button" onclick="go(\'progress\')" class="press mod-chip inline-chip">' + icon('chart', 15) + 'Progress</button>' +
-    '<button type="button" onclick="go(\'cardio\')" class="press mod-chip inline-chip">' + icon('heart', 15) + 'Cardio</button>' +
-    '<button type="button" onclick="go(\'calisthenics\')" class="press mod-chip inline-chip">' + icon('run', 15) + 'Skills</button>' +
-    '<button type="button" onclick="go(\'training-intel\')" class="press mod-chip inline-chip">' + icon('sparkles', 15) + 'Intel</button>' +
-    '</div>' + draftBanner +
+    draftBanner +
 
     '<div  class="pad-x-16-b">' +
     '<div class="readiness-label '+readiness.cls+' mb-12" >Readiness: '+score+' — '+readiness.l+'</div>' +
     '</div>' +
 
     sh('Today\'s Plan') +
-    (typeof renderSplitDayPicker === 'function' ? renderSplitDayPicker() : '') +
+    (typeof renderSplitDayPicker === 'function' ? renderSplitDayPicker({ mode: 'train' }) : '') +
     '<div class="card card-solid">' +
     '<div style="font-size:18px;font-weight:800;color:var(--txt);margin-bottom:4px">'+esc(splitDay.n||'Rest Day')+'</div>' +
     '<div style="font-size:13px;color:var(--txt3);margin-bottom:16px">'+esc(prettyMuscles(splitDay.muscles))+'</div>' +
@@ -913,7 +1064,7 @@ reg('workout', function() {
     exPreviews + '</div>' +
 
     (splitDay.warmup&&splitDay.warmup.length?
-      '<div class="warmup-card"><div class="warmup-title">Warm-Up</div>'+warmupItems+'</div>' : '') +
+      '<details class="warmup-fold"><summary>Warm-up</summary><div class="warmup-fold__body">'+warmupItems+'</div></details>' : '') +
 
     '<div class="warmup-card">' +
     '<div class="warmup-title">Cardio Recommendation</div>' +
@@ -922,7 +1073,7 @@ reg('workout', function() {
     '<div style="font-size:12px;color:var(--txt3);margin-top:6px">Best performed after your lifting session</div>' +
     '</div>' +
 
-    (suggestion?'<div class="ai-msg"><div class="ai-msg-header"><span class="ai-msg-label">Coach Insight</span></div><div class="ai-msg-text">'+esc(suggestion.m)+'</div></div>':'') +
+    '<div id="train-insight-slot"></div>' +
 
     '<div style="padding:16px 16px 0">' +
     '<button type="button" class="btn btn-primary" onclick="startWorkout()">Start Workout</button>' +
@@ -988,7 +1139,6 @@ reg('cardio', function() {
 reg('active', function() {
   if (!_wkt && !_hydrateWorkoutDraft()) { go('workout'); return ''; }
   const user = S.g('user') || {};
-  const goal = user.goal || 'hypertrophy';
   const displayUnit = weightUnit(user).toUpperCase();
   const restSecs = user.restSecs || 120;
   const ctx = (typeof Profile !== 'undefined' && Profile.deriveContext) ? Profile.deriveContext() : { limitations: user.limitations || [] };
@@ -1005,22 +1155,15 @@ reg('active', function() {
   const header =
     '<div class="wkt-header" id="wkt-header">' +
     '<div class="wkt-progress-bar-wrap"><div class="wkt-progress-bar" id="wkt-pb" style="width:'+progress+'%"></div></div>' +
-    '<div style="display:flex;align-items:center;justify-content:space-between;padding:10px 16px 8px">' +
-    '<div>' +
-    '<div style="font-size:11px;color:var(--txt3);font-weight:700;text-transform:uppercase;letter-spacing:0.08em">'+esc(_wkt.name)+'</div>' +
-    '<div style="font-size:22px;font-weight:900;color:var(--c1);font-variant-numeric:tabular-nums" id="wkt-timer-display">'+fmtTime(_wktElapsed)+'</div>' +
+    '<div class="wkt-bar">' +
+    '<div class="wkt-bar__meta">' +
+    '<div class="wkt-bar__name">'+esc(_wkt.name)+'</div>' +
+    '<div class="wkt-bar__timer" id="wkt-timer-display">'+fmtTime(_wktElapsed)+'</div>' +
     '</div>' +
-    '<div style="text-align:center">' +
-    '<div style="font-size:18px;font-weight:800;color:var(--txt)" id="wkt-count">'+doneSets+'/'+totalSets+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em">Sets Done</div>' +
-    '</div>' +
-    '<div class="flex-gap-8">' +
-    (typeof VoiceLogger !== 'undefined' && VoiceLogger.supported() ?
-      '<button type="button" onclick="voiceLogCurrentSet()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:var(--bg3);color:var(--txt2)" aria-label="Voice log set">Mic</button>' : '') +
-    '<button type="button" onclick="flagPainDuringWorkout()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid rgba(255,69,58,0.35);background:rgba(255,69,58,0.08);color:var(--danger)">Pain</button>' +
-    '<button type="button" onclick="toggleSupersetMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_supersetMode?'var(--grad)':'var(--bg3)')+';color:'+(_supersetMode?'#fff':'var(--txt3)')+'">SS</button>' +
-    '<button type="button" onclick="toggleFocusMode()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(_focusMode?'var(--c1)':'var(--bg3)')+';color:'+(_focusMode?'#fff':'var(--txt3)')+'">'+(_focusMode?'Exit':'Focus')+'</button>' +
-    '<button type="button" onclick="confirmFinishWorkout()" style="padding:8px 16px;border-radius:20px;background:var(--grad);color:#fff;font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation;border:none">Finish</button>' +
+    '<span id="wkt-count" class="log-sr">'+doneSets+'/'+totalSets+'</span>' +
+    '<div class="wkt-bar__actions">' +
+    _logMoreMenu() +
+    '<button type="button" class="wkt-bar__finish" onclick="confirmFinishWorkout()">Finish</button>' +
     '</div></div></div>';
 
   const cards = _wkt.exercises.map(function(ex, exIdx) {
@@ -1030,71 +1173,25 @@ reg('active', function() {
     const diff = exData ? GUIDANCE.diffLabel(exData.diff) : null;
     const needsSpot = GUIDANCE.needsSpotter(ex.name);
     const allDone = (ex.sets||[]).length > 0 && (ex.sets||[]).every(function(s){return s.done;});
-    const rec = GUIDANCE.setsReps(goal);
     const barbell = typeof isBarbellExercise === 'function' ? isBarbellExercise(ex.name) : false;
 
     const setsHTML = (ex.sets||[]).map(function(set, sIdx) {
-      const isDone = set.done;
-      const isPR = set._isPR;
-      const perSide = !!(ex._plan && ex._plan.unit === 'kg_per_side');
-      const showPlates = barbell && set.weight && sIdx === 0 && !perSide;
-      const displayWeight = set.weight ? weightFromKg(set.weight, user) : '';
-      const displaySuggest = suggest ? weightFromKg(suggest, user) : 0;
-      const lVal = set.weightL != null ? weightFromKg(set.weightL, user) : (perSide ? displayWeight : '');
-      const rVal = set.weightR != null ? weightFromKg(set.weightR, user) : (perSide ? displayWeight : '');
-      const weightInputs = perSide
-        ? '<div style="display:flex;gap:6px;align-items:flex-end">' +
-          '<div style="display:flex;flex-direction:column;align-items:center"><div style="font-size:9px;color:var(--txt3);margin-bottom:3px">L</div>' +
-          '<input type="number" class="set-inp" aria-label="Left side load" placeholder="'+displaySuggest+'" value="'+lVal+'" inputmode="decimal" style="width:52px" onchange="_setSide('+exIdx+','+sIdx+',\'L\',this.value)"></div>' +
-          '<div style="display:flex;flex-direction:column;align-items:center"><div style="font-size:9px;color:var(--txt3);margin-bottom:3px">R</div>' +
-          '<input type="number" class="set-inp" aria-label="Right side load" placeholder="'+displaySuggest+'" value="'+rVal+'" inputmode="decimal" style="width:52px" onchange="_setSide('+exIdx+','+sIdx+',\'R\',this.value)"></div></div>'
-        : '<div style="display:flex;flex-direction:column;align-items:center">' +
-          '<div style="font-size:9px;color:var(--txt3);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.06em">'+displayUnit+'</div>' +
-          '<input type="number" class="set-inp" placeholder="'+displaySuggest+'" value="'+displayWeight+'" ' +
-          'onchange="_setVal('+exIdx+','+sIdx+',\'weight\',weightToKg(parseFloat(this.value)||0))" ' +
-          'inputmode="decimal" style="width:64px"></div>';
-      return '<div class="set-row' + (isDone?' done':'') + (isPR?' pr':'') + '" id="set-'+exIdx+'-'+sIdx+'">' +
-        '<div class="set-num">'+(sIdx+1)+'</div>' +
-        '<div class="set-inputs">' +
-        weightInputs +
-        (showPlates ?
-          '<button type="button" onclick="event.stopPropagation();showPlateCalc('+displayWeight+')" style="margin-top:4px;font-size:9px;font-weight:700;color:var(--c1);background:none;border:none;cursor:pointer;padding:0;touch-action:manipulation">plates</button>' : '') +
-        '</div>' +
-        '<div style="font-size:16px;color:var(--txt3);margin:0 4px">×</div>' +
-        '<div style="display:flex;flex-direction:column;align-items:center">' +
-        '<div style="font-size:9px;color:var(--txt3);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.06em">REPS</div>' +
-        '<input type="number" class="set-inp" placeholder="'+rec.reps.split('-')[0]+'" value="'+(set.reps||'')+'" ' +
-        'onchange="_setVal('+exIdx+','+sIdx+',\'reps\',parseInt(this.value)||0)" ' +
-        'inputmode="numeric" style="width:56px">' +
-        '</div>' +
-        '<div style="font-size:16px;color:var(--txt3);margin:0 4px">@</div>' +
-        '<div style="display:flex;flex-direction:column;align-items:center">' +
-        '<div style="font-size:9px;color:var(--txt3);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.06em">RPE</div>' +
-        '<input type="number" class="set-inp" placeholder="8" value="'+(set.rpe||'')+'" min="5" max="10" step="0.5" ' +
-        'onchange="_setVal('+exIdx+','+sIdx+',\'rpe\',parseFloat(this.value)||0)" ' +
-        'inputmode="decimal" style="width:48px" aria-label="RPE">' +
-        '</div>' +
-        '</div>' +
-        '<button type="button" class="set-check'+(isDone?' done':'')+'" onclick="_doneSet('+exIdx+','+sIdx+')" aria-label="'+(isDone?'Set done':'Mark set done')+'">' +
-        (isDone ? (typeof icon === 'function' ? icon('check', 16, isPR ? '#000' : 'currentColor') : '✓') : '') +
-        '</button>' +
-        (isPR ? '<div style="position:absolute;top:-8px;right:40px;background:linear-gradient(135deg,#ffd60a,var(--warn));color:#000;font-size:9px;font-weight:800;padding:2px 8px;border-radius:10px;letter-spacing:0.06em;animation:prBounce 0.4s var(--spring) both">PR!</div>' : '') +
-        '</div>';
+      return _setRowHTML(ex, exIdx, set, sIdx, suggest);
     }).join('');
 
     const noteVal = _wktNotes[ex.name] || '';
     const workW = (ex.sets && ex.sets[0] && ex.sets[0].weight) || suggest || 0;
     const warmups = (barbell && workW >= 40 && typeof WeightEngine !== 'undefined') ? WeightEngine.warmupSets(workW) : [];
     const warmupHTML = (!_focusMode && warmups.length) ?
-      '<div style="padding:0 16px 10px">' +
-      '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
-      '<div style="font-size:10px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em">Warm-up ramp</div>' +
-      '<button type="button" onclick="insertWarmupSets('+exIdx+')" style="font-size:11px;font-weight:700;color:var(--c1);background:none;border:none;cursor:pointer;padding:4px;touch-action:manipulation">Add to logger</button></div>' +
+      '<details class="warmup-fold" style="margin:4px 8px 8px">' +
+      '<summary>Warm-up ramp</summary>' +
+      '<div class="warmup-fold__body">' +
+      '<button type="button" class="log-plates" style="margin-bottom:8px" onclick="insertWarmupSets('+exIdx+')">Add to logger</button>' +
       '<div style="display:flex;gap:6px;flex-wrap:wrap">' +
       warmups.map(function(w) {
         return '<span style="padding:6px 10px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);font-size:12px;color:var(--txt2)">' +
           esc(w.label) + ' · <strong class="c-txt">' + weightFromKg(w.weight, user) + displayUnit.toLowerCase() + ' × ' + w.reps + '</strong></span>';
-      }).join('') + '</div></div>' : '';
+      }).join('') + '</div></div></details>' : '';
 
     const mediaThumb = (typeof ExerciseLibrary !== 'undefined' ? ExerciseLibrary.getMedia(exData || ex.name).thumb : null);
     const doneMark = allDone ? (typeof icon === 'function' ? icon('check', 22, 'var(--c1)') : '✓') : '';
@@ -1110,7 +1207,8 @@ reg('active', function() {
       (diff ? '<span style="font-size:9px;font-weight:700;color:'+diff.c+';text-transform:uppercase">'+diff.l+'</span>' : '') +
       (needsSpot ? '<span style="font-size:9px;color:var(--danger);font-weight:700">SPOTTER</span>' : '') +
       '</div>' +
-      (prev ? '<div style="font-size:12px;color:var(--c1);margin-top:2px">'+esc(prev)+'</div>' : '') +
+      (prev ? '<div class="log-last" style="margin-top:2px">'+esc(prev)+'</div>' : '') +
+      (barbell && !_focusMode ? '<button type="button" class="log-plates" onclick="showPlateCalc('+weightFromKg((ex.sets && ex.sets[0] && ex.sets[0].weight) || suggest || 0, user)+')">plates</button>' : '') +
       (typeof AutoregEngine !== 'undefined' && AutoregEngine.nextWeightDelta ?
         (function(){ var ar = AutoregEngine.nextWeightDelta(ex.name); return ar && ar.reason ? '<div style="font-size:11px;color:var(--txt3);margin-top:2px">'+esc(ar.reason)+'</div>' : ''; })() : '') +
       (exData && !_focusMode ? '<div style="font-size:11px;color:var(--txt3);margin-top:1px">'+esc(exData.cues.slice(0,60))+'...</div>' : '') +
@@ -1131,11 +1229,6 @@ reg('active', function() {
           }).join('') + '</div>' : '') +
         '</div>' : '') +
       warmupHTML +
-      '<div style="display:grid;grid-template-columns:28px 1fr 36px;gap:8px;padding:8px 16px 4px;border-bottom:1px solid var(--border)">' +
-      '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">SET</div>' +
-      '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">KG × REPS @ RPE</div>' +
-      '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">✓</div>' +
-      '</div>' +
       '<div class="sets-list">'+setsHTML+'</div>' +
       '<div style="padding:10px 16px;display:flex;gap:8px;border-top:1px solid var(--border)">' +
       '<button type="button" onclick="_addSet('+exIdx+')" style="flex:1;padding:10px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation">+ Set</button>' +
@@ -1150,9 +1243,7 @@ reg('active', function() {
   }).join('');
 
   const planStrip = (!_focusMode && _wkt.planWarmup && _wkt.planWarmup.length) ?
-    '<div class="card-solid" style="margin:0 16px 12px;padding:12px 14px">' +
-    '<div class="muted-11" style="margin-bottom:6px">Session warm-up</div>' +
-    '<div class="body-13">' + esc(_wkt.planWarmup.join(' · ')) + '</div></div>' : '';
+    '<details class="warmup-fold"><summary>Session warm-up</summary><div class="warmup-fold__body">' + esc(_wkt.planWarmup.join(' · ')) + '</div></details>' : '';
   const cardioStrip = (!_focusMode && _wkt.cardio) ?
     '<div class="card-solid" style="margin:0 16px 12px;padding:12px 14px">' +
     '<div class="muted-11" style="margin-bottom:6px">Cardio after lifting</div>' +
@@ -1249,7 +1340,9 @@ window._doneSet = function(exIdx, sIdx) {
   _updateSetRow(exIdx, sIdx, set);
   _updateProgress();
   _checkpointWorkout(true);
-  AchEngine.check();
+  const runAch = function() { try { AchEngine.check(); } catch (e) {} };
+  if (typeof requestIdleCallback === 'function') requestIdleCallback(runAch);
+  else setTimeout(runAch, 0);
 };
 
 function _updateSetRow(exIdx, sIdx, set) {
@@ -1260,7 +1353,7 @@ function _updateSetRow(exIdx, sIdx, set) {
   if (btn) {
     btn.className = 'set-check' + (set.done?' done':'');
     btn.innerHTML = set.done
-      ? (typeof icon === 'function' ? icon('check', 16, set._isPR ? '#000' : 'currentColor') : '✓')
+      ? (typeof icon === 'function' ? icon('check', 16, set._isPR ? '#fff' : 'currentColor') : '✓')
       : '';
   }
   const exCard = document.getElementById('ex-card-'+exIdx);
@@ -1292,8 +1385,20 @@ window._addSet = function(exIdx) {
   if (!_wkt || !_wkt.exercises[exIdx]) return;
   const ex = _wkt.exercises[exIdx];
   const lastSet = ex.sets[ex.sets.length - 1] || {};
-  ex.sets.push({ weight: lastSet.weight || 0, reps: lastSet.reps || 0, done: false });
+  const next = { weight: lastSet.weight || 0, reps: lastSet.reps || 0, done: false };
+  if (ex._plan && ex._plan.unit === 'kg_per_side') {
+    next.weightL = lastSet.weightL;
+    next.weightR = lastSet.weightR;
+    next._editSide = lastSet._editSide || 'L';
+  }
+  ex.sets.push(next);
   _checkpointWorkout(true);
+  const list = document.querySelector('#ex-card-' + exIdx + ' .sets-list');
+  if (list) {
+    list.insertAdjacentHTML('beforeend', _setRowHTML(ex, exIdx, next, ex.sets.length - 1, next.weight));
+    _updateProgress();
+    return;
+  }
   go('active');
 };
 
@@ -1310,12 +1415,9 @@ window._toggleNote = function(exIdx) {
 window.toggleSupersetMode = function() {
   _supersetMode = !_supersetMode;
   _checkpointWorkout(true);
-  toast(_supersetMode ? '🔗 Superset mode ON' : 'Superset mode off', 'info');
-  const btn = document.querySelector('[onclick="toggleSupersetMode()"]');
-  if (btn) {
-    btn.style.background = _supersetMode ? 'var(--grad)' : 'var(--bg3)';
-    btn.style.color = _supersetMode ? '#fff' : 'var(--txt3)';
-  }
+  toast(_supersetMode ? 'Superset on' : 'Superset off', 'info');
+  const btn = document.querySelector('[onclick*="toggleSupersetMode()"]');
+  if (btn) btn.setAttribute('aria-pressed', _supersetMode ? 'true' : 'false');
 };
 
 window.toggleFocusMode = function() {
@@ -1477,7 +1579,7 @@ function _startWktTimer() {
     _wktElapsed = _wkt && _wkt.startTime ? Math.max(0, Math.floor((Date.now() - _wkt.startTime) / 1000)) : _wktElapsed + 1;
     const el = document.getElementById('wkt-timer-display');
     if (el) el.textContent = fmtTime(_wktElapsed);
-    if (_wktElapsed % 15 === 0) _checkpointWorkout(true);
+    if (_wktElapsed % 30 === 0) _checkpointWorkout(true);
   }, 1000);
 }
 
@@ -1886,6 +1988,7 @@ window.saveCustomExercise = function() {
   saved.push(custom);
   if (S.set('customExercises', saved) === false) return;
   ExDB.db.push(custom);
+  if (typeof ExDB.invalidateIndex === 'function') ExDB.invalidateIndex();
   closeModal();
   toast(cleanName+' added', 'ok');
 };
@@ -1893,7 +1996,10 @@ window.saveCustomExercise = function() {
 function loadCustomExercises() {
   const saved = S.g('customExercises') || [];
   saved.forEach(function(ex) {
-    if (ex && typeof ex.n === 'string' && ex.n.length <= 80 && !ExDB.byName(ex.n)) ExDB.db.push(ex);
+    if (ex && typeof ex.n === 'string' && ex.n.length <= 80 && !ExDB.byName(ex.n)) {
+      ExDB.db.push(ex);
+      ExDB.invalidateIndex();
+    }
   });
 }
 window.loadCustomExercises = loadCustomExercises;
@@ -2130,7 +2236,7 @@ window.voiceLogCurrentSet = function() {
     if (parsed.rpe != null) set.rpe = parsed.rpe;
     _checkpointWorkout(true);
     toast('Logged: ' + (set.weight ? formatWeight(set.weight) : '?') + ' × ' + (parsed.reps || set.reps || '?') + (parsed.rpe ? ' @' + parsed.rpe : ''), 'ok');
-    go('active');
+    _syncSetInputs(exIdx, sIdx);
   }, function() { toast('Couldn’t hear that — try again', 'warn'); });
 };
 

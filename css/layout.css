@@ -785,15 +785,16 @@ textarea:focus-visible,
 
 /* ── Gym Floor Mode — large tap targets, less chrome ── */
 body.gym-floor .set-inp {
-  min-height: 52px;
+  min-height: 44px;
   font-size: 18px !important;
   font-weight: 800;
-  width: 72px !important;
+  width: auto !important;
+  min-width: 0;
 }
 body.gym-floor .set-check {
-  width: 52px;
-  height: 52px;
-  min-width: 52px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
 }
 body.gym-floor .btn,
 body.gym-floor button.set-check {
