@@ -1,3 +1,6 @@
+## 6.23.0 — 2026-08-18 — Ember rebuild Phase 17
+- Wrist, neck and ankle stress (0–3) on every lift. Declaring those limitations now changes the library, Swap, and Log cautions. SW `pulsecap-v103`.
+
 ## 6.22.0 — 2026-08-18 — Ember rebuild Phase 16
 - History keys on the exercise **name string**. Stable `id` slugs added; logged sets and PRs gain `exId` on schema v6 migrate. 37 duplicate names merged (302→265). Uniqueness test blocks the build. SW `pulsecap-v102`.
 

@@ -807,9 +807,11 @@ reg('active', function() {
   const lim = (ctx.limitations || []).map(function(l) {
     return String((typeof l === 'string' ? l : (l.joint || l.id || '')) || '').toLowerCase();
   });
-  const caution = lim.indexOf('shoulder') >= 0
-    ? '<div class="banner banner--caution" style="margin:8px 16px">Shoulder caution: stop on sharp pain or clunk. Prefer listed alternatives.</div>'
-    : '';
+  const caution = (typeof Equipment !== 'undefined' && Equipment.cautionBanner)
+    ? Equipment.cautionBanner(ctx.limitations || user.limitations || [])
+    : (lim.indexOf('shoulder') >= 0
+      ? '<div class="banner banner--caution" style="margin:8px 16px">Shoulder caution: stop on sharp pain or clunk. Prefer listed alternatives.</div>'
+      : '');
   const firstNew = (_wkt.exercises || []).find(function(ex) {
     const prev = typeof ProgEngine !== 'undefined' && ProgEngine.prevString ? ProgEngine.prevString(ex.name) : '';
     const cal = (S.g('user.calibrations') || {})[ex.name];

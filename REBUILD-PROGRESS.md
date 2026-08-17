@@ -19,7 +19,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 13 Onboarding | done | e0f6057 | Equipment, days/week, sex; no goal weight; first-lift calibration |
 | 14 Programs + orphans | done | e0f6057 | 6 templates, custom builder, crawl test, Train select match, S.g guard |
 | 15 Honesty / a11y | done | e0f6057 | Readiness words, contrast, 16px inputs, wall-clock rest, schema v5 |
-| 16 History ids + dedupe | done |  | **History key = exercise name string** (`ex.name` on workouts, PRs, calibrations). Duplicates did not split history — they merged. Schema v6 adds `exId` slug; 302→265 unique; never deletes sets |
+| 16 History ids + dedupe | done | 8ab5a56 | **History key = exercise name string** (`ex.name` on workouts, PRs, calibrations). Duplicates did not split history — they merged. Schema v6 adds `exId` slug; 302→265 unique; never deletes sets |
+| 17 Wrist/neck/ankle | done |  | Eight joint keys on every lift. Wrist/neck/ankle ≥3 now filter. Persistent cautions on Log |
 
 ## Phase 1 checklist
 

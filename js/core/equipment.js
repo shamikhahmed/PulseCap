@@ -26,6 +26,34 @@ const Equipment = {
   },
 
   JOINTS: ['shoulder', 'knee', 'spine', 'wrist', 'elbow', 'hip', 'neck', 'ankle'],
+  CAUTIONS: {
+    shoulder: 'Shoulder caution: stop on sharp pain or clunk. Prefer listed alternatives.',
+    knee: 'Knee caution: control depth. Do not grind through pain.',
+    spine: 'Low-back caution: brace. Skip max-effort spinal loading.',
+    low_back: 'Low-back caution: brace. Skip max-effort spinal loading.',
+    wrist: 'Wrist caution: keep a neutral wrist. Skip loaded extension if it bites.',
+    elbow: 'Elbow caution: ease off lockout and skull-crushers if it niggles.',
+    hip: 'Hip caution: control depth. Stop on pinch or catch.',
+    neck: 'Neck caution: no craning or behind-neck loading.',
+    ankle: 'Ankle caution: skip jumps and loaded dorsiflexion if it pinches.'
+  },
+  cautionBanner: function(limitations) {
+    const seen = {};
+    const lines = [];
+    (limitations || []).forEach(function(l) {
+      let j = String((typeof l === 'string' ? l : (l.joint || l.id || '')) || '').toLowerCase().replace('low back', 'low_back');
+      if (j === 'low_back') j = 'spine';
+      if (!j || seen[j]) return;
+      seen[j] = true;
+      const msg = Equipment.CAUTIONS[j];
+      if (msg) lines.push(msg);
+    });
+    if (!lines.length) return '';
+    lines.push('A recurring or undiagnosed joint problem needs a doctor or physio. This is not a diagnosis.');
+    return '<div class="banner banner--caution" style="margin:8px 16px">' + lines.map(function(t) {
+      return '<div>' + (typeof esc === 'function' ? esc(t) : t) + '</div>';
+    }).join('') + '</div>';
+  },
 
   tagsForKit: function(kitId) {
     const kit = this.KITS[kitId] || this.KITS.full_gym;

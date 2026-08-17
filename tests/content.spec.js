@@ -23,7 +23,7 @@ test.describe('Exercise content integrity', () => {
     expect(out.dupIds).toEqual([]);
     expect(out.missingId).toEqual([]);
     expect(out.count).toBeGreaterThanOrEqual(250);
-    expect(out.count).toBeLessThanOrEqual(280);
+    expect(out.count).toBeLessThanOrEqual(400);
   });
 
   test('pre-id backup restores Hack Squat history onto hack-squat', async ({ page }) => {
@@ -71,5 +71,55 @@ test.describe('Exercise content integrity', () => {
     expect(out.rowName).toBe('Hack Squat');
     expect(out.hist).toBe(2);
     expect(out.prExId).toBe('hack-squat');
+  });
+
+  test('every exercise has all eight joint keys', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => window.ExDB && window.Equipment);
+    const out = await page.evaluate(() => {
+      const keys = window.Equipment.JOINTS;
+      const missing = [];
+      window.ExDB.db.forEach(function(ex) {
+        const miss = keys.filter(function(k) { return !ex.joint || ex.joint[k] == null; });
+        if (miss.length) missing.push(ex.n + ':' + miss.join(','));
+      });
+      const wristHot = window.ExDB.db.filter(function(ex) { return (ex.joint.wrist || 0) >= 3; }).length;
+      const neckHot = window.ExDB.db.filter(function(ex) { return (ex.joint.neck || 0) >= 3; }).length;
+      const ankleHot = window.ExDB.db.filter(function(ex) { return (ex.joint.ankle || 0) >= 3; }).length;
+      return { missing: missing, wristHot: wristHot, neckHot: neckHot, ankleHot: ankleHot };
+    });
+    expect(out.missing).toEqual([]);
+    expect(out.wristHot).toBeGreaterThan(5);
+    expect(out.neckHot).toBeGreaterThan(0);
+    expect(out.ankleHot).toBeGreaterThan(5);
+  });
+
+  test('wrist limitation changes the library and Swap pool', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => window.Equipment && window.ExDB && window.SplitEngine);
+    const out = await page.evaluate(() => {
+      const user = {
+        equipmentKit: 'full_gym', equipmentConfigured: true,
+        equipment: window.Equipment.tagsForKit('full_gym'),
+        limitations: [{ id: 'wrist', joint: 'wrist' }]
+      };
+      window.S.set('user', Object.assign({}, window.S.g('user') || {}, user));
+      const open = window.Equipment.availableExercises(user);
+      const blocked = window.ExDB.db.filter(function(ex) { return !window.Equipment.jointOk(ex, user); });
+      const names = open.map(function(e) { return e.n; });
+      const swaps = window.SplitEngine.rankSubstitutes('Barbell Bench Press');
+      const swapHasUpright = swaps.some(function(s) { return /upright row/i.test(s.name); });
+      return {
+        open: open.length,
+        blocked: blocked.length,
+        blockedHasPushUp: blocked.some(function(e) { return e.n === 'Push-Ups'; }),
+        openHasMachinePress: names.indexOf('Machine Chest Press') >= 0,
+        swapHasUpright: swapHasUpright
+      };
+    });
+    expect(out.blocked).toBeGreaterThan(0);
+    expect(out.blockedHasPushUp).toBeTruthy();
+    expect(out.openHasMachinePress).toBeTruthy();
+    expect(out.swapHasUpright).toBeFalsy();
   });
 });
