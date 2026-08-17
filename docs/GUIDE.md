@@ -125,7 +125,7 @@ Macro logging, water, supplements with timing. Quick-add meals + offline food se
 ## Offline & data
 
 - All data in localStorage (`fos_profiles_[id]`); photos in IndexedDB
-- Service worker cache-first (`pulsecap-v113`)
+- Service worker cache-first (`pulsecap-v114`)
 - No backend required · no account · no cloud sync
 - Export JSON before device reset
 

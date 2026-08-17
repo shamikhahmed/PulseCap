@@ -188,6 +188,6 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 - Fixed orange-on-orange failures (+ ADD CUSTOM EXERCISE, W1): selected chips/tabs use accent fill + white text; accent-text never on orange washes.
 - `<select>` unified via `select.field` / `.split-select`: rounded, token border, custom chevron, ≥16px.
 - Playwright: full computed-background contrast audit — 19 screens × 3 widths × 2 themes; token test for accent-text.
-- Chromium: **138 passed**, 1 skipped.
+- Gallery regen at v6.34.0 (176 shots). Chromium: **138 passed**, 1 skipped.
 
 

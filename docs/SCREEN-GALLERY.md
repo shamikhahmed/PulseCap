@@ -1,7 +1,7 @@
 # PulseCap — Documented Screen Gallery
 
-> v6.33.0 · Captures via `npm run gallery -- --project=chromium` → `docs/screenshots/gallery/` · Viewer: `screen-gallery.html`  
-> Latest matrix: **176** shots (108 viewport + 68 scroll) · v6.33.0 capture · includes **My Plan**, **Plan Import Review**, **Equipment Setup**, active logger
+> v6.34.0 · Captures via `npm run gallery -- --project=chromium` → `docs/screenshots/gallery/` · Viewer: `screen-gallery.html`  
+> Latest matrix: **176** shots (108 viewport + 68 scroll) · v6.34.0 capture · light mode uses `--accent-text` for readable orange labels
 
 ## How state is kept
 
@@ -27,7 +27,7 @@ Today · Train · Progress · Programs · Me — fixed. Nested screens light par
 | empty / day-one | Decision card + setup prompts | No workouts; queue ≤2 prompts |
 | one / many | Readiness + plan + quick actions | Demo persona |
 | keyboard-open | Weigh-in / check-in modals | Modal sheet + scroll lock |
-| dark / light | Theme tokens | `--c1` chalk-red both themes |
+| dark / light | Theme tokens | `--accent-text` on surfaces; `--accent` for fills |
 | reduced-motion | No screen-enter bounce | `prefers-reduced-motion` |
 
 **Why ordered this way:** one primary decision above the fold; secondary tools below.

@@ -1,6 +1,6 @@
 # PulseCap — QA Matrix
 
-> Generated 2026-08-17 · demo profile · 17 screens · 654 checks · **654 pass / 0 fail**
+> Generated 2026-08-18 · v6.34.0 · demo profile · 17 screens · 654 checks · **654 pass / 0 fail**
 
 | Screen | Element | Expected | Actual | Status |
 |--------|---------|----------|--------|--------|

@@ -8,7 +8,7 @@ Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Acti
 
 ## Facts
 **Version:** 6.34.0
-**SW cache:** `pulsecap-v113`
+**SW cache:** `pulsecap-v114`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.

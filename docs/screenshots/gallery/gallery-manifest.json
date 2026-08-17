@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.33.0",
-  "generated": "2026-08-17T21:41:48.049Z",
+  "version": "6.34.0",
+  "generated": "2026-08-17T22:11:18.842Z",
   "shots": [
     {
       "file": "dark-desktop-001-dashboard.png",
