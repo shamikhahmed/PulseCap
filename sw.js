@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'pulsecap-v101';
+const CACHE = 'pulsecap-v102';
 const ASSETS = [
   './',
   './index.html',
@@ -24,6 +24,7 @@ const ASSETS = [
   './js/data/splits-db.js',
   './js/data/injuries-db.js',
   './js/data/foods-db.js',
+  './js/data/exercise-db.js',
   './js/data/training-plan-schema.js',
   './js/data/plans/machine-ppl.js',
   './js/data/plans/catalog.js',

@@ -242,12 +242,14 @@ test.describe('Ember rebuild UI', () => {
         ver: window.S.d._schemaVersion,
         workouts: (window.S.d.workouts || []).length,
         name: window.S.d.workouts[0] && window.S.d.workouts[0].name,
-        days: window.S.d.user && window.S.d.user.daysPerWeek
+        days: window.S.d.user && window.S.d.user.daysPerWeek,
+        exId: window.S.d.workouts[0] && window.S.d.workouts[0].exercises[0] && window.S.d.workouts[0].exercises[0].exId
       };
     });
-    expect(out.ver).toBe(5);
+    expect(out.ver).toBe(6);
     expect(out.workouts).toBe(1);
     expect(out.name).toBe('Push A');
     expect(out.days).toBe(4);
+    expect(out.exId).toBe('bench');
   });
 });

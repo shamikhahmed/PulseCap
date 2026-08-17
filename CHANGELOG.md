@@ -1,3 +1,6 @@
+## 6.22.0 — 2026-08-18 — Ember rebuild Phase 16
+- History keys on the exercise **name string**. Stable `id` slugs added; logged sets and PRs gain `exId` on schema v6 migrate. 37 duplicate names merged (302→265). Uniqueness test blocks the build. SW `pulsecap-v102`.
+
 ## 6.21.0 — 2026-08-18 — Ember rebuild Phases 12–15
 - Spine: Mifflin-St Jeor calories + 1.8 g/kg protein; `deriveContext` computes energy, experience, matched template. Equipment filter on library, plans, and Swap. Persona tests block identical-calorie shipping.
 - Onboarding asks sex, equipment, and days/week. Goal-weight field removed. First-lift calibration in Log.

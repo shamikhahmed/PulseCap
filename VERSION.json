@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.21.0",
-  "swCache": "pulsecap-v101",
+  "version": "6.22.0",
+  "swCache": "pulsecap-v102",
   "updated": "2026-08-18",
-  "notes": "Ember rebuild Phases 12–15 — personalization spine, onboarding, templates/builder/orphans, honesty/a11y"
+  "notes": "Ember Phase 16 — stable exercise ids, dedupe, history migration"
 }

@@ -572,11 +572,16 @@ window.showProgramWeightSetup = function() {
 
 const ProgEngine = {
   epley(w, r) { if(!w||!r) return 0; return r===1 ? w : Math.round(w*(1+r/30)); },
+  _same(ex, name) {
+    if (!ex) return false;
+    if (typeof ExDB !== 'undefined' && ExDB.sameLift) return ExDB.sameLift(ex, name);
+    return ex.name === name;
+  },
   checkPR(name, weight, reps) {
     const ws = S.g('workouts') || [];
     let best = 0;
     ws.forEach(wo => (wo.exercises||[]).forEach(ex => {
-      if (ex.name===name) (ex.sets||[]).forEach(s => {
+      if (this._same(ex, name)) (ex.sets||[]).forEach(s => {
         if (s.done) best = Math.max(best, this.epley(s.weight||0, s.reps||0));
       });
     }));
@@ -592,7 +597,7 @@ const ProgEngine = {
   suggest(name, goal) {
     const ws = S.g('workouts') || [];
     for (let i=ws.length-1; i>=0; i--) {
-      const ex = (ws[i].exercises||[]).find(e=>e.name===name);
+      const ex = (ws[i].exercises||[]).find(e=>this._same(e, name));
       if (ex && ex.sets && ex.sets.length) {
         const allDone = ex.sets.filter(s=>s.reps).every(s=>s.done);
         const w = ex.sets[0].weight || 0;
@@ -620,9 +625,13 @@ const ProgEngine = {
       const u = S.g('user.units') === 'imperial' ? 'lb' : 'kg';
       for (let i = ws.length - 1; i >= 0; i--) {
         (ws[i].exercises || []).forEach(function(ex) {
-          if (!ex || !ex.name || map[ex.name] || !ex.sets || !ex.sets.length) return;
+          if (!ex || (!ex.name && !ex.exId) || !ex.sets || !ex.sets.length) return;
+          const key = ex.name || ex.exId;
+          if (map[key]) return;
           const s = ex.sets[0];
-          map[ex.name] = 'Last: ' + (s.weight || 0) + u + ' × ' + (s.reps || 0);
+          const line = 'Last: ' + (s.weight || 0) + u + ' × ' + (s.reps || 0);
+          if (ex.name) map[ex.name] = line;
+          if (ex.exId) map[ex.exId] = line;
         });
       }
       this._prevMap = map;
@@ -633,7 +642,7 @@ const ProgEngine = {
     const ws = S.g('workouts') || [];
     let lastEx = null;
     for (let i=ws.length-1; i>=0; i--) {
-      const ex = (ws[i].exercises||[]).find(e=>e.name===name);
+      const ex = (ws[i].exercises||[]).find(e=>this._same(e, name));
       if (ex) { lastEx=ex; break; }
     }
     if (!lastEx || !lastEx.sets || !lastEx.sets.length) return null;
@@ -1234,7 +1243,7 @@ const WeightEngine = {
     const ws = workouts || S.g('workouts') || [];
     let consecutive = 0;
     for (let i=ws.length-1; i>=0; i--) {
-      const ex = (ws[i].exercises||[]).find(e=>e.name===exerciseName);
+      const ex = (ws[i].exercises||[]).find(e=>typeof ProgEngine !== 'undefined' && ProgEngine._same ? ProgEngine._same(e, exerciseName) : e.name===exerciseName);
       if (ex && ex.sets && ex.sets.every(s=>s.done)) consecutive++;
       else break;
     }
@@ -1748,7 +1757,7 @@ const CoachEngine = {
       const ws = S.g('workouts') || [];
       const sessions = [];
       ws.forEach(wo => {
-        const ex = (wo.exercises||[]).find(e=>e.name===name);
+        const ex = (wo.exercises||[]).find(e=>ProgEngine._same(e, name));
         if (!ex) return;
         const done = (ex.sets||[]).filter(s=>s.done&&(s.weight||0)>0);
         if (!done.length) return;

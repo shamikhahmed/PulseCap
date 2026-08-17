@@ -210,6 +210,7 @@ window.updateOfflineBanner = updateOfflineBanner;
   <!-- Eager boot: Today · Train · Progress · Programs · Me -->
   <script src="js/modules/onboarding.js"></script>
   <script src="js/modules/dashboard.js"></script>
+  <script src="js/data/exercise-db.js"></script>
   <script src="js/modules/workout.js"></script>
   <script src="js/data/exercise-library.js"></script>
   <script src="js/data/form-loops.js"></script>
@@ -311,7 +312,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=101').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=102').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {

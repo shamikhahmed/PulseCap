@@ -1,10 +1,13 @@
 'use strict';
+window.exerciseSlug = function(name) {
+  return String(name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+};
 const S = {
   _key: 'fos_profiles',
   _metaKey: 'fos_meta',
   _pid: null,
   d: {},
-  SCHEMA_VERSION: 5,
+  SCHEMA_VERSION: 6,
 
   /* ── Meta (profile list) ── */
   getMeta() {
@@ -339,6 +342,29 @@ const S = {
       if (!u.equipmentKit && u.equipmentConfigured) u.equipmentKit = 'full_gym';
       this.d.user = u;
       if (!Array.isArray(this.d.workouts)) this.d.workouts = this.d.workouts || [];
+    }
+    if (current < 6) {
+      const slug = window.exerciseSlug;
+      (this.d.workouts || []).forEach(function(w) {
+        (w.exercises || []).forEach(function(ex) {
+          if (ex && ex.name && !ex.exId) ex.exId = slug(ex.name);
+        });
+      });
+      (this.d.prs || []).forEach(function(p) {
+        if (p && p.exercise && !p.exId) p.exId = slug(p.exercise);
+      });
+      const cals = this.d.user && this.d.user.calibrations;
+      if (cals && typeof cals === 'object') {
+        Object.keys(cals).forEach(function(name) {
+          if (cals[name] && typeof cals[name] === 'object' && !cals[name].exId) cals[name].exId = slug(name);
+        });
+      }
+      const loads = this.d.trainingPlan && this.d.trainingPlan.workingLoads;
+      if (loads && typeof loads === 'object') {
+        Object.keys(loads).forEach(function(name) {
+          if (loads[name] && typeof loads[name] === 'object' && !loads[name].exId) loads[name].exId = slug(name);
+        });
+      }
     }
     this.d._schemaVersion = this.SCHEMA_VERSION;
     this._save();
