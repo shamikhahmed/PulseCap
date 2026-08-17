@@ -31,13 +31,22 @@ reg('my-plan', function() {
   const top = '<div class="topbar"><div class="topbar-title">Programs</div></div>';
 
   if (!active) {
+    const templates = (typeof PlanCatalog !== 'undefined' && PlanCatalog.all) ? PlanCatalog.all() : [];
+    const cards = templates.map(function(t) {
+      return '<div class="card card-solid mb-14">' +
+        '<div class="row-title-15">' + esc(t.title || t.id) + '</div>' +
+        '<div class="body-13" style="margin:8px 0 12px">' + esc(t.suits || t.notes || '') + ' · ' + ((t.rotation || []).length) + ' sessions.</div>' +
+        '<button type="button" class="btn btn-primary" style="width:100%;min-height:44px" onclick="beginInstallTemplate(' + jsArg(t.id) + ')">Review & install</button>' +
+        '</div>';
+    }).join('');
     return top +
       '<div class="pad-16">' +
       '<p class="mod-lede">Your current split stays until you install or import. Workout history is never replaced by a plan.</p>' +
+      cards +
       '<div class="card card-solid mb-14">' +
-      '<div class="row-title-15">Machine-only PPL (shoulder-safe)</div>' +
-      '<div class="body-13" style="margin:8px 0 12px">6-day Push/Pull/Legs A/B, Sunday rest, week-5 deload, prehab, ROM limits, logged starting loads. Machines and cables first.</div>' +
-      '<button type="button" class="btn btn-primary" style="width:100%;min-height:44px" onclick="beginInstallMachinePpl()">Review & install</button>' +
+      '<div class="row-title-15">Custom program</div>' +
+      '<div class="body-13" style="margin:8px 0 12px">Build sessions, add lifts, set sets and rest. Filtered to your equipment.</div>' +
+      '<button type="button" class="btn btn-secondary" style="width:100%;min-height:44px" onclick="go(\'split-builder\')">Open program builder</button>' +
       '</div>' +
       '<div class="card card-solid mb-14">' +
       '<div class="row-title-15">Import a plan</div>' +
@@ -45,8 +54,8 @@ reg('my-plan', function() {
       '<label class="btn btn-secondary" style="width:100%;min-height:44px;display:flex;align-items:center;justify-content:center;cursor:pointer">' +
       'Choose PDF or JSON<input type="file" accept=".json,.pdf,.txt,application/pdf,application/json,text/plain" style="display:none" aria-label="Choose PDF or JSON" onchange="handlePlanFile(this)"></label>' +
       '<button type="button" class="btn btn-ghost" style="width:100%;min-height:44px;margin-top:8px" onclick="showPlanPaste()">Paste plan text</button>' +
+      '<button type="button" class="btn btn-ghost" style="width:100%;min-height:44px;margin-top:8px" onclick="go(\'plan-import\')">Review last import</button>' +
       '</div>' +
-      '<p class="mod-lede">Your current split stays until you install or import. Workout history is never replaced by a plan.</p>' +
       '</div>' + uiSpacer();
   }
 
@@ -130,19 +139,23 @@ reg('plan-import', function() {
     '</div>' + uiSpacer();
 });
 
-window.beginInstallMachinePpl = function() {
-  modal('Shoulder-safe plan',
-    '<div class="body-13" style="line-height:1.55;margin-bottom:12px">This template is machine/cable-first because of shoulder risk. It is not a clinician clearance. Stop on clunk, shift, or sharp pain.</div>' +
-    '<label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px"><input id="ppl-ack" type="checkbox" style="width:22px;height:22px"><span class="body-13">I will keep the listed range-of-motion limits even if I feel fine today.</span></label>',
-    '<button type="button" class="btn btn-primary" style="width:100%;min-height:44px" onclick="installMachinePpl()">Install plan</button>' +
+window.beginInstallTemplate = function(id) {
+  const t = (window.PLAN_TEMPLATES || {})[id];
+  const title = (t && t.title) || 'Install plan';
+  const suits = (t && (t.suits || t.notes)) || '';
+  modal(title,
+    '<div class="body-13" style="line-height:1.55;margin-bottom:12px">' + esc(suits) + ' Educational — not medical clearance. Stop on clunk, shift, or sharp pain.</div>' +
+    '<label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px"><input id="ppl-ack" type="checkbox" style="width:22px;height:22px"><span class="body-13">I will stop on sharp pain and keep listed range limits.</span></label>',
+    '<button type="button" class="btn btn-primary" style="width:100%;min-height:44px" onclick="installNamedTemplate(' + jsArg(id) + ')">Install plan</button>' +
     '<button type="button" class="btn btn-secondary mt-8" style="width:100%;min-height:44px" onclick="closeModal()">Cancel</button>');
 };
+window.beginInstallMachinePpl = function() { beginInstallTemplate('machine_ppl_shoulder'); };
 
-window.installMachinePpl = function() {
+window.installNamedTemplate = function(id) {
   const box = document.getElementById('ppl-ack');
   if (!box || !box.checked) { toast('Tick the safety box to install', 'warn'); return; }
   try {
-    TrainingPlanEngine.installTemplate('machine_ppl_shoulder', { acknowledgedSafety: true });
+    TrainingPlanEngine.installTemplate(id, { acknowledgedSafety: true });
     closeModal();
     toast('Plan installed — today follows the rotation', 'ok');
     go('my-plan');
@@ -150,6 +163,7 @@ window.installMachinePpl = function() {
     toast(e.message || 'Could not install plan', 'err');
   }
 };
+window.installMachinePpl = function() { installNamedTemplate('machine_ppl_shoulder'); };
 
 window.handlePlanFile = function(input) {
   const file = input.files && input.files[0];

@@ -159,4 +159,95 @@ test.describe('Ember rebuild UI', () => {
     expect(out.picker).toBeTruthy();
     expect(out.intel).toBeFalsy();
   });
+
+  test('no registered screen is orphaned from the five tabs', async ({ page }) => {
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.go === 'function' && window.listScreens);
+    const out = await page.evaluate(() => {
+      const aliases = window.SCREEN_ALIASES || {};
+      const resolve = function(id) {
+        const a = aliases[id];
+        if (!a) return id;
+        return typeof a === 'string' ? a : a.id;
+      };
+      const extract = function(html) {
+        const ids = [];
+        const re = /go\(['"]([a-z0-9-]+)['"]/gi;
+        let m;
+        while ((m = re.exec(html || ''))) ids.push(m[1]);
+        return ids;
+      };
+      const reachable = {};
+      const queue = ['dashboard', 'workout', 'progress', 'my-plan', 'settings'];
+      const settingsTabs = ['account', 'training', 'fuel', 'appearance', 'accessibility', 'notifications', 'privacy', 'about'];
+      settingsTabs.forEach(function(t) {
+        window.go('settings', { tab: t });
+        extract(document.getElementById('view').innerHTML).forEach(function(id) { queue.push(id); });
+      });
+      while (queue.length) {
+        const raw = queue.shift();
+        const id = resolve(raw);
+        if (reachable[id]) continue;
+        reachable[id] = true;
+        try {
+          window.go(id);
+          extract(document.getElementById('view').innerHTML).forEach(function(next) {
+            if (!reachable[resolve(next)]) queue.push(next);
+          });
+        } catch (e) { /* skip unloadable */ }
+      }
+      if (typeof window.startQuickWorkout === 'function') {
+        window.startQuickWorkout();
+        reachable.active = true;
+        if (window.discardWorkoutDraft) window.discardWorkoutDraft();
+      }
+      const skip = { onboarding: 1, intro: 1, briefing: 1, cardio: 1 };
+      const registered = window.listScreens();
+      const orphans = registered.filter(function(id) {
+        if (skip[id] || aliases[id]) return false;
+        return !reachable[id] && !reachable[resolve(id)];
+      });
+      return { orphans: orphans, reachable: Object.keys(reachable) };
+    });
+    expect(out.orphans).toEqual([]);
+  });
+
+  test('rest timer is wall-clock based across a 3-minute gap', async ({ page }) => {
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.startRestTimer === 'function');
+    const out = await page.evaluate(() => {
+      window.startRestTimer(180);
+      const before = window._restTimerState();
+      window._restTimerShift(180 * 1000);
+      const after = window._restTimerState();
+      window.stopRestTimer();
+      return { before: before.remaining, after: after.remaining };
+    });
+    expect(out.before).toBeGreaterThan(170);
+    expect(out.after).toBeLessThanOrEqual(1);
+  });
+
+  test('pre-Ember schema backup keeps workout history', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => window.S && window.S._migrate);
+    const out = await page.evaluate(() => {
+      const old = {
+        _schemaVersion: 2,
+        user: { name: 'Legacy', units: 'metric', weight: 80, height: 180, weeklyGoal: 4 },
+        workouts: [{ id: 'w1', name: 'Push A', date: '2026-01-15', exercises: [{ name: 'Bench', sets: [{ weight: 60, reps: 8, done: true }] }] }]
+      };
+      window.S.d = JSON.parse(JSON.stringify(old));
+      window.S._migrate();
+      return {
+        ver: window.S.d._schemaVersion,
+        workouts: (window.S.d.workouts || []).length,
+        name: window.S.d.workouts[0] && window.S.d.workouts[0].name,
+        days: window.S.d.user && window.S.d.user.daysPerWeek
+      };
+    });
+    expect(out.ver).toBe(5);
+    expect(out.workouts).toBe(1);
+    expect(out.name).toBe('Push A');
+    expect(out.days).toBe(4);
+  });
 });

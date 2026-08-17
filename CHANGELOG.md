@@ -1,3 +1,10 @@
+## 6.21.0 — 2026-08-18 — Ember rebuild Phases 12–15
+- Spine: Mifflin-St Jeor calories + 1.8 g/kg protein; `deriveContext` computes energy, experience, matched template. Equipment filter on library, plans, and Swap. Persona tests block identical-calorie shipping.
+- Onboarding asks sex, equipment, and days/week. Goal-weight field removed. First-lift calibration in Log.
+- Programs: 6 public templates + custom builder (sets/reps/rest, reorder, duplicate). Orphan crawl from the five tabs. Train session `<select>` matches the preview. `S.g` null-safe.
+- Honesty: readiness is a word until 3 logged sessions. Light muted text `#6E6E73`. Inputs ≥16px. Rest timer is wall-clock (`startedAt`). Schema v5 keeps workout history.
+- SW `pulsecap-v101`.
+
 ## 6.17.0 — 2026-08-17 — Ember rebuild Phase 11
 - Log: slim Active header (name + timer + Finish; Pain/Superset/Focus/Mic behind ⋯). Session warm-up collapsed. Set rows are one grid line at 375–430px with steppers; per-side L/R inside the KG stepper. Last/plates use `--text-2`. Taps no longer full-rerender the logger.
 - Train: dropped Progress/Cardio/Skills/Intel chips; split picker is a segmented control or dropdown. SW `pulsecap-v97`.

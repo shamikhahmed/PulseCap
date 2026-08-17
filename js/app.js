@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.17.0';
+window.APP_VERSION = '6.21.0';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -62,6 +62,7 @@ const SCREEN_ALIASES = {
   quests: 'dashboard',
   briefing: 'dashboard',
   calisthenics: 'workout',
+  cardio: 'workout',
   'training-intel': 'workout',
   'training-style': 'workout',
   physique: 'progress',

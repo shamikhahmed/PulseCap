@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.17.0",
-  "swCache": "pulsecap-v97",
-  "updated": "2026-08-17",
-  "notes": "Ember rebuild Phase 11 — Log + Train constitution pass"
+  "version": "6.21.0",
+  "swCache": "pulsecap-v101",
+  "updated": "2026-08-18",
+  "notes": "Ember rebuild Phases 12–15 — personalization spine, onboarding, templates/builder/orphans, honesty/a11y"
 }

@@ -7,9 +7,10 @@ reg('nutrition', function() {
   const water = S.g('water') || [];
   const userSupps = S.g('supplements') || [];
   const logs = S.g('supplementLogs') || [];
+  const n = (typeof NutritionMath !== 'undefined' && NutritionMath.fromUser) ? NutritionMath.fromUser(user) : null;
 
   const todayCals = meals.filter(m=>m.date===today()).reduce((a,m)=>a+(m.calories||0),0);
-  const calTarget = user.calorieTarget || 2200;
+  const calTarget = n ? n.calories : (user.calorieTarget || BodyEngine.calorieTarget(user));
   const todayP = meals.filter(m=>m.date===today()).reduce((a,m)=>a+(m.protein||0),0);
   const todayC = meals.filter(m=>m.date===today()).reduce((a,m)=>a+(m.carbs||0),0);
   const todayF = meals.filter(m=>m.date===today()).reduce((a,m)=>a+(m.fat||0),0);
@@ -18,7 +19,7 @@ reg('nutrition', function() {
   const dueSupps = SupplementEngine.getDueNow();
 
   return '<div class="topbar"><div class="topbar-title">Nutrition & Supplements</div></div>' +
-    _calSection(todayCals, calTarget, todayP, todayC, todayF, user) +
+    _calSection(todayCals, calTarget, todayP, todayC, todayF, user, n) +
     _mealPresets() +
     _foodSearch() +
     _barcodeFood() +
@@ -31,10 +32,13 @@ reg('nutrition', function() {
     '<div  class="spacer-bottom"></div>';
 });
 
-function _calSection(cals, target, p, c, f, user) {
-  const pct = Math.min(Math.round((cals/target)*100), 100);
+function _calSection(cals, target, p, c, f, user, n) {
+  const pct = target > 0 ? Math.min(Math.round((cals/target)*100), 100) : 0;
   const remain = Math.max(0, target - cals);
-  const macros = TDEEEngine.macroSplit(user.goal||'hypertrophy', target);
+  const macros = n
+    ? { protein: n.protein, carbs: n.carbs, fat: n.fat }
+    : TDEEEngine.macroSplit(user.goal||'hypertrophy', target);
+  const line = (n && n.line) ? n.line : '';
 
   return sh('Today\'s Nutrition', '+ Log', 'showLogMeal()') +
     '<div class="card card-solid">' +
@@ -51,6 +55,7 @@ function _calSection(cals, target, p, c, f, user) {
     '<div  class="flex-1">' +
     '<div style="font-size:22px;font-weight:800;color:var(--c1)">'+remain+'<span style="font-size:13px;font-weight:500;color:var(--txt3)"> remaining</span></div>' +
     '<div  class="muted-12">Target: '+target+'kcal</div>' +
+    (line ? '<div class="muted-12" style="margin-top:6px;line-height:1.45">'+esc(line)+'</div>' : '') +
     '</div></div>' +
     '<div class="macro-bar-wrap">' +
     _macroBar('Protein', p, macros.protein, '#10B981', 'macro-protein') +

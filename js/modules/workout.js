@@ -3,7 +3,7 @@
 
 /* ── Guidance System ── */
 const GUIDANCE = {
-  setsReps(goal) {
+  setsReps(goal, exp) {
     const map = {
       hypertrophy: { sets:'3-4', reps:'8-12', rest:'60-90s', tempo:'2-0-1-0', note:'Last 2 reps should be hard' },
       fat_loss:    { sets:'3-4', reps:'12-15', rest:'45-60s', tempo:'2-0-1-0', note:'Keep rest short, heart rate up' },
@@ -12,7 +12,15 @@ const GUIDANCE = {
       athletic:    { sets:'3-4', reps:'6-10',  rest:'90-120s',tempo:'1-0-X-0', note:'Explosive concentric' },
       maintenance: { sets:'3',   reps:'10-12', rest:'60s',    tempo:'2-0-1-0', note:'Consistent effort' }
     };
-    return map[goal] || map.hypertrophy;
+    const base = map[goal] || map.hypertrophy;
+    const e = exp || ((typeof S !== 'undefined' && S.g) ? (S.g('user') || {}).exp : '') || 'intermediate';
+    if (e === 'beginner') {
+      return Object.assign({}, base, { reps: '10-15', rest: '75-90s', note: 'Leave 2–3 reps in reserve. Bigger jumps are OK.' });
+    }
+    if (e === 'advanced' || e === 'athlete') {
+      return Object.assign({}, base, { reps: '6-10', note: 'Small jumps. Stay around RPE 8.' });
+    }
+    return base;
   },
   techniques(goal) {
     const t = {
@@ -797,6 +805,8 @@ let _wktTimer = null;
 let _wktElapsed = 0;
 let _restTimer = null;
 let _restRemaining = 0;
+let _restEndsAt = 0;
+let _restDuration = 0;
 let _restInterval = null;
 let _wktNotes = {};
 let _supersetMode = false;
@@ -1148,6 +1158,14 @@ reg('active', function() {
   const caution = lim.indexOf('shoulder') >= 0
     ? '<div class="banner banner--caution" style="margin:8px 16px">Shoulder caution: stop on sharp pain or clunk. Prefer listed alternatives.</div>'
     : '';
+  const firstNew = (_wkt.exercises || []).find(function(ex) {
+    const prev = typeof ProgEngine !== 'undefined' && ProgEngine.prevString ? ProgEngine.prevString(ex.name) : '';
+    const cal = (S.g('user.calibrations') || {})[ex.name];
+    return !prev && !cal;
+  });
+  const calBanner = firstNew
+    ? '<div class="banner" style="margin:8px 16px">First time on ' + esc(firstNew.name) + ': start light, hit 8 reps, then add 10–15% until a set leaves 2–3 in reserve. That load is saved for next time.</div>'
+    : '';
   const totalSets = _wkt.exercises.reduce(function(a,ex){return a+(ex.sets||[]).length;},0);
   const doneSets = _wkt.exercises.reduce(function(a,ex){return a+(ex.sets||[]).filter(function(s){return s.done;}).length;},0);
   const progress = totalSets > 0 ? Math.round((doneSets/totalSets)*100) : 0;
@@ -1236,7 +1254,7 @@ reg('active', function() {
       '</div>' +
       '<div id="note-'+exIdx+'" style="display:'+(_focusMode?'none':(noteVal?'block':'none'))+';padding:0 16px 12px">' +
       '<textarea class="field" placeholder="How did this feel? Form notes, energy level..." ' +
-      'style="height:72px;resize:none;font-size:13px" ' +
+      'style="height:72px;resize:none;font-size:16px" ' +
       'oninput="_setWktNote('+exIdx+',this.value)">'+esc(noteVal)+'</textarea>' +
       '</div>' +
       '</div>';
@@ -1274,7 +1292,7 @@ reg('active', function() {
     '<button type="button" onclick="addRestTime(30)" style="flex:1;padding:14px;border-radius:14px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);color:var(--c1);font-size:15px;font-weight:600;cursor:pointer;touch-action:manipulation">+30s</button>' +
     '</div></div>';
 
-  return header + caution + planStrip + '<div style="padding:12px 16px 4px">' + cards + '</div>' + cardioStrip + restBar + '<div style="height:32px"></div>';
+  return header + caution + calBanner + planStrip + '<div style="padding:12px 16px 4px">' + cards + '</div>' + cardioStrip + restBar + '<div style="height:32px"></div>';
 });
 
 /* ── Workout control functions ── */
@@ -1322,6 +1340,11 @@ window._doneSet = function(exIdx, sIdx) {
       if (typeof celebrate === 'function') celebrate(icon('star',28), 'New PR!', ex.name + ' · ' + formatWeight(w) + ' × ' + r, 2200);
     } else {
       haptic(25);
+    }
+    const cals = Object.assign({}, S.g('user.calibrations') || {});
+    if (!cals[ex.name] && Number(w) > 0) {
+      cals[ex.name] = { kg: Number(w), reps: Number(r) || 8, date: today() };
+      S.set('user.calibrations', cals);
     }
 
     const nextSet = ex.sets[sIdx + 1];
@@ -1430,7 +1453,13 @@ window.toggleFocusMode = function() {
 window.swapExercise = function(exIdx) {
   if (!_wkt || !_wkt.exercises[exIdx]) return;
   const name = _wkt.exercises[exIdx].name;
-  const subs = SplitEngine.rankSubstitutes(name, '');
+  const lim = ((S.g('user.limitations') || []).concat(S.g('user.injuries') || [])).map(function(l) {
+    return String((typeof l === 'string' ? l : (l.joint || l.id || '')) || '').toLowerCase();
+  });
+  const reason = lim.some(function(j) { return j.indexOf('shoulder') >= 0; }) ? 'shoulder' : '';
+  const subs = SplitEngine.rankSubstitutes(name, reason).filter(function(s) {
+    return typeof Equipment === 'undefined' || (Equipment.canPerform(s.name) && Equipment.jointOk(s.name));
+  });
   if (!subs.length) { toast('No good substitute for this one — machine or bodyweight options may need equipment setup', 'warn'); return; }
   const body =
     '<div style="font-size:12px;color:var(--txt3);margin-bottom:12px">Ranked by how closely each one matches ' + esc(name) + ' — muscles hit, difficulty, and your injuries.</div>' +
@@ -1695,39 +1724,67 @@ if (typeof registerRouteCleanup === 'function') {
 /* ── Rest Timer ── */
 window.startRestTimer = function(secs) {
   clearInterval(_restInterval);
-  _restRemaining = secs;
+  _restDuration = Number(secs) || 0;
+  _restEndsAt = Date.now() + _restDuration * 1000;
+  _restRemaining = _restDuration;
   const sheet = document.getElementById('rest-sheet');
   if (sheet) sheet.style.transform = 'translateY(0)';
-  const circ = 276.5;
   if (typeof RestNotify !== 'undefined') RestNotify.start(secs);
-
-  _restInterval = setInterval(function() {
-    _restRemaining--;
+  function tick() {
+    const remaining = Math.max(0, Math.ceil((_restEndsAt - Date.now()) / 1000));
+    _restRemaining = remaining;
     const cd = document.getElementById('rest-countdown');
-    if (cd) cd.textContent = fmtTime(Math.max(0,_restRemaining));
+    if (cd) cd.textContent = fmtTime(remaining);
     const ring = document.getElementById('rest-ring');
-    if (ring) {
-      const pct = Math.max(0, _restRemaining / secs);
+    if (ring && _restDuration > 0) {
+      const circ = 276.5;
+      const pct = Math.max(0, remaining / _restDuration);
       ring.style.strokeDashoffset = circ * (1 - pct);
     }
-    if (_restRemaining <= 0) {
+    if (remaining <= 0) {
       clearInterval(_restInterval);
+      _restInterval = null;
       haptic([100, 50, 100, 50, 200]);
       const sheet2 = document.getElementById('rest-sheet');
       if (sheet2) setTimeout(function(){sheet2.style.transform='translateY(100%)';},1200);
     }
-  }, 1000);
+  }
+  tick();
+  _restInterval = setInterval(tick, 250);
+  document.addEventListener('visibilitychange', window._restOnVisible);
+};
+window._restOnVisible = function() {
+  if (!document.hidden && _restEndsAt) {
+    const remaining = Math.max(0, Math.ceil((_restEndsAt - Date.now()) / 1000));
+    _restRemaining = remaining;
+    const cd = document.getElementById('rest-countdown');
+    if (cd) cd.textContent = fmtTime(remaining);
+  }
+};
+window._restTimerState = function() {
+  return {
+    endsAt: _restEndsAt,
+    remaining: Math.max(0, Math.ceil((_restEndsAt - Date.now()) / 1000)),
+    duration: _restDuration
+  };
+};
+window._restTimerShift = function(ms) {
+  _restEndsAt -= ms;
+  if (typeof window._restOnVisible === 'function') window._restOnVisible();
 };
 
 window.skipRest = function() {
   clearInterval(_restInterval);
+  _restEndsAt = 0;
   if (typeof RestNotify !== 'undefined') RestNotify.stop();
   const sheet = document.getElementById('rest-sheet');
   if (sheet) sheet.style.transform = 'translateY(100%)';
 };
 
 window.addRestTime = function(secs) {
-  _restRemaining += secs;
+  _restEndsAt += secs * 1000;
+  _restDuration += secs;
+  _restRemaining = Math.max(0, Math.ceil((_restEndsAt - Date.now()) / 1000));
   const cd = document.getElementById('rest-countdown');
   if (cd) cd.textContent = fmtTime(_restRemaining);
 };
@@ -1735,6 +1792,7 @@ window.addRestTime = function(secs) {
 window.stopRestTimer = function() {
   clearInterval(_restInterval);
   _restInterval = null;
+  _restEndsAt = 0;
   if (typeof RestNotify !== 'undefined') RestNotify.stop();
 };
 
@@ -1767,7 +1825,12 @@ window.toggleExInfo = function(exIdx) {
 window.showExercisePicker = function(grp) {
   const groups = ['chest','back','legs','shoulders','biceps','triceps','core','glutes','fullbody'];
   const curGrp = grp || 'chest';
-  const exercises = ExDB.byGroup(curGrp);
+  let exercises = ExDB.byGroup(curGrp);
+  if (typeof Equipment !== 'undefined') {
+    exercises = exercises.filter(function(ex) {
+      return Equipment.canPerform(ex) && Equipment.jointOk(ex);
+    });
+  }
   window._exercisePickerItems = exercises;
   const tabs = groups.map(g =>
     '<button type="button" class="cap-tab pill'+(g===curGrp?' on':'')+'" role="tab" aria-selected="'+(g===curGrp)+'" onclick="showExercisePicker(\''+g+'\')">'+g.charAt(0).toUpperCase()+g.slice(1)+'</button>'

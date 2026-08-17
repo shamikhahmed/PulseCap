@@ -14,10 +14,10 @@ test.describe('Calculation correctness', () => {
       const bmrMale = be.bmr({ weight: 75, height: 175, age: 25, gender: 'male' });
       // Female: 10*60 + 6.25*165 - 5*30 - 161 = 600 + 1031.25 - 150 - 161 = 1320.25 → 1320
       const bmrFemale = be.bmr({ weight: 60, height: 165, age: 30, gender: 'female' });
-      // TDEE moderate 1.55 * 1724 = 2672.2 → 2672
-      const tdee = be.tdee({ weight: 75, height: 175, age: 25, gender: 'male', activityLevel: 'moderate' });
-      // sedentary 1.2 * 1724 = 2068.8 → 2069
-      const tdeeSed = be.tdee({ weight: 75, height: 175, age: 25, gender: 'male', activityLevel: 'sedentary' });
+      // TDEE from days/week: 4 days → 1.55 × 1724 = 2672
+      const tdee = be.tdee({ weight: 75, height: 175, age: 25, gender: 'male', daysPerWeek: 4 });
+      // 0–1 days → sedentary 1.2 × 1724 = 2069
+      const tdeeSed = be.tdee({ weight: 75, height: 175, age: 25, gender: 'male', daysPerWeek: 1 });
       return { bmi, bmrMale, bmrFemale, tdee, tdeeSed };
     });
 

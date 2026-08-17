@@ -41,6 +41,13 @@ const TrainingPlanEngine = {
     copy.startDate = opts.startDate || this.todayISO();
     copy.source = { type: 'template', name: id, importedAt: this.todayISO() };
     copy.cursor = { rotationIndex: opts.rotationIndex || 0, lastSessionKey: '', lastDate: '', lastWorkoutId: '' };
+    const exp = (typeof Profile !== 'undefined' && Profile.experienceGuide)
+      ? Profile.experienceGuide((typeof S !== 'undefined' && S.g) ? S.g('user.exp') : 'intermediate')
+      : null;
+    if (exp && copy.progression) {
+      copy.progression.incrementPct = exp.incrementPct;
+      copy.progression.targetRpe = exp.targetRpe;
+    }
     copy.workingLoads = {};
     Object.keys(copy.sessions || {}).forEach(function(sid) {
       (copy.sessions[sid].exercises || []).forEach(function(ex) {

@@ -107,6 +107,13 @@ window.saveEquipmentSetup = function() {
   haptic(40);
   S.set('user.equipmentConfigured', true);
   S.set('settings.equipmentSetupPending', false);
+  const ids = S.g('user.equipmentIds') || [];
+  let kit = 'full_gym';
+  if (ids.includes('none') && ids.length <= 2) kit = 'home_minimal';
+  else if (ids.indexOf('barbell') < 0 && ids.indexOf('dumbbell') >= 0) kit = 'dumbbells';
+  else if (ids.indexOf('barbell') < 0 && (ids.indexOf('cable_station') >= 0 || ids.indexOf('leg_press') >= 0)) kit = 'machines_cables';
+  if (typeof Equipment !== 'undefined' && Equipment.applyKit) Equipment.applyKit(kit);
+  S.set('user.equipmentIds', ids);
   toast('Equipment saved — workouts filtered to your setup', 'ok');
   go('settings', { tab: 'training' });
 };

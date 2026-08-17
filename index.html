@@ -189,6 +189,8 @@ window.updateOfflineBanner = updateOfflineBanner;
   <div id="rest-sheet"></div>
 
   <script src="js/storage.js"></script>
+  <script src="js/core/nutrition-math.js"></script>
+  <script src="js/core/equipment.js"></script>
   <script src="js/data/equipment-db.js"></script>
   <script src="js/data/splits-db.js"></script>
   <script src="js/data/injuries-db.js"></script>
@@ -198,6 +200,7 @@ window.updateOfflineBanner = updateOfflineBanner;
   <script src="js/coach-kernel.js"></script>
   <script src="js/data/training-plan-schema.js"></script>
   <script src="js/data/plans/machine-ppl.js"></script>
+  <script src="js/data/plans/catalog.js"></script>
   <script src="js/training-plan.js"></script>
   <script src="js/core/profile.js"></script>
   <script src="js/core/engine.js"></script>
@@ -308,7 +311,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=97').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=101').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {

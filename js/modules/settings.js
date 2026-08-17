@@ -66,7 +66,6 @@ function _tabAccount(u) {
   const imperial = (u.units || 'metric') === 'imperial';
   const hLabel = imperial ? 'Height (in)' : 'Height (cm)';
   const wLabel = imperial ? 'Weight (lb)' : 'Weight (kg)';
-  const gwLabel = imperial ? 'Goal Weight (lb)' : 'Goal Weight (kg)';
   const wtUnit = imperial ? 'lb' : 'kg';
   const bmi = BodyEngine.bmi(u.weight||75, u.height||175);
   const tdee = BodyEngine.tdee(u);
@@ -74,25 +73,25 @@ function _tabAccount(u) {
   const healthyRange = BodyEngine.healthyWeightRange(u.height||175, u.gender||'male');
   const heightValue = heightFromCm(u.height || 175, u);
   const weightValue = weightFromKg(u.weight || 75, u);
-  const goalWeightValue = weightFromKg(u.goalWeight || 70, u);
   const healthyMin = weightFromKg(healthyRange.min, u);
   const healthyMax = weightFromKg(healthyRange.max, u);
+  const rd = (typeof ReadinessEngine !== 'undefined' && ReadinessEngine.display) ? ReadinessEngine.display() : { word: 'Ready', hideScore: true };
 
   return '<div class="pad-16">' +
     _sectionTitle('Identity') +
     _fieldWrap('Name', '<input class="field" type="text" name="name" autocomplete="name" value="'+esc(u.name||'')+'" oninput="_setSetting(\'user.name\',this.value)" placeholder="Your name">') +
     '<div class="field-row">' +
     _fieldWrap('Age', '<input class="field" type="number" inputmode="numeric" value="'+(u.age||25)+'" oninput="_setSetting(\'user.age\',parseInt(this.value))" min="14" max="80">') +
-    _fieldWrap('Gender', '<div class="select-wrap"><select class="field" aria-label="Gender" onchange="_setSetting(\'user.gender\',this.value)"><option value="male"'+(u.gender==='male'?' selected':'')+'>Male</option><option value="female"'+(u.gender==='female'?' selected':'')+'>Female</option></select></div>') +
+    _fieldWrap('Gender', '<div class="select-wrap"><select class="field" aria-label="Sex" onchange="_setSetting(\'user.gender\',this.value)"><option value="female"'+(u.gender==='female'?' selected':'')+'>Female</option><option value="male"'+(u.gender==='male'?' selected':'')+'>Male</option><option value="unspecified"'+(u.gender==='unspecified'||!u.gender?' selected':'')+'>Prefer not to say</option></select></div>') +
     '</div>' +
     '<div class="field-row">' +
     _fieldWrap(hLabel, '<input class="field" type="number" inputmode="decimal" value="'+heightValue+'" min="'+(imperial?36:90)+'" max="'+(imperial?96:245)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.height\',this.value,\'height\')">') +
     _fieldWrap(wLabel, '<input class="field" type="number" inputmode="decimal" value="'+weightValue+'" min="'+(imperial?55:25)+'" max="'+(imperial?1100:500)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.weight\',this.value,\'weight\')">') +
     '</div>' +
-    '<div class="field-row">' +
-    _fieldWrap(gwLabel, '<input class="field" type="number" inputmode="decimal" value="'+goalWeightValue+'" min="'+(imperial?55:25)+'" max="'+(imperial?1100:500)+'" step="0.1" oninput="_setCanonicalBodySetting(\'user.goalWeight\',this.value,\'weight\')">') +
-    _fieldWrap('Body Fat %', '<input class="field" type="number" inputmode="decimal" value="'+(u.targetBodyFat||15)+'" oninput="_setSetting(\'user.targetBodyFat\',parseFloat(this.value))">') +
     '</div>' +
+    _selectWrap('Days per week', 'user.daysPerWeek', String(u.daysPerWeek || u.weeklyGoal || 4), [
+      {v:'2',l:'2'},{v:'3',l:'3'},{v:'4',l:'4'},{v:'5',l:'5'},{v:'6',l:'6'}
+    ]) +
 
     _sectionTitle('Goal') +
     _selectWrap('Primary Goal', 'user.goal', u.goal||'hypertrophy', [
@@ -119,7 +118,7 @@ function _tabAccount(u) {
         '<div style="display:flex;flex-wrap:wrap;gap:8px">' +
         _infoStat('Calories', plan.calorieTarget + '', 'kcal/day') +
         _infoStat('Protein', plan.protein + '', 'g/day') +
-        _infoStat('Readiness', plan.readiness + '', '/100') +
+        _infoStat('Readiness', rd.word, rd.hideScore ? 'after 3 sessions' : (rd.score != null ? String(rd.score) : '')) +
         '</div>' +
         '</div>';
     })() +
@@ -195,17 +194,27 @@ function _tabTraining(u) {
     _renderWeekSchedule(u) +
 
     _sectionTitle('My Equipment') +
-    '<button type="button" class="btn btn-primary" onclick="go(\'equipment-setup\')" style="width:100%;margin-bottom:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px">' + icon('dumbbell', 16) + ' Configure Equipment</button>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px">' +
+    (typeof Equipment !== 'undefined' ? Object.keys(Equipment.KITS).map(function(id) {
+      const kit = Equipment.KITS[id];
+      const on = (u.equipmentKit || '') === id;
+      return '<button type="button" onclick="if(window.Equipment)Equipment.applyKit(\'' + id + '\');go(\'settings\',{tab:\'training\'})" aria-pressed="' + on + '" style="min-height:44px;padding:10px 14px;border-radius:12px;border:1.5px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'rgba(var(--c1-rgb),0.12)' : 'var(--bg3)') + ';color:' + (on ? 'var(--c1)' : 'var(--txt3)') + ';font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">' + esc(kit.label) + '</button>';
+    }).join('') : '') +
+    '</div>' +
+    '<button type="button" class="btn btn-primary" onclick="go(\'equipment-setup\')" style="width:100%;margin-bottom:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px">' + icon('dumbbell', 16) + ' Fine-tune equipment list</button>' +
     '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-bottom:14px">'+esc(eqLabel)+' — Life Fitness, Technogym, home, bodyweight & more</div>' +
 
     _sectionTitle('Limitations') +
     '<div style="font-size:12px;color:var(--txt3);margin-bottom:10px;line-height:1.45">Optional cautions for Today, Log, and Programs. Educational — not a diagnosis.</div>' +
     '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">' +
-    [{id:'shoulder',l:'Shoulder'},{id:'knee',l:'Knee'},{id:'low_back',l:'Low back'}].map(function(d) {
+    [{id:'shoulder',l:'Shoulder'},{id:'knee',l:'Knee'},{id:'low_back',l:'Low back'},{id:'wrist',l:'Wrist'},{id:'elbow',l:'Elbow'},{id:'hip',l:'Hip'},{id:'neck',l:'Neck'},{id:'ankle',l:'Ankle'}].map(function(d) {
       const on = _hasLimitation(u, d.id);
       return '<button type="button" onclick="toggleLimitation(\''+d.id+'\')" aria-pressed="'+(on?'true':'false')+'" style="min-height:44px;padding:10px 14px;border-radius:12px;border:1.5px solid '+(on?'var(--c1)':'var(--border)')+';background:'+(on?'rgba(var(--c1-rgb),0.12)':'var(--bg3)')+';color:'+(on?'var(--c1)':'var(--txt3)')+';font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">'+d.l+'</button>';
     }).join('') +
     '</div>' +
+
+    _sectionTitle('Recovery') +
+    '<button type="button" class="btn btn-secondary" style="width:100%;margin-bottom:14px;min-height:44px" onclick="go(\'recovery\')">Recovery check-in</button>' +
 
     _sectionTitle('Rest Timer') +
     _fieldWrap('Default Rest (seconds)', '<input class="field" type="number" value="'+(u.restSecs||120)+'" min="30" max="600" step="15" oninput="_setSetting(\'user.restSecs\',parseInt(this.value))">') +
@@ -274,25 +283,32 @@ window.resetDayAssignments = function() {
 };
 
 function _tabFuel(u) {
-  const tdee = BodyEngine.tdee(u);
+  const n = (typeof NutritionMath !== 'undefined' && NutritionMath.fromUser) ? NutritionMath.fromUser(u) : null;
+  const cal = u.macrosPinned ? (u.calorieTarget || (n && n.calories) || BodyEngine.calorieTarget(u)) : ((n && n.calories) || BodyEngine.calorieTarget(u));
+  const prot = u.macrosPinned ? (u.proteinTarget || (n && n.protein) || BodyEngine.proteinTarget(u)) : ((n && n.protein) || BodyEngine.proteinTarget(u));
+  const carbs = u.macrosPinned ? (u.carbTarget || (n && n.carbs) || 220) : ((n && n.carbs) || 220);
+  const fat = u.macrosPinned ? (u.fatTarget || (n && n.fat) || 70) : ((n && n.fat) || 70);
+  const tdee = (n && n.tdee) || BodyEngine.tdee(u);
   const userSupps = S.g('supplements') || [];
   return '<div class="pad-16">' +
     _sectionTitle('Daily Targets') +
-    _fieldWrap('Calories (kcal)', '<input class="field" type="number" inputmode="numeric" value="'+(u.calorieTarget||2200)+'" oninput="_setSetting(\'user.calorieTarget\',parseInt(this.value))">') +
+    (n && n.line ? '<div class="muted-12" style="margin-bottom:12px;line-height:1.45">' + esc(n.line) + '</div>' : '') +
+    _fieldWrap('Calories (kcal)', '<input class="field" type="number" inputmode="numeric" value="'+cal+'" oninput="_setSetting(\'user.calorieTarget\',parseInt(this.value))">') +
     '<div class="field-row">' +
-    _fieldWrap('Protein (g)', '<input class="field" type="number" inputmode="numeric" value="'+(u.proteinTarget||165)+'" oninput="_setSetting(\'user.proteinTarget\',parseInt(this.value))">') +
-    _fieldWrap('Carbs (g)', '<input class="field" type="number" inputmode="numeric" value="'+(u.carbTarget||220)+'" oninput="_setSetting(\'user.carbTarget\',parseInt(this.value))">') +
+    _fieldWrap('Protein (g)', '<input class="field" type="number" inputmode="numeric" value="'+prot+'" oninput="_setSetting(\'user.proteinTarget\',parseInt(this.value))">') +
+    _fieldWrap('Carbs (g)', '<input class="field" type="number" inputmode="numeric" value="'+carbs+'" oninput="_setSetting(\'user.carbTarget\',parseInt(this.value))">') +
     '</div>' +
     '<div class="field-row">' +
-    _fieldWrap('Fat (g)', '<input class="field" type="number" inputmode="numeric" value="'+(u.fatTarget||70)+'" oninput="_setSetting(\'user.fatTarget\',parseInt(this.value))">') +
+    _fieldWrap('Fat (g)', '<input class="field" type="number" inputmode="numeric" value="'+fat+'" oninput="_setSetting(\'user.fatTarget\',parseInt(this.value))">') +
     _fieldWrap('Water (glasses)', '<input class="field" type="number" inputmode="numeric" value="'+(u.waterTarget||8)+'" min="4" max="20" oninput="_setSetting(\'user.waterTarget\',parseInt(this.value))">') +
     '</div>' +
+    '<button type="button" class="btn btn-secondary btn-sm w-full" style="margin-bottom:14px;min-height:44px" onclick="recalcNutritionFromBody()">Recalculate from height, weight, age</button>' +
     _sectionTitle('Macro Presets') +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px">' +
     [['hypertrophy','Muscle'],['fat_loss','Fat loss'],['strength','Strength'],['maintenance','Maintain'],['athletic','Athletic']].map(g =>
       '<button type="button" class="btn btn-secondary btn-sm" onclick="applyMacroPreset(\''+g[0]+'\')" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:11px 8px;min-height:44px">'+g[1]+'</button>'
     ).join('') + '</div>' +
-    '<div style="padding:12px 0;font-size:13px;color:var(--txt3)">Calculated TDEE: '+tdee+' kcal/day</div>' +
+    '<div style="padding:12px 0;font-size:13px;color:var(--txt3)">Estimated TDEE: '+tdee+' kcal/day · protein '+((n && n.proteinPerKg) || 1.8)+' g/kg</div>' +
 
     _sectionTitle('Supplement Stack') +
     (userSupps.length ? userSupps.map(s =>
@@ -530,6 +546,11 @@ window._enableRestNotify = function() {
   });
 };
 window._setSetting = function(key, val) {
+  if (key === 'user.daysPerWeek') {
+    val = parseInt(val, 10) || 4;
+    S.set('user.weeklyGoal', val);
+  }
+  if (key === 'user.gender') S.set('user.sex', val);
   S.set(key, val);
   if (key === 'user.split') {
     /* New split — old weekday map points at day numbers that no longer match */
@@ -538,6 +559,17 @@ window._setSetting = function(key, val) {
   }
   if (key === 'user.coachPersonality') {
     S.setGlobalCoach(val);
+  }
+  if (key === 'user.calorieTarget' || key === 'user.proteinTarget' || key === 'user.carbTarget' || key === 'user.fatTarget') {
+    S.set('user.macrosPinned', true);
+  }
+  const nutritionKeys = {
+    'user.age': 1, 'user.gender': 1, 'user.sex': 1, 'user.goal': 1,
+    'user.weight': 1, 'user.height': 1, 'user.daysPerWeek': 1, 'user.weeklyGoal': 1, 'user.exp': 1
+  };
+  if (nutritionKeys[key] && typeof Profile !== 'undefined' && Profile.syncNutrition) {
+    S.set('user.macrosPinned', false);
+    Profile.syncNutrition();
   }
   if (key === 'settings.lowPower' && window._fitnessCanvas) {
     if (val) window._fitnessCanvas.stop();
@@ -551,6 +583,14 @@ window._setCanonicalBodySetting = function(key, raw, kind) {
   if (!Number.isFinite(value) || value <= 0) return;
   const user = S.g('user') || {};
   S.set(key, kind === 'height' ? heightToCm(value, user) : weightToKg(value, user));
+  S.set('user.macrosPinned', false);
+  if (typeof Profile !== 'undefined' && Profile.syncNutrition) Profile.syncNutrition();
+};
+window.recalcNutritionFromBody = function() {
+  S.set('user.macrosPinned', false);
+  if (typeof Profile !== 'undefined' && Profile.syncNutrition) Profile.syncNutrition();
+  toast('Targets recalculated from your body stats', 'ok');
+  go('settings', { tab: 'fuel' });
 };
 
 function _hasLimitation(u, id) {
@@ -607,58 +647,97 @@ window.setInjurySeverity = function(idx, severity) {
 /* ── Custom split builder ── */
 let _sbDays = null;
 
+function _sbName(item) { return typeof item === 'string' ? item : (item && item.name) || ''; }
+function _sbItem(item) {
+  if (typeof item === 'string') return { name: item, sets: 3, reps: 10, restSec: 75 };
+  return item || { name: '', sets: 3, reps: 10, restSec: 75 };
+}
+
 reg('split-builder', function() {
   if (!_sbDays) {
     const saved = S.g('user.customSplit');
     _sbDays = saved && saved.length ? JSON.parse(JSON.stringify(saved)) : [{ n: 'Day 1', muscles: [], exercises: [] }];
   }
   const days = _sbDays.map(function(d, di) {
-    const exRows = (d.exercises || []).map(function(name, ei) {
-      const ex = ExDB.byName(name);
-      return '<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--border)">' +
-        '<div  class="flex-1"><div style="font-size:13px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(name) + '</div>' +
-        (ex ? '<div  class="muted-11">' + esc(ex.pri || ex.grp || '') + '</div>' : '') + '</div>' +
-        '<button type="button" onclick="sbRemove(' + di + ',' + ei + ')" aria-label="Remove" style="background:var(--bg4);border:1px solid var(--border);border-radius:8px;color:var(--txt3);font-size:12px;padding:5px 9px;cursor:pointer;touch-action:manipulation">✕</button></div>';
+    const exRows = (d.exercises || []).map(function(raw, ei) {
+      const item = _sbItem(raw);
+      const ex = ExDB.byName(item.name);
+      return '<div style="padding:8px 0;border-bottom:1px solid var(--border)">' +
+        '<div style="display:flex;align-items:center;gap:8px">' +
+        '<div class="flex-1"><div style="font-size:13px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + esc(item.name) + '</div>' +
+        (ex ? '<div class="muted-11">' + esc(ex.pri || ex.grp || '') + '</div>' : '') + '</div>' +
+        '<button type="button" onclick="sbMove(' + di + ',' + ei + ',-1)" aria-label="Move up" style="min-width:44px;min-height:44px;background:var(--bg4);border:1px solid var(--border);border-radius:8px;color:var(--txt2)">↑</button>' +
+        '<button type="button" onclick="sbMove(' + di + ',' + ei + ',1)" aria-label="Move down" style="min-width:44px;min-height:44px;background:var(--bg4);border:1px solid var(--border);border-radius:8px;color:var(--txt2)">↓</button>' +
+        '<button type="button" onclick="sbRemove(' + di + ',' + ei + ')" aria-label="Remove" style="min-width:44px;min-height:44px;background:var(--bg4);border:1px solid var(--border);border-radius:8px;color:var(--txt3)">✕</button></div>' +
+        '<div class="field-row" style="margin-top:8px">' +
+        '<div class="field-wrap" style="margin:0"><label class="field-label">Sets</label><input class="field" type="number" inputmode="numeric" min="1" max="8" value="' + (item.sets || 3) + '" oninput="sbPatch(' + di + ',' + ei + ',\'sets\',this.value)"></div>' +
+        '<div class="field-wrap" style="margin:0"><label class="field-label">Reps</label><input class="field" type="number" inputmode="numeric" min="1" max="30" value="' + (item.reps || 10) + '" oninput="sbPatch(' + di + ',' + ei + ',\'reps\',this.value)"></div>' +
+        '<div class="field-wrap" style="margin:0"><label class="field-label">Rest (s)</label><input class="field" type="number" inputmode="numeric" min="15" max="300" step="15" value="' + (item.restSec || 75) + '" oninput="sbPatch(' + di + ',' + ei + ',\'restSec\',this.value)"></div>' +
+        '</div></div>';
     }).join('');
     return '<div style="background:var(--bg3);border:1px solid var(--border);border-radius:16px;padding:14px;margin:0 16px 12px">' +
       '<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">' +
-      '<input class="field" value="' + esc(d.n || '') + '" placeholder="Day name (e.g. Push)" style="flex:1;font-size:14px;font-weight:700;padding:9px 12px" oninput="sbRename(' + di + ', this.value)">' +
+      '<input class="field" value="' + esc(d.n || '') + '" placeholder="Day name (e.g. Push)" style="flex:1;font-weight:700" oninput="sbRename(' + di + ', this.value)">' +
+      '<button type="button" onclick="sbDupDay(' + di + ')" style="min-height:44px;background:var(--bg4);border:1px solid var(--border);border-radius:10px;color:var(--txt2);font-size:12px;font-weight:600;padding:9px 12px">Duplicate</button>' +
       (_sbDays.length > 1 ? '<button type="button" onclick="sbDelDay(' + di + ')" style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.25);border-radius:10px;color:var(--danger);font-size:12px;font-weight:600;padding:9px 12px;cursor:pointer;touch-action:manipulation">Delete</button>' : '') +
       '</div>' +
       exRows +
       ((d.exercises || []).length === 0 ? '<div style="font-size:12px;color:var(--txt3);padding:8px 0">No exercises yet — search below.</div>' : '') +
-      '<input class="field" placeholder="Search 300+ exercises…" style="margin-top:10px;font-size:13px;padding:10px 12px" oninput="sbSearch(this, ' + di + ')">' +
+      '<input class="field" placeholder="Search exercises you can perform…" style="margin-top:10px" oninput="sbSearch(this, ' + di + ')">' +
       '<div id="sb-sug-' + di + '"></div>' +
       '</div>';
   }).join('');
 
-  return moduleTopbar('Custom Split', 'Your plan, your days', { backScreen: 'settings' }) +
+  return moduleTopbar('Program builder', 'Your sessions, your lifts', { backScreen: 'my-plan' }) +
     days +
     '<div style="padding:0 16px 8px;display:flex;gap:8px">' +
-    '<button type="button" class="btn btn-secondary flex-1"  onclick="sbAddDay()">+ Add day</button>' +
-    '<button type="button" class="btn btn-primary flex-1"  onclick="sbSave()">Save split</button>' +
+    '<button type="button" class="btn btn-secondary flex-1"  onclick="sbAddDay()">+ Add session</button>' +
+    '<button type="button" class="btn btn-primary flex-1"  onclick="sbSave()">Save program</button>' +
     '</div>' +
-    '<div style="font-size:12px;color:var(--txt3);text-align:center;padding:0 24px 20px">Saving makes this your active split. It plugs into the weekly schedule, injuries, and equipment filtering like any other.</div>';
+    '<div style="font-size:12px;color:var(--txt3);text-align:center;padding:0 24px 20px">Saving makes this your active split. Search is filtered to your equipment and limitations.</div>';
 });
 
 window.sbAddDay = function() { _sbDays.push({ n: 'Day ' + (_sbDays.length + 1), muscles: [], exercises: [] }); go('split-builder'); };
 window.sbDelDay = function(i) { _sbDays.splice(i, 1); go('split-builder'); };
+window.sbDupDay = function(i) {
+  const copy = JSON.parse(JSON.stringify(_sbDays[i] || { n: 'Day', exercises: [] }));
+  copy.n = (copy.n || 'Day') + ' copy';
+  _sbDays.splice(i + 1, 0, copy);
+  go('split-builder');
+};
 window.sbRename = function(i, v) { if (_sbDays[i]) _sbDays[i].n = v; };
 window.sbRemove = function(i, ei) { _sbDays[i].exercises.splice(ei, 1); go('split-builder'); };
+window.sbMove = function(di, ei, dir) {
+  const arr = _sbDays[di].exercises;
+  const j = ei + dir;
+  if (j < 0 || j >= arr.length) return;
+  const t = arr[ei]; arr[ei] = arr[j]; arr[j] = t;
+  go('split-builder');
+};
+window.sbPatch = function(di, ei, field, val) {
+  const cur = _sbItem(_sbDays[di].exercises[ei]);
+  cur[field] = parseInt(val, 10) || cur[field];
+  _sbDays[di].exercises[ei] = cur;
+};
 window.sbSearch = function(inp, di) {
   const box = document.getElementById('sb-sug-' + di);
   if (!box) return;
   const q = (inp.value || '').trim();
   if (q.length < 2) { box.innerHTML = ''; return; }
-  const hits = ExDB.search(q).slice(0, 6);
+  let hits = ExDB.search(q);
+  if (typeof Equipment !== 'undefined') {
+    hits = hits.filter(function(e) { return Equipment.canPerform(e) && Equipment.jointOk(e); });
+  }
+  hits = hits.slice(0, 6);
   box.innerHTML = hits.map(function(e) {
-    return '<div onclick="sbAdd(' + di + ',' + jsArg(e.n) + ')" style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);margin-top:6px;cursor:pointer;touch-action:manipulation">' +
+    return '<div onclick="sbAdd(' + di + ',' + jsArg(e.n) + ')" style="display:flex;justify-content:space-between;align-items:center;padding:9px 12px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);margin-top:6px;cursor:pointer;touch-action:manipulation;min-height:44px">' +
       '<div  class="row-title">' + esc(e.n) + '</div>' +
       '<div style="font-size:11px;color:var(--c1);font-weight:700">+ Add</div></div>';
-  }).join('') || '<div style="font-size:12px;color:var(--txt3);padding:8px 4px">Nothing matches.</div>';
+  }).join('') || '<div style="font-size:12px;color:var(--txt3);padding:8px 4px">Nothing matches your equipment.</div>';
 };
 window.sbAdd = function(di, name) {
-  if (_sbDays[di].exercises.indexOf(name) === -1) _sbDays[di].exercises.push(name);
+  const names = (_sbDays[di].exercises || []).map(_sbName);
+  if (names.indexOf(name) === -1) _sbDays[di].exercises.push({ name: name, sets: 3, reps: 10, restSec: 75 });
   go('split-builder');
 };
 window.sbSave = function() {
@@ -667,7 +746,8 @@ window.sbSave = function() {
   days.forEach(function(d) {
     if (!d.n || !d.n.trim()) d.n = 'Training Day';
     const prim = {};
-    d.exercises.forEach(function(n) {
+    d.exercises.forEach(function(item) {
+      const n = typeof item === 'string' ? item : (item && item.name);
       const ex = ExDB.byName(n);
       ((ex && ex.muscles && ex.muscles.primary) || []).forEach(function(m) { prim[m] = 1; });
     });
@@ -703,12 +783,19 @@ window.removeSupp = function(id) {
 };
 
 window.applyMacroPreset = function(goal) {
-  const tdee = BodyEngine.tdee(S.g('user')||{});
-  const macros = TDEEEngine.macroSplit(goal, tdee);
-  S.set('user.calorieTarget', tdee);
-  S.set('user.proteinTarget', macros.protein);
-  S.set('user.carbTarget', macros.carbs);
-  S.set('user.fatTarget', macros.fat);
+  S.set('user.goal', goal);
+  S.set('user.macrosPinned', false);
+  const user = S.g('user') || {};
+  const n = (typeof NutritionMath !== 'undefined' && NutritionMath.applyToUser) ? NutritionMath.applyToUser(user) : null;
+  if (n) S.set('user', user);
+  else {
+    const tdee = BodyEngine.tdee(user);
+    const macros = TDEEEngine.macroSplit(goal, tdee);
+    S.set('user.calorieTarget', tdee);
+    S.set('user.proteinTarget', macros.protein);
+    S.set('user.carbTarget', macros.carbs);
+    S.set('user.fatTarget', macros.fat);
+  }
   toast('Macro preset applied for '+goal.replace('_',' '), 'ok');
   go('settings', { tab: 'fuel' });
 };

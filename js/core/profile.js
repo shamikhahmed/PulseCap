@@ -30,18 +30,49 @@ const Profile = {
   },
 
   /* Every screen should read this — not scatter S.g('user.*') forks. */
+  experienceGuide: function(exp) {
+    const e = exp || 'intermediate';
+    const map = {
+      beginner: { id: 'beginner', reps: [10, 15], incrementPct: 0.05, targetRpe: 7, rpeCap: 8, note: 'Higher reps, bigger jumps, stay 2–3 reps in reserve.' },
+      intermediate: { id: 'intermediate', reps: [8, 12], incrementPct: 0.03, targetRpe: 8, rpeCap: 9, note: 'Double progression around RPE 8.' },
+      advanced: { id: 'advanced', reps: [6, 10], incrementPct: 0.025, targetRpe: 8, rpeCap: 9, note: 'Tighter ranges, smaller jumps.' },
+      athlete: { id: 'athlete', reps: [5, 8], incrementPct: 0.02, targetRpe: 8, rpeCap: 9, note: 'Small jumps. Tight ranges.' }
+    };
+    return map[e] || map.intermediate;
+  },
+
+  syncNutrition: function() {
+    const user = this.get('user') || {};
+    if (user.macrosPinned) return typeof NutritionMath !== 'undefined' ? NutritionMath.fromUser(user) : null;
+    if (typeof NutritionMath === 'undefined' || !NutritionMath.applyToUser) return null;
+    const n = NutritionMath.applyToUser(user);
+    this.set('user', user);
+    return n;
+  },
+
   deriveContext: function() {
     const user = this.get('user') || {};
+    const nutrition = (typeof NutritionMath !== 'undefined' && NutritionMath.fromUser)
+      ? NutritionMath.fromUser(user)
+      : { calories: user.calorieTarget || 0, protein: user.proteinTarget || 0, line: '' };
+    const experience = this.experienceGuide(user.exp);
+    const templateMatch = (typeof PlanCatalog !== 'undefined' && PlanCatalog.match) ? PlanCatalog.match(user) : null;
     const hasPlan = typeof TrainingPlanEngine !== 'undefined' && TrainingPlanEngine.hasActive();
     const plan = hasPlan ? TrainingPlanEngine.get() : null;
     let session = null;
     if (hasPlan && TrainingPlanEngine.todaySession) session = TrainingPlanEngine.todaySession();
     else if (typeof SplitEngine !== 'undefined' && SplitEngine.getSplitDay) session = SplitEngine.getSplitDay();
     const decision = (typeof DailyDecision !== 'undefined' && DailyDecision.decide) ? DailyDecision.decide() : null;
-    const readiness = (typeof ReadinessEngine !== 'undefined' && ReadinessEngine.score) ? ReadinessEngine.score() : 70;
+    const readinessRaw = (typeof ReadinessEngine !== 'undefined' && ReadinessEngine.score) ? ReadinessEngine.score() : 70;
+    const workouts = this.get('workouts') || [];
+    const readinessDisplay = (typeof ReadinessEngine !== 'undefined' && ReadinessEngine.display)
+      ? ReadinessEngine.display()
+      : { word: workouts.length >= 3 ? 'Ready' : 'Ready', hideScore: workouts.length < 3, score: readinessRaw };
     const insight = (typeof CoachKernel !== 'undefined' && CoachKernel.oneThing) ? CoachKernel.oneThing() : null;
     const limitations = this.get('user.limitations') || this.get('user.injuries') || [];
-    const equipment = this.get('user.equipment') || this.get('equipment') || [];
+    const equipment = Array.isArray(user.equipment) && user.equipment.length
+      ? user.equipment
+      : ((typeof Equipment !== 'undefined' && Equipment.tagsForKit) ? Equipment.tagsForKit(user.equipmentKit || 'full_gym') : []);
     return {
       user: user,
       onboarded: !!this.get('onboarded'),
@@ -49,11 +80,19 @@ const Profile = {
       hasPlan: !!hasPlan,
       session: session,
       decision: decision,
-      readiness: readiness,
+      readiness: readinessRaw,
+      readinessDisplay: readinessDisplay,
       insight: insight,
       limitations: Array.isArray(limitations) ? limitations : [],
       equipment: Array.isArray(equipment) ? equipment : [],
+      equipmentKit: user.equipmentKit || null,
+      nutrition: nutrition,
+      calories: nutrition.calories,
+      protein: nutrition.protein,
+      experience: experience,
+      templateMatch: templateMatch,
       gymDays: user.gymDays || [],
+      daysPerWeek: Number(user.daysPerWeek || user.weeklyGoal) || 0,
       ownerSeed: !!this.get('settings.ownerSeed'),
       gymFloor: !!user.gymFloorMode
     };
@@ -73,6 +112,13 @@ function bootOwnerSeed() {
     const name = Profile.get('user.name');
     if (!name) Profile.set('user.name', 'Owner');
     Profile.set('user.gymFloorMode', true);
+    Profile.set('user.equipmentKit', 'machines_cables');
+    Profile.set('user.equipmentConfigured', true);
+    Profile.set('user.daysPerWeek', 6);
+    Profile.set('user.weeklyGoal', 6);
+    if (typeof Equipment !== 'undefined' && Equipment.tagsForKit) {
+      Profile.set('user.equipment', Equipment.tagsForKit('machines_cables'));
+    }
     Profile.set('user.limitations', [{
       id: 'shoulder',
       joint: 'shoulder',

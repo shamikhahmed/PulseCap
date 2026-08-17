@@ -1,6 +1,6 @@
 # PulseCap
 
-**Version:** 6.17.0
+**Version:** 6.21.0
 
 **Your Smart Coach fitness operating system — by Capricorn Systems, built as a single offline-first PWA.**
 
@@ -135,7 +135,7 @@ js/
     my-plan.js      — Programs tab (templates + local import)
     settings.js     — Me
     photos.js       — Progress photos (IndexedDB)
-sw.js               — cache: pulsecap-v97
+sw.js               — cache: pulsecap-v101
 manifest.json       — PWA manifest
 ```
 
@@ -143,7 +143,7 @@ manifest.json       — PWA manifest
 
 ## Roadmap
 
-Shipped through **v6.17.0** (see `CHANGELOG.md`): Ember rebuild Phases 1–11 (tokens, 5-tab shell, Profile.deriveContext, 4-step onboarding, slim Today/Log/Progress/Programs/Me, Log+Train constitution pass, deprecated purge). Personalized training plans with on-device PDF/JSON import remain. Smart Coach is rules-based — not an LLM. No 1RM estimator.
+Shipped through **v6.21.0** (see `CHANGELOG.md`): Ember rebuild Phases 1–15 (tokens, 5-tab shell, computing Profile.deriveContext, 4-step onboarding with equipment/days/sex, slim Today/Log/Progress/Programs/Me, templates + builder, honesty/a11y). Personalized training plans with on-device PDF/JSON import remain. Smart Coach is rules-based — not an LLM. No 1RM estimator.
 
 Still open / honest gaps (owner constraints):
 

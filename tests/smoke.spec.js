@@ -137,14 +137,18 @@ test.describe('PulseCap smoke', () => {
       window.obSelect('units', 'imperial');
       window.obSelect('height', 70);
       window.obSelect('weight', 180);
-      window.obSelect('goalWeight', 170);
+      window.obSelect('daysPerWeek', '4');
+      window.obSelect('equipmentKit', 'full_gym');
+      window.obSelect('gender', 'male');
       window._finishOnboarding();
       return window.S.g('user');
     });
     expect(user.units).toBe('imperial');
     expect(user.height).toBeCloseTo(177.8, 1);
     expect(user.weight).toBeCloseTo(81.65, 1);
-    expect(user.goalWeight).toBeCloseTo(77.11, 1);
+    expect(user.daysPerWeek).toBe(4);
+    expect(user.equipmentKit).toBe('full_gym');
+    expect(user.goalWeight).toBeFalsy();
   });
 
   test('PWA-only: no Capacitor runtime dependency', async () => {
@@ -207,7 +211,7 @@ test.describe('PulseCap smoke', () => {
         ver: window.APP_VERSION
       };
     });
-    expect(out.ver).toBe('6.17.0');
+    expect(out.ver).toBe('6.21.0');
     expect(out.tabs).toEqual(['Account', 'Training', 'Fuel', 'Appearance', 'Access', 'Alerts', 'Privacy', 'About']);
     expect(out.accountOn).toBeTruthy();
     expect(out.alias).toBe('privacy');

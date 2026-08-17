@@ -487,7 +487,7 @@ input[type=range] {
 .toggle.on::after { transform: translateX(20px); }
 .field-wrap { margin-bottom: 16px; }
 .field-label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--txt3); margin-bottom: 8px; }
-.field { width: 100%; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r14); font-size: 15px; color: var(--txt); outline: none; touch-action: manipulation; transition: border-color 0.18s; }
+.field { width: 100%; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r14); font-size: 16px; color: var(--txt); outline: none; touch-action: manipulation; transition: border-color 0.18s; }
 .field:focus { border-color: var(--c1); }
 [data-theme="light"] .field { background: #fff; box-shadow: var(--ds1); }
 .field-row { display: flex; gap: 12px; }

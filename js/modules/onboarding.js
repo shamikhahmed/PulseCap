@@ -35,7 +35,7 @@ function _renderIntro(idx) {
 }
 
 window.introQuickStart = function() {
-  _obData = { name: 'Athlete', goal: 'hypertrophy', split: 'ppl', weeklyGoal: 4, disclaimerAck: true };
+  _obData = { name: 'Athlete', goal: 'hypertrophy', split: 'ppl', weeklyGoal: 4, daysPerWeek: 4, equipmentKit: 'full_gym', gender: 'unspecified', disclaimerAck: true };
   window._obData = _obData;
   _finishOnboarding();
 };
@@ -110,11 +110,6 @@ function _validateStep(step) {
       const validWeight = imperial ? weight >= 55 && weight <= 1100 : weight >= 25 && weight <= 500;
       if (!validWeight) { toast('Check weight before continuing', 'warn'); return false; }
     }
-    if (_obData.goalWeight) {
-      const goalWeight = Number(_obData.goalWeight);
-      const validGoal = imperial ? goalWeight >= 55 && goalWeight <= 1100 : goalWeight >= 25 && goalWeight <= 500;
-      if (!validGoal) { toast('Check goal weight before continuing', 'warn'); return false; }
-    }
   }
   if (step === 3 && !_obData.disclaimerAck) {
     toast('Tick the educational disclaimer to continue', 'warn');
@@ -129,25 +124,30 @@ function _finishOnboarding() {
   const unitContext = { units: selectedUnits };
   const rawHeight = parseFloat(_obData.height);
   const rawWeight = parseFloat(_obData.weight);
-  const rawGoalWeight = parseFloat(_obData.goalWeight);
+  const days = parseInt(_obData.daysPerWeek, 10) || parseInt(_obData.weeklyGoal, 10) || 4;
+  const kit = _obData.equipmentKit || 'full_gym';
   const limitations = (_obData.limitations || []).map(function(id) {
-    return { id: id, joint: id, note: id === 'shoulder' ? 'Prefer machines/cables. Stop on sharp pain.' : 'Train around this — stop on sharp pain.' };
+    return { id: id, joint: id === 'low_back' ? 'spine' : id, note: id === 'shoulder' ? 'Prefer machines/cables. Stop on sharp pain.' : 'Train around this — stop on sharp pain.' };
   });
+  const gender = _obData.gender || 'unspecified';
   Object.assign(u, {
     name: (_obData.name || 'Athlete').trim(),
     goal: _obData.goal || 'hypertrophy',
     exp: _obData.exp || 'intermediate',
-    gender: _obData.gender || 'male',
+    gender: gender,
+    sex: gender,
     age: parseInt(_obData.age, 10) || 25,
     units: selectedUnits,
     height: rawHeight > 0 ? heightToCm(rawHeight, unitContext) : 175,
     weight: rawWeight > 0 ? weightToKg(rawWeight, unitContext) : 75,
-    goalWeight: rawGoalWeight > 0 ? weightToKg(rawGoalWeight, unitContext) : 70,
-    split: (typeof SplitsDB !== 'undefined' ? SplitsDB.recommend({ goal: _obData.goal, exp: _obData.exp, weeklyGoal: 4 }).id : 'ppl'),
-    weeklyGoal: (typeof SplitsDB !== 'undefined' ? SplitsDB.recommend({ goal: _obData.goal, exp: _obData.exp }).daysPerWeek : 4),
-    equipment: [],
+    split: (typeof SplitsDB !== 'undefined' ? SplitsDB.recommend({ goal: _obData.goal, exp: _obData.exp, weeklyGoal: days }).id : 'ppl'),
+    weeklyGoal: days,
+    daysPerWeek: days,
+    equipmentKit: kit,
+    equipment: (typeof Equipment !== 'undefined' && Equipment.tagsForKit) ? Equipment.tagsForKit(kit) : [],
     equipmentIds: [],
-    equipmentConfigured: false,
+    equipmentConfigured: true,
+    macrosPinned: false,
     gymDays: [],
     injuries: _obData.limitations || [],
     limitations: limitations,
@@ -155,11 +155,15 @@ function _finishOnboarding() {
     joinDate: today(),
     disclaimerAck: true
   });
+  delete u.goalWeight;
+  if (typeof NutritionMath !== 'undefined' && NutritionMath.applyToUser) NutritionMath.applyToUser(u);
   S.set('user', u);
   S.set('onboarded', true);
-  if (_obData.seedPlan && typeof TrainingPlanEngine !== 'undefined' && !TrainingPlanEngine.hasActive()) {
+  const match = (typeof PlanCatalog !== 'undefined' && PlanCatalog.match) ? PlanCatalog.match(u) : null;
+  const seedId = _obData.seedPlanId || (match && match.id) || null;
+  if (_obData.seedPlan && seedId && typeof TrainingPlanEngine !== 'undefined' && !TrainingPlanEngine.hasActive()) {
     try {
-      TrainingPlanEngine.installTemplate('machine_ppl_shoulder', { acknowledgedSafety: true });
+      TrainingPlanEngine.installTemplate(seedId, { acknowledgedSafety: true });
     } catch (e) { /* template optional */ }
   }
   if (typeof SplitsDB !== 'undefined') {
@@ -193,6 +197,17 @@ function _opt(field, val, title, sub) {
     '<div class="ob-opt-check">' + (isOn ? '✓' : '') + '</div></button>';
 }
 
+const OB_JOINTS = [
+  { id: 'shoulder', title: 'Shoulder', sub: 'Machines/cables first. Stop on sharp pain.' },
+  { id: 'knee', title: 'Knee', sub: 'Control depth. No grinding through pain.' },
+  { id: 'low_back', title: 'Low back', sub: 'Brace. Skip max-effort spinal loading.' },
+  { id: 'wrist', title: 'Wrist', sub: 'Neutral wrists. Skip loaded extension if it bites.' },
+  { id: 'elbow', title: 'Elbow', sub: 'Ease off lockout and skull-crushers if it niggles.' },
+  { id: 'hip', title: 'Hip', sub: 'Control depth. Stop on pinch or catch.' },
+  { id: 'neck', title: 'Neck', sub: 'No craning. Skip loaded shrugs if it radiates.' },
+  { id: 'ankle', title: 'Ankle', sub: 'Limit loaded dorsiflexion if it pinches.' }
+];
+
 const OB_STEPS = {
   1: function() {
     return '<div class="ob-screen">' + _dots(1) +
@@ -204,19 +219,37 @@ const OB_STEPS = {
       _opt('goal', 'hypertrophy', 'Build muscle', 'Log progressive sets') +
       _opt('goal', 'fat_loss', 'Lose fat', 'Keep protein and sessions honest') +
       _opt('goal', 'strength', 'Get stronger', 'Same lifts, better logs') +
+      _opt('goal', 'weight_gain', 'Gain weight', 'A real surplus, not a guess') +
       _opt('goal', 'general_health', 'Stay consistent', 'Show up more than you skip') +
+      '<div class="field-label" style="margin-top:16px">Sex — used only for the calorie formula</div>' +
+      _opt('gender', 'female', 'Female', 'Mifflin-St Jeor female formula') +
+      _opt('gender', 'male', 'Male', 'Mifflin-St Jeor male formula') +
+      _opt('gender', 'unspecified', 'Prefer not to say', 'Average of both formulas — labelled as an estimate') +
       '</div>' + _footer(1) + '</div>';
   },
   2: function() {
     const units = _obData.units || 'metric';
     const u = units === 'imperial';
+    const days = String(_obData.daysPerWeek || _obData.weeklyGoal || '');
     return '<div class="ob-screen">' + _dots(2) +
-      '<div class="ob-title">Quick calibration</div>' +
-      '<div class="ob-sub">Experience plus a starting size. Skip any field you do not know.</div>' +
+      '<div class="ob-title">Gym and starting size</div>' +
+      '<div class="ob-sub">Experience, days you can train, and what you have. Skip any size field you do not know.</div>' +
       '<div class="ob-body">' +
       _opt('exp', 'beginner', 'Beginner', 'Under 1 year consistent') +
       _opt('exp', 'intermediate', 'Intermediate', '1–3 years') +
       _opt('exp', 'advanced', 'Advanced', '3+ years structured') +
+      '<div class="field-label" style="margin-top:12px">Days per week</div>' +
+      '<div class="segmented" style="margin-bottom:12px">' +
+      [2, 3, 4, 5, 6].map(function(d) {
+        const on = days === String(d);
+        return '<button type="button" class="' + (on ? 'on' : '') + '" data-field="daysPerWeek" data-val="' + d + '" onclick="obSelect(\'daysPerWeek\',\'' + d + '\');go(\'onboarding\')">'+ d + '</button>';
+      }).join('') +
+      '</div>' +
+      '<div class="field-label">Equipment</div>' +
+      _opt('equipmentKit', 'full_gym', 'Full gym', 'Barbell, dumbbells, machines, cables') +
+      _opt('equipmentKit', 'machines_cables', 'Machines + cables', 'No free barbell work') +
+      _opt('equipmentKit', 'dumbbells', 'Dumbbells only', 'DB + bands') +
+      _opt('equipmentKit', 'home_minimal', 'Home minimal', 'Bodyweight and bands') +
       '<div class="field-row" style="margin-top:12px">' +
       '<div class="field-wrap"><label class="field-label">Age</label>' +
       '<input class="field" type="number" min="14" max="100" inputmode="numeric" placeholder="25" value="' + esc(_obData.age || '') + '" oninput="_obData.age=this.value"></div>' +
@@ -231,8 +264,6 @@ const OB_STEPS = {
       '<div class="field-wrap"><label class="field-label">' + (u ? 'Weight (lb)' : 'Weight (kg)') + '</label>' +
       '<input class="field" type="number" inputmode="decimal" placeholder="' + (u ? '165' : '75') + '" value="' + esc(_obData.weight || '') + '" oninput="_obData.weight=this.value"></div>' +
       '</div>' +
-      '<div class="field-wrap"><label class="field-label">' + (u ? 'Goal weight (lb)' : 'Goal weight (kg)') + ' <span class="muted-11">optional</span></label>' +
-      '<input class="field" type="number" inputmode="decimal" placeholder="' + (u ? '155' : '70') + '" value="' + esc(_obData.goalWeight || '') + '" oninput="_obData.goalWeight=this.value"></div>' +
       '</div>' + _footer(2) + '</div>';
   },
   3: function() {
@@ -241,9 +272,10 @@ const OB_STEPS = {
       '<div class="ob-title">Limitations</div>' +
       '<div class="ob-sub">Optional. Used to caution lifts — this is not a diagnosis.</div>' +
       '<div class="ob-body">' +
-      '<button type="button" class="ob-opt' + ((_obData.limitations || []).indexOf('shoulder') >= 0 ? ' sel' : '') + '" data-field="limitations" data-val="shoulder" onclick="obToggle(\'limitations\',\'shoulder\')"><div class="ob-opt-info"><div class="ob-opt-title">Shoulder</div><div class="ob-opt-sub">Machines/cables first. Stop on sharp pain.</div></div></button>' +
-      '<button type="button" class="ob-opt' + ((_obData.limitations || []).indexOf('knee') >= 0 ? ' sel' : '') + '" data-field="limitations" data-val="knee" onclick="obToggle(\'limitations\',\'knee\')"><div class="ob-opt-info"><div class="ob-opt-title">Knee</div><div class="ob-opt-sub">Control depth. No grinding through pain.</div></div></button>' +
-      '<button type="button" class="ob-opt' + ((_obData.limitations || []).indexOf('low_back') >= 0 ? ' sel' : '') + '" data-field="limitations" data-val="low_back" onclick="obToggle(\'limitations\',\'low_back\')"><div class="ob-opt-info"><div class="ob-opt-title">Low back</div><div class="ob-opt-sub">Brace. Skip max-effort spinal loading.</div></div></button>' +
+      OB_JOINTS.map(function(j) {
+        const on = (_obData.limitations || []).indexOf(j.id) >= 0;
+        return '<button type="button" class="ob-opt' + (on ? ' sel' : '') + '" data-field="limitations" data-val="' + j.id + '" onclick="obToggle(\'limitations\',\'' + j.id + '\')"><div class="ob-opt-info"><div class="ob-opt-title">' + esc(j.title) + '</div><div class="ob-opt-sub">' + esc(j.sub) + '</div></div></button>';
+      }).join('') +
       '<div class="banner banner--caution" style="margin-top:16px">PulseCap is educational training software. It is not medical advice or clearance. Stop on sharp pain, clunk, or instability and see a clinician.</div>' +
       '<label class="card" style="display:flex;gap:12px;align-items:flex-start;margin-top:12px;min-height:44px">' +
       '<input id="ob-ack" type="checkbox" style="width:22px;height:22px;margin-top:2px"' + (ack ? ' checked' : '') + ' onchange="_obData.disclaimerAck=this.checked">' +
@@ -252,16 +284,27 @@ const OB_STEPS = {
   },
   4: function() {
     const name = (_obData.name || 'Athlete').trim();
-    const goals = { hypertrophy: 'Build muscle', fat_loss: 'Lose fat', strength: 'Get stronger', general_health: 'Stay consistent' };
+    const goals = { hypertrophy: 'Build muscle', fat_loss: 'Lose fat', strength: 'Get stronger', weight_gain: 'Gain weight', general_health: 'Stay consistent' };
+    const preview = {
+      goal: _obData.goal || 'hypertrophy',
+      exp: _obData.exp || 'intermediate',
+      daysPerWeek: Number(_obData.daysPerWeek || _obData.weeklyGoal) || 4,
+      equipmentKit: _obData.equipmentKit || 'full_gym',
+      limitations: (_obData.limitations || []).map(function(id) { return { id: id, joint: id }; })
+    };
+    const match = (typeof PlanCatalog !== 'undefined' && PlanCatalog.match) ? PlanCatalog.match(preview) : null;
     const seedOn = !!_obData.seedPlan;
+    const title = (match && match.plan && match.plan.title) || 'Machine-only PPL';
+    const suits = (match && match.plan && (match.plan.suits || match.plan.notes)) || 'Shoulder-safe public template. Optional.';
+    if (match && match.id) _obData.seedPlanId = match.id;
     return '<div class="ob-screen">' + _dots(4) +
       '<div class="ob-title">You\'re set, ' + esc(name) + '</div>' +
-      '<div class="ob-sub">Goal: ' + esc(goals[_obData.goal || 'hypertrophy'] || 'Train') + '. Install a template now or pick one later in Programs.</div>' +
+      '<div class="ob-sub">Goal: ' + esc(goals[_obData.goal || 'hypertrophy'] || 'Train') + '. Install a matched template now or pick one later in Programs.</div>' +
       '<div class="ob-body">' +
       '<button type="button" class="ob-opt' + (seedOn ? ' sel' : '') + '" onclick="_obData.seedPlan=!_obData.seedPlan;go(\'onboarding\')">' +
-      '<div class="ob-opt-info"><div class="ob-opt-title">Machine-only PPL</div><div class="ob-opt-sub">Shoulder-safe public template. Optional.</div></div>' +
+      '<div class="ob-opt-info"><div class="ob-opt-title">' + esc(title) + '</div><div class="ob-opt-sub">' + esc(suits) + '</div></div>' +
       '<div class="ob-opt-check">' + (seedOn ? '✓' : '') + '</div></button>' +
-      '<div class="banner" style="margin-top:12px">Today will show one session and one insight. Logging stays on this phone.</div>' +
+      '<div class="banner" style="margin-top:12px">Today will show one session and one insight. First time on a lift, Log will walk a light → 8 reps calibration. Logging stays on this phone.</div>' +
       '</div>' + _footer(4) + '</div>';
   }
 };

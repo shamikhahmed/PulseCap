@@ -4,7 +4,7 @@ const S = {
   _metaKey: 'fos_meta',
   _pid: null,
   d: {},
-  SCHEMA_VERSION: 4,
+  SCHEMA_VERSION: 5,
 
   /* ── Meta (profile list) ── */
   getMeta() {
@@ -333,6 +333,13 @@ const S = {
       this.d.user = u;
       if (this.d.trainingPlan === undefined) this.d.trainingPlan = null;
     }
+    if (current < 5) {
+      const u = this.d.user || {};
+      if (!u.daysPerWeek && u.weeklyGoal) u.daysPerWeek = u.weeklyGoal;
+      if (!u.equipmentKit && u.equipmentConfigured) u.equipmentKit = 'full_gym';
+      this.d.user = u;
+      if (!Array.isArray(this.d.workouts)) this.d.workouts = this.d.workouts || [];
+    }
     this.d._schemaVersion = this.SCHEMA_VERSION;
     this._save();
     return true;
@@ -355,7 +362,8 @@ const S = {
   save() { this._save(); },
 
   g(path) {
-    const keys = path.split('.');
+    if (path == null || path === '') return this.d;
+    const keys = String(path).split('.');
     let v = this.d;
     for (const k of keys) { if (v == null) return null; v = v[k]; }
     return v === undefined ? null : v;

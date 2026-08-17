@@ -54,6 +54,16 @@ const ReadinessEngine = {
       return score;
     } catch(e) { return 70; }
   },
+  display() {
+    const ws = (typeof S !== 'undefined' && S.g) ? (S.g('workouts') || []) : [];
+    const deload = (typeof EmberEngine !== 'undefined' && EmberEngine.isDeload) ? EmberEngine.isDeload() : false;
+    if (deload) return { word: 'Deload week', hideScore: true, score: null };
+    if (ws.length < 3) return { word: 'Ready', hideScore: true, score: null, reason: 'Needs 3 logged sessions before a numeric score.' };
+    const s = this.score();
+    if (s >= 70) return { word: 'Ready', hideScore: false, score: s };
+    if (s >= 50) return { word: 'Take it easy', hideScore: false, score: s };
+    return { word: 'Take it easy', hideScore: false, score: s };
+  },
   label(s) {
     if (s >= 85) return { l:'Peak', cls:'rl-peak' };
     if (s >= 70) return { l:'Ready', cls:'rl-ready' };
@@ -832,6 +842,10 @@ const SplitEngine = {
       warmup:['5 min light cardio','Joint circles head to toe','Pick exercises that match how you feel today'] }
   ],
   _exerciseAvailable(name) {
+    if (typeof Equipment !== 'undefined') {
+      if (!Equipment.canPerform(name)) return false;
+      if (!Equipment.jointOk(name)) return false;
+    }
     if (typeof ExDB === 'undefined' || typeof EquipmentDB === 'undefined') return true;
     const ex = ExDB.byName(name);
     if (!ex) return true;
@@ -1030,7 +1044,14 @@ const SplitEngine = {
   /* User-built split (Settings → Training → Build your own) beats the stub */
   _customDays() {
     const saved = S.g('user.customSplit');
-    return (saved && saved.length) ? saved : this._custom;
+    if (!saved || !saved.length) return this._custom;
+    return saved.map(function(d) {
+      return Object.assign({}, d, {
+        exercises: (d.exercises || []).map(function(item) {
+          return typeof item === 'string' ? item : (item && item.name);
+        }).filter(Boolean)
+      });
+    });
   },
   nextDay() {
     const user = S.g('user') || {};
@@ -1066,7 +1087,8 @@ const SplitEngine = {
         (e.grp === ex.grp || (ex.pri && e.pri === ex.pri)) &&
         (!reason || !reason.includes('shoulder') || (e.joint && (e.joint.shoulder || 0) < 2)) &&
         self._exerciseAvailable(e.n) &&
-        !self._isAvoided(e.n);
+        !self._isAvoided(e.n) &&
+        (typeof Equipment === 'undefined' || Equipment.jointOk(e));
     }).map(function(e) {
       let score = 40;                                     /* same group baseline */
       const why = [];
@@ -1144,7 +1166,7 @@ window.renderSplitDayPicker = function(opts) {
   opts = opts || {};
   const user = S.g('user') || {};
   const days = SplitEngine.listSplitDays();
-  const active = user.splitDay || 1;
+  const active = SplitEngine.todayDayNumber();
   const compact = !!opts.compact;
   const restNote = SplitEngine.isScheduledRestDay()
     ? '<div style="font-size:12px;color:var(--c5);margin-bottom:10px;line-height:1.45">Not a scheduled gym day — pick any session below or train anyway.</div>'
@@ -1245,10 +1267,12 @@ const BodyEngine = {
     return { bmi, cat };
   },
   bmr(user) {
+    if (typeof NutritionMath !== 'undefined' && NutritionMath.bmr) return NutritionMath.bmr(user).bmr;
     const w=user.weight||75, h=user.height||175, a=user.age||25, g=user.gender||'male';
     return Math.round(g==='male' ? (10*w)+(6.25*h)-(5*a)+5 : (10*w)+(6.25*h)-(5*a)-161);
   },
   tdee(user) {
+    if (typeof NutritionMath !== 'undefined' && NutritionMath.fromUser) return NutritionMath.fromUser(user).tdee;
     const m = { sedentary:1.2, light:1.375, moderate:1.55, active:1.725, veryActive:1.9 };
     return Math.round(this.bmr(user) * (m[user.activityLevel||'moderate']||1.55));
   },
@@ -1352,26 +1376,21 @@ const BodyEngine = {
     return { ratio, status, label };
   },
   proteinTarget(user) {
+    if (typeof NutritionMath !== 'undefined' && NutritionMath.fromUser) return NutritionMath.fromUser(user).protein;
     const kg = user.weight || 75;
-    const goal = user.goal || 'hypertrophy';
-    const mult = {
-      fat_loss: 2.2, hypertrophy: 2.0, strength: 2.0, weight_gain: 1.8,
-      recomp: 2.1, athletic: 1.9, maintenance: 1.6, general_health: 1.6,
-      endurance: 1.6, mobility: 1.5
-    };
-    const gPerKg = mult[goal] || 1.8;
-    return Math.round(kg * gPerKg);
+    return Math.round(kg * 1.8);
   },
   waterIntake(user) {
     const kg = user.weight || 75;
     return Math.round(kg * 35);
   },
   calorieTarget(user) {
+    if (typeof NutritionMath !== 'undefined' && NutritionMath.fromUser) return NutritionMath.fromUser(user).calories;
     const tdee = this.tdee(user);
     const goal = user.goal || 'hypertrophy';
     if (goal === 'fat_loss') return TDEEEngine.deficitPlan(user).calories;
     if (['hypertrophy', 'strength', 'weight_gain', 'athletic'].includes(goal)) return TDEEEngine.surplusPlan(user).calories;
-    if (goal === 'recomp') return tdee - 200;
+    if (goal === 'recomp') return tdee;
     return tdee;
   },
   oneRm(weight, reps) {
@@ -1819,6 +1838,11 @@ const TDEEEngine = {
     return { bmr, tdee, maintenance:tdee };
   },
   macroSplit(goal, tdee) {
+    const user = Object.assign({}, (typeof S !== 'undefined' && S.g) ? (S.g('user') || {}) : {}, { goal: goal || 'hypertrophy' });
+    if (typeof NutritionMath !== 'undefined' && NutritionMath.fromUser) {
+      const n = NutritionMath.fromUser(user);
+      return { protein: n.protein, carbs: n.carbs, fat: n.fat, calories: n.calories };
+    }
     const splits = {
       hypertrophy: { p:0.3, c:0.45, f:0.25 },
       strength:    { p:0.35, c:0.4, f:0.25 },
