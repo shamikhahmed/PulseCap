@@ -1,3 +1,9 @@
+## 6.6.0 — 2026-08-17 — Personalized Program Intelligence
+- Personalized **training plan** OS: versioned `trainingPlan` (not `customSplit`), machine-only shoulder-safe PPL template, double progression, week-5 deload, Sunday rest, missed-session resume.
+- Gym floor: Today / My Plan one-tap prescribed session with RPE, ROM stop cues, listed alternatives, shoulder 0–10, cardio after lifting.
+- Local plan import: PulseCap JSON first; on-device **text**-PDF / paste extract with mandatory review. **No upload, no OCR** (scanned PDFs unsupported). Optional `CoachProvider` stub stays off.
+- Safety: imported/installed plans require acknowledgement; sharp pain / clunk blocks load increases. Educational only — not medical clearance. SW `pulsecap-v86`.
+
 ## 6.5.2 — 2026-07-30
 - Cap fleet device-matrix harness: `tests/device-matrix.{js,spec.js}`, `qa/device-matrix/REPORT.md`, PNGs gitignored.
 - Shell BP **900 → 700** (`CapDesktopNav` + CSS show/hide): iPad mini/Air/Pro 11 now sidebar; hide rule was still `max-width:899` with `!important` (neither chrome).

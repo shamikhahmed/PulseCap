@@ -1,14 +1,14 @@
 # PulseCap — Handover
 
 > Read this + `ROADMAP.md` + `~/Capricorn-Brain/01 Projects/PulseCap.md` before working here.
-> Last updated: 2026-07-30 · Fleet-wide standard: `capricorn-tooling/shared/CAP-STANDARD.md`
+> Last updated: 2026-08-17 · Fleet-wide standard: `capricorn-tooling/shared/CAP-STANDARD.md`
 
 ## What this is
 Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Activity / widgets planned). Workouts, nutrition, recovery, anatomy, 30+ modules.
 
 ## Facts
-**Version:** 6.5.2
-**SW cache:** `pulsecap-v85`
+**Version:** 6.6.0
+**SW cache:** `pulsecap-v86`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.
@@ -19,7 +19,7 @@ Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Acti
 ```bash
 python3 -m http.server 8766   # or npm run serve
 npx playwright test           # current suite
-npm run gallery               # regen 200-shot matrix: dark+light × mobile+desktop
+npm run gallery               # regen ~348-shot matrix: dark+light × mobile+desktop (--project=chromium)
 open screen-gallery.html      # Dark/Light + viewport + section filters
 ```
 
@@ -37,6 +37,8 @@ open screen-gallery.html      # Dark/Light + viewport + section filters
 - `js/app.js` — shell, router (`go()` + lazy `MODULE_SRC`), helpers, nav
 - `js/engines.js` — Program / Recap / Plate / RestNotify / Weight / Muscle / …
 - `js/coach-kernel.js` — Autoreg / VolumeLander / JointBudget / Mesocycle / CoachKernel / GymFloor
+- `js/training-plan.js` — opt-in `trainingPlan` (rotation, deload, double progression, safety)
+- `js/plan-import.js` — local JSON / text-PDF / paste → review UI. No upload. No OCR (scanned PDFs rejected).
 - `js/gym-tools.js` — WakeLock / VoiceLogger / BarcodeFood / MobilityFlow / PainFlag
 - `js/data/foods-db.js` — offline food macros
 - `js/modules/` — feature screens (Learn deep-screens load on demand)
@@ -66,12 +68,15 @@ open screen-gallery.html      # Dark/Light + viewport + section filters
 | `RestNotify` | Background rest banner — **installed PWA only** |
 | `WeightEngine.warmupSets` | 40/60/80% ramp (barbell only in UI) |
 | `FormLoops` | Offline form **cues** + `isBarbell()` |
-| `SplitEngine` | Schedule, skip-day, custom split, ranked swaps |
+| `TrainingPlanEngine` | Opt-in program: rotation, deload, double progression, ROM/safety |
+| `PlanImport` | On-device JSON / text-PDF / paste → review → `trainingPlan` (no OCR) |
 
 ## Gotchas — read before coding
 - PWA-only — do not add Cap HealthKit / Live Activity / WidgetKit unless owner reverses.
 - Form cues ≠ video. Real clips need wger download once online.
 - Rest notifications need Add to Home Screen on iOS; never `requestPermission` mid-workout.
+- Plan import: text extract only — scanned/image PDFs unsupported; never claim OCR or cloud upload.
+- Smart Coach = rules, not LLM. My Plan / Rehab = educational, not medical clearance.
 - Dates: always `localISO()` / `today()`.
 - Settings version footer uses `window.APP_VERSION`.
 - Deprecated routes use `SCREEN_ALIASES` only — old `reg()` handlers removed in v6.2.0.

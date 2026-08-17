@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.5.2';
+window.APP_VERSION = '6.6.0';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -52,7 +52,8 @@ const SCREEN_ALIASES = {
   'recovery-debt': { id: 'recovery', data: { tab: 'debt' } },
   'training-style': { id: 'training-intel', data: { tab: 'style' } },
   coach: 'assistant',
-  intro: { id: 'onboarding', data: { showIntro: true } }
+  intro: { id: 'onboarding', data: { showIntro: true } },
+  plan: 'my-plan'
 };
 window.SCREEN_ALIASES = SCREEN_ALIASES;
 
@@ -78,7 +79,8 @@ const NAV_PARENT = {
   'body-intelligence': 'bodymap', photos: 'bodymap',
   hub: 'hub', search: 'hub', encyclopedia: 'hub', anatomy: 'hub', academy: 'hub',
   calculators: 'hub', visualizations: 'hub', assistant: 'hub', coach: 'hub',
-  settings: 'settings', profiles: 'settings', 'equipment-setup': 'settings', 'split-builder': 'settings'
+  settings: 'settings', profiles: 'settings', 'equipment-setup': 'settings', 'split-builder': 'settings',
+  'my-plan': 'settings', 'plan-import': 'settings'
 };
 window.NAV_PARENT = NAV_PARENT;
 
@@ -174,7 +176,9 @@ const MODULE_SRC = {
   academy: 'js/modules/quests.js',
   'physique-timeline': 'js/modules/quests.js',
   assistant: 'js/modules/fitness-assistant.js',
-  'equipment-setup': 'js/modules/equipment-setup.js'
+  'equipment-setup': 'js/modules/equipment-setup.js',
+  'my-plan': 'js/modules/my-plan.js',
+  'plan-import': 'js/modules/my-plan.js'
 };
 window.MODULE_SRC = MODULE_SRC;
 

@@ -21,6 +21,16 @@ test.describe('PulseCap viewport contract', () => {
     expect(overflow).toBeFalsy();
   });
 
+  test('390px — iPhone 12/13 shell, no horizontal overflow', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await assertCapSharedMobile(page, expect);
+    await page.evaluate(() => window.go('my-plan'));
+    await page.waitForTimeout(200);
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
+    expect(overflow).toBeFalsy();
+    await expect(page.locator('#view')).toContainText(/My Plan|Machine-only|Install|Import/i);
+  });
+
   test('393px — iPhone 14/15 shell + safe-area padding', async ({ page }) => {
     await page.setViewportSize({ width: 393, height: 852 });
     await page.evaluate(() => {

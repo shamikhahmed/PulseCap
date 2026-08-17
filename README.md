@@ -1,6 +1,6 @@
 # PulseCap
 
-**Version:** 6.5.2
+**Version:** 6.6.0
 
 **Your Smart Coach fitness operating system — by Capricorn Systems, built as a single offline-first PWA.**
 
@@ -20,6 +20,7 @@ Built by Shamikh Ahmed across 14 development sessions as a production-grade pers
 ## Features
 
 ### 🏋️ Workout System
+- **My Plan** — opt-in training program: built-in **machine-only, shoulder-safe PPL**, or **local** text-PDF / JSON / paste import with mandatory review (no upload, no OCR; scanned PDFs unsupported). Prescribes today’s session into the logger.
 - **300+ exercise database** with coaching cues, setup, common mistakes, breathing, joint stress heatmap
 - **Active workout logger** — set-by-set tracking with KG/reps inputs, circular checkmark, PR detection
 - **Rest timer** — SVG ring countdown with Skip and +30s controls
@@ -44,7 +45,8 @@ Built by Shamikh Ahmed across 14 development sessions as a production-grade pers
 - **Body stats** — BMI, BMR, TDEE, healthy range, weight history
 - **Weight logging** — metric/imperial, goal tracking
 
-### 🤖 Smart Coach
+### 🤖 Smart Coach (rules, not AI)
+- **Rule-based** Smart Assistant — local logs + engines, **not** an LLM or cloud AI
 - **Daily Briefing** — readiness score, coach quote, today's plan, injury alerts, supplement reminders
 - **5 coach personalities** — Maya (Sports Scientist), Alex (Drill Sergeant), Sam (Motivator), Zen (Mindful), Rex (Powerlifter)
 - **3 coach tones** — Motivational, Scientific, Hardcore
@@ -111,6 +113,8 @@ js/
   app.js            — Router, icon system, lazy MODULE_SRC loader
   engines.js        — Smart Coach engines (Readiness, Coach, Muscle, Split, Program, etc.)
   coach-kernel.js   — RPE autoreg, volume lander, joints, mesocycle, GymFloor, BeginnerMode
+  training-plan.js  — opt-in trainingPlan engine (prescribe, deload, progression)
+  plan-import.js    — local PDF/JSON/text plan import (review required)
   gym-tools.js      — WakeLock, VoiceLogger, BarcodeFood, MobilityFlow, PainFlag
   data/foods-db.js  — Offline food macros
   storage.js        — S object, multi-profile localStorage, seedPersonas
@@ -126,7 +130,7 @@ js/
     profiles.js     — Profile switcher, demo mode, sample athletes
     onboarding.js   — 4 intro slides + 7-step onboarding
     quests.js       — Quests, Academy, Physique Timeline body
-sw.js               — Service worker (cache: pulsecap-v85)
+sw.js               — cache: pulsecap-v86
 manifest.json       — PWA manifest
 ```
 
@@ -134,7 +138,7 @@ manifest.json       — PWA manifest
 
 ## Roadmap
 
-Shipped through **v6.5.2** (see `CHANGELOG.md`): canonical unit storage, profile-scoped photos, resumable workout drafts, safer backup import, accessible dialogs, route-race protection, consent-based PWA updates, cross-browser CI, and verified Pages deployment.
+Shipped through **v6.6.0** (see `CHANGELOG.md`): personalized training plans with on-device PDF/JSON import, prescribed gym-floor sessions, and the existing canonical unit storage, profile-scoped photos, resumable workout drafts, safer backup import, accessible dialogs, route-race protection, consent-based PWA updates, cross-browser CI, and verified Pages deployment.
 
 Still open / honest gaps (owner constraints):
 
@@ -143,21 +147,26 @@ Still open / honest gaps (owner constraints):
 3. **Full retail barcode DB** — offline stub map only; no cloud food API.
 4. **Real-device iPhone soak** — checklist in `docs/IPHONE-SOAK.md` (manual).
 5. **HealthKit / Google Fit** — sleep/steps import (not in PWA without native shell).
-6. **Program sharing** — peer JSON templates (export exists; sharing UX not built).
+6. **Program sharing** — peer JSON templates ship as My Plan export/import; text-PDF import is review-first (scanned PDFs unsupported).
 
 ---
 
 ## Install on iPhone
 
-1. Open the live URL in **Safari**
+1. Open https://shamikhahmed.github.io/PulseCap in **Safari**
 2. **Share → Add to Home Screen**
-3. Launch from home screen for full-screen PWA mode
+3. Launch from the home-screen icon for full-screen PWA mode (rest notifications require this on iOS)
+
+## Safety & medical disclaimer
+
+PulseCap is educational fitness software. My Plan, Smart Coach, and Rehab tips are **not medical advice or clearance**. Stop on sharp pain, clunk, or instability and see a clinician.
 
 ## iPhone test checklist
 
 - [ ] Intro slides and 7-step onboarding complete
 - [ ] Bottom nav: Today · Train · Body · Learn · Me
 - [ ] Active workout logger: sets, rest timer, PR badge
+- [ ] My Plan: install machine PPL or review-first local import
 - [ ] Body map taps show muscle recovery detail
 - [ ] Coach daily briefing renders with selected personality
 - [ ] Import/export JSON works in Settings
@@ -192,7 +201,7 @@ No install, no build step, no dependencies.
 
 ## Design Principles
 
-- **Offline-first** — all data in localStorage, no API calls
+- **Offline-first** — core data in localStorage; optional wger / speech may use the network
 - **iPhone-optimised** — tested on Safari 390px (XS Max → 16 Pro Max)
 - **Zero framework** — vanilla JS only, `touch-action:manipulation` on all buttons
 - **Dark-mode default** — cinematic design system with CSS custom properties
@@ -215,7 +224,7 @@ Karachi, Pakistan
 ## Screen gallery
 
 ```bash
-npm run gallery        # regenerate docs/screenshots/gallery/ (64 shots)
+npm run gallery        # regenerate docs/screenshots/gallery/ (~348 shots; use --project=chromium)
 npm run gallery:view   # then open http://127.0.0.1:8766/screen-gallery.html
 ```
 

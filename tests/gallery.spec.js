@@ -62,6 +62,8 @@ const SCREENS = [
   { stateId: 'profiles', label: 'Profiles', section: 'Me', go: ['profiles'] },
   { stateId: 'equipment-setup', label: 'Equipment Setup', section: 'Me', go: ['equipment-setup'] },
   { stateId: 'split-builder', label: 'Split Builder', section: 'Me', go: ['split-builder'] },
+  { stateId: 'my-plan', label: 'My Plan', section: 'Me', go: ['my-plan'] },
+  { stateId: 'plan-import', label: 'Plan Import Review', section: 'Me', go: ['plan-import'] },
 ];
 
 /* First-run flow — intro slides + onboarding steps. Driven via __pcOnboardingState. */

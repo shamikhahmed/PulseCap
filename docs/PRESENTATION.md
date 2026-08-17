@@ -5,11 +5,13 @@
 ## Slide 1 — Title
 
 # PulseCap
-### Your Smart Coach Training Partner
+### Personalized Program Intelligence
 
-*300+ exercises · Smart Coach · Offline PWA*
+*300+ exercises · My Plan · Smart Coach (rules) · Offline PWA · v6.6.0*
 
 **Live:** shamikhahmed.github.io/PulseCap
+
+**Install (iPhone):** Safari → Share → Add to Home Screen
 
 ---
 
@@ -25,12 +27,13 @@ Serious lifters need **depth** — not generic 10-exercise libraries.
 
 ## Slide 3 — Solution
 
-**PulseCap** — production-grade offline-first PWA (v6.3.0):
+**PulseCap** — production-grade offline-first PWA (v6.6.0):
 
 - 300+ exercise database with coaching cues
+- Personalized **My Plan**: built-in machine-only **shoulder-safe PPL**; local text-PDF / JSON / paste import with review (**no upload, no OCR**; scanned PDFs unsupported); prescribed gym-floor logger
 - Active set logger + RPE autoreg + PR detection + rest timer
 - Gym tools: voice log, barcode food, wake lock, mobility, pain→rehab
-- Smart Coach (rules) + body map + nutrition — one app
+- Smart Coach (**rules**, not LLM) + body map + nutrition — one app
 
 **Vanilla JS. Zero framework. Core tracking works offline.**
 
@@ -57,6 +60,8 @@ Serious lifters need **depth** — not generic 10-exercise libraries.
 | Rex | Strength culture |
 
 Goal-aware + deload signals from fatigue streaks.
+
+**Honest:** Smart Coach is a **rule-based** Smart Assistant — not an AI/LLM.
 
 ---
 
@@ -103,20 +108,20 @@ Families, coaches, clients — one install.
 ## Slide 10 — Architecture
 
 ```
-app.js / engines.js / coach-kernel.js / gym-tools.js
+app.js / engines.js / coach-kernel.js / training-plan.js / plan-import.js / gym-tools.js
 modules/            — Today · Train · Body · Learn · Me
 storage.js          — Multi-profile S + seedPersonas
 foods-db.js         — Offline macros
-sw.js               — cache-first PWA (pulsecap-v81)
+sw.js               — cache-first PWA (pulsecap-v86)
 ```
 
-Vanilla JS. Zero framework. Core tracking works offline. **v6.3.0**.
+Vanilla JS. Zero framework. Core tracking works offline. **v6.6.0**.
 
 ---
 
 ## Slide 11 — Roadmap highlights
 
-Shipped (v6): RPE autoreg, mesocycle, voice/barcode/wake/mobility, offline foods, gallery, personas, CI pages-gate.
+Shipped (v6.6): personalized training plans, RPE autoreg, mesocycle, voice/barcode/wake/mobility, offline foods, gallery, personas, CI pages-gate.
 Open (owner): Watch / HealthKit (native), full retail barcode DB, real-device soak.
 
 ---
@@ -124,12 +129,15 @@ Open (owner): Watch / HealthKit (native), full retail barcode DB, real-device so
 ## Slide 12 — Honest ceiling
 
 Smart Coach = **rules**, not LLM. FormLoops = **cues**, not live form coaching.
+My Plan import = local text extract only — **no OCR**, no upload.
+Educational fitness software — **not medical advice or clearance**. Stop on sharp pain / clunk / instability and see a clinician.
 Replaces a template + logbook for intermediates. Does **not** replace a good in-person trainer for beginners, rehab, or competition prep.
 
 ## Slide 13 — Try it
 
 shamikhahmed.github.io/PulseCap
 
-Complete onboarding → log your first set in 5 minutes
+1. Open in **Safari** → Share → **Add to Home Screen**
+2. Complete onboarding → install My Plan or import a text program → log your first set
 
 *Built by Shamikh Ahmed · Capricorn Systems*

@@ -60,8 +60,8 @@ reg('briefing', function() {
     '<div  class="muted-12 mt-2">'+esc(prettyMuscles(splitDay.muscles))+'</div></div>' +
     '</div>' +
     '<div style="display:flex;gap:10px">' +
-    '<button type="button" class="btn btn-primary flex-1"  onclick="startWorkout&&startWorkout()">▶ Start Workout</button>' +
-    '<button type="button" class="btn btn-secondary flex-1"  onclick="go(\'coach\')">Full Plan</button>' +
+    '<button type="button" class="btn btn-primary flex-1"  onclick="startWorkout&&startWorkout()">Start Workout</button>' +
+    '<button type="button" class="btn btn-secondary flex-1"  onclick="go(\'my-plan\')">My Plan</button>' +
     '</div></div>' +
 
     injuryAlert +

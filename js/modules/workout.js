@@ -455,7 +455,50 @@ const ExDB = {
     'Rowing Machine 20min': 'Rowing Machine',
     'Russian Twists': 'Russian Twist',
     'Steady Bike 25min': 'Stationary Bike',
-    'Weighted Pull-Up': 'Pull-Ups'
+    'Weighted Pull-Up': 'Pull-Ups',
+    'Smith Incline Press': 'Incline Barbell Bench Press',
+    'Smith Flat Press': 'Barbell Bench Press',
+    'Incline Machine Chest Press': 'Machine Chest Press',
+    'Machine Shoulder Press': 'Shoulder Press Machine',
+    'Lateral Raise Machine': 'Dumbbell Lateral Raise',
+    'Overhead Tricep Extension Machine': 'Overhead Tricep Extension — Cable',
+    'Dumbbell Wrist Curl': 'Wrist Curl',
+    'Ab Crunch Machine': 'Cable Crunch',
+    'Close-Grip Lat Pulldown': 'Lat Pulldown',
+    'Seated Row Wide Grip': 'Seated Cable Row',
+    'Seated Row Close Grip': 'Seated Cable Row',
+    'Back Extension Machine': 'Back Extension',
+    'Bicep Curl Machine': 'EZ Bar Curl',
+    'Seated Leg Curl': 'Leg Curl',
+    'Glute Kickback Machine': 'Hip Thrust',
+    'Leg Raise Machine': 'Hanging Leg Raise',
+    'Cable Chest Press': 'Cable Fly',
+    'Dumbbell Floor Press': 'Dumbbell Bench Press',
+    'Dumbbell Kickback': 'Tricep Kickback',
+    'Rope Pushdown': 'Tricep Pushdown',
+    'Dumbbell Reverse Wrist Curl': 'Wrist Curl',
+    'Chest-Supported Row': 'Seated Cable Row',
+    'Single-Arm Cable Row': 'Seated Cable Row',
+    'Rear Delt Fly Machine': 'Rear Delt Fly',
+    'Cable Hammer Curl': 'Hammer Curl',
+    'Hanging Knee Raise': 'Hanging Leg Raise',
+    'Lying Leg Curl': 'Leg Curl',
+    'Hip Abductor Machine': 'Cable Hip Abduction',
+    'Band Pull-Aparts': 'Face Pulls',
+    'Cable External Rotation': 'Face Pulls',
+    'Low-to-High Cable Press': 'Cable Fly',
+    'Cable Crossover': 'Cable Fly',
+    'Cable Front Raise': 'Front Delt Raise',
+    'Cable Wrist Curl': 'Wrist Curl',
+    'Assisted Pull-Up': 'Pull-Ups',
+    'Preacher Curl': 'EZ Bar Curl',
+    'Cable Glute Kickback': 'Hip Thrust',
+    'Bodyweight Calf Raise': 'Standing Calf Raise',
+    'Skip Machine Shoulder Press': 'Face Pulls',
+    'Skip Hip Abductor': 'Hip Thrust',
+    'Hand Gripper': 'Wrist Curl',
+    'Bodyweight Back Extension': 'Back Extension',
+    'Single-Leg Cable Curl': 'Leg Curl'
   },
   byName(name) {
     return this.db.find(e => e.n === name) ||
@@ -1062,6 +1105,14 @@ reg('active', function() {
       '</div>' +
       (ex.rxNote ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(var(--c1-rgb),0.12);color:var(--c1);padding:4px 10px;border-radius:10px">'+esc(ex.rxNote)+'</span></div>' :
        (suggest && !_focusMode ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(48,209,88,0.12);color:var(--success);padding:4px 10px;border-radius:10px">Try '+suggest+'kg ↑</span></div>' : '')) +
+      (ex._plan && !_focusMode ? '<div style="padding:0 16px 10px;font-size:12px;color:var(--txt2);line-height:1.45">' +
+        (ex._plan.rom ? '<div style="margin-bottom:6px;color:var(--danger)"><strong>Stop:</strong> '+esc(ex._plan.rom)+'</div>' : '') +
+        (ex._plan.cue ? '<div style="margin-bottom:6px">'+esc(ex._plan.cue)+'</div>' : '') +
+        ((ex._plan.alternatives || []).length ? '<div style="display:flex;flex-wrap:wrap;gap:6px">' +
+          ex._plan.alternatives.map(function(a) {
+            return '<button type="button" class="btn btn-ghost btn-sm" style="min-height:40px" onclick="applyPlanAlternative('+exIdx+','+jsArg(a.name)+')">Alt: '+esc(a.name)+'</button>';
+          }).join('') + '</div>' : '') +
+        '</div>' : '') +
       warmupHTML +
       '<div style="display:grid;grid-template-columns:28px 1fr 36px;gap:8px;padding:8px 16px 4px;border-bottom:1px solid var(--border)">' +
       '<div style="font-size:10px;color:var(--txt3);font-weight:700;text-align:center">SET</div>' +
@@ -1080,6 +1131,17 @@ reg('active', function() {
       '</div>' +
       '</div>';
   }).join('');
+
+  const planStrip = (!_focusMode && _wkt.planWarmup && _wkt.planWarmup.length) ?
+    '<div class="card-solid" style="margin:0 16px 12px;padding:12px 14px">' +
+    '<div class="muted-11" style="margin-bottom:6px">Session warm-up</div>' +
+    '<div class="body-13">' + esc(_wkt.planWarmup.join(' · ')) + '</div></div>' : '';
+  const cardioStrip = (!_focusMode && _wkt.cardio) ?
+    '<div class="card-solid" style="margin:0 16px 12px;padding:12px 14px">' +
+    '<div class="muted-11" style="margin-bottom:6px">Cardio after lifting</div>' +
+    '<div class="body-13">' + esc((_wkt.cardio.minutes || 20) + ' min ' + (_wkt.cardio.kind || 'steady') + (_wkt.cardio.hr ? ' · ' + _wkt.cardio.hr : '')) + '</div>' +
+    (_wkt.cardio.note ? '<div class="muted-12" style="margin-top:6px">' + esc(_wkt.cardio.note) + '</div>' : '') +
+    '</div>' : '';
 
   const restBar =
     '<div id="rest-sheet" style="position:fixed;bottom:0;left:0;right:0;z-index:400;' +
@@ -1104,7 +1166,7 @@ reg('active', function() {
     '<button type="button" onclick="addRestTime(30)" style="flex:1;padding:14px;border-radius:14px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);color:var(--c1);font-size:15px;font-weight:600;cursor:pointer;touch-action:manipulation">+30s</button>' +
     '</div></div>';
 
-  return header + '<div style="padding:12px 16px 4px">' + cards + '</div>' + restBar + '<div style="height:32px"></div>';
+  return header + planStrip + '<div style="padding:12px 16px 4px">' + cards + '</div>' + cardioStrip + restBar + '<div style="height:32px"></div>';
 });
 
 /* ── Workout control functions ── */
@@ -1149,7 +1211,7 @@ window._doneSet = function(exIdx, sIdx) {
       nextSet.reps = r;
     }
 
-    const restSecs = (S.g('user.restSecs') || 120);
+    const restSecs = (ex._plan && ex._plan.restSec) || (S.g('user.restSecs') || 120);
     if (restSecs > 0) startRestTimer(restSecs);
   } else {
     set._isPR = false;
@@ -1302,7 +1364,10 @@ window.confirmFinishWorkout = function() {
     '<div class="field-wrap mb-8">' +
     '<label class="field-label">Workout Notes</label>' +
     '<textarea id="wkt-final-note" class="field" placeholder="Overall feeling, energy, anything to remember..." style="height:80px;resize:none;font-size:14px"></textarea>' +
-    '</div>',
+    '</div>' +
+    (_wkt.painLog ? '<div class="field-wrap mb-8"><label class="field-label">Shoulder 0–10 (push/pull early warning)</label>' +
+      '<input id="wkt-shoulder" class="field" type="number" min="0" max="10" step="1" inputmode="numeric" value="0" style="font-size:18px;font-weight:700">' +
+      '<div class="muted-12" style="margin-top:6px">0 is none. 7+ means stop that lift and use an alternative next time.</div></div>' : ''),
     '<button type="button" class="btn btn-primary" onclick="saveWorkout()" style="margin-top:4px">💾 Save Workout</button>' +
     '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()" >Keep Training</button>'
   );
@@ -1313,6 +1378,8 @@ window.saveWorkout = function() {
   clearInterval(_wktTimer);
   clearInterval(_restInterval);
   const finalNote = (document.getElementById('wkt-final-note')||{}).value || '';
+  const shoulderEl = document.getElementById('wkt-shoulder');
+  if (shoulderEl) _wkt.shoulderPain = Number(shoulderEl.value) || 0;
   const totalVol = _wkt.exercises.reduce(function(a,ex){
     return a + (ex.sets||[]).filter(function(s){return s.done;}).reduce(function(b,s){return b+((s.weight||0)*(s.reps||0));},0);
   },0);
@@ -1327,14 +1394,23 @@ window.saveWorkout = function() {
     exercises: _wkt.exercises,
     notes: finalNote,
     exerciseNotes: Object.assign({}, _wktNotes),
-    splitDay: SplitEngine.todayDayNumber()
+    splitDay: SplitEngine.todayDayNumber(),
+    planKey: _wkt.planKey || null,
+    shoulderPain: _wkt.shoulderPain,
+    stopFlag: !!_wkt.stopFlag
   };
   const workouts = S.g('workouts') || [];
   if (!workouts.some(function(w) { return w.id === workout.id; })) workouts.push(workout);
   if (S.set('workouts', workouts) === false) return;
   S.set('activeWorkoutDraft', null);
+  if (typeof TrainingPlanEngine !== 'undefined' && TrainingPlanEngine.hasActive()) {
+    const planMsgs = TrainingPlanEngine.onFinish(workout);
+    if (planMsgs && planMsgs.length) {
+      setTimeout(function() { toast(planMsgs[0], 'ok', 5000); }, 1800);
+    }
+  }
   /* Strength programs: advance working weights / training max */
-  const progMsgs = typeof ProgramEngine !== 'undefined' ? ProgramEngine.onFinish(workout) : null;
+  const progMsgs = (typeof TrainingPlanEngine === 'undefined' || !TrainingPlanEngine.hasActive()) && typeof ProgramEngine !== 'undefined' ? ProgramEngine.onFinish(workout) : null;
   if (progMsgs && progMsgs.length) {
     setTimeout(function() { toast(progMsgs[0], 'ok', 5000); }, 1800);
   }
@@ -1386,30 +1462,52 @@ window.startWorkout = function(templateName) {
       '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()">Cancel</button>');
     return;
   }
-  if (typeof ProgramEngine !== 'undefined' && ProgramEngine.needsWeightConfirm && ProgramEngine.needsWeightConfirm()) {
+  const planActive = typeof TrainingPlanEngine !== 'undefined' && TrainingPlanEngine.hasActive();
+  if (!planActive && typeof ProgramEngine !== 'undefined' && ProgramEngine.needsWeightConfirm && ProgramEngine.needsWeightConfirm()) {
     showProgramWeightSetup();
     return;
   }
-  const splitDay = SplitEngine.getSplitDay();
   const user = S.g('user') || {};
   const goal = user.goal || 'hypertrophy';
   const rec = GUIDANCE.setsReps(goal);
   const defaultSets = goal === 'strength' ? 5 : 4;
+  let splitDay = SplitEngine.getSplitDay();
+  let exercises;
+  let planMeta = null;
 
-  const exercises = (splitDay.exercises || []).map(function(name) {
-    const ex = ExDB.byName(name);
-    /* Strength programs (Stronglifts / SS / 5/3/1) prescribe exact sets */
-    const rx = typeof ProgramEngine !== 'undefined' ? ProgramEngine.prescribe(name, user) : null;
-    if (rx) return { name: name, sets: rx.sets, rxNote: rx.note, muscles: ex ? ex.muscles : { primary:[], secondary:[] } };
-    const sets = [];
-    for (var i = 0; i < defaultSets; i++) {
-      const suggest = WeightEngine.suggest(name, user);
-      sets.push({ weight: suggest || 0, reps: parseInt(rec.reps.split('-')[0]) || 8, done: false });
+  if (planActive) {
+    planMeta = TrainingPlanEngine.prescribeSession();
+    if (!planMeta) {
+      toast((TrainingPlanEngine.todaySession() || {}).reason || 'Rest day on this plan', 'ok', 4000);
+      go('my-plan');
+      return;
     }
-    return { name: name, sets: sets, muscles: ex ? ex.muscles : { primary:[], secondary:[] } };
-  });
+    splitDay = { n: planMeta.name, exercises: (planMeta.exercises || []).map(function(e) { return e.name; }), warmup: planMeta.warmup || [] };
+    exercises = planMeta.exercises;
+  } else {
+    exercises = (splitDay.exercises || []).map(function(name) {
+      const ex = ExDB.byName(name);
+      const rx = typeof ProgramEngine !== 'undefined' ? ProgramEngine.prescribe(name, user) : null;
+      if (rx) return { name: name, sets: rx.sets, rxNote: rx.note, muscles: ex ? ex.muscles : { primary:[], secondary:[] } };
+      const sets = [];
+      for (var i = 0; i < defaultSets; i++) {
+        const suggest = WeightEngine.suggest(name, user);
+        sets.push({ weight: suggest || 0, reps: parseInt(rec.reps.split('-')[0]) || 8, done: false });
+      }
+      return { name: name, sets: sets, muscles: ex ? ex.muscles : { primary:[], secondary:[] } };
+    });
+  }
 
-  _wkt = { id: 'wkt_' + Date.now(), name: splitDay.n || 'Workout', exercises: exercises, startTime: Date.now() };
+  _wkt = {
+    id: 'wkt_' + Date.now(),
+    name: splitDay.n || 'Workout',
+    exercises: exercises,
+    startTime: Date.now(),
+    planKey: planMeta ? planMeta.planKey : null,
+    painLog: !!(planMeta && planMeta.painLog),
+    cardio: planMeta ? planMeta.cardio : null,
+    planWarmup: planMeta ? planMeta.warmup : (splitDay.warmup || [])
+  };
   _wktNotes = {};
   _supersetMode = false;
   _quickMode = false;
@@ -1423,6 +1521,10 @@ window.startWorkout = function(templateName) {
 
 window.startQuickWorkout = function() {
   haptic(50);
+  if (typeof TrainingPlanEngine !== 'undefined' && TrainingPlanEngine.hasActive()) {
+    startWorkout();
+    return;
+  }
   if (_workoutDraft()) {
     toast('Resume or discard the current workout first', 'warn');
     go('workout');
@@ -2004,6 +2106,16 @@ window.voiceLogCurrentSet = function() {
   }, function() { toast('Couldn’t hear that — try again', 'warn'); });
 };
 
+window.applyPlanAlternative = function(exIdx, name) {
+  if (!_wkt || !_wkt.exercises[exIdx] || !name) return;
+  _wkt.exercises[exIdx].name = name;
+  const meta = typeof ExDB !== 'undefined' ? ExDB.byName(name) : null;
+  if (meta && meta.muscles) _wkt.exercises[exIdx].muscles = meta.muscles;
+  _checkpointWorkout(true);
+  toast('Swapped to ' + name, 'ok');
+  go('active');
+};
+
 window.flagPainDuringWorkout = function() {
   var parts = ['shoulder','elbow','knee','spine','wrist','hip','ankle','neck'];
   var body = '<div style="font-size:13px;color:var(--txt2);margin-bottom:12px">Flag sharp pain — we log it and open Rehab. Don’t train through joint pain.</div>' +
@@ -2015,6 +2127,10 @@ window.flagPainDuringWorkout = function() {
 
 window._applyPainFlag = function(part) {
   var r = (typeof PainFlag !== 'undefined') ? PainFlag.flagPain(part) : { advice: 'Rest that joint.', go: 'rehab' };
+  if (_wkt && String(part) === 'shoulder') {
+    _wkt.stopFlag = true;
+    _wkt.shoulderPain = Math.max(_wkt.shoulderPain || 0, 7);
+  }
   toast(r.advice || 'Logged', 'warn', 4000);
   go(r.go || 'rehab');
 };

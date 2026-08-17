@@ -1,12 +1,13 @@
 # PulseCap — Documented Screen Gallery
 
-> v6.5.1 · Captures via `npm run gallery` → `docs/screenshots/gallery/` · Viewer: `screen-gallery.html`
+> v6.6.0 · Captures via `npm run gallery -- --project=chromium` → `docs/screenshots/gallery/` · Viewer: `screen-gallery.html`  
+> Latest matrix: **348** shots (212 viewport + 136 scroll) · includes **My Plan** + **Plan Import Review**
 
 ## How state is kept
 
 | Concern | Store | Key / notes |
 |---------|-------|-------------|
-| Profile blob | `localStorage` via `S` | `fos_profiles_<id>` · schema v2 |
+| Profile blob | `localStorage` via `S` | `fos_profiles_<id>` · schema v3 (`trainingPlan`) |
 | Active profile | `localStorage` | `fos_meta.activeId` |
 | Theme pin | profile `user.theme` / `user.mode` | null = follow system |
 | Settings tab | in-memory `_activeSettingsTab` | not persisted; deep link `go('settings',{tab})` |
@@ -61,18 +62,22 @@ Today · Train · Body · Learn · Me — fixed. Nested screens light parent (`N
 | beginner on | Advanced rows hidden |
 | assistant | Offline Q&A history in `assistantHistory` |
 
-## Me (Settings) — v6.5.1 groups
+## Me (Settings) — v6.6.0 groups
 
 | Tab | States to capture | Selection | Persist |
 |-----|-------------------|-----------|---------|
 | Account | identity filled / injuries none | fields + selects | `user.*` |
-| Training | split + gym days | chips `aria-pressed`, toggles | `user.split`, `gymDays` |
+| Training | split + gym days + My Plan | chips `aria-pressed`, toggles | `user.split`, `gymDays`, `trainingPlan` |
 | Fuel | macros + empty stack | number fields, Remove | targets + `supplements` |
 | Appearance | Auto/Dark/Light; coach pick | segmented + radio cards | theme + personality |
 | Access | Metric/Imperial; Low Power | segmented + switch | `user.units`, `settings.lowPower` |
 | Alerts | all toggles; rest CTA | switches | reminder flags |
 | Privacy | export ready; danger | file input + confirm modal | backup / reset |
 | About | version stamp | links | read-only |
+| My Plan | empty (demo matrix) / installed* | install, file picker, safety ack | `trainingPlan` — text PDF/JSON only; no OCR; no upload |
+| Plan Import | empty (no draft)* | back to My Plan | in-memory import draft |
+
+\*Default `npm run gallery` captures empty My Plan + empty Plan Import Review. Installed-plan and filled-review PNGs need a seeded draft (not in the matrix).
 
 **Aliases:** `profile→account`, `nutrition|supplements→fuel`, `data→privacy`.
 
@@ -83,6 +88,10 @@ Capture matrix already covers dark+light × mobile+desktop. Reduced-motion: OS s
 ## Regenerating
 
 ```bash
-npm run gallery          # CAPTURE_GALLERY=1
+# Prefer Chromium-only — multi-project capture races the same PNG paths
+CAPTURE_GALLERY=1 npx playwright test tests/gallery.spec.js --project=chromium
+# or: npm run gallery -- --project=chromium
 open screen-gallery.html
 ```
+
+Clear `docs/screenshots/gallery/*` before a full regen when screen order/count changed (manifest merge is file-keyed and will otherwise keep orphaned renumbered shots).

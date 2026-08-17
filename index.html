@@ -202,6 +202,10 @@ window.updateOfflineBanner = updateOfflineBanner;
   <script src="js/app.js"></script>
   <script src="js/engines.js"></script>
   <script src="js/coach-kernel.js"></script>
+  <script src="js/data/training-plan-schema.js"></script>
+  <script src="js/data/plans/machine-ppl.js"></script>
+  <script src="js/training-plan.js"></script>
+  <script src="js/plan-import.js"></script>
   <script src="js/gym-tools.js"></script>
   <script src="js/data/foods-db.js"></script>
   <!-- Eager boot path: Today / Train / Body / Me + shared deps -->
@@ -315,7 +319,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=85').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=86').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {

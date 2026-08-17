@@ -1,11 +1,13 @@
 # PulseCap — Distribution Notes
 
-## Current truth (2026-07-18)
-PulseCap ships as an **offline-first PWA only** (v6.2.0 / `pulsecap-v72`).
+## Current truth (2026-08-17)
+PulseCap ships as an **offline-first PWA only** (v6.6.0 / `pulsecap-v86`) — **Personalized Program Intelligence**.
 
-- Install: Safari → Share → Add to Home Screen (iOS) or Chrome install (Android/desktop).
+- Install: Safari → Share → **Add to Home Screen** (iOS) or Chrome install (Android/desktop).
 - No Capacitor / Xcode / App Store binary in this repo.
 - No HealthKit, Live Activity, WidgetKit, or RevenueCat unless owner explicitly reverses.
+- My Plan: machine-only shoulder-safe PPL + local text-PDF / JSON import (review-first; no upload; no OCR).
+- Smart Coach is **rule-based** (not LLM). Educational guidance only — not medical clearance.
 
 ## Why PWA-only
 - Same codebase for web + home-screen app.

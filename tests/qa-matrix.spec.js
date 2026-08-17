@@ -7,7 +7,7 @@ const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
 
-const SKIP_CLICK = /confirmClear|S\.reset|importData|exportData|clearTheme|applyImported|sbDel|removeSupp|deleteLegacy|location\.reload|window\.open/;
+const SKIP_CLICK = /confirmClear|S\.reset|importData|exportData|clearTheme|applyImported|sbDel|removeSupp|deleteLegacy|location\.reload|window\.open|removeTrainingPlan|confirmRemovePlan|installMachinePpl|confirmImportedPlan|handlePlanFile/;
 const DESTRUCTIVE = /danger|Clear|Reset|Delete|Remove/;
 
 test.describe('QA matrix', () => {

@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'pulsecap-v85';
+const CACHE = 'pulsecap-v86';
 const ASSETS = [
   './css/capricorn-core.css',
   './',
@@ -20,9 +20,13 @@ const ASSETS = [
   './js/data/splits-db.js',
   './js/data/injuries-db.js',
   './js/data/foods-db.js',
+  './js/data/training-plan-schema.js',
+  './js/data/plans/machine-ppl.js',
   './js/app.js',
   './js/engines.js',
   './js/coach-kernel.js',
+  './js/training-plan.js',
+  './js/plan-import.js',
   './js/gym-tools.js',
   './js/modules/onboarding.js',
   './js/modules/dashboard.js',
@@ -56,6 +60,7 @@ const ASSETS = [
   './js/modules/body-intelligence.js',
   './js/modules/fitness-assistant.js',
   './js/modules/quests.js',
+  './js/modules/my-plan.js',
   './icon.svg',
   './assets/apple-touch-icon-120.png',
   './assets/apple-touch-icon-152.png',

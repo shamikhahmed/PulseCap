@@ -83,4 +83,14 @@ test.describe('iPhone soak — automated slice', () => {
     const text = await page.locator('#view').innerText();
     expect(text.length).toBeGreaterThan(20);
   });
+
+  test('My Plan route paints at iPhone width', async ({ page }) => {
+    await page.evaluate(() => window.go('my-plan'));
+    await page.waitForTimeout(400);
+    await expect(page.locator('#view')).toContainText(/My Plan|Machine-only|Import/i);
+    const overflow = await page.evaluate(() =>
+      document.documentElement.scrollWidth > document.documentElement.clientWidth + 2
+    );
+    expect(overflow).toBeFalsy();
+  });
 });

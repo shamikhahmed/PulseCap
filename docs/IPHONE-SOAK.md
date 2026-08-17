@@ -1,6 +1,6 @@
-# PulseCap iPhone soak checklist (v6.5.1)
+# PulseCap iPhone soak checklist (v6.6.0)
 
-Real-device pass — Playwright covers shell + safe-area math + brand tokens + logger path (`tests/iphone-soak.spec.js`). Not Dynamic Island / A2HS / Notifications delivery.
+Real-device pass — Playwright covers shell + safe-area math + brand tokens + logger path (`tests/iphone-soak.spec.js`). Not Dynamic Island / A2HS / Notifications delivery / PDF file-picker.
 
 ## Automated in CI (do not skip)
 
@@ -11,6 +11,7 @@ Real-device pass — Playwright covers shell + safe-area math + brand tokens + l
 - [x] Functional battery: settings tabs, theme cycle, weight/meals/water, recovery, workout save, search, calculators, assistant, rehab, anatomy, quests, profiles, cardio, equipment, export
 - [x] Persona sweep: demo + 5 sample athletes × every registered route
 - [x] iPhone soak slice: Today boot, theme, startWorkout path, Notification API, offline banner helper (`tests/iphone-soak.spec.js`)
+- [x] Training-plan / My Plan unit + flow coverage (`tests/training-plan.spec.js`)
 
 ## Manual (real iPhone)
 1. Open https://shamikhahmed.github.io/PulseCap on iPhone Safari.
@@ -22,6 +23,8 @@ Real-device pass — Playwright covers shell + safe-area math + brand tokens + l
 - [ ] Dark + Light (Settings → Appearance) — muted captions readable
 - [ ] Bottom nav never covers primary CTA after scroll (safe-area)
 - [ ] Start workout → log set → rest timer → finish → save
+- [ ] My Plan: install machine-only PPL + safety acknowledgement
+- [ ] My Plan: local text-PDF / JSON import with review (scanned PDF rejected / no OCR)
 - [ ] Rest notification when app backgrounded (Settings → enable; installed only)
 - [ ] Plate calc + warm-up ramp on barbell compound only
 - [ ] Search / Calculators / Academy load offline after first visit

@@ -3,7 +3,7 @@
 PulseCap is your **Smart Coach fitness operating system** — an offline-first PWA for workouts, cardio, body tracking, nutrition, and rule-based coaching.
 
 **Live app:** https://shamikhahmed.github.io/PulseCap  
-**Version:** 6.3.0 · SW `pulsecap-v81`
+**Version:** 6.6.0 · SW `pulsecap-v86`
 
 ---
 
@@ -26,7 +26,7 @@ Default tabs (v5 IA):
 | **Train** | Workout plans, active logger, cardio, calisthenics |
 | **Body** | Body map, measurements, recovery, rehab, physique |
 | **Learn** | Hub, encyclopedia, assistant, academy, calculators |
-| **Me** | Progress, settings, profiles, equipment, custom split |
+| **Me** | Progress, settings, profiles, equipment, custom split, **My Plan** |
 
 Pin extra screens via **Settings → Navigation** (min 3 tabs).
 
@@ -56,6 +56,17 @@ Nutrition → search offline foods → one-tap log. Optional **barcode scan** (C
 - Search/filter by muscle, equipment, difficulty
 - Injury-aware swaps when Rehab has an active injury
 - Form cues via FormLoops (text/SVG — not video unless you sync wger clips in Settings → Data)
+
+### My Plan
+
+Me → Training → **My Plan**, or Today → My Plan.
+
+- Install the built-in **machine-only, shoulder-safe PPL**, or import a PulseCap JSON / **text** PDF / pasted text on this device.
+- Parsing is **local only** — nothing is uploaded. You must **review** every session before the plan is saved.
+- **Scanned / image-only PDFs are unsupported** (no OCR). Use a text PDF, paste the program text, or import JSON.
+- Today’s session is prescribed into the logger: sets, RPE, ROM stop cues, alternatives, cardio after lifting.
+- Week 5 is a deload. Sunday is full rest. Load only increases when you hit the top of the rep range at RPE 8 with no relevant pain.
+- Installing or importing requires a safety acknowledgement. Plans are training templates — **not medical clearance**.
 
 ### Strength programs
 
@@ -106,8 +117,8 @@ Macro logging, water, supplements with timing. Quick-add meals + offline food se
 ## Settings essentials
 
 - **Appearance** — Auto / Dark / Light (device default supported)
-- **Training** — split, gym days, **Gym Floor Mode**, **Beginner Mode**, programs, equipment, manual RHR/HRV
-- **Data** — export/import, optional wger form-media pack sync
+- **Training** — split, gym days, **My Plan**, **Gym Floor Mode**, **Beginner Mode**, programs, equipment, manual RHR/HRV
+- **Privacy / Data** — export/import, optional wger form-media pack sync
 - **Profiles** — multi-profile + Demo + “Load sample athletes”
 
 ---
@@ -115,9 +126,15 @@ Macro logging, water, supplements with timing. Quick-add meals + offline food se
 ## Offline & data
 
 - All data in localStorage (`fos_profiles_[id]`); photos in IndexedDB
-- Service worker cache-first (`pulsecap-v76`)
+- Service worker cache-first (`pulsecap-v86`)
 - No backend required · no account · no cloud sync
 - Export JSON before device reset
+
+---
+
+## Safety & medical disclaimer
+
+PulseCap is a fitness logging and programming tool. Smart Coach, Rehab, and My Plan guidance are **educational only** — not medical advice, diagnosis, or clearance. Stop on sharp pain, clunk, or instability and see a clinician. Do not use the app as a substitute for a licensed trainer or healthcare professional.
 
 ---
 

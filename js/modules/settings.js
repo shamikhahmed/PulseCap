@@ -174,6 +174,8 @@ function _tabTraining(u) {
     _sectionTitle('Training Split') +
     _selectWrap('Active Split', 'user.split', u.split||'ppl', splitOpts) +
 
+    '<button type="button" class="btn btn-primary btn-sm" style="width:100%;margin-bottom:10px;min-height:44px" onclick="go(\'my-plan\')">My Plan — program, PDF import, gym floor</button>' +
+
     (u.split === 'custom' || (S.g('user.customSplit') || []).length ?
       '<button type="button" class="btn btn-secondary btn-sm" style="width:100%;margin-bottom:14px" onclick="go(\'split-builder\')">Edit your custom split →</button>' :
       '<button type="button" class="btn btn-secondary btn-sm" style="width:100%;margin-bottom:14px" onclick="go(\'split-builder\')">Build your own split →</button>') +
@@ -446,6 +448,7 @@ function _tabPrivacy() {
     })() +
 
     _sectionTitle('Export & Import') +
+    '<button type="button" class="btn btn-secondary mb-10" style="min-height:44px" onclick="go(\'my-plan\')">Import workout plan (PDF / JSON)</button>' +
     '<button type="button" class="btn btn-secondary mb-10" style="min-height:44px" onclick="exportData()">Export Backup (JSON)</button>' +
     '<div class="field-wrap">' +
     '<label class="field-label">Import Backup</label>' +
@@ -721,6 +724,10 @@ function _validateBackup(data) {
   ['workouts','prs','bodyStats','meals','customExercises'].forEach(function(key) {
     if (data[key] != null && !Array.isArray(data[key])) throw new Error('Invalid ' + key + ' data');
   });
+  if (data.trainingPlan != null) {
+    if (typeof data.trainingPlan !== 'object' || Array.isArray(data.trainingPlan)) throw new Error('Invalid training plan');
+    if (typeof validateTrainingPlan === 'function') validateTrainingPlan(data.trainingPlan);
+  }
   (data.customExercises || []).forEach(function(ex) {
     if (!ex || typeof ex !== 'object' || typeof ex.n !== 'string' || !ex.n.trim() || ex.n.length > 80) {
       throw new Error('Invalid custom exercise');

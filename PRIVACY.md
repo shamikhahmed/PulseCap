@@ -1,11 +1,12 @@
 # PulseCap — Privacy Policy
 
-**Last updated:** July 21, 2026
+**Last updated:** August 17, 2026
 
 PulseCap is an offline-first fitness Progressive Web App. Most personal data is stored and processed in your browser, but some optional features use external services.
 
 ## Data stored on your device
-- Profiles, settings, workouts, nutrition, measurements, and other app state are stored in browser **localStorage**.
+- Profiles, settings, workouts, nutrition, measurements, training plans, and other app state are stored in browser **localStorage**.
+- Plan import (text PDF / JSON / pasted text) is processed **in your browser**. Files are **not uploaded**. PulseCap keeps the structured plan in localStorage only after you confirm the review; the original file is not stored by default. **Scanned / image-only PDFs are unsupported** (no OCR).
 - Progress photos are stored in browser **IndexedDB**.
 - PulseCap has no account system and includes no analytics or advertising by default.
 

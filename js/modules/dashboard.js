@@ -130,9 +130,9 @@ reg('dashboard', function() {
       '<span class="icon-flex-c2">' + icon('sparkles', 26) + '</span>' +
       '<span class="micro-label">Smart Coach</span>' +
       '</button>' +
-      '<button type="button" onclick="go(\'search\')" class="press dash-qa">' +
-      '<span class="icon-flex-muted">' + icon('search', 26) + '</span>' +
-      '<span class="micro-label">Search</span>' +
+      '<button type="button" onclick="go(\'my-plan\')" class="press dash-qa">' +
+      '<span class="icon-flex-c1">' + icon('calendar', 26) + '</span>' +
+      '<span class="micro-label">My Plan</span>' +
       '</button>' +
       '</div>';
 

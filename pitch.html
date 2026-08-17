@@ -116,9 +116,9 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
 <section class="slide" id="s1">
   <div class="glow-ring"></div>
   <div style="position:relative;z-index:2">
-    <div class="overline reveal">Smart Coach Fitness OS</div>
+    <div class="overline reveal">Smart Coach Fitness OS · v6.6.0</div>
     <h1 class="grad reveal delay-1">PulseCap</h1>
-    <p class="sub reveal delay-2">Train with intention.</p>
+    <p class="sub reveal delay-2">Personalized Program Intelligence.</p>
     <p class="reveal delay-3" style="color:rgba(255,255,255,0.3);font-size:.8rem;letter-spacing:.12em;text-transform:uppercase">Scroll to explore ↓</p>
   </div>
 </section>
@@ -140,9 +140,9 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
   <div style="max-width:800px;width:100%">
     <div class="overline reveal">Introducing</div>
     <h2 class="grad reveal delay-1">PulseCap</h2>
-    <p class="sub reveal delay-2">Training logs, body tracking, recovery readiness, and a Smart Coach that reads your history — no cloud account.</p>
+    <p class="sub reveal delay-2">Training logs, body tracking, recovery readiness, My Plan programs, and a rule-based Smart Coach that reads your history — no cloud account, no LLM.</p>
     <div class="badges reveal delay-3">
-      <span class="badge badge-cyan">📱 PWA</span><span class="badge">🔒 Private</span><span class="badge">📴 Offline</span><span class="badge">🤖 Smart Coach</span>
+      <span class="badge badge-cyan">📱 PWA</span><span class="badge">🔒 Private</span><span class="badge">📴 Offline</span><span class="badge">📋 My Plan</span><span class="badge">🤖 Smart Coach</span>
     </div>
   </div>
 </section>
@@ -259,6 +259,20 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
   </div>
 </section>
 
+<section class="slide" id="s-myplan">
+  <div style="max-width:800px;width:100%">
+    <div class="overline reveal">My Plan</div>
+    <h2 class="reveal delay-1">Personalized <span class="grad">Program Intelligence</span></h2>
+    <p class="sub reveal delay-2">Opt-in training programs that prescribe today’s gym-floor session — still 100% on-device.</p>
+    <div class="cards reveal delay-3">
+      <div class="card card-cyan"><h3>🏋️ Machine-only PPL</h3><p>Built-in shoulder-safe push / pull / legs template with double progression, week-5 deload, Sunday rest.</p></div>
+      <div class="card"><h3>📄 Local import</h3><p>Text PDF, JSON, or paste — parsed in the browser with mandatory review. Nothing uploaded. Scanned PDFs unsupported (no OCR).</p></div>
+      <div class="card card-purple"><h3>🛡️ Safety first</h3><p>Acknowledgement required. Educational only — not medical clearance. Stop on sharp pain, clunk, or instability.</p></div>
+      <div class="card"><h3>🧠 Rules, not AI</h3><p>Smart Coach stays a rule-based Smart Assistant. No LLM claims.</p></div>
+    </div>
+  </div>
+</section>
+
 <section class="slide" id="s10">
   <div style="max-width:800px;width:100%">
     <div class="overline reveal">Onboarding</div>
@@ -310,7 +324,7 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
       <div class="card card-cyan"><h3>📱 500M+ gym-goers</h3><p>Global smartphone penetration makes PWAs viable distribution — no App Store tax on day one.</p></div>
       <div class="card"><h3>🔒 Privacy wave</h3><p>Health data on-device beats another SaaS account after Strava and MyFitnessPal breaches.</p></div>
       <div class="card card-purple"><h3>🏠 Home gym boom</h3><p>Equipment-aware programming matters more post-pandemic — generic apps still ignore barbell vs bands.</p></div>
-      <div class="card"><h3>🧠 Coach gap</h3><p>Rule-based Smart Coach fills 80% of PT value at zero marginal cost — no LLM required.</p></div>
+      <div class="card"><h3>🧠 Coach gap</h3><p>Rule-based Smart Coach covers daily programming and logging on-device. It is not an LLM and does not replace in-person form coaching or clinical care.</p></div>
     </div>
   </div>
 </section>
@@ -323,7 +337,7 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
       <div class="card"><h3>Strong / Hevy</h3><p>Great loggers — no recovery OS, no readiness ring, cloud-first.</p></div>
       <div class="card card-cyan"><h3>MyFitnessPal</h3><p>Nutrition focus — training is an afterthought; ads and accounts required.</p></div>
       <div class="card card-purple"><h3>Apple Fitness+</h3><p>Video classes — not adaptive programming for your equipment and joints.</p></div>
-      <div class="card card-green"><h3>PulseCap</h3><p>300+ exercises · Smart Coach · injury flow · 100% offline · your data never leaves.</p></div>
+      <div class="card card-green"><h3>PulseCap</h3><p>300+ exercises · My Plan · Smart Coach (rules) · injury flow · offline · your data never leaves.</p></div>
     </div>
     <p class="sub reveal delay-3" style="margin-top:1.5rem;font-size:.85rem">Positioning: <strong>performance OS</strong> — not another workout logger.</p>
   </div>
@@ -382,10 +396,10 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
     <div class="overline reveal">Platform</div>
     <h2 class="reveal delay-1">Offline-First <span class="grad">PWA</span></h2>
     <div class="cards reveal delay-2">
-      <div class="card card-cyan"><h3>📴 100% offline</h3><p>Service worker cache-first pulsecap-v84</p></div>
-      <div class="card"><h3>👤 Multi-profile</h3><p>Unlimited isolated localStorage namespaces</p></div>
+      <div class="card card-cyan"><h3>📴 100% offline</h3><p>Service worker cache-first pulsecap-v86</p></div>
+      <div class="card"><h3>📲 Install</h3><p>Safari → Share → Add to Home Screen (iOS) · Chrome install on Android/desktop</p></div>
       <div class="card card-purple"><h3>🎨 Dark & Light</h3><p>Match device or pin Dark / Light in Settings</p></div>
-      <div class="card"><h3>📤 JSON export</h3><p>Full backup before device reset</p></div>
+      <div class="card"><h3>📤 JSON export</h3><p>Full backup before device reset · plan import never uploads</p></div>
     </div>
   </div>
 </section>
@@ -406,12 +420,12 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
 <section class="slide" id="s-biz">
   <div style="max-width:820px;width:100%">
     <div class="overline reveal">Business model</div>
-    <h2 class="reveal delay-1">Freemium PWA → <span class="grad">App Store</span></h2>
+    <h2 class="reveal delay-1">Free offline PWA <span class="grad">today</span></h2>
     <div class="cards reveal delay-2">
-      <div class="card card-cyan"><h3>Free core</h3><p>Full offline training OS — no account wall, no sync tax.</p></div>
-      <div class="card"><h3>Pro tier</h3><p>Advanced analytics, export packs, family profiles (future).</p></div>
-      <div class="card card-purple"><h3>PWA path</h3><p>Add to Home Screen — same codebase, no native shell required.</p></div>
-      <div class="card"><h3>B2B wellness</h3><p>White-label recovery programs for clinics &amp; gyms.</p></div>
+      <div class="card card-cyan"><h3>Free core</h3><p>Full offline training OS — no account wall, no sync tax. v6.6.0 ships My Plan.</p></div>
+      <div class="card"><h3>Honest ceiling</h3><p>No paid gates until real monetization ships. Smart Coach stays rules-based.</p></div>
+      <div class="card card-purple"><h3>PWA path</h3><p>Safari → Add to Home Screen — same codebase, no native shell required.</p></div>
+      <div class="card"><h3>Out of scope</h3><p>No HealthKit / Watch / cloud LLM / B2B dashboards unless owner reverses.</p></div>
     </div>
   </div>
 </section>
@@ -435,6 +449,7 @@ h2{font-size:clamp(1.6rem,4.5vw,2.8rem);font-weight:800;letter-spacing:-.03em;ma
     <div class="overline reveal" style="position:relative">Ship It</div>
     <h1 class="grad reveal delay-1" style="font-size:clamp(2.5rem,8vw,4.5rem);position:relative">Train with intention.</h1>
     <p class="sub reveal delay-2" style="position:relative">Your training log, your PRs, your recovery — on your phone, offline.</p>
+    <p class="sub reveal delay-2" style="position:relative;font-size:.75rem;max-width:420px;margin:12px auto 0;line-height:1.45">Educational only — not medical advice. Install: Safari → Share → Add to Home Screen.</p>
     <div class="btn-row reveal delay-3" style="position:relative">
       <a class="btn btn-p" href="https://shamikhahmed.github.io/PulseCap/" target="_blank" rel="noopener">💪 Open PulseCap</a>
       <a class="btn btn-s" href="presentation.html">📊 Presentation</a>

@@ -1,14 +1,14 @@
 # PulseCap — CLAUDE.md
 
 ## Current truth
-- Version: 6.5.2
+- Version: 6.6.0
 - App type: offline-first **PWA only**. No native shell, HealthKit, Live Activity, WidgetKit, or RevenueCat unless owner reverses.
 - Stack: vanilla JS, no framework, no bundler.
 - Router: `reg('screen', fn)` + synchronous `go('screen')`.
 - Data: `localStorage` via `S`; IndexedDB only for progress photos.
 - Security: CSP meta exists in `index.html`; keep it aligned with wger sync.
 - Coach naming: **Smart Coach** / Coach Insights. Do not use unbacked AI claims unless a real LLM is integrated.
-- v6 spine: `js/coach-kernel.js` + `js/gym-tools.js` + `js/data/foods-db.js` (see `docs/V6-NORTHSTAR.md`).
+- v6 spine: `js/coach-kernel.js` + `js/training-plan.js` + `js/gym-tools.js` + `js/data/foods-db.js` (see `docs/V6-NORTHSTAR.md`).
 
 ## Required checks
 - `node --check` changed JS.
@@ -19,13 +19,17 @@
 ## Key files
 - `js/app.js` — router + engines
 - `js/storage.js` — profile/localStorage data
+- `js/training-plan.js` — opt-in training plans
+- `js/plan-import.js` — local text-PDF / JSON / paste import (review; no upload; no OCR)
 - `js/coach-kernel.js` — autoreg / volume / joints / meso / GymFloor
 - `js/gym-tools.js` — WakeLock / VoiceLogger / BarcodeFood / MobilityFlow / PainFlag
 - `js/modules/workout.js` — exercise DB + active logger
 - `js/modules/dashboard.js` — Today screen
+- `js/modules/my-plan.js` — My Plan screen
 - `js/modules/coach.js` — Smart Coach screen
 - `js/data/exercise-library.js` — wger sync
 - `js/data/form-loops.js` — honest form cues (not video)
+- `js/data/plans/machine-ppl.js` — built-in machine-only shoulder-safe PPL
 - `sw.js` — cache allowlist
 
 ## Gotchas
@@ -33,3 +37,4 @@
 - wger needs CSP `connect-src/img-src/media-src https://wger.de`.
 - Rest notifications only work after Add to Home Screen on iOS.
 - Form cues are not videos; real clips require wger library download.
+- Plan import rejects scanned PDFs (no OCR). Never claim AI/LLM for Smart Coach.
