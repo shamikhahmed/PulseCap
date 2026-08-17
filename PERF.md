@@ -6,14 +6,14 @@
 
 | Metric | Budget | Measured | Pass |
 |--------|-------:|---------:|:----:|
-| DOMContentLoaded | ≤8000ms | 269ms | yes |
-| Wall-clock ready (go/S) | ≤20000ms | 338ms | yes |
-| Critical CSS+JS bytes | ≤921600 | 524786 | yes |
-| Max route go() | ≤800ms | 35ms (avg 33) | yes |
+| DOMContentLoaded | ≤8000ms | 260ms | yes |
+| Wall-clock ready (go/S) | ≤20000ms | 285ms | yes |
+| Critical CSS+JS bytes | ≤921600 | 525010 | yes |
+| Max route go() | ≤800ms | 35ms (avg 31) | yes |
 
 ## Route samples
 
-`29, 34, 34, 32, 35` ms for workout→progress→my-plan→settings→dashboard
+`21, 34, 33, 32, 35` ms for workout→progress→my-plan→settings→dashboard
 
 ## Critical assets
 
@@ -26,7 +26,7 @@
 - `css/identity.css`: 14599 B
 - `js/app.js`: 35346 B
 - `js/storage.js`: 26105 B
-- `js/engines.js`: 110595 B
+- `js/engines.js`: 110819 B
 - `js/coach-kernel.js`: 15101 B
 - `js/gym-tools.js`: 10752 B
 - `js/training-plan.js`: 21534 B

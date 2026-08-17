@@ -7,6 +7,7 @@ reg('progress', function() {
 
   return '<div class="topbar"><div class="topbar-title">Progress</div></div>' +
     _periodizationBlock(ws) +
+    _pushPullLine(ws) +
     (ws.length ? _strengthLineChart(ws) : '') +
     _workoutHistory(ws) +
     _bodyStatsChart(bodyStats, S.g('user')) +
@@ -18,6 +19,26 @@ function _progressUser() { return S.g('user') || {}; }
 function _progressUnit() { return weightUnit(_progressUser()); }
 function _progressWeight(kg) { return weightFromKg(kg, _progressUser()); }
 function _progressVolume(kgVolume) { return usesImperial(_progressUser()) ? Math.round((Number(kgVolume) || 0) * 2.2046226218) : Math.round(Number(kgVolume) || 0); }
+
+function _pushPullLine(ws) {
+  if (!ws || !ws.length || typeof ExDB === 'undefined') return '';
+  let push = 0;
+  let pull = 0;
+  ws.forEach(function(w) {
+    (w.exercises || []).forEach(function(ex) {
+      const row = ExDB.byName(ex.name) || (ex.exId && ExDB.byId(ex.exId));
+      const p = row && row.pattern;
+      const sets = (ex.sets || []).filter(function(s) { return s.done; }).length;
+      if (p === 'horizontal_push' || p === 'vertical_push') push += sets;
+      if (p === 'horizontal_pull' || p === 'vertical_pull') pull += sets;
+    });
+  });
+  if (push + pull < 8) return '';
+  let line = 'Press and pull volume are in the same neighbourhood.';
+  if (pull > 0 && push >= pull * 2) line = 'You press about twice as often as you pull.';
+  else if (push > 0 && pull >= push * 2) line = 'You pull about twice as often as you press.';
+  return '<div class="banner" style="margin:0 16px 14px">' + esc(line) + ' Compare a lift only to itself — this is a pattern check, not a score.</div>';
+}
 
 function _monthlyReport(ws, prs, bodyStats) {
   const now = new Date();

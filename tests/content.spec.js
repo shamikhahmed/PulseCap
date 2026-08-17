@@ -122,4 +122,31 @@ test.describe('Exercise content integrity', () => {
     expect(out.openHasMachinePress).toBeTruthy();
     expect(out.swapHasUpright).toBeFalsy();
   });
+
+  test('every exercise has a vocabulary pattern and 2+ resolvable substitutions', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => window.ExDB && window.ExDB.db.length);
+    const out = await page.evaluate(() => {
+      const vocab = ['horizontal_push','vertical_push','horizontal_pull','vertical_pull','hinge','squat','lunge','carry','core','isolation','conditioning'];
+      const badPattern = [];
+      const thin = [];
+      const offPattern = [];
+      window.ExDB.db.forEach(function(ex) {
+        if (vocab.indexOf(ex.pattern) < 0) badPattern.push(ex.n);
+        const names = (ex.regressions || []).concat(ex.progressions || []);
+        const resolved = names.map(function(n) { return window.ExDB.byName(n); }).filter(Boolean);
+        const uniq = [];
+        resolved.forEach(function(r) { if (uniq.indexOf(r.n) < 0) uniq.push(r.n); });
+        if (uniq.length < 2) thin.push(ex.n);
+        uniq.forEach(function(n) {
+          const row = window.ExDB.byName(n);
+          if (row && ex.pattern && row.pattern && row.pattern !== ex.pattern) offPattern.push(ex.n + '→' + n);
+        });
+      });
+      return { badPattern: badPattern.slice(0, 12), thin: thin.slice(0, 12), offPattern: offPattern.slice(0, 12), thinCount: thin.length };
+    });
+    expect(out.badPattern).toEqual([]);
+    expect(out.thin).toEqual([]);
+    expect(out.thinCount).toBe(0);
+  });
 });

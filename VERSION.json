@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.23.0",
-  "swCache": "pulsecap-v103",
+  "version": "6.24.0",
+  "swCache": "pulsecap-v104",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 17 — wrist/neck/ankle joint ratings actually filter"
+  "notes": "Ember Phase 18 — movement patterns and valid substitutions"
 }

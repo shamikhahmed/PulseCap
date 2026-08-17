@@ -1092,8 +1092,10 @@ const SplitEngine = {
     } catch(e) {}
 
     const ranked = ExDB.db.filter(function(e) {
+      const samePattern = ex.pattern && e.pattern && e.pattern === ex.pattern;
+      const sameFamily = e.grp === ex.grp || (ex.pri && e.pri === ex.pri);
       return e.n !== exerciseName &&
-        (e.grp === ex.grp || (ex.pri && e.pri === ex.pri)) &&
+        (samePattern || sameFamily) &&
         (!reason || !reason.includes('shoulder') || (e.joint && (e.joint.shoulder || 0) < 2)) &&
         self._exerciseAvailable(e.n) &&
         !self._isAvoided(e.n) &&
@@ -1101,6 +1103,7 @@ const SplitEngine = {
     }).map(function(e) {
       let score = 40;                                     /* same group baseline */
       const why = [];
+      if (ex.pattern && e.pattern === ex.pattern) { score += 28; why.push('same pattern'); }
       if (ex.pri && e.pri === ex.pri) { score += 35; why.push('same target: ' + e.pri); }
       else { why.push('works ' + (e.pri || e.grp)); }
       const exSec = (ex.sec || '').toLowerCase(), eSec = (e.sec || '').toLowerCase();

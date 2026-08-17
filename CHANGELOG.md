@@ -1,3 +1,6 @@
+## 6.24.0 — 2026-08-18 — Ember rebuild Phase 18
+- Every lift tagged with a movement pattern. Swap prefers the same pattern. Progress shows one honest push/pull line. Each exercise has 2+ resolvable substitutions. SW `pulsecap-v104`.
+
 ## 6.23.0 — 2026-08-18 — Ember rebuild Phase 17
 - Wrist, neck and ankle stress (0–3) on every lift. Declaring those limitations now changes the library, Swap, and Log cautions. SW `pulsecap-v103`.
 
