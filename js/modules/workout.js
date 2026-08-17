@@ -1480,7 +1480,7 @@ window.toggleExInfo = function(exIdx) {
 
 /* ── Exercise Picker ── */
 window.showExercisePicker = function(grp) {
-  const groups = ['chest','back','legs','shoulders','biceps','triceps','core','glutes','fullbody'];
+  const groups = ['chest','back','legs','shoulders','biceps','triceps','core','glutes','fullbody','sports','plyometrics'];
   const curGrp = grp || 'chest';
   let exercises = ExDB.byGroup(curGrp);
   if (typeof Equipment !== 'undefined') {
@@ -1577,6 +1577,8 @@ function showExerciseDetail(name) {
     '<div  class="type-caption type-caption-mb-xs">Coaching Cues</div>' +
     '<div class="body-14">'+esc(ex.cues)+'</div>' +
     '</div>' +
+    (ex.met ? '<div class="banner" style="margin-bottom:14px">Effort ~' + esc(String(ex.met)) + ' MET — Compendium estimate' + (ex.metSource ? ' (' + esc(ex.metSource) + ')' : '') + '. Not a calorie total. Assumes a typical pace.</div>' : '') +
+    (ex.sessionNote ? '<div class="muted-12" style="margin-bottom:14px">' + esc(ex.sessionNote) + '</div>' : '') +
 
     '<div  class="mb-14">' +
     '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--warn);margin-bottom:6px">Common Mistakes</div>' +
@@ -1729,7 +1731,7 @@ window.loadCustomExercises = loadCustomExercises;
 function showBrowseExercises(filterGrp, filterQuery) {
   const grp = filterGrp || '';
   const query = filterQuery || '';
-  const groups = ['all','chest','back','legs','shoulders','biceps','triceps','core','glutes','cardio','sports','fullbody','forearms'];
+  const groups = ['all','chest','back','legs','shoulders','biceps','triceps','core','glutes','cardio','sports','plyometrics','fullbody','forearms'];
 
   let exercises = typeof EquipmentDB !== 'undefined' ? EquipmentDB.filterExercises(ExDB.db) : ExDB.db;
   if (grp && grp !== 'all') exercises = exercises.filter(function(e){return e.grp===grp;});

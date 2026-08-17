@@ -239,7 +239,7 @@ const SPORTS = [
     met: 10.3, metSource: 'CPA 2011 15430 martial arts, moderate pace', sessionNote: 'Hard sparring is higher. Keep this as skill + conditioning.',
     muscles: { primary: ['full_body'], secondary: ['hips'] }, eq: [], bw: true, pattern: 'conditioning',
     joint: { shoulder: 2, elbow: 2, knee: 2, spine: 2, hip: 2, wrist: 2, neck: 2, ankle: 2 }, cns: 3, diff: 2,
-    regressions: ['Boxing'], progressions: ['Boxing'] },
+    regressions: ['Boxing'], progressions: ['Skipping Intervals'] },
   { n: 'Climbing', grp: 'sports', pri: 'Forearms / Back', sec: 'Shoulders, Core',
     cues: 'Straight arms when you can, hips in, no death-grip.', setup: 'Wall or gym. Educational.',
     breathing: 'Exhale on hard moves', mistakes: 'Locking off with a shrugging neck',

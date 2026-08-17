@@ -149,4 +149,27 @@ test.describe('Exercise content integrity', () => {
     expect(out.thin).toEqual([]);
     expect(out.thinCount).toBe(0);
   });
+
+  test('plyos are not sports; cricket exists; every lift has a MET source', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => window.ExDB && window.ExDB.db.length);
+    const out = await page.evaluate(() => {
+      const box = window.ExDB.byName('Box Jump');
+      const cricket = window.ExDB.byName('Cricket — Batting') || window.ExDB.byName('Cricket - Batting');
+      const missingMet = window.ExDB.db.filter(function(ex) { return ex.met == null || !ex.metSource; }).map(function(ex) { return ex.n; });
+      const sports = window.ExDB.db.filter(function(ex) { return ex.grp === 'sports'; }).map(function(ex) { return ex.n; });
+      return {
+        boxGrp: box && box.grp,
+        cricket: !!(cricket),
+        missingMet: missingMet.slice(0, 8),
+        sportsCount: sports.length,
+        hasBadminton: sports.indexOf('Badminton') >= 0
+      };
+    });
+    expect(out.boxGrp).toBe('plyometrics');
+    expect(out.cricket).toBeTruthy();
+    expect(out.missingMet).toEqual([]);
+    expect(out.sportsCount).toBeGreaterThanOrEqual(10);
+    expect(out.hasBadminton).toBeTruthy();
+  });
 });

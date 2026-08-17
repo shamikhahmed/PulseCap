@@ -1,3 +1,6 @@
+## 6.25.0 — 2026-08-18 — Ember rebuild Phase 19
+- Box jump family moved to plyometrics. Cricket (batting/bowling/fielding) plus other sports added. MET values sourced from the Compendium of Physical Activities and labelled as estimates. SW `pulsecap-v105`.
+
 ## 6.24.0 — 2026-08-18 — Ember rebuild Phase 18
 - Every lift tagged with a movement pattern. Swap prefers the same pattern. Progress shows one honest push/pull line. Each exercise has 2+ resolvable substitutions. SW `pulsecap-v104`.
 

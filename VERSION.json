@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.24.0",
-  "swCache": "pulsecap-v104",
+  "version": "6.25.0",
+  "swCache": "pulsecap-v105",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 18 — movement patterns and valid substitutions"
+  "notes": "Ember Phase 19 — sports, plyos, Compendium MET sources"
 }
