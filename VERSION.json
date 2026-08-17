@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.32.0",
-  "swCache": "pulsecap-v112",
+  "version": "6.33.0",
+  "swCache": "pulsecap-v113",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 26 — type-first equipment catalogue + faster picker"
+  "notes": "Ember Phase 27 — UX QA sweep, gallery, marketing sync"
 }

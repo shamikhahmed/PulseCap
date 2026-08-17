@@ -235,3 +235,204 @@ test.describe('UX integrity — gutters and tab bar', () => {
     expect(allBad).toEqual([]);
   });
 });
+
+test.describe('Phase 27 — QA sweep', () => {
+  function contrast(bg, fg) {
+    function parse(c) {
+      c = String(c || '').trim();
+      let m = c.match(/^#([0-9a-f]{6})$/i);
+      if (m) return [parseInt(m[1].slice(0, 2), 16), parseInt(m[1].slice(2, 4), 16), parseInt(m[1].slice(4, 6), 16)];
+      m = c.match(/rgba?\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)/i);
+      if (m) return [Number(m[1]), Number(m[2]), Number(m[3])];
+      return null;
+    }
+    function lin(v) {
+      v = v / 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    }
+    const a = parse(bg);
+    const b = parse(fg);
+    if (!a || !b) return 0;
+    const L1 = 0.2126 * lin(a[0]) + 0.7152 * lin(a[1]) + 0.0722 * lin(a[2]);
+    const L2 = 0.2126 * lin(b[0]) + 0.7152 * lin(b[1]) + 0.0722 * lin(b[2]);
+    const hi = Math.max(L1, L2);
+    const lo = Math.min(L1, L2);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+
+  test('375 / 390 / 430 — no overflow, both themes, main tabs + Settings', async ({ page }) => {
+    const widths = [375, 390, 430];
+    const themes = ['dark', 'light'];
+    const screens = [
+      ['dashboard'],
+      ['workout'],
+      ['progress'],
+      ['my-plan'],
+      ['settings', { tab: 'account' }],
+      ['settings', { tab: 'training' }],
+      ['settings', { tab: 'fuel' }],
+      ['settings', { tab: 'appearance' }],
+      ['settings', { tab: 'accessibility' }],
+      ['settings', { tab: 'notifications' }],
+      ['settings', { tab: 'privacy' }],
+      ['settings', { tab: 'about' }]
+    ];
+    const fails = [];
+    for (const w of widths) {
+      await page.setViewportSize({ width: w, height: 844 });
+      await page.goto('/?demo=1');
+      await page.waitForFunction(() => typeof window.go === 'function');
+      for (const theme of themes) {
+        await page.evaluate((t) => window.applyTheme(t, false), theme);
+        for (const args of screens) {
+          await page.evaluate((a) => window.go(a[0], a[1]), args);
+          const hit = await page.evaluate(() => {
+            const overflow = document.documentElement.scrollWidth > document.documentElement.clientWidth + 2;
+            const bar = document.querySelector('.cap-tab-bar');
+            const wrap = bar && getComputedStyle(bar).flexWrap === 'wrap' && bar.getBoundingClientRect().height > 70;
+            return { overflow: overflow, wrap: !!wrap, screen: window.currentScreenId() };
+          });
+          if (hit.overflow || hit.wrap) fails.push({ w: w, theme: theme, screen: hit.screen, overflow: hit.overflow, wrap: hit.wrap });
+        }
+      }
+    }
+    expect(fails).toEqual([]);
+  });
+
+  test('body text tokens meet WCAG AA 4.5:1 in both themes', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.applyTheme === 'function');
+    const report = [];
+    for (const theme of ['dark', 'light']) {
+      await page.evaluate((t) => window.applyTheme(t, false), theme);
+      const tokens = await page.evaluate(() => {
+        const cs = getComputedStyle(document.documentElement);
+        return {
+          bg: cs.getPropertyValue('--bg').trim() || cs.getPropertyValue('--bg0').trim(),
+          text: cs.getPropertyValue('--text').trim() || cs.getPropertyValue('--txt').trim(),
+          text2: cs.getPropertyValue('--text-2').trim() || cs.getPropertyValue('--txt2').trim()
+        };
+      });
+      report.push({
+        theme: theme,
+        body: contrast(tokens.bg, tokens.text),
+        secondary: contrast(tokens.bg, tokens.text2),
+        tokens: tokens
+      });
+    }
+    report.forEach(function(row) {
+      expect(row.body, row.theme + ' --text vs --bg ' + JSON.stringify(row.tokens)).toBeGreaterThanOrEqual(4.5);
+      expect(row.secondary, row.theme + ' --text-2 vs --bg (AA for 14px+ body) ' + JSON.stringify(row.tokens)).toBeGreaterThanOrEqual(4.5);
+    });
+  });
+
+  test('fresh user reaches intro with no page error', async ({ page }) => {
+    const errors = [];
+    page.on('pageerror', function(err) { errors.push(String(err)); });
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/');
+    await page.waitForFunction(() => typeof window.go === 'function');
+    const state = await page.evaluate(() => ({
+      onboarded: !!(window.S && window.S.g && window.S.g('onboarded')),
+      screen: window.currentScreenId && window.currentScreenId(),
+      hasView: !!document.getElementById('view')
+    }));
+    expect(state.hasView).toBeTruthy();
+    if (!state.onboarded) {
+      expect(state.screen === 'onboarding' || /welcome|goal|pulse/i.test(await page.locator('#view').innerText())).toBeTruthy();
+    }
+    expect(errors).toEqual([]);
+  });
+
+  test('one session and 500 sessions do not overflow Progress', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.S !== 'undefined' && typeof window.go === 'function');
+    const sample = {
+      name: 'Bench',
+      date: '2026-01-01',
+      duration: 40,
+      totalVol: 1200,
+      exercises: [{ name: 'Barbell Bench Press', exId: 'barbell-bench-press', sets: [{ weight: 60, reps: 8, done: true }] }]
+    };
+    for (const n of [1, 500]) {
+      await page.evaluate(({ n, sample }) => {
+        const list = [];
+        for (let i = 0; i < n; i++) {
+          list.push(Object.assign({}, sample, { id: 'wkt_' + i, date: '2025-01-01' }));
+        }
+        window.S.set('workouts', list);
+        window.go('progress');
+      }, { n, sample });
+      await page.waitForTimeout(n === 500 ? 400 : 80);
+      const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
+      expect(overflow, n + ' sessions overflowed').toBeFalsy();
+    }
+  });
+
+  test('longest exercise and food names stay inside the viewport', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.go === 'function' && window.EXERCISE_DB);
+    const names = await page.evaluate(() => {
+      function longest(arr, key) {
+        let best = '';
+        (arr || []).forEach(function(row) {
+          const n = String(row[key] || '');
+          if (n.length > best.length) best = n;
+        });
+        return best;
+      }
+      return { ex: longest(window.EXERCISE_DB, 'n'), food: longest(window.FOODS_DB || [], 'name') };
+    });
+    expect(names.ex.length).toBeGreaterThan(8);
+    await page.evaluate((name) => {
+      window.S.set('user', Object.assign({}, window.S.g('user') || {}, { name: 'Alexandrina-Maximiliana von Somethinglong' }));
+      window.go('workout');
+      const search = document.querySelector('#view input[type="search"], #view input[type="text"]');
+      if (search) {
+        search.value = name;
+        search.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    }, names.ex);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2)).toBeFalsy();
+    await page.evaluate((name) => {
+      window.go('nutrition');
+      const search = document.querySelector('#view input[type="search"], #view input[type="text"]');
+      if (search) {
+        search.value = name;
+        search.dispatchEvent(new Event('input', { bubbles: true }));
+      }
+    }, names.food);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2)).toBeFalsy();
+  });
+
+  test('Settings tabs: tap a control, no console error, scroll holds', async ({ page }) => {
+    const errors = [];
+    page.on('pageerror', function(err) { errors.push(String(err)); });
+    await boot(page);
+    const tabs = ['account', 'training', 'fuel', 'appearance', 'accessibility', 'notifications', 'about'];
+    for (const tab of tabs) {
+      await goScreen(page, 'settings', { tab: tab, resetScroll: true });
+      await padAndScroll(page, 120);
+      const after = await page.evaluate(() => {
+        const btn = document.querySelector('#settings-panel [role="switch"], #settings-panel [data-focus-key^="toggle-"], #settings-panel button.seg, #settings-panel .toggle');
+        const before = document.getElementById('view').scrollTop;
+        if (btn) {
+          btn.focus({ preventScroll: true });
+          btn.click();
+        } else {
+          window.go(window.currentScreenId());
+        }
+        return {
+          before: before,
+          after: document.getElementById('view').scrollTop
+        };
+      });
+      expect(Math.abs(after.after - after.before), tab).toBeLessThan(50);
+    }
+    expect(errors).toEqual([]);
+  });
+});
+

@@ -6,14 +6,14 @@
 
 | Metric | Budget | Measured | Pass |
 |--------|-------:|---------:|:----:|
-| DOMContentLoaded | ≤8000ms | 346ms | yes |
-| Wall-clock ready (go/S) | ≤20000ms | 448ms | yes |
+| DOMContentLoaded | ≤8000ms | 374ms | yes |
+| Wall-clock ready (go/S) | ≤20000ms | 436ms | yes |
 | Critical CSS+JS bytes | ≤921600 | 533885 | yes |
-| Max route go() | ≤800ms | 34ms (avg 32) | yes |
+| Max route go() | ≤800ms | 34ms (avg 31) | yes |
 
 ## Route samples
 
-`28, 32, 34, 33, 33` ms for workout→progress→my-plan→settings→dashboard
+`21, 33, 33, 34, 33` ms for workout→progress→my-plan→settings→dashboard
 
 ## Critical assets
 

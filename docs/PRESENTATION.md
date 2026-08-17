@@ -112,7 +112,7 @@ app.js / engines.js / coach-kernel.js / training-plan.js / plan-import.js / gym-
 modules/            — Today · Train · Progress · Programs · Me
 storage.js          — Multi-profile S + seedPersonas
 foods-db.js         — Offline macros
-sw.js               — cache-first PWA (pulsecap-v107)
+sw.js               — cache-first PWA (pulsecap-v113)
 ```
 
 Vanilla JS. Zero framework. Core tracking works offline. **v6.6.0**.

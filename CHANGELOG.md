@@ -1,3 +1,6 @@
+## 6.33.0 — 2026-08-18 — Ember rebuild Phase 27
+- Full-app QA: interaction, theme contrast (body + secondary ≥ 4.5:1), 375/390/430 widths, empty + 500-session extremes. Docs, screen gallery, and marketing pages synced. SW `pulsecap-v113`.
+
 ## 6.32.0 — 2026-08-18 — Ember rebuild Phase 26
 - Equipment catalogue is type-first (chest press, leg press, lat pulldown, …) with optional brand metadata across Life Fitness through Prime/Atlantis/Gym80 plus generic plate-loaded. Picker: search, category, select-all-in-view, My gym summary. Plate numbers are not compared across brands. SW `pulsecap-v112`.
 

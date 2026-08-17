@@ -1,7 +1,7 @@
 # PulseCap — Documented Screen Gallery
 
-> v6.27.0 · Captures via `npm run gallery -- --project=chromium` → `docs/screenshots/gallery/` · Viewer: `screen-gallery.html`  
-> Latest matrix: **178** shots (108 viewport + 70 scroll) · v6.27.0 capture · includes **My Plan**, **Plan Import Review**, active logger
+> v6.33.0 · Captures via `npm run gallery -- --project=chromium` → `docs/screenshots/gallery/` · Viewer: `screen-gallery.html`  
+> Latest matrix: **176** shots (108 viewport + 68 scroll) · v6.33.0 capture · includes **My Plan**, **Plan Import Review**, **Equipment Setup**, active logger
 
 ## How state is kept
 
@@ -68,6 +68,7 @@ Today · Train · Progress · Programs · Me — fixed. Nested screens light par
 |-----|-------------------|-----------|---------|
 | Account | identity filled / injuries none | fields + selects | `user.*` |
 | Training | split + gym days + My Plan | chips `aria-pressed`, toggles | `user.split`, `gymDays`, `trainingPlan` |
+| Gym machines | type-first picker + My gym | search, category, select-all | `user.equipmentIds` — brand optional; type drives the plan |
 | Fuel | macros + empty stack | number fields, Remove | targets + `supplements` |
 | Appearance | Auto/Dark/Light; coach pick | segmented + radio cards | theme + personality |
 | Access | Metric/Imperial; Low Power | segmented + switch | `user.units`, `settings.lowPower` |
@@ -94,4 +95,4 @@ CAPTURE_GALLERY=1 npx playwright test tests/gallery.spec.js --project=chromium
 open screen-gallery.html
 ```
 
-Clear `docs/screenshots/gallery/*` before a full regen when screen order/count changed (manifest merge is file-keyed and will otherwise keep orphaned renumbered shots).
+Capture wipes stale PNGs on start so orphaned shots cannot linger.

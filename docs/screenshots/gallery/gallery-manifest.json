@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.27.0",
-  "generated": "2026-08-17T20:47:12.810Z",
+  "version": "6.33.0",
+  "generated": "2026-08-17T21:41:48.049Z",
   "shots": [
     {
       "file": "dark-desktop-001-dashboard.png",
@@ -179,7 +179,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-account",
-      "label": "Settings \u00b7 Account (scroll)",
+      "label": "Settings · Account (scroll)",
       "route": "go('settings', {\"tab\":\"account\"})",
       "scroll": true
     },
@@ -189,7 +189,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-account",
-      "label": "Settings \u00b7 Account",
+      "label": "Settings · Account",
       "route": "go('settings', {\"tab\":\"account\"})",
       "scroll": false
     },
@@ -199,7 +199,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-training",
-      "label": "Settings \u00b7 Training (scroll)",
+      "label": "Settings · Training (scroll)",
       "route": "go('settings', {\"tab\":\"training\"})",
       "scroll": true
     },
@@ -209,7 +209,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-training",
-      "label": "Settings \u00b7 Training",
+      "label": "Settings · Training",
       "route": "go('settings', {\"tab\":\"training\"})",
       "scroll": false
     },
@@ -219,7 +219,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-fuel",
-      "label": "Settings \u00b7 Fuel (scroll)",
+      "label": "Settings · Fuel (scroll)",
       "route": "go('settings', {\"tab\":\"fuel\"})",
       "scroll": true
     },
@@ -229,7 +229,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-fuel",
-      "label": "Settings \u00b7 Fuel",
+      "label": "Settings · Fuel",
       "route": "go('settings', {\"tab\":\"fuel\"})",
       "scroll": false
     },
@@ -239,7 +239,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-appearance",
-      "label": "Settings \u00b7 Appearance",
+      "label": "Settings · Appearance",
       "route": "go('settings', {\"tab\":\"appearance\"})",
       "scroll": false
     },
@@ -249,7 +249,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-accessibility",
-      "label": "Settings \u00b7 Access",
+      "label": "Settings · Access",
       "route": "go('settings', {\"tab\":\"accessibility\"})",
       "scroll": false
     },
@@ -259,7 +259,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-notifications",
-      "label": "Settings \u00b7 Alerts",
+      "label": "Settings · Alerts",
       "route": "go('settings', {\"tab\":\"notifications\"})",
       "scroll": false
     },
@@ -269,7 +269,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-privacy",
-      "label": "Settings \u00b7 Privacy (scroll)",
+      "label": "Settings · Privacy (scroll)",
       "route": "go('settings', {\"tab\":\"privacy\"})",
       "scroll": true
     },
@@ -279,7 +279,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-privacy",
-      "label": "Settings \u00b7 Privacy",
+      "label": "Settings · Privacy",
       "route": "go('settings', {\"tab\":\"privacy\"})",
       "scroll": false
     },
@@ -289,7 +289,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-about",
-      "label": "Settings \u00b7 About",
+      "label": "Settings · About",
       "route": "go('settings', {\"tab\":\"about\"})",
       "scroll": false
     },
@@ -629,7 +629,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-account",
-      "label": "Settings \u00b7 Account (scroll)",
+      "label": "Settings · Account (scroll)",
       "route": "go('settings', {\"tab\":\"account\"})",
       "scroll": true
     },
@@ -639,7 +639,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-account",
-      "label": "Settings \u00b7 Account",
+      "label": "Settings · Account",
       "route": "go('settings', {\"tab\":\"account\"})",
       "scroll": false
     },
@@ -649,7 +649,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-training",
-      "label": "Settings \u00b7 Training (scroll)",
+      "label": "Settings · Training (scroll)",
       "route": "go('settings', {\"tab\":\"training\"})",
       "scroll": true
     },
@@ -659,7 +659,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-training",
-      "label": "Settings \u00b7 Training",
+      "label": "Settings · Training",
       "route": "go('settings', {\"tab\":\"training\"})",
       "scroll": false
     },
@@ -669,7 +669,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-fuel",
-      "label": "Settings \u00b7 Fuel (scroll)",
+      "label": "Settings · Fuel (scroll)",
       "route": "go('settings', {\"tab\":\"fuel\"})",
       "scroll": true
     },
@@ -679,19 +679,9 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-fuel",
-      "label": "Settings \u00b7 Fuel",
+      "label": "Settings · Fuel",
       "route": "go('settings', {\"tab\":\"fuel\"})",
       "scroll": false
-    },
-    {
-      "file": "dark-mobile-014-settings-appearance-scroll.png",
-      "theme": "dark",
-      "viewport": "mobile",
-      "section": "Me",
-      "screenId": "settings-appearance",
-      "label": "Settings \u00b7 Appearance (scroll)",
-      "route": "go('settings', {\"tab\":\"appearance\"})",
-      "scroll": true
     },
     {
       "file": "dark-mobile-014-settings-appearance.png",
@@ -699,7 +689,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-appearance",
-      "label": "Settings \u00b7 Appearance",
+      "label": "Settings · Appearance",
       "route": "go('settings', {\"tab\":\"appearance\"})",
       "scroll": false
     },
@@ -709,7 +699,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-accessibility",
-      "label": "Settings \u00b7 Access",
+      "label": "Settings · Access",
       "route": "go('settings', {\"tab\":\"accessibility\"})",
       "scroll": false
     },
@@ -719,7 +709,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-notifications",
-      "label": "Settings \u00b7 Alerts",
+      "label": "Settings · Alerts",
       "route": "go('settings', {\"tab\":\"notifications\"})",
       "scroll": false
     },
@@ -729,7 +719,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-privacy",
-      "label": "Settings \u00b7 Privacy (scroll)",
+      "label": "Settings · Privacy (scroll)",
       "route": "go('settings', {\"tab\":\"privacy\"})",
       "scroll": true
     },
@@ -739,7 +729,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-privacy",
-      "label": "Settings \u00b7 Privacy",
+      "label": "Settings · Privacy",
       "route": "go('settings', {\"tab\":\"privacy\"})",
       "scroll": false
     },
@@ -749,7 +739,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-about",
-      "label": "Settings \u00b7 About",
+      "label": "Settings · About",
       "route": "go('settings', {\"tab\":\"about\"})",
       "scroll": false
     },
@@ -1069,7 +1059,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-account",
-      "label": "Settings \u00b7 Account (scroll)",
+      "label": "Settings · Account (scroll)",
       "route": "go('settings', {\"tab\":\"account\"})",
       "scroll": true
     },
@@ -1079,7 +1069,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-account",
-      "label": "Settings \u00b7 Account",
+      "label": "Settings · Account",
       "route": "go('settings', {\"tab\":\"account\"})",
       "scroll": false
     },
@@ -1089,7 +1079,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-training",
-      "label": "Settings \u00b7 Training (scroll)",
+      "label": "Settings · Training (scroll)",
       "route": "go('settings', {\"tab\":\"training\"})",
       "scroll": true
     },
@@ -1099,7 +1089,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-training",
-      "label": "Settings \u00b7 Training",
+      "label": "Settings · Training",
       "route": "go('settings', {\"tab\":\"training\"})",
       "scroll": false
     },
@@ -1109,7 +1099,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-fuel",
-      "label": "Settings \u00b7 Fuel (scroll)",
+      "label": "Settings · Fuel (scroll)",
       "route": "go('settings', {\"tab\":\"fuel\"})",
       "scroll": true
     },
@@ -1119,7 +1109,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-fuel",
-      "label": "Settings \u00b7 Fuel",
+      "label": "Settings · Fuel",
       "route": "go('settings', {\"tab\":\"fuel\"})",
       "scroll": false
     },
@@ -1129,7 +1119,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-appearance",
-      "label": "Settings \u00b7 Appearance",
+      "label": "Settings · Appearance",
       "route": "go('settings', {\"tab\":\"appearance\"})",
       "scroll": false
     },
@@ -1139,7 +1129,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-accessibility",
-      "label": "Settings \u00b7 Access",
+      "label": "Settings · Access",
       "route": "go('settings', {\"tab\":\"accessibility\"})",
       "scroll": false
     },
@@ -1149,7 +1139,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-notifications",
-      "label": "Settings \u00b7 Alerts",
+      "label": "Settings · Alerts",
       "route": "go('settings', {\"tab\":\"notifications\"})",
       "scroll": false
     },
@@ -1159,7 +1149,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-privacy",
-      "label": "Settings \u00b7 Privacy (scroll)",
+      "label": "Settings · Privacy (scroll)",
       "route": "go('settings', {\"tab\":\"privacy\"})",
       "scroll": true
     },
@@ -1169,7 +1159,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-privacy",
-      "label": "Settings \u00b7 Privacy",
+      "label": "Settings · Privacy",
       "route": "go('settings', {\"tab\":\"privacy\"})",
       "scroll": false
     },
@@ -1179,7 +1169,7 @@
       "viewport": "desktop",
       "section": "Me",
       "screenId": "settings-about",
-      "label": "Settings \u00b7 About",
+      "label": "Settings · About",
       "route": "go('settings', {\"tab\":\"about\"})",
       "scroll": false
     },
@@ -1519,7 +1509,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-account",
-      "label": "Settings \u00b7 Account (scroll)",
+      "label": "Settings · Account (scroll)",
       "route": "go('settings', {\"tab\":\"account\"})",
       "scroll": true
     },
@@ -1529,7 +1519,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-account",
-      "label": "Settings \u00b7 Account",
+      "label": "Settings · Account",
       "route": "go('settings', {\"tab\":\"account\"})",
       "scroll": false
     },
@@ -1539,7 +1529,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-training",
-      "label": "Settings \u00b7 Training (scroll)",
+      "label": "Settings · Training (scroll)",
       "route": "go('settings', {\"tab\":\"training\"})",
       "scroll": true
     },
@@ -1549,7 +1539,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-training",
-      "label": "Settings \u00b7 Training",
+      "label": "Settings · Training",
       "route": "go('settings', {\"tab\":\"training\"})",
       "scroll": false
     },
@@ -1559,7 +1549,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-fuel",
-      "label": "Settings \u00b7 Fuel (scroll)",
+      "label": "Settings · Fuel (scroll)",
       "route": "go('settings', {\"tab\":\"fuel\"})",
       "scroll": true
     },
@@ -1569,19 +1559,9 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-fuel",
-      "label": "Settings \u00b7 Fuel",
+      "label": "Settings · Fuel",
       "route": "go('settings', {\"tab\":\"fuel\"})",
       "scroll": false
-    },
-    {
-      "file": "light-mobile-041-settings-appearance-scroll.png",
-      "theme": "light",
-      "viewport": "mobile",
-      "section": "Me",
-      "screenId": "settings-appearance",
-      "label": "Settings \u00b7 Appearance (scroll)",
-      "route": "go('settings', {\"tab\":\"appearance\"})",
-      "scroll": true
     },
     {
       "file": "light-mobile-041-settings-appearance.png",
@@ -1589,7 +1569,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-appearance",
-      "label": "Settings \u00b7 Appearance",
+      "label": "Settings · Appearance",
       "route": "go('settings', {\"tab\":\"appearance\"})",
       "scroll": false
     },
@@ -1599,7 +1579,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-accessibility",
-      "label": "Settings \u00b7 Access",
+      "label": "Settings · Access",
       "route": "go('settings', {\"tab\":\"accessibility\"})",
       "scroll": false
     },
@@ -1609,7 +1589,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-notifications",
-      "label": "Settings \u00b7 Alerts",
+      "label": "Settings · Alerts",
       "route": "go('settings', {\"tab\":\"notifications\"})",
       "scroll": false
     },
@@ -1619,7 +1599,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-privacy",
-      "label": "Settings \u00b7 Privacy (scroll)",
+      "label": "Settings · Privacy (scroll)",
       "route": "go('settings', {\"tab\":\"privacy\"})",
       "scroll": true
     },
@@ -1629,7 +1609,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-privacy",
-      "label": "Settings \u00b7 Privacy",
+      "label": "Settings · Privacy",
       "route": "go('settings', {\"tab\":\"privacy\"})",
       "scroll": false
     },
@@ -1639,7 +1619,7 @@
       "viewport": "mobile",
       "section": "Me",
       "screenId": "settings-about",
-      "label": "Settings \u00b7 About",
+      "label": "Settings · About",
       "route": "go('settings', {\"tab\":\"about\"})",
       "scroll": false
     },

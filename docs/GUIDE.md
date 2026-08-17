@@ -3,7 +3,7 @@
 PulseCap is your **Smart Coach fitness operating system** — an offline-first PWA for workouts, cardio, body tracking, nutrition, and rule-based coaching.
 
 **Live app:** https://shamikhahmed.github.io/PulseCap  
-**Version:** 6.27.0 · SW `pulsecap-v107`
+**Version:** 6.33.0 · SW `pulsecap-v113`
 
 ---
 
@@ -115,7 +115,7 @@ Macro logging, water, supplements with timing. Quick-add meals + offline food se
 ## Settings essentials
 
 - **Appearance** — Auto / Dark / Light (device default supported)
-- **Training** — split, gym days, **Programs**, **Gym Floor Mode**, equipment, eight joint limitations
+- **Training** — split, gym days, **Programs**, **Gym Floor Mode**, equipment kit, **Gym machines** (type-first; brand optional). Specific machines override the kit and actually filter the plan.
 - **Foods** — search roti, karahi, oats… Macros are estimates per labelled portion.
 - **Privacy / Data** — export/import, optional wger form-media pack sync
 - **Profiles** — multi-profile + Demo + “Load sample athletes”
@@ -125,7 +125,7 @@ Macro logging, water, supplements with timing. Quick-add meals + offline food se
 ## Offline & data
 
 - All data in localStorage (`fos_profiles_[id]`); photos in IndexedDB
-- Service worker cache-first (`pulsecap-v107`)
+- Service worker cache-first (`pulsecap-v113`)
 - No backend required · no account · no cloud sync
 - Export JSON before device reset
 

@@ -4,7 +4,7 @@
 // Default `playwright test`: walk all states, assert render (no PNG churn).
 // `npm run gallery` (CAPTURE_GALLERY=1): write viewport + scroll PNGs + manifest (VaultCap-style).
 const { test, expect } = require('@playwright/test');
-const { mkdirSync, writeFileSync, readFileSync } = require('node:fs');
+const { mkdirSync, writeFileSync, readFileSync, readdirSync, unlinkSync } = require('node:fs');
 const { join } = require('node:path');
 
 const GALLERY_DIR = join(process.cwd(), 'docs', 'screenshots', 'gallery');
@@ -63,6 +63,17 @@ const VIEWPORTS = {
 };
 const THEMES = ['dark', 'light'];
 const CAPTURE = process.env.CAPTURE_GALLERY === '1';
+let galleryWiped = false;
+
+function wipeStaleGallery() {
+  if (!CAPTURE || galleryWiped) return;
+  galleryWiped = true;
+  mkdirSync(GALLERY_DIR, { recursive: true });
+  readdirSync(GALLERY_DIR).forEach(function(f) {
+    if (f.endsWith('.png')) unlinkSync(join(GALLERY_DIR, f));
+  });
+  writeFileSync(join(GALLERY_DIR, 'gallery-manifest.json'), JSON.stringify({ app: 'PulseCap', version: '', shots: [] }));
+}
 
 function appendManifest(shots) {
   const manifestPath = join(GALLERY_DIR, 'gallery-manifest.json');
@@ -173,7 +184,10 @@ for (const [viewport, vp] of Object.entries(VIEWPORTS)) {
   test.describe(`Screen gallery — ${viewport}`, () => {
     test.use({ viewport: { width: vp.width, height: vp.height }, deviceScaleFactor: vp.dsf });
 
-    test.beforeAll(() => { mkdirSync(GALLERY_DIR, { recursive: true }); });
+    test.beforeAll(() => {
+      wipeStaleGallery();
+      mkdirSync(GALLERY_DIR, { recursive: true });
+    });
 
     test(`${CAPTURE ? 'capture' : 'walk'} ${viewport} screens (dark + light)`, async ({ page }) => {
       test.setTimeout(CAPTURE ? 900_000 : 180_000);

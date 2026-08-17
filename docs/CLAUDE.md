@@ -1,10 +1,10 @@
 # PulseCap — CLAUDE.md
 
 ## Current truth
-- Version: 6.27.0
+- Version: 6.33.0
 - App type: offline-first **PWA only**. No native shell, HealthKit, Live Activity, WidgetKit, or RevenueCat unless owner reverses.
 - Stack: vanilla JS, no framework, no bundler.
-- Router: `reg('screen', fn)` + synchronous `go('screen')`.
+- Router: `reg('screen', fn)` + synchronous `go('screen')`. Same-screen `go()` preserves scroll and focus unless `resetScroll` or a tab change.
 - Data: `localStorage` via `S`; IndexedDB only for progress photos.
 - Security: CSP meta exists in `index.html`; keep it aligned with wger sync.
 - Coach naming: **Smart Coach** / Coach Insights. Do not use unbacked AI claims unless a real LLM is integrated.
@@ -26,6 +26,7 @@
 - `js/plan-import.js` — local text-PDF / JSON / paste import (review; no upload; no OCR)
 - `js/coach-kernel.js` — autoreg / volume / joints / meso / GymFloor
 - `js/gym-tools.js` — WakeLock / VoiceLogger / BarcodeFood / MobilityFlow / PainFlag
+- `js/core/equipment.js` — kit fallback + `equipmentIds` by machine type
 - `js/data/exercise-db.js` — canonical ExDB
 - `js/modules/workout.js` — ExDB methods + active logger
 - `js/modules/dashboard.js` — Today screen

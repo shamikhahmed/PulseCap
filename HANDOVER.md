@@ -7,8 +7,8 @@
 Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Activity / widgets planned). Ember IA: Today · Train · Progress · Programs · Me.
 
 ## Facts
-**Version:** 6.27.0
-**SW cache:** `pulsecap-v107`
+**Version:** 6.33.0
+**SW cache:** `pulsecap-v113`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.
@@ -19,7 +19,7 @@ Smart Coach fitness OS — **offline PWA only** (no native HealthKit / Live Acti
 ```bash
 python3 -m http.server 8766   # or npm run serve
 npx playwright test           # current suite
-npm run gallery               # regen ~348-shot matrix: dark+light × mobile+desktop (--project=chromium)
+npm run gallery               # regen ~176-shot matrix: dark+light × mobile+desktop (--project=chromium)
 open screen-gallery.html      # Dark/Light + viewport + section filters
 ```
 
@@ -34,7 +34,7 @@ open screen-gallery.html      # Dark/Light + viewport + section filters
 - Manifest fields: `theme`, `viewport`, `section`, `screenId`, `label`, `route`, `scroll`.
 
 ## Architecture
-- `js/app.js` — shell, router (`go()` + lazy `MODULE_SRC`), helpers, nav
+- `js/app.js` — shell, router (`go()` + lazy `MODULE_SRC`). Same-screen `go()` preserves scroll and focus unless `resetScroll` or a Settings tab change.
 - `js/engines.js` — Program / Recap / Plate / RestNotify / Weight / Muscle / …
 - `js/coach-kernel.js` — Autoreg / VolumeLander / JointBudget / Mesocycle / CoachKernel / GymFloor
 - `js/training-plan.js` — opt-in `trainingPlan` (rotation, deload, double progression, safety)
@@ -43,7 +43,7 @@ open screen-gallery.html      # Dark/Light + viewport + section filters
 - `js/data/exercise-db.js` — canonical exercise library (ids, 8 joints, patterns, MET)
 - `js/data/foods-db.js` — 235 sourced foods (USDA + Karachi staples)
 - `js/core/nutrition-math.js` — Mifflin-St Jeor + g/kg macros
-- `js/core/equipment.js` — kit + 8-joint filters + caution banners
+- `js/core/equipment.js` — kit fallback, `equipmentIds` by machine type, 8-joint filters, gap banners
 - `js/modules/` — Ember screens (Today / Train / Progress / Programs / Me)
 - `js/data/form-loops.js` — honest offline form **cues** (not videos) + `isBarbell()`
 - `js/data/exercise-library.js` — optional wger.de download for real form clips

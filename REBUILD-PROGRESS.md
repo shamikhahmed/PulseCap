@@ -171,3 +171,13 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 - Picker: search, optional brand filter, select-all-in-view, My gym summary. Honest copy: plate numbers are not comparable across brands.
 - Chromium: **129 passed**, 1 skipped.
 
+## Phase 27 — QA sweep (v6.33.0 / pulsecap-v113)
+
+- Interaction: Settings tabs (except Privacy danger actions) keep scroll on tap; no pageerror. Same-screen contract from Phase 22 still green.
+- Theme: `--text` and `--text-2` vs `--bg` ≥ 4.5:1 in dark and light. `--text-3` in dark is 3.90 (caption/muted, not body).
+- Width: 375 / 390 / 430 × both themes — no document overflow, Settings tab bar does not wrap.
+- Extremes: fresh user reaches intro; 1 and 500 sessions on Progress; longest ExDB / FOODS_DB names do not overflow.
+- Could not verify on this machine: real iPhone A2HS / VoiceOver / Dynamic Type 200%; live 6.6.0 backup overlay; clinical review of cues.
+- Chromium: **135 passed**, 1 skipped. Gallery wipe-on-capture so stale PNGs cannot linger.
+
+
