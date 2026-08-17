@@ -40,7 +40,7 @@ const Profile = {
     const decision = (typeof DailyDecision !== 'undefined' && DailyDecision.decide) ? DailyDecision.decide() : null;
     const readiness = (typeof ReadinessEngine !== 'undefined' && ReadinessEngine.score) ? ReadinessEngine.score() : 70;
     const insight = (typeof CoachKernel !== 'undefined' && CoachKernel.oneThing) ? CoachKernel.oneThing() : null;
-    const limitations = this.get('user.limitations') || this.get('injuries') || [];
+    const limitations = this.get('user.limitations') || this.get('user.injuries') || [];
     const equipment = this.get('user.equipment') || this.get('equipment') || [];
     return {
       user: user,
@@ -77,6 +77,13 @@ function bootOwnerSeed() {
       id: 'shoulder',
       joint: 'shoulder',
       note: 'Shoulder-safe: machines, cables, Smith. No overhead barbell. Stop on sharp pain or clunk.'
+    }]);
+    Profile.set('user.injuries', [{
+      id: 'shoulder',
+      joint: 'shoulder',
+      bodyPart: 'shoulder',
+      severity: 1,
+      recovered: false
     }]);
     if (typeof TrainingPlanEngine !== 'undefined' && !TrainingPlanEngine.hasActive()) {
       TrainingPlanEngine.installTemplate('machine_ppl_shoulder', { acknowledgedSafety: true });

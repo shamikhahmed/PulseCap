@@ -173,7 +173,7 @@ function _tabTraining(u) {
     _sectionTitle('Training Split') +
     _selectWrap('Active Split', 'user.split', u.split||'ppl', splitOpts) +
 
-    '<button type="button" class="btn btn-primary btn-sm" style="width:100%;margin-bottom:10px;min-height:44px" onclick="go(\'my-plan\')">My Plan — program, PDF import, gym floor</button>' +
+    '<button type="button" class="btn btn-primary btn-sm" style="width:100%;margin-bottom:10px;min-height:44px" onclick="go(\'my-plan\')">Programs — templates, PDF import, gym floor</button>' +
 
     (u.split === 'custom' || (S.g('user.customSplit') || []).length ?
       '<button type="button" class="btn btn-secondary btn-sm" style="width:100%;margin-bottom:14px" onclick="go(\'split-builder\')">Edit your custom split →</button>' :
@@ -198,6 +198,15 @@ function _tabTraining(u) {
     '<button type="button" class="btn btn-primary" onclick="go(\'equipment-setup\')" style="width:100%;margin-bottom:8px;display:inline-flex;align-items:center;justify-content:center;gap:8px">' + icon('dumbbell', 16) + ' Configure Equipment</button>' +
     '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-bottom:14px">'+esc(eqLabel)+' — Life Fitness, Technogym, home, bodyweight & more</div>' +
 
+    _sectionTitle('Limitations') +
+    '<div style="font-size:12px;color:var(--txt3);margin-bottom:10px;line-height:1.45">Optional cautions for Today, Log, and Programs. Educational — not a diagnosis.</div>' +
+    '<div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px">' +
+    [{id:'shoulder',l:'Shoulder'},{id:'knee',l:'Knee'},{id:'low_back',l:'Low back'}].map(function(d) {
+      const on = _hasLimitation(u, d.id);
+      return '<button type="button" onclick="toggleLimitation(\''+d.id+'\')" aria-pressed="'+(on?'true':'false')+'" style="min-height:44px;padding:10px 14px;border-radius:12px;border:1.5px solid '+(on?'var(--c1)':'var(--border)')+';background:'+(on?'rgba(var(--c1-rgb),0.12)':'var(--bg3)')+';color:'+(on?'var(--c1)':'var(--txt3)')+';font-size:13px;font-weight:700;cursor:pointer;touch-action:manipulation">'+d.l+'</button>';
+    }).join('') +
+    '</div>' +
+
     _sectionTitle('Rest Timer') +
     _fieldWrap('Default Rest (seconds)', '<input class="field" type="number" value="'+(u.restSecs||120)+'" min="30" max="600" step="15" oninput="_setSetting(\'user.restSecs\',parseInt(this.value))">') +
 
@@ -209,7 +218,7 @@ function _tabTraining(u) {
     _toggle('Gym Floor Mode', 'user.gymFloorMode', !!u.gymFloorMode) +
     '<div style="font-size:12px;color:var(--txt3);margin:-6px 0 10px;padding:0 2px">Bigger tap targets + keep-awake friendly logger chrome.</div>' +
     _toggle('Beginner Mode', 'user.beginnerMode', !!u.beginnerMode) +
-    '<div style="font-size:12px;color:var(--txt3);margin:-6px 0 14px;padding:0 2px">Simplifies Today + Learn; Soft cues for first-year lifters.</div>' +
+    '<div style="font-size:12px;color:var(--txt3);margin:-6px 0 14px;padding:0 2px">Simplifies Today. Soft cues for first-year lifters.</div>' +
     _sectionTitle('Manual vitals (optional)') +
     _fieldWrap('Resting HR (bpm)', '<input class="field" type="number" value="'+(u.restingHr||'')+'" min="35" max="120" placeholder="e.g. 58" oninput="_setSetting(\'user.restingHr\',parseInt(this.value)||null)">') +
     _fieldWrap('HRV (ms, morning)', '<input class="field" type="number" value="'+(u.hrvMs||'')+'" min="10" max="200" placeholder="e.g. 55" oninput="_setSetting(\'user.hrvMs\',parseInt(this.value)||null)">') +
@@ -471,8 +480,8 @@ function _tabAbout() {
 
     _sectionTitle('Navigation') +
     '<div class="card card-solid mb-14">' +
-    '<div style="font-size:13px;color:var(--txt);line-height:1.55;font-weight:600;margin-bottom:6px">Today · Train · Body · Learn · Me</div>' +
-    '<div style="font-size:12px;color:var(--txt3);line-height:1.45">Fixed tabs — not customizable. Nested screens light the parent tab. Full module list under Learn.</div>' +
+    '<div style="font-size:13px;color:var(--txt);line-height:1.55;font-weight:600;margin-bottom:6px">Today · Train · Progress · Programs · Me</div>' +
+    '<div style="font-size:12px;color:var(--txt3);line-height:1.45">Fixed tabs. Nested screens light the parent tab.</div>' +
     '</div>' +
 
     _sectionTitle('Legal') +
@@ -542,6 +551,31 @@ window._setCanonicalBodySetting = function(key, raw, kind) {
   if (!Number.isFinite(value) || value <= 0) return;
   const user = S.g('user') || {};
   S.set(key, kind === 'height' ? heightToCm(value, user) : weightToKg(value, user));
+};
+
+function _hasLimitation(u, id) {
+  const list = (u && u.limitations) || S.g('user.limitations') || [];
+  return list.some(function(l) {
+    const key = typeof l === 'string' ? l : (l && (l.id || l.joint));
+    return String(key || '').toLowerCase() === id;
+  });
+}
+
+window.toggleLimitation = function(id) {
+  const list = (S.g('user.limitations') || []).slice();
+  const idx = list.findIndex(function(l) {
+    const key = typeof l === 'string' ? l : (l && (l.id || l.joint));
+    return String(key || '').toLowerCase() === id;
+  });
+  if (idx >= 0) list.splice(idx, 1);
+  else list.push({ id: id, joint: id, note: 'Stop on sharp pain. Educational caution only.' });
+  S.set('user.limitations', list);
+  S.set('user.injuries', list.map(function(l) {
+    const joint = typeof l === 'string' ? l : (l.joint || l.id);
+    return { id: joint, joint: joint, bodyPart: joint, severity: 1, recovered: false };
+  }));
+  toast('Limitations updated', 'ok');
+  go('settings', { tab: 'training' });
 };
 
 window.toggleInjuryRecovered = function(idx) {

@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.13.0",
-  "swCache": "pulsecap-v93",
+  "version": "6.14.0",
+  "swCache": "pulsecap-v94",
   "updated": "2026-08-17",
-  "notes": "Ember rebuild Phase 7 — Programs tab chrome + templates/import"
+  "notes": "Ember rebuild Phase 8 — Me limitations + interlink audit"
 }
