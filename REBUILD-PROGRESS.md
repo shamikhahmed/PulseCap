@@ -15,10 +15,10 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 9 PWA | done | c0b7220 | Purged deprecated modules, dropped dead marketing scripts |
 | 10 Polish | done | 66bfc9c | A11y + docs synced to 6.16.0 |
 | 11 Log + Train | done | 2160fde | Slim Active header, set-row grid, Train picker, logger perf |
-| 12 Spine computes | done |  | Mifflin-St Jeor + equipment filter + matched templates + persona tests |
-| 13 Onboarding | done |  | Equipment, days/week, sex; no goal weight; first-lift calibration |
-| 14 Programs + orphans | done |  | 6 templates, custom builder, crawl test, Train select match, S.g guard |
-| 15 Honesty / a11y | done |  | Readiness words, contrast, 16px inputs, wall-clock rest, schema v5 |
+| 12 Spine computes | done | e0f6057 | Mifflin-St Jeor + equipment filter + matched templates + persona tests |
+| 13 Onboarding | done | e0f6057 | Equipment, days/week, sex; no goal weight; first-lift calibration |
+| 14 Programs + orphans | done | e0f6057 | 6 templates, custom builder, crawl test, Train select match, S.g guard |
+| 15 Honesty / a11y | done | e0f6057 | Readiness words, contrast, 16px inputs, wall-clock rest, schema v5 |
 
 ## Phase 1 checklist
 
