@@ -991,6 +991,13 @@ reg('active', function() {
   const goal = user.goal || 'hypertrophy';
   const displayUnit = weightUnit(user).toUpperCase();
   const restSecs = user.restSecs || 120;
+  const ctx = (typeof Profile !== 'undefined' && Profile.deriveContext) ? Profile.deriveContext() : { limitations: user.limitations || [] };
+  const lim = (ctx.limitations || []).map(function(l) {
+    return String((typeof l === 'string' ? l : (l.joint || l.id || '')) || '').toLowerCase();
+  });
+  const caution = lim.indexOf('shoulder') >= 0
+    ? '<div class="banner banner--caution" style="margin:8px 16px">Shoulder caution: stop on sharp pain or clunk. Prefer listed alternatives.</div>'
+    : '';
   const totalSets = _wkt.exercises.reduce(function(a,ex){return a+(ex.sets||[]).length;},0);
   const doneSets = _wkt.exercises.reduce(function(a,ex){return a+(ex.sets||[]).filter(function(s){return s.done;}).length;},0);
   const progress = totalSets > 0 ? Math.round((doneSets/totalSets)*100) : 0;
@@ -1007,7 +1014,7 @@ reg('active', function() {
     '<div style="font-size:18px;font-weight:800;color:var(--txt)" id="wkt-count">'+doneSets+'/'+totalSets+'</div>' +
     '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em">Sets Done</div>' +
     '</div>' +
-    '<div  class="flex-gap-8">' +
+    '<div class="flex-gap-8">' +
     (typeof VoiceLogger !== 'undefined' && VoiceLogger.supported() ?
       '<button type="button" onclick="voiceLogCurrentSet()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:var(--bg3);color:var(--txt2)" aria-label="Voice log set">Mic</button>' : '') +
     '<button type="button" onclick="flagPainDuringWorkout()" style="padding:8px 12px;border-radius:20px;font-size:12px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid rgba(255,69,58,0.35);background:rgba(255,69,58,0.08);color:var(--danger)">Pain</button>' +
@@ -1029,17 +1036,27 @@ reg('active', function() {
     const setsHTML = (ex.sets||[]).map(function(set, sIdx) {
       const isDone = set.done;
       const isPR = set._isPR;
-      const showPlates = barbell && set.weight && sIdx === 0;
+      const perSide = !!(ex._plan && ex._plan.unit === 'kg_per_side');
+      const showPlates = barbell && set.weight && sIdx === 0 && !perSide;
       const displayWeight = set.weight ? weightFromKg(set.weight, user) : '';
       const displaySuggest = suggest ? weightFromKg(suggest, user) : 0;
+      const lVal = set.weightL != null ? weightFromKg(set.weightL, user) : (perSide ? displayWeight : '');
+      const rVal = set.weightR != null ? weightFromKg(set.weightR, user) : (perSide ? displayWeight : '');
+      const weightInputs = perSide
+        ? '<div style="display:flex;gap:6px;align-items:flex-end">' +
+          '<div style="display:flex;flex-direction:column;align-items:center"><div style="font-size:9px;color:var(--txt3);margin-bottom:3px">L</div>' +
+          '<input type="number" class="set-inp" aria-label="Left side load" placeholder="'+displaySuggest+'" value="'+lVal+'" inputmode="decimal" style="width:52px" onchange="_setSide('+exIdx+','+sIdx+',\'L\',this.value)"></div>' +
+          '<div style="display:flex;flex-direction:column;align-items:center"><div style="font-size:9px;color:var(--txt3);margin-bottom:3px">R</div>' +
+          '<input type="number" class="set-inp" aria-label="Right side load" placeholder="'+displaySuggest+'" value="'+rVal+'" inputmode="decimal" style="width:52px" onchange="_setSide('+exIdx+','+sIdx+',\'R\',this.value)"></div></div>'
+        : '<div style="display:flex;flex-direction:column;align-items:center">' +
+          '<div style="font-size:9px;color:var(--txt3);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.06em">'+displayUnit+'</div>' +
+          '<input type="number" class="set-inp" placeholder="'+displaySuggest+'" value="'+displayWeight+'" ' +
+          'onchange="_setVal('+exIdx+','+sIdx+',\'weight\',weightToKg(parseFloat(this.value)||0))" ' +
+          'inputmode="decimal" style="width:64px"></div>';
       return '<div class="set-row' + (isDone?' done':'') + (isPR?' pr':'') + '" id="set-'+exIdx+'-'+sIdx+'">' +
         '<div class="set-num">'+(sIdx+1)+'</div>' +
         '<div class="set-inputs">' +
-        '<div style="display:flex;flex-direction:column;align-items:center">' +
-        '<div style="font-size:9px;color:var(--txt3);margin-bottom:3px;text-transform:uppercase;letter-spacing:0.06em">'+displayUnit+'</div>' +
-        '<input type="number" class="set-inp" placeholder="'+displaySuggest+'" value="'+displayWeight+'" ' +
-        'onchange="_setVal('+exIdx+','+sIdx+',\'weight\',weightToKg(parseFloat(this.value)||0))" ' +
-        'inputmode="decimal" style="width:64px">' +
+        weightInputs +
         (showPlates ?
           '<button type="button" onclick="event.stopPropagation();showPlateCalc('+displayWeight+')" style="margin-top:4px;font-size:9px;font-weight:700;color:var(--c1);background:none;border:none;cursor:pointer;padding:0;touch-action:manipulation">plates</button>' : '') +
         '</div>' +
@@ -1166,7 +1183,7 @@ reg('active', function() {
     '<button type="button" onclick="addRestTime(30)" style="flex:1;padding:14px;border-radius:14px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);color:var(--c1);font-size:15px;font-weight:600;cursor:pointer;touch-action:manipulation">+30s</button>' +
     '</div></div>';
 
-  return header + planStrip + '<div style="padding:12px 16px 4px">' + cards + '</div>' + cardioStrip + restBar + '<div style="height:32px"></div>';
+  return header + caution + planStrip + '<div style="padding:12px 16px 4px">' + cards + '</div>' + cardioStrip + restBar + '<div style="height:32px"></div>';
 });
 
 /* ── Workout control functions ── */
@@ -1175,6 +1192,17 @@ window._setVal = function(exIdx, sIdx, field, val) {
   if (!_wkt || !_wkt.exercises[exIdx]) return;
   if (!_wkt.exercises[exIdx].sets[sIdx]) return;
   _wkt.exercises[exIdx].sets[sIdx][field] = val;
+  _checkpointWorkout();
+};
+window._setSide = function(exIdx, sIdx, side, raw) {
+  if (!_wkt || !_wkt.exercises[exIdx] || !_wkt.exercises[exIdx].sets[sIdx]) return;
+  const set = _wkt.exercises[exIdx].sets[sIdx];
+  const kg = weightToKg(parseFloat(raw) || 0);
+  if (side === 'L') set.weightL = kg;
+  else set.weightR = kg;
+  const l = set.weightL != null ? set.weightL : kg;
+  const r = set.weightR != null ? set.weightR : kg;
+  set.weight = Math.round(((l + r) / 2) * 10) / 10;
   _checkpointWorkout();
 };
 window._setWktNote = function(exIdx, value) {

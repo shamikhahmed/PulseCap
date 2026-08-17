@@ -1,3 +1,6 @@
+## 6.11.0 — 2026-08-17 — Ember rebuild Phase 5
+- Log: per-side L/R loads averaged into the set, WakeLock rest timer kept, shoulder caution banner from `Profile.deriveContext`. SW `pulsecap-v91`.
+
 ## 6.10.0 — 2026-08-17 — Ember rebuild Phase 4
 - Today is one session card, one CTA, and one Smart Coach insight line. Prompt-queue chrome removed. SW `pulsecap-v90`.
 

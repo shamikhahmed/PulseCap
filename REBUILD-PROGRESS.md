@@ -7,8 +7,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 1 Foundation | done | fc02e87 | Tokens, system fonts, quarantine → `js/_deprecated/`, 5-tab shell, alias redirects |
 | 2 Spine | done | 569871d | `profile.js` + `engine.js` + export/import + owner seed |
 | 3 Onboarding | done | 2cd634e | 1 intro + 4 steps, calibration, educational disclaimer |
-| 4 Today | done | pending | One session CTA + one insight |
-| 5 Log | pending | — | 2-tap sets, WakeLock rest, per-side |
+| 4 Today | done | df61a32 | One session CTA + one insight |
+| 5 Log | done | pending | Per-side loads, WakeLock rest, limitation banner |
 | 6 Progress | pending | — | SVG self-vs-self |
 | 7 Programs | pending | — | Templates + library + import |
 | 8 Me + audit | pending | — | Interlink tests |
@@ -39,6 +39,11 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 - [x] Gallery `INTRO_COUNT = 1`, `OB_STEPS = 4`
 - [x] Version `6.9.0` / `pulsecap-v89`
 - [x] Chromium Playwright green
+
+## Phase 4 checklist
+
+- [x] One session card + one CTA + one insight
+- [x] Version `6.10.0` / `pulsecap-v90`
 
 ## Quarantined (Phase 9 hard-delete)
 
