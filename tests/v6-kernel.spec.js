@@ -27,11 +27,12 @@ test.describe('v6 Coach Kernel', () => {
     expect(ok.foodHits).toBeTruthy();
     expect(ok.mesoWeek).toBeTruthy();
 
-    await page.evaluate(() => window.go('assistant'));
-    await page.waitForTimeout(400);
-    await page.evaluate(() => window.askAssistant('What should I do today?'));
-    await page.waitForTimeout(300);
-    const chat = await page.locator('#chat-history').textContent();
-    expect(chat && chat.length > 20).toBeTruthy();
+    await page.evaluate(() => window.go('dashboard'));
+    await page.waitForTimeout(200);
+    const insight = await page.evaluate(() => {
+      const one = window.CoachKernel && window.CoachKernel.oneThing && window.CoachKernel.oneThing();
+      return !!(one && one.title);
+    });
+    expect(insight).toBeTruthy();
   });
 });

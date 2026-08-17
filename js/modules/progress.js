@@ -22,7 +22,7 @@ reg('progress', function() {
     _strengthCharts(ws, prs) +
     _bodyStatsChart(bodyStats, S.g('user')) +
     _achievementWall(earned) +
-    '<div class="pad-x-16-b16"><button type="button" class="btn btn-secondary w-full" onclick="go(\'physique\')" style="display:flex;align-items:center;justify-content:center;gap:8px">' + icon('chart', 18) + ' Physique Analysis & Growth Simulator →</button></div>' +
+    '<div class="pad-x-16-b16"><button type="button" class="btn btn-secondary w-full" onclick="go(\'photos\')" style="display:flex;align-items:center;justify-content:center;gap:8px">' + icon('camera', 18) + ' Progress photos</button></div>' +
     '<div  class="spacer-bottom"></div>';
 });
 
@@ -469,3 +469,91 @@ window.showDayWorkouts = function(dateStr) {
   }).join('');
   modal(fmtDate(dateStr), body, '<button type="button" class="btn btn-ghost mt-12" onclick="closeModal()">Close</button>');
 };
+
+/* Weigh-in (ported from quarantined bodymap — Progress owns body metrics). */
+window.showLogWeight = function() {
+  var user = S.g('user') || {};
+  var isImperial = user.units === 'imperial';
+  var goalKg = user.goalWeight || 70;
+  var curKg = user.weight || 75;
+  modal('What do you weigh today?',
+    '<div class="field-wrap">' +
+    '<label class="field-label">Weight ('+(isImperial?'lb':'kg')+')</label>' +
+    '<input id="wt-inp" class="field" type="number" step="0.1" inputmode="decimal" ' +
+    'placeholder="'+(isImperial ? Math.round(curKg*2.205) : curKg)+'" ' +
+    'style="font-size:26px;font-weight:800;text-align:center">' +
+    '</div>' +
+    '<div class="mt-14">' +
+    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:8px">Measured</div>' +
+    '<div class="flex-gap-8">' +
+    '<button type="button" id="wt-fasted" class="btn btn-primary btn-sm flex-1" style="display:flex;align-items:center;justify-content:center;gap:6px" onclick="setWeightFasted(true)">'+icon('sun', 14)+' Fasted</button>' +
+    '<button type="button" id="wt-fed" class="btn btn-secondary btn-sm flex-1" style="display:flex;align-items:center;justify-content:center;gap:6px" onclick="setWeightFasted(false)">'+icon('apple', 14)+' After eating</button>' +
+    '</div></div>' +
+    '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-top:12px;line-height:1.45">' +
+    'Fasted morning weight is most consistent for tracking.<br>Goal: '+(isImperial ? Math.round(goalKg*2.205)+' lb' : goalKg+' kg') +
+    '</div>',
+    '<button type="button" class="btn btn-primary mt-12" onclick="saveWeight()">Save Weight</button>'
+  );
+  window._weightFasted = true;
+};
+
+window.setWeightFasted = function(fasted) {
+  window._weightFasted = fasted;
+  var f = document.getElementById('wt-fasted');
+  var e = document.getElementById('wt-fed');
+  if (f) { f.className = 'btn btn-' + (fasted ? 'primary' : 'secondary') + ' btn-sm flex-1'; }
+  if (e) { e.className = 'btn btn-' + (fasted ? 'secondary' : 'primary') + ' btn-sm flex-1'; }
+};
+
+window.saveWeight = function() {
+  var user = S.g('user') || {};
+  var isImperial = user.units === 'imperial';
+  var el = document.getElementById('wt-inp');
+  var raw = parseFloat(el ? el.value : '');
+  if (!raw) { toast('Enter a weight', 'warn'); return; }
+  var kg = isImperial ? Math.round(raw / 2.205 * 10) / 10 : raw;
+  var fasted = window._weightFasted !== false;
+  var stats = S.g('bodyStats') || [];
+  var prev = stats.length ? stats[stats.length - 1] : null;
+  S.set('user.weight', kg);
+  S.push('bodyStats', { date: today(), weight: kg, fasted: fasted });
+  closeModal();
+  var react = _weighInReaction(kg, prev, user);
+  if (react) toast(react.msg, react.tone, 5500);
+  else toast('Logged: ' + kg + 'kg', 'ok');
+  go((typeof currentScreenId === 'function' && currentScreenId()) || 'progress');
+};
+
+function _weighInReaction(kg, prevEntry, user) {
+  if (!prevEntry || !prevEntry.weight) {
+    return { msg: 'Baseline set: ' + kg + 'kg. Weigh in weekly — trends beat single days.', tone: 'ok' };
+  }
+  var delta = Math.round((kg - prevEntry.weight) * 10) / 10;
+  var goal = user.goal || 'hypertrophy';
+  var wantsLoss = goal === 'fat_loss';
+  var wantsGain = goal === 'hypertrophy' || goal === 'strength' || goal === 'athletic';
+  var goalW = user.goalWeight;
+
+  if (goalW && prevEntry.weight !== kg) {
+    var crossedDown = prevEntry.weight > goalW && kg <= goalW;
+    var crossedUp = prevEntry.weight < goalW && kg >= goalW;
+    if (crossedDown || crossedUp) {
+      if (typeof celebrate === 'function') celebrate('🏁', 'Goal weight', kg + 'kg — you did the boring work. It paid.', 2600);
+      return { msg: 'Goal weight hit: ' + kg + 'kg. Time to set the next target in Settings.', tone: 'pr' };
+    }
+  }
+
+  if (Math.abs(delta) < 0.2) {
+    if (wantsGain) return { msg: 'Scale\'s flat. Add ~200 kcal/day, keep protein high, give it a week.', tone: 'info' };
+    if (wantsLoss) return { msg: 'Holding steady. If this repeats next week, trim ~200 kcal or add a walk.', tone: 'info' };
+    return { msg: 'Steady at ' + kg + 'kg. That\'s maintenance done right.', tone: 'ok' };
+  }
+  if (delta < 0) {
+    if (wantsLoss) return { msg: 'Down ' + Math.abs(delta) + 'kg. That\'s the pace that sticks — keep doing exactly this.', tone: 'pr' };
+    if (wantsGain) return { msg: 'Down ' + Math.abs(delta) + 'kg while trying to build — eat more. Protein first, then carbs around training.', tone: 'warn' };
+    return { msg: 'Down ' + Math.abs(delta) + 'kg.', tone: 'info' };
+  }
+  if (wantsGain) return { msg: 'Up ' + delta + 'kg. Good gaining — if it\'s over ~0.5kg/week, ease the surplus so it stays muscle.', tone: 'pr' };
+  if (wantsLoss) return { msg: 'Up ' + delta + 'kg. One weigh-in means nothing — but watch the weekend calories and check again in 3 days.', tone: 'warn' };
+  return { msg: 'Up ' + delta + 'kg.', tone: 'info' };
+}

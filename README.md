@@ -1,6 +1,6 @@
 # PulseCap
 
-**Version:** 6.6.0
+**Version:** 6.7.0
 
 **Your Smart Coach fitness operating system — by Capricorn Systems, built as a single offline-first PWA.**
 
@@ -130,7 +130,7 @@ js/
     profiles.js     — Profile switcher, demo mode, sample athletes
     onboarding.js   — 4 intro slides + 7-step onboarding
     quests.js       — Quests, Academy, Physique Timeline body
-sw.js               — cache: pulsecap-v86
+sw.js               — cache: pulsecap-v87
 manifest.json       — PWA manifest
 ```
 
@@ -138,7 +138,7 @@ manifest.json       — PWA manifest
 
 ## Roadmap
 
-Shipped through **v6.6.0** (see `CHANGELOG.md`): personalized training plans with on-device PDF/JSON import, prescribed gym-floor sessions, and the existing canonical unit storage, profile-scoped photos, resumable workout drafts, safer backup import, accessible dialogs, route-race protection, consent-based PWA updates, cross-browser CI, and verified Pages deployment.
+Shipped through **v6.7.0** (see `CHANGELOG.md`): Ember Phase 1 shell (Today · Train · Progress · Programs · Me), plus personalized training plans with on-device PDF/JSON import, prescribed gym-floor sessions, and the existing canonical unit storage, profile-scoped photos, resumable workout drafts, safer backup import, accessible dialogs, route-race protection, consent-based PWA updates, cross-browser CI, and verified Pages deployment.
 
 Still open / honest gaps (owner constraints):
 

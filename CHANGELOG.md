@@ -1,3 +1,8 @@
+## 6.7.0 — 2026-08-17 — Ember rebuild Phase 1
+- Identity: Ember tokens (near-black + `#FF7A1A`); system fonts; Google Fonts and Capricorn/GSAP app runtime removed from boot.
+- IA: 5 tabs Today · Train · Progress · Programs · Me. Quarantined Learn/Body bloat to `js/_deprecated/` (hard-delete in Phase 9).
+- Killed routes alias to survivors. Weigh-in + DailyDecision ported so Today still boots. SW `pulsecap-v87`.
+
 ## 6.6.0 — 2026-08-17 — Personalized Program Intelligence
 - Personalized **training plan** OS: versioned `trainingPlan` (not `customSplit`), machine-only shoulder-safe PPL template, double progression, week-5 deload, Sunday rest, missed-session resume.
 - Gym floor: Today / My Plan one-tap prescribed session with RPE, ROM stop cues, listed alternatives, shoulder 0–10, cardio after lifting.

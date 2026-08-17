@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.6.0';
+window.APP_VERSION = '6.7.0';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -38,22 +38,40 @@ function upgradeInteractiveMarkup(root) {
 }
 window.upgradeInteractiveMarkup = upgradeInteractiveMarkup;
 
-/** Old go() ids → canonical screen. Keep registered screens until later delete phase. */
+/** Old go() ids → Ember survivors (quarantined screens redirect). */
 const SCREEN_ALIASES = {
   today: 'dashboard',
   home: 'dashboard',
-  explore: 'hub',
-  learn: 'hub',
   me: 'settings',
   train: 'workout',
-  body: 'bodymap',
-  'physique-archetype': { id: 'physique', data: { tab: 'archetype' } },
-  'physique-timeline': { id: 'physique', data: { tab: 'timeline' } },
-  'recovery-debt': { id: 'recovery', data: { tab: 'debt' } },
-  'training-style': { id: 'training-intel', data: { tab: 'style' } },
-  coach: 'assistant',
-  intro: { id: 'onboarding', data: { showIntro: true } },
-  plan: 'my-plan'
+  log: 'workout',
+  programs: 'my-plan',
+  plan: 'my-plan',
+  body: 'progress',
+  bodymap: 'progress',
+  explore: 'my-plan',
+  learn: 'my-plan',
+  hub: 'my-plan',
+  academy: 'my-plan',
+  encyclopedia: 'my-plan',
+  search: 'workout',
+  calculators: 'settings',
+  visualizations: 'progress',
+  assistant: 'dashboard',
+  coach: 'dashboard',
+  quests: 'dashboard',
+  briefing: 'dashboard',
+  calisthenics: 'workout',
+  'training-intel': 'workout',
+  'training-style': 'workout',
+  physique: 'progress',
+  'physique-archetype': 'progress',
+  'physique-timeline': 'progress',
+  anatomy: 'rehab',
+  'injury-risk': 'rehab',
+  'body-intelligence': 'recovery',
+  'recovery-debt': { id: 'recovery', data: { tab: 'checkin' } },
+  intro: { id: 'onboarding', data: { showIntro: true } }
 };
 window.SCREEN_ALIASES = SCREEN_ALIASES;
 
@@ -68,19 +86,18 @@ function resolveScreenAlias(id, data) {
 }
 window.resolveScreenAlias = resolveScreenAlias;
 
-/** Which bottom-nav tab stays lit for nested screens (P2 IA). */
+/** Which bottom-nav tab stays lit for nested screens (Ember IA). */
 const NAV_PARENT = {
-  dashboard: 'dashboard', briefing: 'dashboard', quests: 'dashboard',
-  workout: 'workout', active: 'workout', cardio: 'workout', progress: 'workout',
-  calisthenics: 'workout', 'training-intel': 'workout', 'training-style': 'workout',
-  bodymap: 'bodymap', physique: 'bodymap', 'physique-archetype': 'bodymap',
-  'physique-timeline': 'bodymap', recovery: 'bodymap', 'recovery-debt': 'bodymap',
-  nutrition: 'bodymap', rehab: 'bodymap', 'injury-risk': 'bodymap',
-  'body-intelligence': 'bodymap', photos: 'bodymap',
-  hub: 'hub', search: 'hub', encyclopedia: 'hub', anatomy: 'hub', academy: 'hub',
-  calculators: 'hub', visualizations: 'hub', assistant: 'hub', coach: 'hub',
+  dashboard: 'dashboard', briefing: 'dashboard', quests: 'dashboard', assistant: 'dashboard', coach: 'dashboard',
+  workout: 'workout', active: 'workout', cardio: 'workout', calisthenics: 'workout',
+  'training-intel': 'workout', 'training-style': 'workout', search: 'workout',
+  progress: 'progress', photos: 'progress', visualizations: 'progress', physique: 'progress',
+  'physique-archetype': 'progress', 'physique-timeline': 'progress', bodymap: 'progress',
+  programs: 'programs', 'my-plan': 'programs', 'plan-import': 'programs', hub: 'programs',
+  encyclopedia: 'programs', academy: 'programs', learn: 'programs',
   settings: 'settings', profiles: 'settings', 'equipment-setup': 'settings', 'split-builder': 'settings',
-  'my-plan': 'settings', 'plan-import': 'settings'
+  nutrition: 'settings', recovery: 'settings', 'recovery-debt': 'settings', rehab: 'settings',
+  'injury-risk': 'settings', anatomy: 'settings', calculators: 'settings', 'body-intelligence': 'settings'
 };
 window.NAV_PARENT = NAV_PARENT;
 
@@ -159,23 +176,8 @@ window.prettyMuscles = function(arr, max) {
   return (arr || []).slice(0, max || 99).map(prettyMuscle).join(' · ');
 };
 
-/* Lazy Learn screens — not in boot HTML. SW still precaches these for offline. */
+/* On-demand survivors only (quarantined modules redirected via SCREEN_ALIASES). */
 const MODULE_SRC = {
-  anatomy: 'js/modules/anatomy.js',
-  encyclopedia: 'js/modules/encyclopedia.js',
-  visualizations: 'js/modules/visualizations.js',
-  calculators: 'js/modules/calculators.js',
-  calisthenics: 'js/modules/calisthenics.js',
-  search: 'js/modules/advanced-search.js',
-  'injury-risk': 'js/modules/injury-risk.js',
-  'body-intelligence': 'js/modules/body-intelligence.js',
-  'physique-archetype': 'js/modules/physique-archetype.js',
-  'training-style': 'js/modules/training-style.js',
-  'training-intel': 'js/modules/training-intelligence.js',
-  quests: 'js/modules/quests.js',
-  academy: 'js/modules/quests.js',
-  'physique-timeline': 'js/modules/quests.js',
-  assistant: 'js/modules/fitness-assistant.js',
   'equipment-setup': 'js/modules/equipment-setup.js',
   'my-plan': 'js/modules/my-plan.js',
   'plan-import': 'js/modules/my-plan.js'
@@ -569,119 +571,10 @@ function buildRing(pct, color, label, sublabel) {
 window.buildRing = buildRing;
 
 /* ══════════════════════════════════════════════════════
-   CANVAS ANIMATION
+   CANVAS — removed in Ember (no ambient orbs)
 ══════════════════════════════════════════════════════ */
-let _canvasRunning = false;
-
-function initCanvas() {
-  const c = document.getElementById('bg-canvas');
-  if (!c) return;
-  if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    c.style.display = 'none';
-    return;
-  }
-  if (S.g('settings.lowPower') === true) {
-    c.style.display = 'none';
-    return;
-  }
-  const connection = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
-  if ((connection && connection.saveData) || (navigator.deviceMemory && navigator.deviceMemory <= 4)) {
-    c.style.display = 'none';
-    return;
-  }
-
-  const ctx = c.getContext('2d', { alpha: true });
-  let W, H, lastFrame = 0;
-  const orbs = [];
-  let rgb1 = [0, 213, 255], rgb2 = [123, 95, 255];
-  const isMobile = window.innerWidth < 500;
-  const frameInterval = isMobile ? 48 : 32;
-
-  function cacheAccentRGB() {
-    const s = getComputedStyle(document.documentElement);
-    function parse(primary) {
-      const v = s.getPropertyValue(primary ? '--orb1' : '--orb2').trim().replace('#', '');
-      if (v.length === 6) {
-        return [parseInt(v.slice(0, 2), 16), parseInt(v.slice(2, 4), 16), parseInt(v.slice(4, 6), 16)];
-      }
-      return primary ? [0, 213, 255] : [123, 95, 255];
-    }
-    rgb1 = parse(true);
-    rgb2 = parse(false);
-  }
-
-  function resize() {
-    W = c.width = window.innerWidth;
-    H = c.height = window.innerHeight;
-  }
-
-  function initOrbs() {
-    orbs.length = 0;
-    const count = isMobile ? 2 : 3;
-    for (let i = 0; i < count; i++) {
-      orbs.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        r: (isMobile ? 140 : 180) + Math.random() * 80,
-        vx: (Math.random() - 0.5) * 0.22,
-        vy: (Math.random() - 0.5) * 0.22,
-        primary: i === 0,
-        phase: Math.random() * Math.PI * 2
-      });
-    }
-  }
-
-  function draw(ts) {
-    if (!_canvasRunning) return;
-    if (ts - lastFrame < frameInterval) {
-      requestAnimationFrame(draw);
-      return;
-    }
-    lastFrame = ts;
-    ctx.clearRect(0, 0, W, H);
-    orbs.forEach(function(o) {
-      const pulse = 1 + Math.sin((ts * 0.0006) + o.phase) * 0.08;
-      const r = o.r * pulse;
-      const rgb = o.primary ? rgb1 : rgb2;
-      const alpha = o.primary ? (isMobile ? 0.04 : 0.05) : (isMobile ? 0.028 : 0.034);
-      const grad = ctx.createRadialGradient(o.x, o.y, 0, o.x, o.y, r);
-      grad.addColorStop(0, 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + alpha + ')');
-      grad.addColorStop(1, 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',0)');
-      ctx.fillStyle = grad;
-      ctx.beginPath();
-      ctx.arc(o.x, o.y, r, 0, Math.PI * 2);
-      ctx.fill();
-      o.x += o.vx;
-      o.y += o.vy;
-      if (o.x < -r || o.x > W + r) o.vx *= -1;
-      if (o.y < -r || o.y > H + r) o.vy *= -1;
-    });
-    requestAnimationFrame(draw);
-  }
-
-  function start() {
-    if (_canvasRunning) return;
-    _canvasRunning = true;
-    c.style.display = '';
-    cacheAccentRGB();
-    resize();
-    initOrbs();
-    requestAnimationFrame(draw);
-  }
-
-  function stop() {
-    _canvasRunning = false;
-    ctx.clearRect(0, 0, c.width, c.height);
-  }
-
-  window._fitnessCanvas = { start: start, stop: stop, refresh: cacheAccentRGB };
-  start();
-  window.addEventListener('resize', function() { resize(); initOrbs(); });
-  document.addEventListener('visibilitychange', function() {
-    if (document.hidden) stop();
-    else start();
-  });
-}
+function initCanvas() { /* no-op: bg-canvas removed */ }
+window.initCanvas = initCanvas;
 
 /* ══════════════════════════════════════════════════════
    THEME MANAGER
@@ -737,15 +630,15 @@ window.applyMode = applyMode;
 /* ══════════════════════════════════════════════════════
    NAV
 ══════════════════════════════════════════════════════ */
-/* P2 IA: Today · Train · Body · Learn · Me (fixed 5; customization retired) */
-const CORE_NAV_DEFAULT = ['dashboard', 'workout', 'bodymap', 'hub', 'settings'];
-const NAV_TAB_ORDER = ['dashboard', 'workout', 'bodymap', 'hub', 'settings'];
+/* Ember IA: Today · Train · Progress · Programs · Me */
+const CORE_NAV_DEFAULT = ['dashboard', 'workout', 'progress', 'programs', 'settings'];
+const NAV_TAB_ORDER = ['dashboard', 'workout', 'progress', 'programs', 'settings'];
 
 const DEFAULT_NAV_TABS = [
   { id:'dashboard', label:'Today', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>' },
   { id:'workout',   label:'Train', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="5.5" cy="12" r="2.5"/><circle cx="18.5" cy="12" r="2.5"/><line x1="8" y1="12" x2="16" y2="12"/><circle cx="5.5" cy="7" r="1.5"/><circle cx="5.5" cy="17" r="1.5"/><circle cx="18.5" cy="7" r="1.5"/><circle cx="18.5" cy="17" r="1.5"/></svg>' },
-  { id:'bodymap',   label:'Body',  icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="5" r="2"/><path d="M12 7v5m-4 2l4-2 4 2m-8 0l-2 6m10-6l2 6M8 13l-1 6m10-6l1 6"/></svg>' },
-  { id:'hub',       label:'Learn', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>' },
+  { id:'progress',  label:'Progress', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-8M4 20h17"/></svg>' },
+  { id:'programs',  label:'Programs', icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>' },
   { id:'settings',  label:'Me',    icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>' }
 ];
 window.DEFAULT_NAV_TABS = DEFAULT_NAV_TABS;
@@ -753,12 +646,13 @@ window.CORE_NAV_DEFAULT = CORE_NAV_DEFAULT;
 window.NAV_TAB_ORDER = NAV_TAB_ORDER;
 
 function _normalizeNavTabs(ids) {
-  /* P2: force canonical 5 tabs; map legacy ids into closest slot */
+  /* Ember: force canonical 5 tabs; map legacy Body/Learn into Progress/Programs */
   const legacyMap = {
-    coach: 'hub', assistant: 'hub', recovery: 'bodymap', search: 'hub',
-    progress: 'workout', rehab: 'bodymap', anatomy: 'hub', calisthenics: 'workout',
-    home: 'dashboard', today: 'dashboard', explore: 'hub', learn: 'hub', me: 'settings',
-    train: 'workout', body: 'bodymap'
+    coach: 'programs', assistant: 'programs', recovery: 'settings', search: 'workout',
+    bodymap: 'progress', hub: 'programs', rehab: 'settings', anatomy: 'settings',
+    calisthenics: 'workout', home: 'dashboard', today: 'dashboard', explore: 'programs',
+    learn: 'programs', me: 'settings', train: 'workout', body: 'progress', log: 'workout',
+    plan: 'programs', 'my-plan': 'programs'
   };
   let list = (ids || []).map(function(id) { return legacyMap[id] || id; });
   list = list.filter(function(id, i) {
@@ -790,9 +684,9 @@ window._getNavTabIds = _getNavTabIds;
 function buildNav() {
   const nav = document.getElementById('nav');
   if (!nav) return;
-  if (S.g('settings.navMigration') !== 4) {
+  if (S.g('settings.navMigration') !== 5) {
     S.set('settings.navTabs', CORE_NAV_DEFAULT.slice());
-    S.set('settings.navMigration', 4);
+    S.set('settings.navMigration', 5);
   }
   const ids = _getNavTabIds();
   const tabs = ids.map(function(id) { return DEFAULT_NAV_TABS.find(function(t) { return t.id === id; }); }).filter(Boolean);

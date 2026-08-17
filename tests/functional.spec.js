@@ -142,7 +142,7 @@ test.describe('Functional — every screen as every user type', () => {
         return true;
       })],
       ['body-weight', () => page.evaluate(() => {
-        window.go('bodymap');
+        window.go('progress');
         if (window.showLogWeight) window.showLogWeight();
         if (window.saveWeight) {
           const inp = document.getElementById('weight-input') || document.querySelector('#modal input[type="number"]');
@@ -152,42 +152,35 @@ test.describe('Functional — every screen as every user type', () => {
         return true;
       })],
       ['measurements', () => page.evaluate(() => {
-        window.go('bodymap');
+        window.go('progress');
         if (window.showLogMeasurements) window.showLogMeasurements();
         if (window.saveMeasurements) window.saveMeasurements();
         return true;
       })],
-      ['search', () => page.evaluate(() => {
-        window.go('search');
-        if (window._searchRun) window._searchRun('bench');
-        return true;
+      ['programs', () => page.evaluate(() => {
+        window.go('programs');
+        return window.currentScreenId() === 'my-plan';
       })],
-      ['calculators', () => page.evaluate(() => {
+      ['settings-alias', () => page.evaluate(() => {
         window.go('calculators');
-        if (window.recalcCalculators) window.recalcCalculators();
-        return true;
+        return window.currentScreenId() === 'settings';
       })],
-      ['assistant', () => page.evaluate(() => {
+      ['assistant-alias', () => page.evaluate(() => {
         window.go('assistant');
-        if (window.askAssistant) window.askAssistant('How much protein do I need?');
-        return true;
+        return window.currentScreenId() === 'dashboard';
       })],
       ['rehab-protocol', () => page.evaluate(() => {
         window.go('rehab');
         if (window.showInjuryProtocol) window.showInjuryProtocol('shoulder_impingement');
         return true;
       })],
-      ['anatomy-detail', () => page.evaluate(() => {
+      ['rehab-alias-anatomy', () => page.evaluate(() => {
         window.go('anatomy');
-        if (window.showMuscleDetail) {
-          const first = Object.keys(window.MUSCLE_DB || {})[0] || 'pec_major';
-          window.showMuscleDetail(first);
-        }
-        return true;
+        return window.currentScreenId() === 'rehab';
       })],
-      ['quests', () => page.evaluate(() => {
+      ['quests-alias', () => page.evaluate(() => {
         window.go('quests');
-        return !!(document.querySelector('#view .screen'));
+        return window.currentScreenId() === 'dashboard';
       })],
       ['profiles-seed', () => page.evaluate(() => {
         window.go('profiles');
@@ -224,21 +217,18 @@ test.describe('Functional — every screen as every user type', () => {
         window._setSetting('settings.coachTone', 'scientific');
         return true;
       })],
-      ['physique-tabs', () => page.evaluate(() => {
+      ['physique-alias', () => page.evaluate(() => {
         window.go('physique', { tab: 'score' });
-        window.go('physique', { tab: 'archetype' });
-        window.go('physique', { tab: 'timeline' });
-        return true;
+        return window.currentScreenId() === 'progress';
       })],
       ['recovery-tabs', () => page.evaluate(() => {
         window.go('recovery', { tab: 'checkin' });
         window.go('recovery', { tab: 'debt' });
         return true;
       })],
-      ['training-intel-tabs', () => page.evaluate(() => {
+      ['training-alias', () => page.evaluate(() => {
         window.go('training-intel', { tab: 'intel' });
-        window.go('training-intel', { tab: 'style' });
-        return true;
+        return window.currentScreenId() === 'workout';
       })],
       ['briefing', () => page.evaluate(() => {
         window.go('briefing');

@@ -42,8 +42,9 @@ const MAJOR_SCREENS = [
   { id: 'lock', label: 'Boot splash / intro', kind: 'lock' },
   { id: 'dashboard', label: 'Today', kind: 'page', route: 'dashboard' },
   { id: 'workout', label: 'Train hub (dense)', kind: 'page', route: 'workout' },
-  { id: 'settings', label: 'Settings', kind: 'page', route: 'settings' },
-  { id: 'hub', label: 'Learn hub', kind: 'page', route: 'hub' },
+  { id: 'progress', label: 'Progress', kind: 'page', route: 'progress' },
+  { id: 'my-plan', label: 'Programs', kind: 'page', route: 'my-plan' },
+  { id: 'settings', label: 'Me / Settings', kind: 'page', route: 'settings' },
   { id: 'overlay', label: 'Modal overlay', kind: 'overlay' },
 ];
 

@@ -9,7 +9,7 @@ test.describe('Accessibility', () => {
     const skip = page.locator('.cap-skip-link');
     await expect(skip).toHaveCount(1);
 
-    for (const id of ['dashboard', 'workout', 'bodymap', 'hub', 'settings']) {
+    for (const id of ['dashboard', 'workout', 'progress', 'my-plan', 'settings']) {
       await page.evaluate((s) => window.go(s), id);
       await page.waitForTimeout(80);
       const meta = await page.evaluate(() => {

@@ -84,26 +84,18 @@ test.describe('PulseCap viewport contract', () => {
     await assertCapSharedMobile(page, expect);
   });
 
-  test('744px — iPad mini band uses sidebar (Cap BP 700)', async ({ page }) => {
+  test('744px — centered column shell (Ember; no Cap sidebar)', async ({ page }) => {
     await page.setViewportSize({ width: 744, height: 1133 });
     await page.waitForTimeout(200);
-    await page.evaluate(() => {
-      if (window.CapDesktopNav && window.CapDesktopNav.sync) window.CapDesktopNav.sync();
-    });
-    await page.waitForTimeout(80);
-    await expect(page.locator('body')).toHaveClass(/cap-desktop-nav/);
-    await expect(page.locator('#cap-nav-sidebar')).toBeVisible();
-    await expect(page.locator('#nav')).toBeHidden();
+    await expect(page.locator('#app-shell')).toBeVisible();
+    await expect(page.locator('#nav')).toBeVisible();
+    await expect(page.locator('body')).not.toHaveClass(/cap-desktop-nav/);
   });
 
-  test('699px — just under Cap BP keeps phone tabs', async ({ page }) => {
+  test('699px — phone tabs stay visible', async ({ page }) => {
     await page.setViewportSize({ width: 699, height: 900 });
     await page.waitForTimeout(200);
-    await page.evaluate(() => {
-      if (window.CapDesktopNav && window.CapDesktopNav.sync) window.CapDesktopNav.sync();
-    });
-    await page.waitForTimeout(80);
-    await expect(page.locator('body')).not.toHaveClass(/cap-desktop-nav/);
     await expect(page.locator('#nav')).toBeVisible();
+    await expect(page.locator('body')).not.toHaveClass(/cap-desktop-nav/);
   });
 });

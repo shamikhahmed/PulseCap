@@ -36,7 +36,7 @@ reg('dashboard', function() {
       '<div  class="muted-11">' + esc(todayStr) + '</div></div>' +
       '</div>' +
       '<div class="topbar-right">' +
-      '<button type="button" class="topbar-icon press flex-center" onclick="go(\'search\')" aria-label="Search">' + icon('search', 18) + '</button>' +
+      '<button type="button" class="topbar-icon press flex-center" onclick="go(\'workout\')" aria-label="Train">' + icon('search', 18) + '</button>' +
       '<div onclick="go(\'profiles\')" class="topbar-avatar" role="button" tabindex="0" aria-label="Profiles">' + avatarLetter + '</div>' +
       '</div></div>';
 
@@ -64,7 +64,7 @@ reg('dashboard', function() {
       '<circle cx="26" cy="26" r="' + radius + '" fill="none" stroke="' + scoreColor + '" stroke-width="4" stroke-linecap="round" stroke-dasharray="' + arcLen.toFixed(1) + ' ' + circ.toFixed(1) + '" transform="rotate(-90 26 26)"/>' +
       '<text x="26" y="30" text-anchor="middle" font-size="12" font-weight="800" fill="' + scoreColor + '">' + score + '</text>' +
       '</svg>';
-    const heroTap = (dd && (dd.type || dd.title || '').toLowerCase().match(/rest|recover|light/)) ? 'recovery-debt' : 'body-intelligence';
+    const heroTap = (dd && (dd.type || dd.title || '').toLowerCase().match(/rest|recover|light/)) ? 'recovery' : 'progress';
     const sessionDecision = dd ? dd.decision : 'train';
     const isRestDay = sessionDecision === 'rest';
     const isLightDay = sessionDecision === 'light';
@@ -79,14 +79,14 @@ reg('dashboard', function() {
         : esc(prettyMuscles(splitDay.muscles, 3)) +
           (splitDay.exercises && splitDay.exercises.length ? ' · ' + splitDay.exercises.length + ' exercises' : '');
     const sessionBtn = isRestDay
-      ? '<button type="button" onclick="go(\'recovery-debt\')" class="dash-session__btn">View Recovery Plan</button>' +
+      ? '<button type="button" onclick="go(\'recovery\')" class="dash-session__btn">View Recovery Plan</button>' +
         (dd && dd.allowTrain ? '<button type="button" onclick="startWorkout&&startWorkout()" class="dash-session__btn-ghost">Train anyway</button>' : '')
       : isLightDay
         ? '<button type="button" onclick="startWorkout&&startWorkout()" class="dash-session__btn">Light Session</button>'
         : '<button type="button" onclick="startWorkout&&startWorkout()" class="dash-session__btn">Start Workout</button>' +
           '<button type="button" onclick="confirmSkipToday()" class="dash-session__skip">Can\'t train today?</button>';
     const startQuickAction = isRestDay
-      ? '<button type="button" onclick="go(\'recovery-debt\')" class="press dash-qa">' +
+      ? '<button type="button" onclick="go(\'recovery\')" class="press dash-qa">' +
         '<span class="icon-flex-c4">' + icon('bed', 26) + '</span>' +
         '<span class="micro-label">Recovery</span>' +
         '</button>'
@@ -165,7 +165,7 @@ reg('dashboard', function() {
       '<div style="display:flex;gap:8px;padding:0 16px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch">' +
       trainedMuscles.map(function(m) {
         const c = m.pct >= 80 ? 'var(--c3)' : m.pct >= 50 ? 'var(--c5)' : 'var(--c4)';
-        return '<div onclick="go(\'body-intelligence\')" style="flex-shrink:0;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:10px 12px;cursor:pointer;touch-action:manipulation;min-width:84px">' +
+        return '<div onclick="go(\'recovery\')" style="flex-shrink:0;background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:10px 12px;cursor:pointer;touch-action:manipulation;min-width:84px">' +
           '<div style="display:flex;align-items:center;gap:6px;margin-bottom:6px">' +
           '<div style="width:8px;height:8px;border-radius:50%;background:' + c + ';flex-shrink:0"></div>' +
           '<div style="font-size:11px;color:var(--txt);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:58px">' + esc(m.name) + '</div>' +
@@ -264,8 +264,8 @@ reg('dashboard', function() {
     const moreRow = '<div  class="mx-card">' +
       '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Browse</div>' +
       '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
-      '<button type="button" onclick="go(\'hub\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 10px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left;display:flex;align-items:center;gap:8px">' + icon('book', 16) + ' Learn</button>' +
-      '<button type="button" onclick="go(\'search\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 10px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left;display:flex;align-items:center;gap:8px">' + icon('search', 16) + ' Search</button>' +
+      '<button type="button" onclick="go(\'programs\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 10px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left;display:flex;align-items:center;gap:8px">' + icon('book', 16) + ' Programs</button>' +
+      '<button type="button" onclick="go(\'progress\')" class="press" style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:12px 10px;font-size:12px;font-weight:700;color:var(--txt2);cursor:pointer;touch-action:manipulation;text-align:left;display:flex;align-items:center;gap:8px">' + icon('chart', 16) + ' Progress</button>' +
       '</div></div>';
 
     const todayWt = (S.g('bodyStats') || []).find(b => b.date === localISO(new Date()));

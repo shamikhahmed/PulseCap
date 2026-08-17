@@ -121,7 +121,6 @@ function _tabAccount(u) {
         _infoStat('Protein', plan.protein + '', 'g/day') +
         _infoStat('Readiness', plan.readiness + '', '/100') +
         '</div>' +
-        '<button type="button" class="btn btn-secondary btn-sm" onclick="go(\'calculators\')" style="width:100%;margin-top:10px;display:inline-flex;align-items:center;justify-content:center;gap:6px">' + icon('calc', 14) + ' Full Calculators</button>' +
         '</div>';
     })() +
 

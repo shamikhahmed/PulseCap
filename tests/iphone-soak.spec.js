@@ -25,7 +25,7 @@ test.describe('iPhone soak — automated slice', () => {
     const c1 = await page.evaluate(() =>
       getComputedStyle(document.documentElement).getPropertyValue('--c1').trim().toLowerCase()
     );
-    expect(c1).toMatch(/#ff453a|#c41e3a/);
+    expect(c1).toMatch(/#ff7a1a|#e86a0e/);
   });
 
   test('Dark + light theme readable muted tokens', async ({ page }) => {
@@ -74,11 +74,11 @@ test.describe('iPhone soak — automated slice', () => {
     expect(ok).toBeTruthy();
   });
 
-  test('Search + calculators routes paint', async ({ page }) => {
-    await page.evaluate(() => window.go('search'));
+  test('Programs + Progress routes paint', async ({ page }) => {
+    await page.evaluate(() => window.go('progress'));
     await page.waitForTimeout(250);
     await expect(page.locator('#view')).toBeVisible();
-    await page.evaluate(() => window.go('calculators'));
+    await page.evaluate(() => window.go('programs'));
     await page.waitForTimeout(250);
     const text = await page.locator('#view').innerText();
     expect(text.length).toBeGreaterThan(20);

@@ -37,7 +37,7 @@ test.describe('Performance budgets', () => {
 
     // Warm routes once (SVG/body map JIT), then measure
     await page.evaluate(async () => {
-      for (const id of ['workout', 'bodymap', 'hub', 'settings', 'dashboard']) {
+      for (const id of ['workout', 'progress', 'my-plan', 'settings', 'dashboard']) {
         window.go(id);
         await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
       }
@@ -45,7 +45,7 @@ test.describe('Performance budgets', () => {
 
     const routeMs = await page.evaluate(async () => {
       const samples = [];
-      for (const id of ['workout', 'bodymap', 'hub', 'settings', 'dashboard']) {
+      for (const id of ['workout', 'progress', 'my-plan', 'settings', 'dashboard']) {
         const a = performance.now();
         window.go(id);
         await new Promise((r) => requestAnimationFrame(() => requestAnimationFrame(r)));
@@ -56,7 +56,7 @@ test.describe('Performance budgets', () => {
 
     const sizes = await page.evaluate(async () => {
       const hrefs = [
-        'css/base.css', 'css/layout.css', 'css/components.css', 'css/identity.css', 'css/capricorn-core.css',
+        'css/tokens.css', 'css/base.css', 'css/layout.css', 'css/components.css', 'css/ember-components.css', 'css/shell.css', 'css/identity.css',
         'js/app.js', 'js/storage.js', 'js/engines.js', 'js/coach-kernel.js', 'js/gym-tools.js',
         'js/training-plan.js', 'js/plan-import.js',
         'js/modules/dashboard.js', 'js/modules/workout.js', 'js/modules/settings.js'
@@ -111,7 +111,7 @@ test.describe('Performance budgets', () => {
       '',
       '## Route samples',
       '',
-      '`' + routeMs.samples.join(', ') + '` ms for workout→bodymap→hub→settings→dashboard',
+      '`' + routeMs.samples.join(', ') + '` ms for workout→progress→my-plan→settings→dashboard',
       '',
       '## Critical assets',
       '',
@@ -121,8 +121,8 @@ test.describe('Performance budgets', () => {
       '',
       '## Notes',
       '',
-      '- Lazy Learn modules not in critical path (MODULE_SRC). My Plan / plan-import load on demand.',
-      '- Low Power Mode disables bg canvas (Settings → Access).',
+      '- Ember Phase 1: tokens + shell; quarantined Learn/Body bloat. My Plan eager-loaded.',
+      '- Ambient canvas removed; Capricorn/GSAP runtime out of app boot.',
       '- After optimize, re-run `npx playwright test tests/perf.spec.js --project=chromium`.',
       ''
     ].join('\n');

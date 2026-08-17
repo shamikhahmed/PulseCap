@@ -16,39 +16,23 @@ const SCROLL_MIN = 80;
 const SCREENS = [
   // Today
   { stateId: 'dashboard', label: 'Dashboard', section: 'Today', go: ['dashboard'] },
-  { stateId: 'briefing', label: 'Morning Briefing', section: 'Today', go: ['briefing'] },
-  { stateId: 'quests', label: 'Quests', section: 'Today', go: ['quests'] },
 
   // Train
   { stateId: 'workout', label: 'Workout Plan', section: 'Train', go: ['workout'] },
   { stateId: 'cardio', label: 'Cardio', section: 'Train', go: ['cardio'] },
-  { stateId: 'calisthenics', label: 'Calisthenics', section: 'Train', go: ['calisthenics'] },
-  { stateId: 'progress', label: 'Progress', section: 'Train', go: ['progress'] },
-  { stateId: 'training-intel', label: 'Training Intel', section: 'Train', go: ['training-intel', { tab: 'intel' }] },
-  { stateId: 'training-style', label: 'Training Style', section: 'Train', go: ['training-intel', { tab: 'style' }] },
 
-  // Body
-  { stateId: 'bodymap', label: 'Body Map', section: 'Body', go: ['bodymap'] },
-  { stateId: 'nutrition', label: 'Nutrition', section: 'Body', go: ['nutrition'] },
-  { stateId: 'recovery', label: 'Recovery Check-in', section: 'Body', go: ['recovery', { tab: 'checkin' }] },
-  { stateId: 'recovery-debt', label: 'Recovery Debt', section: 'Body', go: ['recovery', { tab: 'debt' }] },
-  { stateId: 'rehab', label: 'Rehab', section: 'Body', go: ['rehab'] },
-  { stateId: 'injury-risk', label: 'Injury Risk', section: 'Body', go: ['injury-risk'] },
-  { stateId: 'body-intelligence', label: 'Body Intelligence', section: 'Body', go: ['body-intelligence'] },
-  { stateId: 'anatomy', label: 'Anatomy', section: 'Body', go: ['anatomy'] },
-  { stateId: 'photos', label: 'Progress Photos', section: 'Body', go: ['photos'] },
-  { stateId: 'physique', label: 'Physique Score', section: 'Body', go: ['physique', { tab: 'score' }] },
-  { stateId: 'physique-archetype', label: 'Physique Archetype', section: 'Body', go: ['physique', { tab: 'archetype' }] },
-  { stateId: 'physique-timeline', label: 'Physique Timeline', section: 'Body', go: ['physique', { tab: 'timeline' }] },
+  // Progress
+  { stateId: 'progress', label: 'Progress', section: 'Progress', go: ['progress'] },
+  { stateId: 'photos', label: 'Progress Photos', section: 'Progress', go: ['photos'] },
 
-  // Learn
-  { stateId: 'hub', label: 'Learn Hub', section: 'Learn', go: ['hub'] },
-  { stateId: 'encyclopedia', label: 'Encyclopedia', section: 'Learn', go: ['encyclopedia'] },
-  { stateId: 'search', label: 'Search', section: 'Learn', go: ['search'] },
-  { stateId: 'calculators', label: 'Calculators', section: 'Learn', go: ['calculators'] },
-  { stateId: 'visualizations', label: 'Visualizations', section: 'Learn', go: ['visualizations'] },
-  { stateId: 'assistant', label: 'Fitness Assistant', section: 'Learn', go: ['assistant'] },
-  { stateId: 'academy', label: 'Academy', section: 'Learn', go: ['academy'] },
+  // Programs
+  { stateId: 'my-plan', label: 'My Plan', section: 'Programs', go: ['my-plan'] },
+  { stateId: 'plan-import', label: 'Plan Import Review', section: 'Programs', go: ['plan-import'] },
+
+  // Body (kept nested under Me for now; Phase 4–8 may fold)
+  { stateId: 'nutrition', label: 'Nutrition', section: 'Me', go: ['nutrition'] },
+  { stateId: 'recovery', label: 'Recovery Check-in', section: 'Me', go: ['recovery', { tab: 'checkin' }] },
+  { stateId: 'rehab', label: 'Rehab', section: 'Me', go: ['rehab'] },
 
   // Me
   { stateId: 'settings-account', label: 'Settings · Account', section: 'Me', go: ['settings', { tab: 'account' }] },
@@ -62,8 +46,6 @@ const SCREENS = [
   { stateId: 'profiles', label: 'Profiles', section: 'Me', go: ['profiles'] },
   { stateId: 'equipment-setup', label: 'Equipment Setup', section: 'Me', go: ['equipment-setup'] },
   { stateId: 'split-builder', label: 'Split Builder', section: 'Me', go: ['split-builder'] },
-  { stateId: 'my-plan', label: 'My Plan', section: 'Me', go: ['my-plan'] },
-  { stateId: 'plan-import', label: 'Plan Import Review', section: 'Me', go: ['plan-import'] },
 ];
 
 /* First-run flow — intro slides + onboarding steps. Driven via __pcOnboardingState. */

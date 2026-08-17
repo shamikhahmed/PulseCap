@@ -6,37 +6,39 @@
 
 | Metric | Budget | Measured | Pass |
 |--------|-------:|---------:|:----:|
-| DOMContentLoaded | ≤8000ms | 1462ms | yes |
-| Wall-clock ready (go/S) | ≤20000ms | 1686ms | yes |
-| Critical CSS+JS bytes | ≤921600 | 714348 | yes |
-| Max route go() | ≤800ms | 38ms (avg 32) | yes |
+| DOMContentLoaded | ≤8000ms | 198ms | yes |
+| Wall-clock ready (go/S) | ≤20000ms | 247ms | yes |
+| Critical CSS+JS bytes | ≤921600 | 672558 | yes |
+| Max route go() | ≤800ms | 34ms (avg 30) | yes |
 
 ## Route samples
 
-`20, 38, 34, 33, 33` ms for workout→bodymap→hub→settings→dashboard
+`18, 33, 33, 34, 33` ms for workout→progress→my-plan→settings→dashboard
 
 ## Critical assets
 
-- `css/base.css`: 10973 B
+- `css/tokens.css`: 4222 B
+- `css/base.css`: 10966 B
 - `css/layout.css`: 41444 B
 - `css/components.css`: 45761 B
-- `css/identity.css`: 14596 B
-- `css/capricorn-core.css`: 49118 B
-- `js/app.js`: 38786 B
+- `css/ember-components.css`: 4417 B
+- `css/shell.css`: 2425 B
+- `css/identity.css`: 14599 B
+- `js/app.js`: 35329 B
 - `js/storage.js`: 24381 B
 - `js/engines.js`: 107173 B
 - `js/coach-kernel.js`: 15107 B
 - `js/gym-tools.js`: 10752 B
 - `js/training-plan.js`: 21195 B
 - `js/plan-import.js`: 11813 B
-- `js/modules/dashboard.js`: 34388 B
+- `js/modules/dashboard.js`: 34366 B
 - `js/modules/workout.js`: 240824 B
-- `js/modules/settings.js`: 48037 B
+- `js/modules/settings.js`: 47784 B
 
 **Splash:** absent (must dissolve when load done — no artificial delay).
 
 ## Notes
 
-- Lazy Learn modules not in critical path (MODULE_SRC). My Plan / plan-import load on demand.
-- Low Power Mode disables bg canvas (Settings → Access).
+- Ember Phase 1: tokens + shell; quarantined Learn/Body bloat. My Plan eager-loaded.
+- Ambient canvas removed; Capricorn/GSAP runtime out of app boot.
 - After optimize, re-run `npx playwright test tests/perf.spec.js --project=chromium`.

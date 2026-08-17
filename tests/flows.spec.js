@@ -253,32 +253,22 @@ test.describe('PulseCap flows', () => {
     expect(out).toContain('&lt;script&gt;');
   });
 
-  test('security: search result dispatch does not use eval', async ({ page }) => {
-    const out = await page.evaluate(async () => {
+  test('security: go() aliases do not eval', async ({ page }) => {
+    const out = await page.evaluate(() => {
       // @ts-ignore
       const w = window;
-      await w.loadScript('js/modules/advanced-search.js');
       let evalCalled = false;
       // @ts-ignore
       const oldEval = window.eval;
       // @ts-ignore
       window.eval = function() { evalCalled = true; };
-      w._srItems = [{ action: "go('calculators')" }];
-      w._doSearchResult(0);
+      w.go('calculators');
       // @ts-ignore
       window.eval = oldEval;
-      await new Promise(function(resolve) {
-        const t0 = Date.now();
-        (function poll() {
-          if (w.currentScreenId() === 'calculators') resolve();
-          else if (Date.now() - t0 > 8000) resolve();
-          else setTimeout(poll, 40);
-        })();
-      });
       return { evalCalled, screen: w.currentScreenId && w.currentScreenId() };
     });
     expect(out.evalCalled).toBeFalsy();
-    expect(out.screen).toBe('calculators');
+    expect(out.screen).toBe('settings');
   });
 
   test('security: CSP permits wger sync and media', async ({ page }) => {
@@ -288,50 +278,36 @@ test.describe('PulseCap flows', () => {
     expect(csp || '').toContain('media-src');
   });
 
-  test('search results render as accessible list-row buttons', async ({ page }) => {
-    const out = await page.evaluate(async () => {
+  test('search alias lands on Train with exercise list', async ({ page }) => {
+    const out = await page.evaluate(() => {
       // @ts-ignore
       const w = window;
-      w.go('search', { q: 'bench', filter: 'all' });
-      await new Promise(function(resolve) {
-        const t0 = Date.now();
-        (function poll() {
-          const rows = document.querySelectorAll('#view button.list-row');
-          if (rows.length > 0) resolve();
-          else if (Date.now() - t0 > 8000) resolve();
-          else setTimeout(poll, 40);
-        })();
-      });
-      const view = document.getElementById('view');
-      const rows = view ? view.querySelectorAll('button.list-row') : [];
-      return { n: rows.length };
+      w.go('search');
+      const id = w.currentScreenId();
+      const text = (document.querySelector('#view') && document.querySelector('#view').textContent) || '';
+      return { id, hasTrain: /workout|train|exercise|split/i.test(text) };
     });
-    expect(out.n).toBeGreaterThan(0);
+    expect(out.id).toBe('workout');
+    expect(out.hasTrain).toBeTruthy();
   });
 
-  test('lazy Learn screens load via MODULE_SRC', async ({ page }) => {
+  test('Programs (my-plan) loads as Ember survivor', async ({ page }) => {
     const out = await page.evaluate(async () => {
       // @ts-ignore
       const w = window;
-      const before = !w.listScreens || w.listScreens().indexOf('calculators') >= 0;
-      w.go('calculators');
+      w.go('programs');
       await new Promise(function(resolve) {
         const t0 = Date.now();
         (function poll() {
-          if (w.currentScreenId() === 'calculators' && document.querySelector('#view .screen') &&
+          if (w.currentScreenId() === 'my-plan' && document.querySelector('#view .screen') &&
               !/^Loading/.test((document.querySelector('#view .screen').textContent || '').trim())) {
             resolve();
           } else if (Date.now() - t0 > 8000) resolve();
           else setTimeout(poll, 40);
         })();
       });
-      return {
-        screen: w.currentScreenId(),
-        hasMod: !!(document.querySelector('script[data-pc-mod="js/modules/calculators.js"]')),
-        beforeListed: before
-      };
+      return { screen: w.currentScreenId() };
     });
-    expect(out.screen).toBe('calculators');
-    expect(out.hasMod).toBeTruthy();
+    expect(out.screen).toBe('my-plan');
   });
 });

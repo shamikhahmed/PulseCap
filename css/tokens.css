@@ -1,0 +1,159 @@
+/* PulseCap Ember — design tokens
+   Dark default via :root + [data-theme="dark"].
+   Light via [data-theme="light"].
+   Compatibility aliases keep existing --c* / --txt* / --bg* consumers working. */
+
+:root,
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  /* ── Ember core ─────────────────────────────────────── */
+  --bg: #0A0A0B;
+  --bg-elev: #141416;
+  --bg-elev-2: #1C1C1F;
+
+  --accent: #FF7A1A;
+  --accent-press: #E86A0E;
+  --accent-rgb: 255, 122, 26;
+
+  --success: #30D158;
+  --caution: #FFD60A;
+  --danger: #FF453A;
+
+  --text: #F5F5F7;
+  --text-2: #A1A1A6;
+  --text-3: #6E6E73;
+
+  --line: rgba(255, 255, 255, 0.08);
+  --line-2: rgba(255, 255, 255, 0.14);
+
+  /* ── Compatibility: brand / semantic ────────────────── */
+  --c1: var(--accent);
+  --c1-rgb: var(--accent-rgb);
+  --c2: #FF9F0A;
+  --c2-rgb: 255, 159, 10;
+  --c3: var(--success);
+  --c3-rgb: 48, 209, 88;
+  --c4: var(--danger);
+  --c4-rgb: 255, 69, 58;
+  --c5: var(--caution);
+  --c5-rgb: 255, 214, 10;
+
+  --txt: var(--text);
+  --txt2: var(--text-2);
+  --txt3: var(--text-3);
+
+  --bg2: var(--bg-elev);
+  --bg3: var(--bg-elev-2);
+  --bg4: #242428;
+
+  --border: var(--line);
+  --border2: var(--line-2);
+
+  --grad: linear-gradient(128deg, #FF7A1A 0%, #E86A0E 55%, #FF9F0A 100%);
+
+  /* ── Typography ─────────────────────────────────────── */
+  --font: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", system-ui, sans-serif;
+  --font-display: var(--font);
+
+  /* ── Safe area / chrome ─────────────────────────────── */
+  --safe: env(safe-area-inset-bottom, 0px);
+  --top-safe: env(safe-area-inset-top, 0px);
+  --nav-h: 64px;
+
+  /* ── Spacing (4 / 8 / 12 / 16 / 20 / 24 / 32) ────────── */
+  --s1: 4px;
+  --s2: 8px;
+  --s3: 12px;
+  --s4: 16px;
+  --s5: 20px;
+  --s6: 24px;
+  --s8: 32px;
+
+  --space-1: var(--s1);
+  --space-2: var(--s2);
+  --space-3: var(--s3);
+  --space-4: var(--s4);
+  --space-5: var(--s5);
+  --space-6: var(--s6);
+  --space-8: var(--s8);
+
+  /* ── Radius ─────────────────────────────────────────── */
+  --r-card: 16px;
+
+  /* ── Motion ─────────────────────────────────────────── */
+  --ease-ios: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease: var(--ease-ios);
+  --dur-fast: 120ms;
+  --dur-med: 250ms;
+
+  /* ── Elevation ──────────────────────────────────────── */
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.24), 0 1px 3px rgba(0, 0, 0, 0.16);
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+
+  --bg: #F5F5F7;
+  --bg-elev: #FFFFFF;
+  --bg-elev-2: #EBEBED;
+
+  --accent: #FF7A1A;
+  --accent-press: #E86A0E;
+  --accent-rgb: 255, 122, 26;
+
+  --success: #248A3D;
+  --caution: #A88700;
+  --danger: #D70015;
+
+  --text: #1C1C1E;
+  --text-2: #6E6E73;
+  --text-3: #8E8E93;
+
+  --line: rgba(0, 0, 0, 0.08);
+  --line-2: rgba(0, 0, 0, 0.14);
+
+  --c1: var(--accent);
+  --c1-rgb: var(--accent-rgb);
+  --c2: #E86A0E;
+  --c2-rgb: 232, 106, 14;
+  --c3: var(--success);
+  --c3-rgb: 36, 138, 61;
+  --c4: var(--danger);
+  --c4-rgb: 215, 0, 21;
+  --c5: var(--caution);
+  --c5-rgb: 168, 135, 0;
+
+  --txt: var(--text);
+  --txt2: var(--text-2);
+  --txt3: var(--text-3);
+
+  --bg2: var(--bg-elev);
+  --bg3: var(--bg-elev-2);
+  --bg4: #E1E1E6;
+
+  --border: var(--line);
+  --border2: var(--line-2);
+
+  --grad: linear-gradient(128deg, #FF7A1A 0%, #E86A0E 55%, #FF9F0A 100%);
+
+  --elev-1: 0 1px 2px rgba(0, 0, 0, 0.06), 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root,
+  [data-theme="dark"],
+  [data-theme="light"] {
+    --dur-fast: 0ms;
+    --dur-med: 0ms;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

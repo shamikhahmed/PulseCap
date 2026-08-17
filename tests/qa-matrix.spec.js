@@ -7,7 +7,7 @@ const { test, expect } = require('@playwright/test');
 const fs = require('fs');
 const path = require('path');
 
-const SKIP_CLICK = /confirmClear|S\.reset|importData|exportData|clearTheme|applyImported|sbDel|removeSupp|deleteLegacy|location\.reload|window\.open|removeTrainingPlan|confirmRemovePlan|installMachinePpl|confirmImportedPlan|handlePlanFile/;
+const SKIP_CLICK = /confirmClear|S\.reset|importData|exportData|clearTheme|applyImported|sbDel|removeSupp|deleteLegacy|location\.reload|window\.open|removeTrainingPlan|confirmRemovePlan|installMachinePpl|confirmImportedPlan|handlePlanFile|_installPWA|sw\.js|SKIP_WAITING/;
 const DESTRUCTIVE = /danger|Clear|Reset|Delete|Remove/;
 
 test.describe('QA matrix', () => {
@@ -84,7 +84,7 @@ test.describe('QA matrix', () => {
       }
 
       // Click first safe primary-looking button on core screens only
-      if (['dashboard', 'workout', 'bodymap', 'hub', 'settings', 'progress', 'nutrition', 'recovery'].includes(screen)) {
+      if (['dashboard', 'workout', 'progress', 'my-plan', 'settings', 'nutrition', 'recovery'].includes(screen)) {
         const clicked = await page.evaluate((skipRe) => {
           const re = new RegExp(skipRe);
           const btns = [...document.querySelectorAll('#view button:not([disabled])')];
@@ -106,7 +106,13 @@ test.describe('QA matrix', () => {
             status: pageErrors.length ? 'fail' : 'pass'
           });
           if (pageErrors.length) fails.push({ screen, reason: pageErrors.join('; '), label: clicked });
-          await page.evaluate((id) => window.go(id), screen);
+          await page.waitForTimeout(80);
+          const hasGo = await page.evaluate(() => typeof window.go === 'function').catch(() => false);
+          if (!hasGo) {
+            await page.goto('/?demo=1');
+            await page.waitForFunction(() => typeof window.go === 'function');
+          }
+          await page.evaluate((id) => { if (typeof window.go === 'function') window.go(id); }, screen);
         }
       }
 

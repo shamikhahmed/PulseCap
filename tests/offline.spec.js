@@ -31,7 +31,7 @@ test.describe('Offline + update', () => {
       if (t === 'document') return route.continue();
       return route.abort();
     });
-    for (const id of ['workout', 'hub', 'settings', 'dashboard']) {
+    for (const id of ['workout', 'progress', 'my-plan', 'settings', 'dashboard']) {
       await page.evaluate((s) => window.go(s), id);
       await page.waitForTimeout(50);
       const html = await page.locator('#view').innerHTML();

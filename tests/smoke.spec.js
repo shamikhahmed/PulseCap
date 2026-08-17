@@ -176,7 +176,7 @@ test.describe('PulseCap smoke', () => {
     expect(css).toContain('.section-label');
   });
 
-  test('settings IA: mature groups + aliases + chalk accent', async ({ page }) => {
+  test('settings IA: mature groups + aliases + Ember accent', async ({ page }) => {
     await page.goto('/?demo=1');
     await page.waitForFunction(() => typeof window.go === 'function' && typeof window.S !== 'undefined');
     const out = await page.evaluate(() => {
@@ -207,7 +207,7 @@ test.describe('PulseCap smoke', () => {
         ver: window.APP_VERSION
       };
     });
-    expect(out.ver).toBe('6.6.0');
+    expect(out.ver).toBe('6.7.0');
     expect(out.tabs).toEqual(['Account', 'Training', 'Fuel', 'Appearance', 'Access', 'Alerts', 'Privacy', 'About']);
     expect(out.accountOn).toBeTruthy();
     expect(out.alias).toBe('privacy');
@@ -215,8 +215,8 @@ test.describe('PulseCap smoke', () => {
     expect(out.privacyExport).toBeTruthy();
     expect(out.privacyDanger).toBeTruthy();
     expect(out.aboutVer).toBeTruthy();
-    expect(out.c1.toLowerCase()).toMatch(/#ff453a|#c41e3a/);
-    expect(out.capAccent.toLowerCase()).toMatch(/#ff453a|#c41e3a/);
+    expect(out.c1.toLowerCase()).toMatch(/#ff7a1a|#e86a0e/);
+    expect(out.capAccent.toLowerCase()).toMatch(/#ff7a1a|#e86a0e/);
     // Active tab must not be Cap cyan/blue fad
     expect(out.onBg).not.toMatch(/0,\s*242,\s*255|0,\s*122,\s*255/);
   });

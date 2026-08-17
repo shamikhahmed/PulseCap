@@ -2,44 +2,40 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https://wger.de; media-src 'self' blob: https://wger.de; connect-src 'self' https://wger.de; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://wger.de; media-src 'self' blob: https://wger.de; connect-src 'self' https://wger.de; frame-src 'none'; object-src 'none'">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="PulseCap">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="theme-color" content="#000000">
+  <meta name="theme-color" content="#0A0A0B">
   <meta name="format-detection" content="telephone=no">
   <meta name="author" content="Capricorn Systems">
   <!-- Apple splash / startup feel -->
   <link rel="apple-touch-icon" href="icon-512.png">
   <link rel="apple-touch-icon" sizes="192x192" href="icon-192.png">
   <link rel="apple-touch-icon" sizes="512x512" href="icon-512.png">
-  <meta name="description" content="Performance OS — 300+ exercises, Smart Coach, and a full body map. Offline-first training, by Capricorn Systems.">
-<title>PulseCap — Train with intention. · Capricorn Systems</title>
+  <meta name="description" content="Offline gym app — run today’s session, log in two taps, see honest progress. By Capricorn Systems.">
+<title>PulseCap — Train today’s session · Capricorn Systems</title>
 <link rel="canonical" href="https://shamikhahmed.github.io/PulseCap/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Capricorn Systems">
-<meta property="og:title" content="PulseCap — Performance OS">
-<meta property="og:description" content="Performance OS — 300+ exercises, Smart Coach, and a full body map. Offline-first training, by Capricorn Systems.">
+<meta property="og:title" content="PulseCap — Offline gym logging">
+<meta property="og:description" content="Offline gym app — run today’s session, log in two taps, see honest progress.">
 <meta property="og:url" content="https://shamikhahmed.github.io/PulseCap/">
 <meta property="og:image" content="https://shamikhahmed.github.io/assets/screenshots/pulsecap.png">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="PulseCap — Performance OS">
-<meta name="twitter:description" content="Performance OS — 300+ exercises, Smart Coach, and a full body map. Offline-first training, by Capricorn Systems.">
+<meta name="twitter:title" content="PulseCap — Offline gym logging">
+<meta name="twitter:description" content="Offline gym app — run today’s session, log in two taps, see honest progress.">
 <meta name="twitter:image" content="https://shamikhahmed.github.io/assets/screenshots/pulsecap.png">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
-  <link rel="preload" href="css/base.css" as="style">
-  <link rel="preload" href="css/components.css" as="style">
-  <link rel="stylesheet" href="css/capricorn-core.css">
-<style>:root{--cap-accent:#00f2ff}</style>
-<link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/ember-components.css">
+  <link rel="stylesheet" href="css/shell.css">
   <link rel="stylesheet" href="css/identity.css">
   <style>
     html,body{height:100%;overflow:hidden;}
@@ -154,11 +150,8 @@ window.addEventListener('offline', updateOfflineBanner);
 updateOfflineBanner();
 window.updateOfflineBanner = updateOfflineBanner;
 </script>
-  <canvas id="cap-scene" class="cap-scene-canvas cap-scene-canvas--subtle" aria-hidden="true"></canvas>
-  <canvas id="bg-canvas"></canvas>
-  <div class="cap-desktop-shell">
-    <nav id="cap-nav-sidebar" aria-label="Module navigation"></nav>
-    <div id="app" class="cap-desktop-main">
+  <div id="app-shell" class="app-shell">
+    <div id="app">
       <div id="view" class="cap-scroll-y">
       <div id="boot-splash" class="screen clipboard-splash" aria-hidden="true">
         <div class="clipboard-board">
@@ -172,20 +165,20 @@ window.updateOfflineBanner = updateOfflineBanner;
             <svg class="clipboard-pulse" width="120" height="48" viewBox="0 0 120 48" fill="none" aria-hidden="true">
               <defs>
                 <linearGradient id="clipboard-pulse-grad" x1="0" y1="0" x2="120" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#FF453A"/>
-                  <stop offset="55%" stop-color="#FF3B30"/>
-                  <stop offset="100%" stop-color="#FF6B5E"/>
+                  <stop offset="0%" stop-color="#FF7A1A"/>
+                  <stop offset="55%" stop-color="#E86A0E"/>
+                  <stop offset="100%" stop-color="#FF9F0A"/>
                 </linearGradient>
               </defs>
               <path class="clipboard-pulse__line" d="M4 24 H28 L38 14 L52 34 L66 10 L80 24 H116" stroke="url(#clipboard-pulse-grad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle class="clipboard-pulse__dot" cx="60" cy="24" r="4" fill="#FF453A"/>
+              <circle class="clipboard-pulse__dot" cx="60" cy="24" r="4" fill="#FF7A1A"/>
             </svg>
             <div class="splash-word">PulseCap</div>
-            <div class="splash-tag">Gym-floor clipboard — Smart Coach, offline.</div>
+            <div class="splash-tag">Today’s session — log fast, stay honest.</div>
           </div>
         </div>
       </div>
-    </div>
+      </div>
     <nav id="nav" aria-label="Main navigation" style="display:none"></nav>
     </div>
   </div>
@@ -201,6 +194,7 @@ window.updateOfflineBanner = updateOfflineBanner;
   <script src="js/data/injuries-db.js"></script>
   <script src="js/app.js"></script>
   <script src="js/engines.js"></script>
+  <script src="js/core/daily-decision.js"></script>
   <script src="js/coach-kernel.js"></script>
   <script src="js/data/training-plan-schema.js"></script>
   <script src="js/data/plans/machine-ppl.js"></script>
@@ -208,13 +202,12 @@ window.updateOfflineBanner = updateOfflineBanner;
   <script src="js/plan-import.js"></script>
   <script src="js/gym-tools.js"></script>
   <script src="js/data/foods-db.js"></script>
-  <!-- Eager boot path: Today / Train / Body / Me + shared deps -->
+  <!-- Eager boot: Today · Train · Progress · Programs · Me -->
   <script src="js/modules/onboarding.js"></script>
   <script src="js/modules/dashboard.js"></script>
   <script src="js/modules/workout.js"></script>
   <script src="js/data/exercise-library.js"></script>
   <script src="js/data/form-loops.js"></script>
-  <script src="js/modules/bodymap.js"></script>
   <script src="js/modules/coach.js"></script>
   <script src="js/modules/progress.js"></script>
   <script src="js/modules/nutrition.js"></script>
@@ -222,12 +215,10 @@ window.updateOfflineBanner = updateOfflineBanner;
   <script src="js/modules/settings.js"></script>
   <script src="js/modules/profiles.js"></script>
   <script src="js/modules/rehab.js"></script>
-  <script src="js/modules/knowledge-graph.js"></script>
-  <script src="js/modules/recovery-debt.js"></script>
-  <script src="js/modules/physique.js"></script>
-  <script src="js/modules/hub.js"></script>
   <script src="js/modules/photos.js"></script>
-  <!-- Learn deep-screens load on demand via go() + MODULE_SRC (still SW-cached for offline) -->
+  <script src="js/modules/my-plan.js"></script>
+  <script src="js/modules/equipment-setup.js"></script>
+  <!-- Quarantined modules live in js/_deprecated/ (Phase 9 purge) -->
 
   <script>
     (function() {
@@ -247,10 +238,6 @@ window.updateOfflineBanner = updateOfflineBanner;
       };
     })();
     S.init();
-    if (typeof migratePhysiqueMerge === "function") migratePhysiqueMerge();
-    if (typeof migrateRecoveryMerge === "function") migrateRecoveryMerge();
-    if (typeof migrateTrainingIntelMerge === "function") migrateTrainingIntelMerge();
-    if (typeof migrateCoachIntroMerge === "function") migrateCoachIntroMerge();
     const _isDemo = bootDemoIfRequested();
     const _savedTheme = S.g('user.theme') || S.g('user.mode');
     if (_savedTheme) applyTheme(_savedTheme);
@@ -259,7 +246,6 @@ window.updateOfflineBanner = updateOfflineBanner;
     if (typeof GymFloor !== 'undefined') GymFloor.apply();
     if (typeof loadCustomExercises === 'function') loadCustomExercises();
     if (typeof ExerciseLibrary !== 'undefined') ExerciseLibrary.mergeIntoExDB();
-    initCanvas();
     const _hasDeepLink = typeof bootDeepLink === 'function' && bootDeepLink();
     _bootAfterSplash(function() {
       if (typeof currentScreenId === 'function' && currentScreenId()) return;
@@ -319,7 +305,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=86').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=87').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {
@@ -356,15 +342,6 @@ window.updateOfflineBanner = updateOfflineBanner;
       });
     }
   </script>
-  <script src="js/capricorn-motion.js"></script>
   <script src="js/cap-demo-mode.js"></script>
-  <script src="js/cap-desktop-nav.js"></script>
-<script src="js/capricorn-premium-nav.js"></script>
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-      if (window.CapPremiumNav) CapPremiumNav.init();
-      if (window.CapricornMotion) CapricornMotion.init();
-    });
-  </script>
 </body>
 </html>
