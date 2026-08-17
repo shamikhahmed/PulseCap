@@ -28,7 +28,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 22 Re-render contract | done | 0e13988 | Same-screen go() preserves scrollTop + focus; resetScroll / tab change still reset. SCROLL_PRESERVE_SCREENS deleted |
 | 23 Vertical layout | done | fafa734 | One #view padding in shell.css. Today: last session + next + weekly consistency. .screen min-height 100% flex column |
 | 24 Gutter + tabs | done | 9b8e7e7 | `.screen-pad` primitive; Account fields no longer full-bleed; Settings tab bar nowrap + scroll |
-| 25 equipmentIds | done | | Specific machines override kit via machine type. Gap banner. Empty session fills with alternatives |
+| 25 equipmentIds | done | c8c6c1d | Specific machines override kit via machine type. Gap banner. Empty session fills with alternatives |
+| 26 Catalogue | done | | Type-first catalogue (18 brands × core types) + search / select-all / My gym summary |
 
 ## Phase 1 checklist
 
@@ -163,4 +164,10 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 - Empty resolved sessions fill from `alternativesForDay`. Gap banner on Today and Train lists loaded groups the current gym cannot cover.
 - Test: only leg press + lat pulldown → those families only, chest press excluded, banner names missing groups.
 - Chromium: **128 passed**, 1 skipped.
+
+## Phase 26 — Catalogue (v6.32.0 / pulsecap-v112)
+
+- Type-first expansion: 18 brands × 22 machine types plus generic plate-loaded. Existing ids kept. Brand is optional metadata.
+- Picker: search, optional brand filter, select-all-in-view, My gym summary. Honest copy: plate numbers are not comparable across brands.
+- Chromium: **129 passed**, 1 skipped.
 

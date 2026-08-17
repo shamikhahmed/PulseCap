@@ -1,3 +1,6 @@
+## 6.32.0 — 2026-08-18 — Ember rebuild Phase 26
+- Equipment catalogue is type-first (chest press, leg press, lat pulldown, …) with optional brand metadata across Life Fitness through Prime/Atlantis/Gym80 plus generic plate-loaded. Picker: search, category, select-all-in-view, My gym summary. Plate numbers are not compared across brands. SW `pulsecap-v112`.
+
 ## 6.31.0 — 2026-08-18 — Ember rebuild Phase 25
 - `user.equipmentIds` now drives `canPerform`. Machine *type* is the key; brand never blocks. Kit remains the fallback when the picker is unused. Sparse gyms get a plain-language gap banner, not an empty session. SW `pulsecap-v111`.
 

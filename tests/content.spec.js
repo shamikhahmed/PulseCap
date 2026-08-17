@@ -347,4 +347,34 @@ test.describe('Exercise content integrity', () => {
     expect(out.gaps).toContain('chest');
     expect(out.banner).toMatch(/chest|shoulders|arms/i);
   });
+
+  test('equipment catalogue is type-first and large enough for a commercial gym', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => window.EquipmentDB && window.EquipmentDB.items);
+    const out = await page.evaluate(() => {
+      const items = window.EquipmentDB.items;
+      const ids = items.map(function(i) { return i.id; });
+      const dup = ids.filter(function(id, i) { return ids.indexOf(id) !== i; });
+      const brands = {};
+      items.forEach(function(i) { if (i.brand) brands[i.brand] = 1; });
+      const types = {};
+      items.forEach(function(i) { if (i.type) types[i.type] = 1; });
+      const lfPress = items.filter(function(i) { return i.type === 'chest_press' && i.brand === 'Life Fitness'; });
+      const genericPress = items.filter(function(i) { return i.type === 'chest_press' && !i.brand; });
+      return {
+        count: items.length,
+        dup: dup,
+        brandCount: Object.keys(brands).length,
+        typeCount: Object.keys(types).length,
+        lfPress: lfPress.length,
+        genericPress: genericPress.length
+      };
+    });
+    expect(out.dup).toEqual([]);
+    expect(out.count).toBeGreaterThan(200);
+    expect(out.brandCount).toBeGreaterThanOrEqual(15);
+    expect(out.typeCount).toBeGreaterThanOrEqual(15);
+    expect(out.lfPress).toBeGreaterThan(0);
+    expect(out.genericPress).toBeGreaterThan(0);
+  });
 });

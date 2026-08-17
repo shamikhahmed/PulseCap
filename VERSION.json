@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.31.0",
-  "swCache": "pulsecap-v111",
+  "version": "6.32.0",
+  "swCache": "pulsecap-v112",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 25 — equipmentIds drive plans by machine type"
+  "notes": "Ember Phase 26 — type-first equipment catalogue + faster picker"
 }

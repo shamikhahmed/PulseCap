@@ -138,3 +138,89 @@ window.EquipmentDB = {
     return (list || []).filter(ex => this.exerciseMatches(ex));
   }
 };
+
+(function expandEquipmentCatalog() {
+  const db = window.EquipmentDB;
+  db.TYPES = [
+    { id: 'chest_press', label: 'Chest Press', category: 'machines', tags: ['machine'] },
+    { id: 'incline_press', label: 'Incline Press', category: 'machines', tags: ['machine'] },
+    { id: 'decline_press', label: 'Decline Press', category: 'machines', tags: ['machine'] },
+    { id: 'pec_deck', label: 'Pec Deck', category: 'machines', tags: ['machine'] },
+    { id: 'shoulder_press', label: 'Shoulder Press', category: 'machines', tags: ['machine'] },
+    { id: 'lat_pulldown', label: 'Lat Pulldown', category: 'cables', tags: ['cables', 'machine'] },
+    { id: 'seated_row', label: 'Seated Row', category: 'machines', tags: ['machine', 'cables'] },
+    { id: 'cable_station', label: 'Cable Station', category: 'cables', tags: ['cables'] },
+    { id: 'cable_crossover', label: 'Cable Crossover', category: 'cables', tags: ['cables'] },
+    { id: 'leg_press', label: 'Leg Press', category: 'legs', tags: ['legpress', 'machine'] },
+    { id: 'hack_squat', label: 'Hack Squat', category: 'legs', tags: ['machine'] },
+    { id: 'leg_extension', label: 'Leg Extension', category: 'legs', tags: ['machine'] },
+    { id: 'leg_curl', label: 'Leg Curl', category: 'legs', tags: ['machine'] },
+    { id: 'calf_raise', label: 'Calf Raise', category: 'legs', tags: ['machine'] },
+    { id: 'hip_thrust', label: 'Hip Thrust / Glute Drive', category: 'legs', tags: ['machine'] },
+    { id: 'smith', label: 'Smith Machine', category: 'racks', tags: ['smith', 'barbell', 'machine'] },
+    { id: 'assisted_pullup', label: 'Assisted Pull-up / Dip', category: 'bodyweight', tags: ['bar', 'machine'] },
+    { id: 'preacher_curl', label: 'Preacher Curl', category: 'machines', tags: ['machine'] },
+    { id: 'lateral_raise', label: 'Lateral Raise Machine', category: 'machines', tags: ['machine'] },
+    { id: 'rear_delt', label: 'Rear Delt Machine', category: 'machines', tags: ['machine'] },
+    { id: 'trap_bar', label: 'Trap / Hex Bar', category: 'free_weights', tags: ['barbell', 'machine'] },
+    { id: 'ghd', label: 'GHD', category: 'accessory', tags: [] }
+  ];
+  db.brands = [
+    'Life Fitness', 'Technogym', 'Hammer Strength', 'Precor', 'Matrix', 'Cybex',
+    'Nautilus', 'Hoist', 'Star Trac', 'Body-Solid', 'Rogue', 'Eleiko',
+    'Atlantis', 'Arsenal', 'Panatta', 'Gym80', 'Watson', 'Prime',
+    'No brand / Generic'
+  ];
+  const prefix = {
+    'Life Fitness': 'lf', Technogym: 'tg', 'Hammer Strength': 'hs', Precor: 'precor',
+    Matrix: 'matrix', Cybex: 'cybex', Nautilus: 'nautilus', Hoist: 'hoist',
+    'Star Trac': 'startrac', 'Body-Solid': 'bodysolid', Rogue: 'rogue', Eleiko: 'eleiko',
+    Atlantis: 'atlantis', Arsenal: 'arsenal', Panatta: 'panatta', Gym80: 'gym80',
+    Watson: 'watson', Prime: 'prime'
+  };
+  db.items.forEach(function(item) {
+    if (!item.type && typeof Equipment !== 'undefined' && Equipment.typeFromName) {
+      item.type = Equipment.typeFromName(item.name) || undefined;
+    }
+  });
+  const have = {};
+  db.items.forEach(function(item) { have[item.id] = true; });
+  db.TYPES.forEach(function(t) {
+    Object.keys(prefix).forEach(function(brand) {
+      const id = prefix[brand] + '_' + t.id;
+      if (have[id]) return;
+      have[id] = true;
+      db.items.push({
+        id: id,
+        name: brand + ' ' + t.label,
+        brand: brand,
+        type: t.id,
+        category: t.category,
+        eqTags: t.tags.slice(),
+        env: ['gym']
+      });
+    });
+    const genId = 'generic_' + t.id;
+    if (!have[genId] && !have[t.id]) {
+      have[genId] = true;
+      db.items.push({
+        id: genId,
+        name: t.label + ' (no brand)',
+        type: t.id,
+        category: t.category,
+        eqTags: t.tags.slice(),
+        env: ['gym', 'home']
+      });
+    }
+  });
+  [
+    { id: 'generic_plate_chest', name: 'Plate-loaded Chest Press (no brand)', type: 'chest_press', category: 'machines', eqTags: ['machine'] },
+    { id: 'generic_plate_row', name: 'Plate-loaded Row (no brand)', type: 'seated_row', category: 'machines', eqTags: ['machine'] },
+    { id: 'generic_plate_leg', name: 'Plate-loaded Leg Press (no brand)', type: 'leg_press', category: 'legs', eqTags: ['legpress', 'machine'] },
+    { id: 'generic_iso_lateral_press', name: 'Iso-lateral Chest Press (no brand)', type: 'chest_press', category: 'machines', eqTags: ['machine'] }
+  ].forEach(function(item) {
+    if (have[item.id]) return;
+    item.env = ['gym'];
+    db.items.push(item);
+  });
+})();
