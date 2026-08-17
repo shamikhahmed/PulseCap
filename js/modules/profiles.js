@@ -10,7 +10,7 @@ function _profileAvatarHtml(p) {
   if (/^c[1-6]$/.test(av)) {
     return '<div style="' + base + ';background:rgba(var(--' + av + '-rgb),0.25);color:var(--' + av + ')">' + esc(letter) + '</div>';
   }
-  return '<div style="' + base + ';background:var(--grad);color:#fff">' + esc(letter) + '</div>';
+  return '<div style="' + base + ';background:rgba(var(--accent-rgb),0.14);color:var(--accent-text)">' + esc(letter) + '</div>';
 }
 
 reg('profiles', function() {

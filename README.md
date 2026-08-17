@@ -1,6 +1,6 @@
 # PulseCap
 
-**Version:** 6.33.0
+**Version:** 6.34.0
 
 **Your Smart Coach fitness operating system — by Capricorn Systems, built as a single offline-first PWA.**
 
@@ -143,7 +143,7 @@ manifest.json       — PWA manifest
 
 ## Roadmap
 
-Shipped through **v6.33.0** (see `CHANGELOG.md`): Ember rebuild Phases 1–27. Same-screen updates keep scroll and focus. Today fills the viewport. Settings gutters and a single-row tab bar. Gym-specific machines (type-first catalogue) actually filter the plan. Smart Coach is rules-based — not an LLM. No 1RM estimator.
+Shipped through **v6.34.0** (see `CHANGELOG.md`): Ember rebuild Phases 1–28. Same-screen updates keep scroll and focus. Today fills the viewport. Settings gutters and a single-row tab bar. Gym-specific machines (type-first catalogue) actually filter the plan. Light mode accent text meets WCAG AA. Smart Coach is rules-based — not an LLM. No 1RM estimator.
 
 Still open / honest gaps (owner constraints):
 

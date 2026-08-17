@@ -9,7 +9,7 @@
 | briefing | button "Can’t train today?" | visible control ≥40px min edge + accessible name (or hidden) | 414×44 name=true | pass |
 | briefing | button "Progress" | visible control ≥40px min edge + accessible name (or hidden) | 448×44 name=true | pass |
 | cardio | button "Exercise search" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
-| cardio | select "Push A — Upper Chest & Front DeltsPull A — Lats & Bicep ThicknessLegs A — Quads " | visible control ≥40px min edge + accessible name (or hidden) | 227×18 name=true | pass |
+| cardio | select "Push A — Upper Chest & Front DeltsPull A — Lats & Bicep ThicknessLegs A — Quads " | visible control ≥40px min edge + accessible name (or hidden) | 448×49 name=true | pass |
 | cardio | button "Details for Barbell Row" | visible control ≥40px min edge + accessible name (or hidden) | 48×48 name=true | pass |
 | cardio | button "Details for Lat Pulldown" | visible control ≥40px min edge + accessible name (or hidden) | 48×48 name=true | pass |
 | cardio | button "Details for Cable Row" | visible control ≥40px min edge + accessible name (or hidden) | 48×48 name=true | pass |
@@ -31,7 +31,7 @@
 | equipment-setup | button "Outdoors / Park" | visible control ≥40px min edge + accessible name (or hidden) | 107×44 name=true | pass |
 | equipment-setup | button "Travel / Hotel" | visible control ≥40px min edge + accessible name (or hidden) | 107×44 name=true | pass |
 | equipment-setup | input "leg press, cables, Rogue…" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
-| equipment-setup | select "All brands (optional)Life FitnessTechnogymHammer StrengthPrecorMatrixCybexNautil" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
+| equipment-setup | select "All brands (optional)Life FitnessTechnogymHammer StrengthPrecorMatrixCybexNautil" | visible control ≥40px min edge + accessible name (or hidden) | 448×49 name=true | pass |
 | equipment-setup | button "Full Gym" | visible control ≥40px min edge + accessible name (or hidden) | 119×40 name=true | pass |
 | equipment-setup | button "Home Basics" | visible control ≥40px min edge + accessible name (or hidden) | 147×40 name=true | pass |
 | equipment-setup | button "Bodyweight" | visible control ≥40px min edge + accessible name (or hidden) | 145×40 name=true | pass |
@@ -117,17 +117,17 @@
 | equipment-setup | div[role=button] "Precor Chest PressPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Chest PressMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Chest PressCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Chest PressNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Chest PressHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Chest PressStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Chest PressBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Chest PressNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Chest PressHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Chest PressStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Chest PressBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Chest PressRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Chest PressEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Chest PressAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Chest PressArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Chest PressPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Chest PressArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Chest PressPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Chest PressGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Chest PressWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Chest PressWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Chest PressPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Chest Press (no brand)chest press · machines" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Incline PressLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -135,17 +135,17 @@
 | equipment-setup | div[role=button] "Precor Incline PressPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Incline PressMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Incline PressCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Incline PressNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Incline PressHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Incline PressStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Incline PressBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Incline PressNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Incline PressHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Incline PressStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Incline PressBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Incline PressRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Incline PressEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Incline PressAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Incline PressArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Incline PressPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Incline PressArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Incline PressPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Incline PressGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Incline PressWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Incline PressWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Incline PressPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Incline Press (no brand)incline press · machines" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Decline PressLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -153,17 +153,17 @@
 | equipment-setup | div[role=button] "Precor Decline PressPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Decline PressMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Decline PressCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Decline PressNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Decline PressHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Decline PressStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Decline PressBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Decline PressNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Decline PressHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Decline PressStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Decline PressBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Decline PressRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Decline PressEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Decline PressAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Decline PressArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Decline PressPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Decline PressArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Decline PressPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Decline PressGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Decline PressWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Decline PressWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Decline PressPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Decline Press (no brand)decline press · machines" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Technogym Pec DeckTechnogym" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -171,49 +171,49 @@
 | equipment-setup | div[role=button] "Precor Pec DeckPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Pec DeckMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Pec DeckCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Pec DeckNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Pec DeckHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Pec DeckStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Pec DeckBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Pec DeckNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Pec DeckHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Pec DeckStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Pec DeckBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Pec DeckRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Pec DeckEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Pec DeckAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Pec DeckArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Pec DeckPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Pec DeckArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Pec DeckPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Pec DeckGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Pec DeckWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Pec DeckWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Pec DeckPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Precor Shoulder PressPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Shoulder PressMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Shoulder PressCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Shoulder PressNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Shoulder PressHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Shoulder PressStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Shoulder PressBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Shoulder PressNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Shoulder PressHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Shoulder PressStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Shoulder PressBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Shoulder PressRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Shoulder PressEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Shoulder PressAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Shoulder PressArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Shoulder PressPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Shoulder PressArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Shoulder PressPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Shoulder PressGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Shoulder PressWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Shoulder PressWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Shoulder PressPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Shoulder Press (no brand)shoulder press · machines" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Technogym Lat PulldownTechnogym" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Precor Lat PulldownPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Lat PulldownMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Lat PulldownCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Lat PulldownNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Lat PulldownHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Lat PulldownStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Lat PulldownBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Lat PulldownNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Lat PulldownHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Lat PulldownStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Lat PulldownBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Lat PulldownRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Lat PulldownEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Lat PulldownAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Lat PulldownArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Lat PulldownPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Lat PulldownArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Lat PulldownPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Lat PulldownGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Lat PulldownWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Lat PulldownWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Lat PulldownPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Seated RowLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Technogym Seated RowTechnogym" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -221,17 +221,17 @@
 | equipment-setup | div[role=button] "Precor Seated RowPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Seated RowMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Seated RowCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Seated RowNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Seated RowHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Seated RowStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Seated RowBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Seated RowNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Seated RowHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Seated RowStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Seated RowBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Seated RowRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Seated RowEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Seated RowAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Seated RowArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Seated RowPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Seated RowArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Seated RowPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Seated RowGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Seated RowWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Seated RowWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Seated RowPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Seated Row (no brand)seated row · machines" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Cable StationLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -239,17 +239,17 @@
 | equipment-setup | div[role=button] "Precor Cable StationPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Cable StationMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Cable StationCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Cable StationNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Cable StationHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Cable StationStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Cable StationBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Cable StationNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Cable StationHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Cable StationStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Cable StationBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Cable StationRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Cable StationEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Cable StationAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Cable StationArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Cable StationPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Cable StationArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Cable StationPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Cable StationGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Cable StationWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Cable StationWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Cable StationPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Cable CrossoverLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Technogym Cable CrossoverTechnogym" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -257,49 +257,49 @@
 | equipment-setup | div[role=button] "Precor Cable CrossoverPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Cable CrossoverMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Cable CrossoverCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Cable CrossoverNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Cable CrossoverHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Cable CrossoverStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Cable CrossoverBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Cable CrossoverNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Cable CrossoverHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Cable CrossoverStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Cable CrossoverBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Cable CrossoverRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Cable CrossoverEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Cable CrossoverAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Cable CrossoverArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Cable CrossoverPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Cable CrossoverArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Cable CrossoverPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Cable CrossoverGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Cable CrossoverWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Cable CrossoverWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Cable CrossoverPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cable Crossover (no brand)cable crossover · cables" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Precor Leg PressPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Leg PressMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Leg PressNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Leg PressHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Leg PressStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Leg PressBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Leg PressNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Leg PressHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Leg PressStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Leg PressBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Leg PressRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Leg PressEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Leg PressAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Leg PressArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Leg PressPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Leg PressArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Leg PressPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Leg PressGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Leg PressWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Leg PressWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Leg PressPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Technogym Hack SquatTechnogym" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Hammer Strength Hack SquatHammer Strength" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Precor Hack SquatPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Hack SquatMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Hack SquatCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Hack SquatNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Hack SquatHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Hack SquatStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Hack SquatBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Hack SquatNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Hack SquatHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Hack SquatStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Hack SquatBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Hack SquatRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Hack SquatEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Hack SquatAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Hack SquatArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Hack SquatPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Hack SquatArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Hack SquatPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Hack SquatGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Hack SquatWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Hack SquatWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Hack SquatPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Leg ExtensionLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Technogym Leg ExtensionTechnogym" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -307,32 +307,32 @@
 | equipment-setup | div[role=button] "Precor Leg ExtensionPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Leg ExtensionMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Leg ExtensionCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Leg ExtensionNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Leg ExtensionHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Leg ExtensionStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Leg ExtensionBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Leg ExtensionNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Leg ExtensionHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Leg ExtensionStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Leg ExtensionBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Leg ExtensionRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Leg ExtensionEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Leg ExtensionAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Leg ExtensionArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Leg ExtensionPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Leg ExtensionArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Leg ExtensionPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Leg ExtensionGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Leg ExtensionWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Leg ExtensionWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Leg ExtensionPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Precor Leg CurlPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Leg CurlMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Leg CurlCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Leg CurlNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Leg CurlHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Leg CurlStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Leg CurlBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Leg CurlNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Leg CurlHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Leg CurlStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Leg CurlBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Leg CurlRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Leg CurlEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Leg CurlAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Leg CurlArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Leg CurlPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Leg CurlArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Leg CurlPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Leg CurlGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Leg CurlWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Leg CurlWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Leg CurlPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Calf RaiseLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Technogym Calf RaiseTechnogym" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -340,17 +340,17 @@
 | equipment-setup | div[role=button] "Precor Calf RaisePrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Calf RaiseMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Calf RaiseCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Calf RaiseNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Calf RaiseHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Calf RaiseStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Calf RaiseBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Calf RaiseNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Calf RaiseHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Calf RaiseStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Calf RaiseBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Calf RaiseRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Calf RaiseEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Calf RaiseAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Calf RaiseArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Calf RaisePanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Calf RaiseArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Calf RaisePanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Calf RaiseGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Calf RaiseWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Calf RaiseWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Calf RaisePrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Calf Raise (no brand)calf raise · legs" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Hip Thrust / Glute DriveLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -359,34 +359,34 @@
 | equipment-setup | div[role=button] "Precor Hip Thrust / Glute DrivePrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Hip Thrust / Glute DriveMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Hip Thrust / Glute DriveCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Hip Thrust / Glute DriveNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Hip Thrust / Glute DriveHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Hip Thrust / Glute DriveStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Hip Thrust / Glute DriveBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Hip Thrust / Glute DriveNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Hip Thrust / Glute DriveHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Hip Thrust / Glute DriveStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Hip Thrust / Glute DriveBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Hip Thrust / Glute DriveRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Hip Thrust / Glute DriveEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Hip Thrust / Glute DriveAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Hip Thrust / Glute DriveArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Hip Thrust / Glute DrivePanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Hip Thrust / Glute DriveArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Hip Thrust / Glute DrivePanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Hip Thrust / Glute DriveGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Hip Thrust / Glute DriveWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Hip Thrust / Glute DriveWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Hip Thrust / Glute DrivePrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Hip Thrust / Glute Drive (no brand)hip thrust · legs" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Hammer Strength Smith MachineHammer Strength" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Precor Smith MachinePrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Smith MachineMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Smith MachineCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Smith MachineNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Smith MachineHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Smith MachineStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Smith MachineBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Smith MachineNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Smith MachineHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Smith MachineStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Smith MachineBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Smith MachineRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Smith MachineEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Smith MachineAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Smith MachineArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Smith MachinePanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Smith MachineArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Smith MachinePanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Smith MachineGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Smith MachineWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Smith MachineWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Smith MachinePrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Assisted Pull-up / DipLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Technogym Assisted Pull-up / DipTechnogym" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -394,17 +394,17 @@
 | equipment-setup | div[role=button] "Precor Assisted Pull-up / DipPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Assisted Pull-up / DipMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Assisted Pull-up / DipCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Assisted Pull-up / DipNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Assisted Pull-up / DipHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Assisted Pull-up / DipStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Assisted Pull-up / DipBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Assisted Pull-up / DipNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Assisted Pull-up / DipHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Assisted Pull-up / DipStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Assisted Pull-up / DipBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Assisted Pull-up / DipRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Assisted Pull-up / DipEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Assisted Pull-up / DipAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Assisted Pull-up / DipArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Assisted Pull-up / DipPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Assisted Pull-up / DipArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Assisted Pull-up / DipPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Assisted Pull-up / DipGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Assisted Pull-up / DipWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Assisted Pull-up / DipWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Assisted Pull-up / DipPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Assisted Pull-up / Dip (no brand)assisted pullup · bodyweight" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Preacher CurlLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -413,17 +413,17 @@
 | equipment-setup | div[role=button] "Precor Preacher CurlPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Preacher CurlMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Preacher CurlCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Preacher CurlNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Preacher CurlHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Preacher CurlStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Preacher CurlBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Preacher CurlNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Preacher CurlHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Preacher CurlStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Preacher CurlBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Preacher CurlRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Preacher CurlEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Preacher CurlAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Preacher CurlArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Preacher CurlPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Preacher CurlArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Preacher CurlPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Preacher CurlGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Preacher CurlWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Preacher CurlWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Preacher CurlPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Preacher Curl (no brand)preacher curl · machines" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Lateral Raise MachineLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -432,17 +432,17 @@
 | equipment-setup | div[role=button] "Precor Lateral Raise MachinePrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Lateral Raise MachineMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Lateral Raise MachineCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Lateral Raise MachineNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Lateral Raise MachineHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Lateral Raise MachineStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Lateral Raise MachineBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Lateral Raise MachineNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Lateral Raise MachineHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Lateral Raise MachineStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Lateral Raise MachineBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Lateral Raise MachineRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Lateral Raise MachineEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Lateral Raise MachineAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Lateral Raise MachineArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Lateral Raise MachinePanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Lateral Raise MachineArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Lateral Raise MachinePanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Lateral Raise MachineGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Lateral Raise MachineWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Lateral Raise MachineWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Lateral Raise MachinePrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Lateral Raise Machine (no brand)lateral raise · machines" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Rear Delt MachineLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -451,17 +451,17 @@
 | equipment-setup | div[role=button] "Precor Rear Delt MachinePrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Rear Delt MachineMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Rear Delt MachineCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Rear Delt MachineNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Rear Delt MachineHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Rear Delt MachineStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Rear Delt MachineBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Rear Delt MachineNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Rear Delt MachineHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Rear Delt MachineStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Rear Delt MachineBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Rear Delt MachineRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Rear Delt MachineEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Rear Delt MachineAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Rear Delt MachineArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Rear Delt MachinePanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Rear Delt MachineArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Rear Delt MachinePanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Rear Delt MachineGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Rear Delt MachineWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Rear Delt MachineWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Rear Delt MachinePrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rear Delt Machine (no brand)rear delt · machines" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness Trap / Hex BarLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -470,17 +470,17 @@
 | equipment-setup | div[role=button] "Precor Trap / Hex BarPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix Trap / Hex BarMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex Trap / Hex BarCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus Trap / Hex BarNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist Trap / Hex BarHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac Trap / Hex BarStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid Trap / Hex BarBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus Trap / Hex BarNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist Trap / Hex BarHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac Trap / Hex BarStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid Trap / Hex BarBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue Trap / Hex BarRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko Trap / Hex BarEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis Trap / Hex BarAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal Trap / Hex BarArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta Trap / Hex BarPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal Trap / Hex BarArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta Trap / Hex BarPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 Trap / Hex BarGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson Trap / Hex BarWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson Trap / Hex BarWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime Trap / Hex BarPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Life Fitness GHDLife Fitness" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Technogym GHDTechnogym" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
@@ -488,17 +488,17 @@
 | equipment-setup | div[role=button] "Precor GHDPrecor" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Matrix GHDMatrix" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Cybex GHDCybex" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Nautilus GHDNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Hoist GHDHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Star Trac GHDStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Body-Solid GHDBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Nautilus GHDNautilus" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Hoist GHDHoist" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Star Trac GHDStar Trac" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Body-Solid GHDBody-Solid" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Rogue GHDRogue" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Eleiko GHDEleiko" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Atlantis GHDAtlantis" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Arsenal GHDArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
-| equipment-setup | div[role=button] "Panatta GHDPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Arsenal GHDArsenal" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
+| equipment-setup | div[role=button] "Panatta GHDPanatta" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Gym80 GHDGym80" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
-| equipment-setup | div[role=button] "Watson GHDWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×65 name=true | pass |
+| equipment-setup | div[role=button] "Watson GHDWatson" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Prime GHDPrime" | visible control ≥40px min edge + accessible name (or hidden) | 480×67 name=true | pass |
 | equipment-setup | div[role=button] "Plate-loaded Chest Press (no brand)chest press · machines" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
 | equipment-setup | div[role=button] "Plate-loaded Row (no brand)seated row · machines" | visible control ≥40px min edge + accessible name (or hidden) | 480×59 name=true | pass |
@@ -560,22 +560,22 @@
 | profiles | div[role=button] "DDemo Mode Demo data●" | visible control ≥40px min edge + accessible name (or hidden) | 448×86 name=true | pass |
 | profiles | button "+ New Profile" | visible control ≥40px min edge + accessible name (or hidden) | 448×44 name=true | pass |
 | profiles | button "Load sample athletes" | visible control ≥40px min edge + accessible name (or hidden) | 448×44 name=true | pass |
-| progress | select "Barbell Bench PressOverhead PressIncline Dumbbell PressDeadliftBarbell RowLat Pu" | visible control ≥40px min edge + accessible name (or hidden) | 448×39 name=true | pass |
+| progress | select "Barbell Bench PressOverhead PressIncline Dumbbell PressDeadliftBarbell RowLat Pu" | visible control ≥40px min edge + accessible name (or hidden) | 448×49 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 15 Jul9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 17 Jul5555kg · 1h 1" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 22 Jul9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 24 Jul5555kg · 1h 4" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 24 Jul5555kg · 51m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 29 Jul9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 31 Jul5555kg · 1h 3" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 31 Jul5555kg · 54m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 5 Aug9110kg" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 7 Aug5555kg · 48m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 7 Aug5555kg · 52m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressM" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Legs A — Quads & CalvesBack Squat, Leg Press, Standing Calf RaiseWed 12 Aug9110k" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
-| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 14 Aug5555kg · 57m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
+| progress | div[role=button] "Pull A — Lats & BicepsDeadlift, Barbell Row, Lat PulldownFri 14 Aug5555kg · 49m›" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "Push A — Upper ChestBarbell Bench Press, Overhead Press, Incline Dumbbell PressS" | visible control ≥40px min edge + accessible name (or hidden) | 448×59 name=true | pass |
 | progress | div[role=button] "+ Log" | visible control ≥40px min edge + accessible name (or hidden) | 35×24 name=true | pass |
 | progress | button "Progress photos" | visible control ≥40px min edge + accessible name (or hidden) | 448×44 name=true | pass |
@@ -628,13 +628,13 @@
 | settings | button[role=tab] "About" | visible control ≥40px min edge + accessible name (or hidden) | 65×44 name=true | pass |
 | settings | input "Your name" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
 | settings | input "INPUT" | visible control ≥40px min edge + accessible name (or hidden) | 219×48 name=true | pass |
-| settings | select "Sex" | visible control ≥40px min edge + accessible name (or hidden) | 219×48 name=true | pass |
+| settings | select "Sex" | visible control ≥40px min edge + accessible name (or hidden) | 219×49 name=true | pass |
 | settings | input "INPUT" | visible control ≥40px min edge + accessible name (or hidden) | 219×48 name=true | pass |
 | settings | input "INPUT" | visible control ≥40px min edge + accessible name (or hidden) | 219×48 name=true | pass |
-| settings | select "23456" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
-| settings | select "Build MuscleLose FatGain WeightGet HealthierRecompositionStrengthAthleticCardio " | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
-| settings | select "BeginnerIntermediateAdvancedAthlete" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
-| settings | select "SedentaryLight ActiveModerately ActiveVery ActiveExtremely Active" | visible control ≥40px min edge + accessible name (or hidden) | 448×48 name=true | pass |
+| settings | select "23456" | visible control ≥40px min edge + accessible name (or hidden) | 448×49 name=true | pass |
+| settings | select "Build MuscleLose FatGain WeightGet HealthierRecompositionStrengthAthleticCardio " | visible control ≥40px min edge + accessible name (or hidden) | 448×49 name=true | pass |
+| settings | select "BeginnerIntermediateAdvancedAthlete" | visible control ≥40px min edge + accessible name (or hidden) | 448×49 name=true | pass |
+| settings | select "SedentaryLight ActiveModerately ActiveVery ActiveExtremely Active" | visible control ≥40px min edge + accessible name (or hidden) | 448×49 name=true | pass |
 | settings | button "Log Weight Today" | visible control ≥40px min edge + accessible name (or hidden) | 191×40 name=true | pass |
 | settings | button "Manage injuries in Rehab" | visible control ≥40px min edge + accessible name (or hidden) | 253×40 name=true | pass |
 | settings | click smoke "Account" | responds without pageerror | ok | pass |
@@ -644,7 +644,7 @@
 | split-builder | button "+ Add session" | visible control ≥40px min edge + accessible name (or hidden) | 221×44 name=true | pass |
 | split-builder | button "Save program" | visible control ≥40px min edge + accessible name (or hidden) | 219×44 name=true | pass |
 | workout | button "Exercise search" | visible control ≥40px min edge + accessible name (or hidden) | 44×44 name=true | pass |
-| workout | select "Push A — Upper Chest & Front DeltsPull A — Lats & Bicep ThicknessLegs A — Quads " | visible control ≥40px min edge + accessible name (or hidden) | 227×18 name=true | pass |
+| workout | select "Push A — Upper Chest & Front DeltsPull A — Lats & Bicep ThicknessLegs A — Quads " | visible control ≥40px min edge + accessible name (or hidden) | 448×49 name=true | pass |
 | workout | button "Details for Barbell Row" | visible control ≥40px min edge + accessible name (or hidden) | 48×48 name=true | pass |
 | workout | button "Details for Lat Pulldown" | visible control ≥40px min edge + accessible name (or hidden) | 48×48 name=true | pass |
 | workout | button "Details for Cable Row" | visible control ≥40px min edge + accessible name (or hidden) | 48×48 name=true | pass |
@@ -657,7 +657,7 @@
 | workout | button "+ Add Custom Exercise" | visible control ≥40px min edge + accessible name (or hidden) | 448×44 name=true | pass |
 | workout | click smoke "go('workout',{search:true})" | responds without pageerror | ok | pass |
 | dashboard | theme dark tokens | --txt/--bg/--c1 defined | {"txt":"#F5F5F7","bg":"#0A0A0B","c1":"#FF7A1A"} | pass |
-| dashboard | theme light tokens | --txt/--bg/--c1 defined | {"txt":"#1C1C1E","bg":"#F5F5F7","c1":"#FF7A1A"} | pass |
+| dashboard | theme light tokens | --txt/--bg/--c1 defined | {"txt":"#1C1C1E","bg":"#F5F5F7","c1":"#B44A00"} | pass |
 
 ## Failures detail
 _None_

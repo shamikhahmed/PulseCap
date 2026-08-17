@@ -7,8 +7,8 @@ function _recoveryTabBar(tab) {
     tabs.map(function(t) {
       const on = t.id === tab;
       return '<button type="button" onclick="go(\'recovery\',{tab:\'' + t.id + '\'})" class="press" style="flex-shrink:0;padding:8px 14px;border-radius:999px;border:1px solid ' +
-        (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'rgba(var(--c1-rgb),0.15)' : 'var(--bg3)') +
-        ';color:' + (on ? 'var(--c1)' : 'var(--txt2)') + ';font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">' + esc(t.label) + '</button>';
+        (on ? 'var(--accent)' : 'var(--border)') + ';background:' + (on ? 'var(--accent)' : 'var(--bg3)') +
+        ';color:' + (on ? '#fff' : 'var(--txt2)') + ';font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">' + esc(t.label) + '</button>';
     }).join('') + '</div>';
 }
 

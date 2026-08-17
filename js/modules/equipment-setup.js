@@ -41,18 +41,8 @@ reg('equipment-setup', function() {
     cats.map(c => '<button type="button" class="cap-tab' + (_eqFilter === c ? ' on' : '') + '" role="tab" aria-selected="' + (_eqFilter === c) + '" onclick="_eqFilter=\'' + c + '\';go(\'equipment-setup\')">' + (catLabels[c] || c) + '</button>').join('') +
     '</div>';
 
-  const brandColors = {
-    'Life Fitness': '#c8102e',
-    'Hammer Strength': '#f5c842',
-    'Technogym': '#0066cc',
-    'Precor': '#00843d',
-    'Matrix': '#111111',
-    'Cybex': '#005eb8',
-    'Rogue': '#c41e3a',
-    'Eleiko': '#e30613',
-    'Atlantis': '#1a365d',
-    'Gym80': '#111111',
-    'Prime': '#4a1c8c'
+  const brandBadge = function(brand) {
+    return '<span class="eq-brand-badge" style="display:inline-block;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;margin-top:5px;letter-spacing:0.04em;text-transform:uppercase;background:rgba(var(--accent-rgb),0.12);color:var(--accent-text);border:1px solid rgba(var(--accent-rgb),0.28)">' + esc(brand) + '</span>';
   };
 
   const mine = selected.map(function(id) { return EquipmentDB.byId(id); }).filter(Boolean);
@@ -68,11 +58,10 @@ reg('equipment-setup', function() {
 
   const rows = items.map(item => {
     const on = selected.includes(item.id);
-    const badge = item.brand ?
-      '<span style="display:inline-block;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;margin-top:5px;letter-spacing:0.04em;text-transform:uppercase;background:' + (brandColors[item.brand] || 'var(--c1)') + '22;color:' + (brandColors[item.brand] || 'var(--c1)') + ';border:1px solid ' + (brandColors[item.brand] || 'var(--c1)') + '44">' + esc(item.brand) + '</span>' : '';
+    const badge = item.brand ? brandBadge(item.brand) : '';
     const typeBit = item.type ? '<div class="muted-11 mt-2">' + esc(String(item.type).replace(/_/g, ' ')) + (item.category ? ' · ' + esc(item.category.replace('_', ' ')) : '') + '</div>' : (item.category ? '<div class="muted-11 mt-2">' + esc(item.category.replace('_', ' ')) + '</div>' : '');
     return '<div onclick="toggleEquipment(\'' + item.id + '\')" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
-      '<div style="width:26px;height:26px;border-radius:8px;border:2px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'var(--c1)' : 'transparent') + ';display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700">' + (on ? '✓' : '') + '</div>' +
+      '<div style="width:26px;height:26px;border-radius:8px;border:2px solid ' + (on ? 'var(--accent)' : 'var(--border)') + ';background:' + (on ? 'var(--accent)' : 'transparent') + ';display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700">' + (on ? '✓' : '') + '</div>' +
       '<div class="flex-1"><div class="row-strong">' + esc(item.name) + '</div>' +
       (badge || typeBit) +
       '</div></div>';

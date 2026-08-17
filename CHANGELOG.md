@@ -1,3 +1,8 @@
+## 6.34.0 — 2026-08-18 — Ember rebuild Phase 28
+- Light mode adds `--accent-text` (#B44A00, ~#C25100 family) for readable orange on surfaces; bright `--accent` stays for fills, bars, and the nav indicator. `--c1` maps to accent-text; fill sites use `--accent` explicitly. `--success-text` for green labels on light backgrounds.
+- `<select>` styled to match Ember: 16px font, token border, custom chevron, 44px touch target.
+- Playwright audit: every visible text colour vs **computed** background on all screens × 375/390/430 × both themes (not just `--text` vs `--bg`). SW `pulsecap-v114`.
+
 ## 6.33.0 — 2026-08-18 — Ember rebuild Phase 27
 - Full-app QA: interaction, theme contrast (body + secondary ≥ 4.5:1), 375/390/430 widths, empty + 500-session extremes. Docs, screen gallery, and marketing pages synced. SW `pulsecap-v113`.
 

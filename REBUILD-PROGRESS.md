@@ -30,6 +30,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 24 Gutter + tabs | done | 9b8e7e7 | `.screen-pad` primitive; Account fields no longer full-bleed; Settings tab bar nowrap + scroll |
 | 25 equipmentIds | done | c8c6c1d | Specific machines override kit via machine type. Gap banner. Empty session fills with alternatives |
 | 26 Catalogue | done | | Type-first catalogue (18 brands × core types) + search / select-all / My gym summary |
+| 27 QA sweep | done | 3c71cb2 | Interaction + contrast + width + extremes; docs/gallery/marketing synced |
+| 28 Accent contrast | done | | `--accent-text`, select styling, computed-background contrast audit |
 
 ## Phase 1 checklist
 
@@ -179,5 +181,13 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 - Extremes: fresh user reaches intro; 1 and 500 sessions on Progress; longest ExDB / FOODS_DB names do not overflow.
 - Could not verify on this machine: real iPhone A2HS / VoiceOver / Dynamic Type 200%; live 6.6.0 backup overlay; clinical review of cues.
 - Chromium: **135 passed**, 1 skipped. Gallery wipe-on-capture so stale PNGs cannot linger.
+
+## Phase 28 — Light accent contrast + select styling (v6.34.0 / pulsecap-v114)
+
+- Token split: `--accent` for fills / nav indicator / toggles; `--accent-text` for orange text and icons on surfaces (light ~4.9:1 on `--bg`; dark unchanged at ~7.6:1). `--success-text` for green labels in light mode.
+- Fixed orange-on-orange failures (+ ADD CUSTOM EXERCISE, W1): selected chips/tabs use accent fill + white text; accent-text never on orange washes.
+- `<select>` unified via `select.field` / `.split-select`: rounded, token border, custom chevron, ≥16px.
+- Playwright: full computed-background contrast audit — 19 screens × 3 widths × 2 themes; token test for accent-text.
+- Chromium: **138 passed**, 1 skipped.
 
 

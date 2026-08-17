@@ -105,7 +105,7 @@
 .chip.on {
   background: rgba(var(--accent-rgb), 0.16);
   border-color: rgba(var(--accent-rgb), 0.4);
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 .stat { text-align: center; }
@@ -199,7 +199,7 @@
 .segmented button[aria-pressed="true"],
 .segmented button.on {
   background: var(--bg-elev);
-  color: var(--accent);
+  color: var(--accent-text);
   box-shadow: var(--elev-1);
 }
 
@@ -321,7 +321,7 @@
   cursor: pointer;
   touch-action: manipulation;
 }
-.log-more__menu button[aria-pressed="true"] { color: var(--accent); }
+.log-more__menu button[aria-pressed="true"] { color: var(--accent-text); }
 .log-more__menu button.log-more__pain { color: var(--danger); }
 
 .log-last,
@@ -383,20 +383,35 @@
   pointer-events: none;
   font-size: 13px;
 }
+.split-select,
+select.field,
+select.split-select {
   width: 100%;
   min-height: 44px;
-  padding: 0 36px 0 12px;
-  border-radius: 12px;
-  border: 1px solid var(--line);
-  background: var(--bg-elev-2);
-  color: var(--text);
+  padding: 14px 40px 14px 16px;
+  border-radius: var(--r14, 14px);
+  border: 1px solid var(--line, var(--border));
+  background: var(--bg-elev-2, var(--bg3));
+  color: var(--text, var(--txt));
   font-size: 16px;
   font-weight: 600;
   font-family: var(--font);
+  line-height: 1.2;
   cursor: pointer;
   touch-action: manipulation;
   -webkit-appearance: none;
   appearance: none;
+}
+[data-theme="light"] select.field,
+[data-theme="light"] .split-select {
+  background: #fff;
+  box-shadow: var(--ds1, 0 1px 3px rgba(0, 0, 0, 0.08));
+}
+select.field:focus,
+.split-select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.14);
 }
 .split-seg { margin-bottom: 14px; }
 .split-seg button { min-width: 0; font-size: 13px; }

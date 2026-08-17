@@ -85,9 +85,9 @@ function _periodizationBlock(ws) {
     '<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">' +
     labels.map(function(l, i) {
       const on = i + 1 === week;
-      return '<div style="text-align:center;padding:10px 6px;border-radius:12px;border:1px solid ' + (on ? 'var(--c1)' : 'var(--border)') + ';background:' + (on ? 'rgba(var(--c1-rgb),0.12)' : 'var(--bg4)') + '">' +
-        '<div style="font-size:12px;font-weight:800;color:' + (on ? 'var(--c1)' : 'var(--txt3)') + '">' + l + '</div>' +
-        '<div style="font-size:9px;color:var(--txt3);margin-top:4px;text-transform:uppercase">' + esc(phases[i]) + '</div></div>';
+      return '<div style="text-align:center;padding:10px 6px;border-radius:12px;border:1.5px solid ' + (on ? 'var(--accent)' : 'var(--border)') + ';background:' + (on ? 'var(--accent)' : 'var(--bg4)') + '">' +
+        '<div style="font-size:12px;font-weight:800;color:' + (on ? '#fff' : 'var(--txt3)') + '">' + l + '</div>' +
+        '<div style="font-size:9px;color:' + (on ? 'rgba(255,255,255,0.88)' : 'var(--txt2)') + ';margin-top:4px;text-transform:uppercase">' + esc(phases[i]) + '</div></div>';
     }).join('') +
     '</div></div>';
 }
@@ -132,8 +132,7 @@ function _strengthLineChart(ws) {
   }).join('');
 
   const selectorHTML = '<div class="pad-x-16-b12">' +
-    '<select id="strength-chart-select" onchange="changeExerciseChart(this.value)" ' +
-    'style="width:100%;padding:10px 14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:var(--txt);font-size:14px;-webkit-appearance:none">' +
+    '<select id="strength-chart-select" class="field" onchange="changeExerciseChart(this.value)">' +
     (exNames.length ? selectOpts : '<option value="">No exercises logged yet</option>') +
     '</select></div>';
 
@@ -218,7 +217,7 @@ function _renderStrengthChart(ws, exName) {
   if (pts.length >= 2) {
     var first = pts[0].load, last = pts[pts.length - 1].load;
     var pctChange = first > 0 ? Math.round(((last - first) / first) * 100) : 0;
-    var trendColor = pctChange >= 0 ? '#10B981' : '#ef4444';
+    var trendColor = pctChange >= 0 ? 'var(--success-text)' : 'var(--danger)';
     var arrow = pctChange >= 0 ? '↑' : '↓';
     trendHTML = '<div style="position:absolute;top:'+padT+'px;right:'+padR+'px;font-size:11px;font-weight:700;color:'+trendColor+'">' +
       arrow + ' ' + Math.abs(pctChange) + '% this month</div>';

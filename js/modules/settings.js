@@ -362,7 +362,7 @@ function _tabAppearance(u) {
       '<div style="width:38px;height:38px;border-radius:50%;background:var(--bg4);display:flex;align-items:center;justify-content:center;color:var(--c1);flex-shrink:0">'+icon(c.e,18)+'</div>' +
       '<div style="flex:1;font-size:14px;font-weight:600;color:var(--txt)">'+esc(c.n)+'</div>' +
       '<div aria-hidden="true" style="width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;' +
-      'border:2px solid ' + (curCoach===c.id ? 'var(--c1)' : 'var(--border2)') + ';background:' + (curCoach===c.id ? 'var(--c1)' : 'transparent') + '">' +
+      'border:2px solid ' + (curCoach===c.id ? 'var(--accent)' : 'var(--border2)') + ';background:' + (curCoach===c.id ? 'var(--accent)' : 'transparent') + '">' +
       (curCoach===c.id ? '<span style="color:#fff;font-size:11px;font-weight:800">✓</span>' : '') +
       '</div></button>'
     ).join('') +

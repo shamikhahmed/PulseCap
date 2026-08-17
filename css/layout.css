@@ -75,7 +75,7 @@
   transition: width 0.28s var(--spring);
 }
 
-.nb.on { color: var(--c1); }
+.nb.on { color: var(--accent); }
 .nb.on::before { width: 36px; }
 .nb.on svg { transform: scale(1.14); filter: drop-shadow(0 0 10px rgba(var(--c1-rgb), 0.58)); }
 .nb:active svg { transform: scale(0.86); }
@@ -375,7 +375,7 @@ button.back-chip {
   border-radius: var(--r999); font-size: 12px; font-weight: 700;
   text-transform: uppercase; letter-spacing: 0.06em; margin-top: 6px;
 }
-.rl-peak     { background: rgba(48,209,88,0.15);  color: var(--success); }
+.rl-peak     { background: rgba(var(--c3-rgb),0.15);  color: var(--success-text, var(--success)); }
 .rl-ready    { background: rgba(var(--c1-rgb),0.15); color: var(--c1); }
 .rl-moderate { background: rgba(255,159,10,0.15); color: var(--warn); }
 .rl-rest     { background: rgba(255,69,58,0.15);  color: var(--danger); }
@@ -424,7 +424,7 @@ button.back-chip {
 .supp-info { flex: 1; }
 .supp-name { font-size: 14px; font-weight: 700; color: var(--txt); }
 .supp-timing { font-size: 12px; color: var(--txt3); margin-top: 2px; }
-.supp-mark { padding: 7px 14px; background: rgba(var(--c1-rgb),0.1); border: 1px solid rgba(var(--c1-rgb),0.25); border-radius: var(--r999); color: var(--c1); font-size: 13px; font-weight: 600; touch-action: manipulation; }
+.supp-mark { padding: 7px 14px; background: var(--bg-elev, var(--bg3)); border: 1px solid rgba(var(--accent-rgb),0.35); border-radius: var(--r999); color: var(--accent-text); font-size: 13px; font-weight: 600; touch-action: manipulation; }
 
 /* ── Stats row ──────────────────────────────── */
 .stats-row { display: flex; gap: 10px; padding: 0 16px 14px; }
@@ -460,7 +460,7 @@ button.back-chip {
 input[type=range] {
   width: 100%; height: 28px; border-radius: 14px;
   background: var(--bg4); outline: none;
-  accent-color: var(--c1); touch-action: manipulation;
+  accent-color: var(--accent);
 }
 .slider-labels { display: flex; justify-content: space-between; font-size: 11px; color: var(--txt4); margin-top: 4px; }
 
@@ -480,7 +480,7 @@ input[type=range] {
   transition: background 0.22s; touch-action: manipulation; flex-shrink: 0;
 }
 .toggle::after { content: ''; position: absolute; left: 3px; top: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; transition: transform 0.22s var(--spring); box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
-.toggle.on { background: var(--c1); }
+.toggle.on { background: var(--accent); }
 .toggle.on::after { transform: translateX(20px); }
 .field-wrap { margin-bottom: 16px; }
 .field-label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--txt3); margin-bottom: 8px; }
@@ -893,7 +893,7 @@ body.gym-floor #nav.cap-premium-nav .nav-label { font-size: 0.65rem; }
   border-radius: 2px; margin-top: 6px; overflow: hidden;
 }
 .dash-progress > div {
-  height: 4px; border-radius: 2px; background: var(--c1);
+  height: 4px; border-radius: 2px; background: var(--accent);
 }
 .dash-equip {
   background: rgba(255,69,58,0.08) !important;

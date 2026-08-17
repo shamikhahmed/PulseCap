@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.33.0",
-  "swCache": "pulsecap-v113",
+  "version": "6.34.0",
+  "swCache": "pulsecap-v114",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 27 — UX QA sweep, gallery, marketing sync"
+  "notes": "Ember Phase 28 — light accent-text + select styling + computed contrast audit"
 }

@@ -436,3 +436,226 @@ test.describe('Phase 27 — QA sweep', () => {
   });
 });
 
+test.describe('Phase 28 — accent contrast + computed audit', () => {
+  const AUDIT_SCREENS = [
+    ['dashboard'],
+    ['workout'],
+    ['cardio'],
+    ['progress'],
+    ['photos'],
+    ['my-plan'],
+    ['nutrition'],
+    ['recovery', { tab: 'checkin' }],
+    ['rehab'],
+    ['settings', { tab: 'account' }],
+    ['settings', { tab: 'training' }],
+    ['settings', { tab: 'fuel' }],
+    ['settings', { tab: 'appearance' }],
+    ['settings', { tab: 'accessibility' }],
+    ['settings', { tab: 'notifications' }],
+    ['settings', { tab: 'privacy' }],
+    ['settings', { tab: 'about' }],
+    ['equipment-setup'],
+    ['profiles']
+  ];
+
+  test('light --accent-text meets 4.5:1 on page background; dark keeps bright accent', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.applyTheme === 'function');
+    const dark = await page.evaluate(() => {
+      window.applyTheme('dark', false);
+      const cs = getComputedStyle(document.documentElement);
+      return {
+        accent: cs.getPropertyValue('--accent').trim(),
+        accentText: cs.getPropertyValue('--accent-text').trim(),
+        bg: cs.getPropertyValue('--bg').trim()
+      };
+    });
+    expect(dark.accentText).toBe(dark.accent);
+    const light = await page.evaluate(() => {
+      window.applyTheme('light', false);
+      const cs = getComputedStyle(document.documentElement);
+      return {
+        accent: cs.getPropertyValue('--accent').trim(),
+        accentText: cs.getPropertyValue('--accent-text').trim(),
+        bg: cs.getPropertyValue('--bg').trim()
+      };
+    });
+    expect(light.accent).toBe('#FF7A1A');
+    expect(light.accentText).not.toBe(light.accent);
+    function parseHex(h) {
+      const m = String(h).match(/^#([0-9a-f]{6})$/i);
+      if (!m) return null;
+      return [parseInt(m[1].slice(0, 2), 16), parseInt(m[1].slice(2, 4), 16), parseInt(m[1].slice(4, 6), 16)];
+    }
+    function ratio(bg, fg) {
+      function lin(v) { v = v / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+      const a = parseHex(bg);
+      const b = parseHex(fg);
+      const L1 = 0.2126 * lin(a[0]) + 0.7152 * lin(a[1]) + 0.0722 * lin(a[2]);
+      const L2 = 0.2126 * lin(b[0]) + 0.7152 * lin(b[1]) + 0.0722 * lin(b[2]);
+      return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+    }
+    expect(ratio(light.bg, light.accentText)).toBeGreaterThanOrEqual(4.5);
+    expect(ratio(light.bg, light.accent)).toBeLessThan(3);
+    expect(ratio(dark.bg, dark.accent)).toBeGreaterThanOrEqual(7);
+  });
+
+  test('every visible text vs computed background on all screens, both themes', async ({ page }) => {
+    const widths = [375, 390, 430];
+    const allFails = [];
+    for (const w of widths) {
+      await page.setViewportSize({ width: w, height: 844 });
+      await page.goto('/?demo=1');
+      await page.waitForFunction(() => typeof window.go === 'function');
+      for (const theme of ['dark', 'light']) {
+        await page.evaluate((t) => window.applyTheme(t, false), theme);
+        for (const args of AUDIT_SCREENS) {
+          await page.evaluate((a) => window.go(a[0], a[1]), args);
+          await page.waitForTimeout(60);
+          const bad = await page.evaluate(() => {
+            function parseColor(str) {
+              if (!str || str === 'transparent') return null;
+              const m = String(str).match(/rgba?\(([^)]+)\)/);
+              if (m) {
+                const p = m[1].split(',').map(function(s) { return parseFloat(s.trim()); });
+                return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1];
+              }
+              const h = String(str).trim();
+              if (/^#[0-9a-f]{6}$/i.test(h)) {
+                return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16), 1];
+              }
+              return null;
+            }
+            function composite(fg, bg) {
+              const a = fg[3];
+              return [
+                Math.round(fg[0] * a + bg[0] * (1 - a)),
+                Math.round(fg[1] * a + bg[1] * (1 - a)),
+                Math.round(fg[2] * a + bg[2] * (1 - a)),
+                1
+              ];
+            }
+            function effectiveBg(el) {
+              const root = parseColor(getComputedStyle(document.documentElement).getPropertyValue('--bg')) ||
+                parseColor(getComputedStyle(document.body).backgroundColor) || [245, 245, 247, 1];
+              let out = root;
+              let node = el;
+              const chain = [];
+              while (node && node !== document.documentElement) {
+                const c = parseColor(getComputedStyle(node).backgroundColor);
+                if (c && c[3] > 0.02) chain.push(c);
+                node = node.parentElement;
+              }
+              for (let i = chain.length - 1; i >= 0; i--) out = composite(chain[i], out);
+              return out;
+            }
+            function contrastRatio(fg, bg) {
+              function lin(v) { v = v / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+              const L1 = 0.2126 * lin(fg[0]) + 0.7152 * lin(fg[1]) + 0.0722 * lin(fg[2]);
+              const L2 = 0.2126 * lin(bg[0]) + 0.7152 * lin(bg[1]) + 0.0722 * lin(bg[2]);
+              return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+            }
+            const hits = [];
+            const nodes = document.querySelectorAll('#view *');
+            nodes.forEach(function(el) {
+              if (el.closest('#nav')) return;
+              if (el.closest('.btn-primary')) return;
+              if (el.closest('.toggle.on')) return;
+              const cs = getComputedStyle(el);
+              if (cs.visibility === 'hidden' || cs.opacity === '0') return;
+              if (!el.getClientRects().length) return;
+              const fg = parseColor(cs.color);
+              if (fg && fg[0] > 240 && fg[1] > 240 && fg[2] > 240) {
+                let p = el.parentElement;
+                while (p && p !== document.getElementById('view')) {
+                  const pb = getComputedStyle(p).backgroundColor;
+                  const bi = getComputedStyle(p).backgroundImage;
+                  if ((bi && bi !== 'none') || parseColor(pb)) {
+                    const bc = parseColor(pb);
+                    if (bc && bc[0] < 80 && bc[1] < 80 && bc[2] < 80) return;
+                    if (bi && bi.indexOf('gradient') >= 0) return;
+                  }
+                  if (p.classList && (p.classList.contains('btn-primary') || p.style.background && p.style.background.indexOf('var(--accent)') >= 0)) return;
+                  p = p.parentElement;
+                }
+              }
+              if (cs.webkitTextFillColor && cs.webkitTextFillColor !== 'rgb(0, 0, 0)' &&
+                  cs.color && cs.webkitTextFillColor.indexOf('rgba') === 0 &&
+                  parseFloat(cs.webkitTextFillColor.split(',')[3] || '1') === 0) return;
+              if (cs.webkitTextFillColor === 'transparent' || cs.backgroundClip === 'text') return;
+              const text = (el.textContent || '').replace(/\s+/g, ' ').trim();
+              if (!text || text.length < 1) return;
+              if (el.children.length && el.tagName !== 'SPAN' && el.tagName !== 'STRONG' && el.tagName !== 'EM') {
+                const own = Array.from(el.childNodes).filter(function(n) { return n.nodeType === 3; }).map(function(n) { return n.textContent.trim(); }).join('');
+                if (!own) return;
+              }
+              if (!fg || fg[3] < 0.4) return;
+              const bg = effectiveBg(el);
+              const ratio = contrastRatio(fg, bg);
+              const fs = parseFloat(cs.fontSize) || 14;
+              const fw = parseInt(cs.fontWeight, 10) || 400;
+              const large = fs >= 18 || (fs >= 14 && fw >= 700);
+              const caption = fs <= 11;
+              const rootCs = getComputedStyle(document.documentElement);
+              const txt2Ref = parseColor(rootCs.getPropertyValue('--text-2') || rootCs.getPropertyValue('--txt2'));
+              const txt3Ref = parseColor(rootCs.getPropertyValue('--text-3') || rootCs.getPropertyValue('--txt3'));
+              function near(a, b) {
+                if (!a || !b) return false;
+                return Math.abs(a[0] - b[0]) < 4 && Math.abs(a[1] - b[1]) < 4 && Math.abs(a[2] - b[2]) < 4;
+              }
+              const muted = near(fg, txt2Ref) || near(fg, txt3Ref);
+              const min = muted ? 3.0 : (caption ? 3.0 : (large ? 3.0 : 4.5));
+              if (ratio + 0.01 < min) {
+                hits.push({
+                  tag: el.tagName,
+                  ratio: Math.round(ratio * 100) / 100,
+                  min: min,
+                  fs: fs,
+                  fg: cs.color,
+                  sample: text.slice(0, 48)
+                });
+              }
+            });
+            return { screen: window.currentScreenId(), hits: hits.slice(0, 12) };
+          });
+          if (bad.hits.length) allFails.push({ w: w, theme: theme, screen: bad.screen, hits: bad.hits });
+        }
+      }
+    }
+    expect(allFails, JSON.stringify(allFails, null, 2)).toEqual([]);
+  });
+
+  test('select.field matches design system at 390px both themes', async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.go === 'function');
+    for (const theme of ['dark', 'light']) {
+      await page.evaluate((t) => window.applyTheme(t, false), theme);
+      await page.evaluate(() => window.go('settings', { tab: 'account' }));
+      const sel = page.locator('#settings-panel select.field').first();
+      await expect(sel).toBeVisible();
+      const style = await sel.evaluate((el) => {
+        const cs = getComputedStyle(el);
+        const wrap = el.closest('.select-wrap');
+        const after = wrap ? getComputedStyle(wrap, '::after').content : '';
+        return {
+          fs: parseFloat(cs.fontSize),
+          radius: parseFloat(cs.borderRadius),
+          appearance: cs.appearance || cs.webkitAppearance,
+          minH: el.getBoundingClientRect().height,
+          border: cs.borderWidth,
+          hasChevron: after && after !== 'none' && after !== 'normal'
+        };
+      });
+      expect(style.fs).toBeGreaterThanOrEqual(16);
+      expect(style.radius).toBeGreaterThanOrEqual(11);
+      expect(String(style.appearance)).toMatch(/none/);
+      expect(style.minH).toBeGreaterThanOrEqual(44);
+      expect(parseFloat(style.border)).toBeGreaterThan(0);
+      expect(style.hasChevron).toBeTruthy();
+    }
+  });
+});
+

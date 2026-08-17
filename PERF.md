@@ -6,22 +6,22 @@
 
 | Metric | Budget | Measured | Pass |
 |--------|-------:|---------:|:----:|
-| DOMContentLoaded | ≤8000ms | 374ms | yes |
-| Wall-clock ready (go/S) | ≤20000ms | 436ms | yes |
-| Critical CSS+JS bytes | ≤921600 | 533885 | yes |
-| Max route go() | ≤800ms | 34ms (avg 31) | yes |
+| DOMContentLoaded | ≤8000ms | 226ms | yes |
+| Wall-clock ready (go/S) | ≤20000ms | 304ms | yes |
+| Critical CSS+JS bytes | ≤921600 | 534710 | yes |
+| Max route go() | ≤800ms | 34ms (avg 32) | yes |
 
 ## Route samples
 
-`21, 33, 33, 34, 33` ms for workout→progress→my-plan→settings→dashboard
+`28, 33, 34, 31, 34` ms for workout→progress→my-plan→settings→dashboard
 
 ## Critical assets
 
-- `css/tokens.css`: 4222 B
+- `css/tokens.css`: 4422 B
 - `css/base.css`: 10966 B
-- `css/layout.css`: 40973 B
-- `css/components.css`: 45480 B
-- `css/ember-components.css`: 11950 B
+- `css/layout.css`: 41002 B
+- `css/components.css`: 45627 B
+- `css/ember-components.css`: 12391 B
 - `css/shell.css`: 4327 B
 - `css/identity.css`: 14599 B
 - `js/app.js`: 39043 B
@@ -33,7 +33,7 @@
 - `js/plan-import.js`: 11813 B
 - `js/modules/dashboard.js`: 6645 B
 - `js/modules/workout.js`: 103329 B
-- `js/modules/settings.js`: 55978 B
+- `js/modules/settings.js`: 55986 B
 
 **Splash:** absent (must dissolve when load done — no artificial delay).
 
