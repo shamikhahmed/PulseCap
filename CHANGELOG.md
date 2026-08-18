@@ -1,3 +1,11 @@
+## 6.36.0 — 2026-08-18 — Ember rebuild Phase 30
+- Brand integrity: updated `icon.svg` + regenerated `icon-{size}.png` set (including maskable variants) so Home Screen icon matches the opened app.
+- Theme seam: fixed `applyTheme()` so it no longer overwrites the correct `meta[name="theme-color"]`; manifest theme/background now match Ember tokens.
+- iOS launch feel: added iOS `apple-touch-startup-image` declarations + generated light/dark startup images using exact token background colors.
+- Manifest sync: rewrote positioning copy and fixed “Exercises → Library” shortcut to land on Settings → Privacy (the real Exercise Library UI).
+- Contrast: fixed the final light-mode deload chip subtitle contrast in Progress’ periodization block.
+- SW update: bumped service-worker cache name to `pulsecap-v116` so installs update.
+
 ## 6.35.0 — 2026-08-18 — Ember rebuild Phase 29
 - Selected/active chips on bright `--accent` fills use `--on-accent` (#1C1C1E, ~7:1) instead of white (~2.6:1). Mesocycle phase label raised to 11px. Contrast audit resolves gradient stops (worst-case across stops). SW `pulsecap-v115`.
 

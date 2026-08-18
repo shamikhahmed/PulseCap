@@ -207,3 +207,8 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 - iOS launch feel: added `apple-touch-startup-image` declarations and generated light/dark startup images with `background_color` matching `--bg`.
 - Contrast: fixed the final light-mode `Deload` chip subtitle contrast (11px) to meet WCAG AA.
 
+## Phase 32 — Motion with meaning (v6.37.0 / pulsecap-v117)
+
+- Splash seam: removed the artificial 300ms splash “floor” so the app flows into the existing splash exit animation as fast as the device can paint.
+- Kept constraints: no new animations added; existing durations remain capped and `prefers-reduced-motion` behavior stays intact.
+

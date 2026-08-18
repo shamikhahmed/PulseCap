@@ -244,7 +244,7 @@ window.updateOfflineBanner = updateOfflineBanner;
 
   <script>
     (function() {
-      var SPLASH_MS = 300;
+      var SPLASH_MS = 0;
       var t0 = performance.now();
       window._bootAfterSplash = function(fn) {
         var wait = Math.max(0, SPLASH_MS - (performance.now() - t0));
@@ -328,7 +328,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=116').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=117').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {
