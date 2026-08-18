@@ -255,7 +255,7 @@ window.parsePlanJson = function(obj) {
     });
     return { ok: true, draft: clean, unmatched: unmatched, warnings: unmatched.length ? ['Some exercises are not in the library — map them before saving.'] : [], confidence: unmatched.length ? 0.8 : 1 };
   } catch (e) {
-    return { ok: false, error: (e && e.message) || 'Invalid plan JSON' };
+    return { ok: false, error: 'That file is not valid PulseCap plan JSON. Export a PulseCap JSON plan or paste the plan text instead.' };
   }
 };
 
@@ -268,7 +268,7 @@ window.PlanImport = {
     if (name.endsWith('.json') || type.indexOf('json') !== -1) {
       return file.text().then(function(txt) {
         let obj;
-        try { obj = JSON.parse(txt); } catch (e) { throw new Error('Invalid JSON'); }
+      try { obj = JSON.parse(txt); } catch (e) { throw new Error('That file is not valid PulseCap plan JSON. Export a PulseCap JSON plan or paste the plan text instead.'); }
         return parsePlanJson(obj);
       });
     }

@@ -161,8 +161,8 @@ const Equipment = {
     if (!gaps.length) return '';
     const labels = { chest: 'chest', back: 'back', legs: 'legs', shoulders: 'shoulders', arms: 'arms' };
     const list = gaps.map(function(g) { return labels[g] || g; }).join(', ');
-    const msg = 'Your selected machines do not cover loaded ' + list +
-      ' work. Bodyweight moves stay available. Add a matching machine or free weights, or use the closest alternatives shown in the session.';
+    const msg = 'Your selected machines do not cover all your plan’s ' + list +
+      ' work yet. Bodyweight moves stay available. Add a matching machine (or free weights) or use the closest alternatives shown in your session.';
     return '<div class="banner banner--caution" style="margin:8px 16px">' +
       (typeof esc === 'function' ? esc(msg) : msg) + '</div>';
   },

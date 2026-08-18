@@ -216,3 +216,8 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 
 - Guardrail: added a Playwright regression test that leaves optional size fields blank during onboarding and still asserts the app reaches `Today` after the full 4-step flow.
 
+## Phase 34 — Every state, not just the happy path (v6.39.0 / pulsecap-v119)
+
+- Copy seam: made near-empty gym gap banner encouraging, clarified storage-full next step (export backup), and replaced invalid plan JSON error with plain-language PulseCap guidance.
+- Tests: added `tests/edge-states.spec.js` to lock in the storage-full and invalid-plan-JSON message contracts.
+

@@ -379,7 +379,7 @@ const S = {
       window._pulseStorageError = e;
       if (typeof toast === 'function') {
         toast(e && e.name === 'QuotaExceededError'
-          ? 'Storage is full. Export a backup before adding more data.'
+          ? 'Storage is full. Export a backup (Me -> Export Backup) before adding more data.'
           : 'Could not save changes on this device.', 'err', 6000);
       }
       return false;

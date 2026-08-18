@@ -1,7 +1,7 @@
 # PulseCap — CLAUDE.md
 
 ## Current truth
-- Version: 6.38.0
+- Version: 6.39.0
 - App type: offline-first **PWA only**. No native shell, HealthKit, Live Activity, WidgetKit, or RevenueCat unless owner reverses.
 - Stack: vanilla JS, no framework, no bundler.
 - Router: `reg('screen', fn)` + synchronous `go('screen')`. Same-screen `go()` preserves scroll and focus unless `resetScroll` or a tab change.

@@ -1,3 +1,6 @@
+## 6.39.0 — 2026-08-18 — Ember rebuild Phase 34
+- Edge states copy: made near-empty gym gap banner encouraging, clarified storage-full next step (export backup), and replaced invalid plan JSON toast with plain-language “PulseCap plan JSON” guidance.
+
 ## 6.38.0 — 2026-08-18 — Ember rebuild Phase 33
 - Onboarding as a welcome: added a Playwright guardrail that intentionally leaves optional size fields blank and verifies the onboarding flow still reaches `Today`.
 
