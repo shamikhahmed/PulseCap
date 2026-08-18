@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.35.0';
+window.APP_VERSION = '6.36.0';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -399,6 +399,7 @@ function bootDeepLink() {
     const q = new URLSearchParams(location.search);
     const action = q.get('action');
     const goTo = q.get('go') || q.get('tab');
+    const deepTab = q.get('tab');
     if (action === 'start' || goTo === 'log' || goTo === 'workout') {
       _pendingDeepLink = function() {
         if (typeof startWorkout === 'function' && S.g('onboarded')) startWorkout();
@@ -421,7 +422,12 @@ function bootDeepLink() {
     }
     if (goTo && typeof go === 'function') {
       _pendingDeepLink = function() {
-        go(S.g('onboarded') ? goTo : 'onboarding', S.g('onboarded') ? undefined : { showIntro: true });
+        if (S.g('onboarded')) {
+          if (goTo === 'settings' && deepTab) go('settings', { tab: deepTab });
+          else go(goTo);
+        } else {
+          go('onboarding', { showIntro: true });
+        }
       };
       return true;
     }
@@ -679,7 +685,7 @@ function applyTheme(t, persist) {
      attribute — keep both in sync or light mode ships a dark navbar. */
   document.documentElement.setAttribute('data-cap-theme', theme);
   const themeMeta = document.querySelector('meta[name="theme-color"]');
-  if (themeMeta) themeMeta.setAttribute('content', theme === 'light' ? '#f2f2f7' : '#0d0d0f');
+  if (themeMeta) themeMeta.setAttribute('content', theme === 'light' ? '#F5F5F7' : '#0A0A0B');
   if (persist !== false) {
     S.set('user.theme', theme);
     S.set('user.mode', theme);

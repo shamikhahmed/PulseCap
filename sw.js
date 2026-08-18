@@ -1,6 +1,6 @@
 'use strict';
 
-const CACHE = 'pulsecap-v115';
+const CACHE = 'pulsecap-v116';
 const ASSETS = [
   './',
   './index.html',
@@ -9,6 +9,35 @@ const ASSETS = [
   './pitch.html',
   './icon-192.png',
   './icon-512.png',
+  './icon-48.png',
+  './icon-72.png',
+  './icon-96.png',
+  './icon-128.png',
+  './icon-144.png',
+  './icon-152.png',
+  './icon-167.png',
+  './icon-180.png',
+  './icon-256.png',
+  './icon-384.png',
+  './icon-1024.png',
+
+  './icon-maskable-192.png',
+  './icon-maskable-512.png',
+
+  './assets/apple-touch-startup-320x568-light.png',
+  './assets/apple-touch-startup-320x568-dark.png',
+  './assets/apple-touch-startup-375x667-light.png',
+  './assets/apple-touch-startup-375x667-dark.png',
+  './assets/apple-touch-startup-375x812-light.png',
+  './assets/apple-touch-startup-375x812-dark.png',
+  './assets/apple-touch-startup-390x844-light.png',
+  './assets/apple-touch-startup-390x844-dark.png',
+  './assets/apple-touch-startup-414x736-light.png',
+  './assets/apple-touch-startup-414x736-dark.png',
+  './assets/apple-touch-startup-414x896-light.png',
+  './assets/apple-touch-startup-414x896-dark.png',
+  './assets/apple-touch-startup-428x926-light.png',
+  './assets/apple-touch-startup-428x926-dark.png',
   './manifest.json',
   './css/tokens.css',
   './css/base.css',

@@ -6,14 +6,14 @@
 
 | Metric | Budget | Measured | Pass |
 |--------|-------:|---------:|:----:|
-| DOMContentLoaded | ≤8000ms | 316ms | yes |
-| Wall-clock ready (go/S) | ≤20000ms | 354ms | yes |
-| Critical CSS+JS bytes | ≤921600 | 534888 | yes |
-| Max route go() | ≤800ms | 34ms (avg 31) | yes |
+| DOMContentLoaded | ≤8000ms | 330ms | yes |
+| Wall-clock ready (go/S) | ≤20000ms | 387ms | yes |
+| Critical CSS+JS bytes | ≤921600 | 535031 | yes |
+| Max route go() | ≤800ms | 51ms (avg 35) | yes |
 
 ## Route samples
 
-`22, 34, 34, 33, 33` ms for workout→progress→my-plan→settings→dashboard
+`25, 33, 51, 33, 33` ms for workout→progress→my-plan→settings→dashboard
 
 ## Critical assets
 
@@ -24,7 +24,7 @@
 - `css/ember-components.css`: 12406 B
 - `css/shell.css`: 4327 B
 - `css/identity.css`: 14599 B
-- `js/app.js`: 39043 B
+- `js/app.js`: 39186 B
 - `js/storage.js`: 26105 B
 - `js/engines.js`: 111068 B
 - `js/coach-kernel.js`: 15101 B

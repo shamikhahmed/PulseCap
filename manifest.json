@@ -1,12 +1,12 @@
 {
   "name": "PulseCap",
   "short_name": "PulseCap",
-  "description": "PulseCap by Capricorn Systems — your Smart Coach fitness operating system",
+  "description": "Offline-first gym logging — run today’s session on your device, log it in two taps, and see honest progress.",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#0d0d0f",
-  "theme_color": "#0d0d0f",
+  "background_color": "#0A0A0B",
+  "theme_color": "#0A0A0B",
   "orientation": "any",
   "categories": ["health", "fitness", "sports"],
   "shortcuts": [
@@ -27,13 +27,29 @@
     {
       "name": "Exercises",
       "short_name": "Library",
-      "url": "./?go=encyclopedia",
+      "description": "Browse built-in exercises and sync metadata (optional)",
+      "url": "./?go=settings&tab=privacy",
       "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ],
   "icons": [
     { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
-    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
-    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+
+    { "src": "icon-48.png", "sizes": "48x48", "type": "image/png", "purpose": "any" },
+    { "src": "icon-72.png", "sizes": "72x72", "type": "image/png", "purpose": "any" },
+    { "src": "icon-96.png", "sizes": "96x96", "type": "image/png", "purpose": "any" },
+    { "src": "icon-128.png", "sizes": "128x128", "type": "image/png", "purpose": "any" },
+    { "src": "icon-144.png", "sizes": "144x144", "type": "image/png", "purpose": "any" },
+    { "src": "icon-152.png", "sizes": "152x152", "type": "image/png", "purpose": "any" },
+    { "src": "icon-167.png", "sizes": "167x167", "type": "image/png", "purpose": "any" },
+    { "src": "icon-180.png", "sizes": "180x180", "type": "image/png", "purpose": "any" },
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-256.png", "sizes": "256x256", "type": "image/png", "purpose": "any" },
+    { "src": "icon-384.png", "sizes": "384x384", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icon-1024.png", "sizes": "1024x1024", "type": "image/png", "purpose": "any" },
+
+    { "src": "icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
+    { "src": "icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ]
 }

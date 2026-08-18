@@ -87,7 +87,7 @@ function _periodizationBlock(ws) {
       const on = i + 1 === week;
       return '<div style="text-align:center;padding:10px 6px;border-radius:12px;border:1.5px solid ' + (on ? 'var(--accent)' : 'var(--border)') + ';background:' + (on ? 'var(--accent)' : 'var(--bg4)') + '">' +
         '<div style="font-size:12px;font-weight:800;color:' + (on ? 'var(--on-accent)' : 'var(--txt3)') + '">' + l + '</div>' +
-        '<div style="font-size:11px;color:' + (on ? 'var(--on-accent)' : 'var(--txt2)') + ';margin-top:4px;text-transform:uppercase;opacity:' + (on ? '0.88' : '1') + '">' + esc(phases[i]) + '</div></div>';
+        '<div style="font-size:11px;color:' + (on ? 'var(--on-accent)' : 'var(--txt3)') + ';margin-top:4px;text-transform:uppercase;opacity:' + (on ? '0.88' : '1') + '">' + esc(phases[i]) + '</div></div>';
     }).join('') +
     '</div></div>';
 }

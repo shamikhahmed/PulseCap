@@ -199,3 +199,11 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 - Chromium: **140 passed**, 1 skipped.
 
 
+## Phase 30 — Brand integrity + launch polish (v6.36.0 / pulsecap-v116)
+
+- App icon: updated `icon.svg` accent + regenerated `icon-{size}.png` set (48..1024) and `icon-maskable-{size}.png` variants; Home Screen icon now matches the opened app.
+- Manifest: synced theme/background + rewrote copy; fixed “Exercises → Library” shortcut to land on the real Exercise Library UI (`Settings` → `Privacy`).
+- Theme color seam: fixed `applyTheme()` so it no longer clobbers the meta `theme-color` (single source of truth).
+- iOS launch feel: added `apple-touch-startup-image` declarations and generated light/dark startup images with `background_color` matching `--bg`.
+- Contrast: fixed the final light-mode `Deload` chip subtitle contrast (11px) to meet WCAG AA.
+

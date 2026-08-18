@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.35.0",
-  "swCache": "pulsecap-v115",
+  "version": "6.36.0",
+  "swCache": "pulsecap-v116",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 29 — on-accent text on bright accent fills + gradient contrast audit"
+  "notes": "Ember Phase 30 — brand integrity: icon + theme color single source, iOS startup images, manifest sync, final deload chip contrast"
 }
