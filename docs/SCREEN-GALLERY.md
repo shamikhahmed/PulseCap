@@ -1,7 +1,7 @@
 # PulseCap — Documented Screen Gallery
 
-> v6.34.0 · Captures via `npm run gallery -- --project=chromium` → `docs/screenshots/gallery/` · Viewer: `screen-gallery.html`  
-> Latest matrix: **176** shots (108 viewport + 68 scroll) · v6.34.0 capture · light mode uses `--accent-text` for readable orange labels
+> v6.40.0 · Captures via `npm run gallery -- --project=chromium` → `docs/screenshots/gallery/` · Viewer: `screen-gallery.html`  
+> Latest matrix: **176** shots (108 viewport + 68 scroll) · v6.40.0 capture · light mode uses `--accent-text` for readable orange labels
 
 ## How state is kept
 

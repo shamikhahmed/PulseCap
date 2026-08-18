@@ -1,5 +1,8 @@
 # PulseCap — Full Quality Audit
 
+> Archived reference (pre-Ember IA). This file documents a 2026-07 snapshot and is not the current product truth.
+> Current source-of-truth docs: `README.md`, `HANDOVER.md`, `CLAUDE.md`, `REBUILD-PROGRESS.md`, `PERFECTION-REVIEW.md`.
+>
 > Generated 2026-07-30 · Phase 1 discover (no code changes in this file's source snapshot)  
 > App: offline-first PWA · v6.3.0 · SW `pulsecap-v81` · live https://shamikhahmed.github.io/PulseCap
 

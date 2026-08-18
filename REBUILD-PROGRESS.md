@@ -221,3 +221,9 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 - Copy seam: made near-empty gym gap banner encouraging, clarified storage-full next step (export backup), and replaced invalid plan JSON error with plain-language PulseCap guidance.
 - Tests: added `tests/edge-states.spec.js` to lock in the storage-full and invalid-plan-JSON message contracts.
 
+## Phase 35 — Documentation and site sync (v6.40.0 / pulsecap-v120)
+
+- Product truth sync: updated README, GUIDE, HANDOVER, pitch/presentation, and settings copy to the shipped positioning (offline training companion), current exercise count (290), and current release versions.
+- Archived stale docs: marked pre-Ember `AUDIT.md` and `IA-RATIONALE.md` as archived references so they no longer present conflicting IA guidance.
+- Gallery: regenerated full screenshot matrix via `npm run gallery`.
+

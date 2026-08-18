@@ -1,3 +1,7 @@
+## 6.40.0 — 2026-08-18 — Ember rebuild Phase 35
+- Documentation/site sync: replaced stale “fitness/performance OS” positioning with shipped offline-training copy, aligned exercise counts and versions, and marked pre-Ember IA/audit docs as archived references.
+- Regenerated the full screenshot gallery matrix and refreshed shipped changelog/site artifacts to match the current app truth.
+
 ## 6.39.0 — 2026-08-18 — Ember rebuild Phase 34
 - Edge states copy: made near-empty gym gap banner encouraging, clarified storage-full next step (export backup), and replaced invalid plan JSON toast with plain-language “PulseCap plan JSON” guidance.
 

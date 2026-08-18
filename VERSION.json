@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.39.0",
-  "swCache": "pulsecap-v119",
+  "version": "6.40.0",
+  "swCache": "pulsecap-v120",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 34 — edge states copy: gap banner, storage full, invalid plan JSON"
+  "notes": "Ember Phase 35 — docs and site sync to shipped truth + refreshed gallery"
 }

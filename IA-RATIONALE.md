@@ -1,5 +1,8 @@
 # PulseCap — Information Architecture Rationale
 
+> Archived reference (pre-Ember IA). This file documents a 2026-07 layout and is not the shipped IA.
+> Current IA truth: Today · Train · Progress · Programs · Me (see `CLAUDE.md`, `HANDOVER.md`, and `PERFECTION-REVIEW.md`).
+>
 > 2026-07-30 · v6.4.0 · Companion to `AUDIT.md`
 
 ## Product shape

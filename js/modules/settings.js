@@ -490,7 +490,7 @@ function _tabAbout() {
     _sectionTitle('PulseCap') +
     '<div class="card card-solid mb-14">' +
     '<div style="font-size:18px;font-weight:800;color:var(--txt);margin-bottom:4px">v' + ver + '</div>' +
-    '<div style="font-size:13px;color:var(--txt2);line-height:1.55">Offline-first Smart Coach fitness OS. Rule-based coaching — not cloud AI.</div>' +
+    '<div style="font-size:13px;color:var(--txt2);line-height:1.55">Offline-first training app for iPhone and web. Rule-based coaching — not cloud AI.</div>' +
     '</div>' +
 
     _sectionTitle('Navigation') +

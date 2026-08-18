@@ -1,9 +1,9 @@
 # PulseCap — User Guide
 
-PulseCap is your **Smart Coach fitness operating system** — an offline-first PWA for workouts, cardio, body tracking, nutrition, and rule-based coaching.
+PulseCap is an offline-first training PWA: run today’s session, log fast, and review honest progress on your device.
 
 **Live app:** https://shamikhahmed.github.io/PulseCap  
-**Version:** 6.34.0 · SW `pulsecap-v114`
+**Version:** 6.40.0 · SW `pulsecap-v120`
 
 ---
 
@@ -50,7 +50,7 @@ Nutrition → search offline foods → one-tap log. Optional **barcode scan** (C
 
 ### Exercise library
 
-- **300+ exercises** with cues, setup, mistakes, breathing, joint stress
+- **290 unique exercises** with cues, setup, mistakes, breathing, and joint stress
 - Search/filter by muscle, equipment, difficulty
 - Injury-aware swaps when Rehab has an active injury
 - Form cues via FormLoops (text/SVG — not video unless you sync wger clips in Settings → Data)
@@ -125,7 +125,7 @@ Macro logging, water, supplements with timing. Quick-add meals + offline food se
 ## Offline & data
 
 - All data in localStorage (`fos_profiles_[id]`); photos in IndexedDB
-- Service worker cache-first (`pulsecap-v114`)
+- Service worker cache-first (`pulsecap-v120`)
 - No backend required · no account · no cloud sync
 - Export JSON before device reset
 

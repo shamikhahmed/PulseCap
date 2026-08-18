@@ -1,8 +1,8 @@
 # PulseCap
 
-**Version:** 6.34.0
+**Version:** 6.40.0
 
-**Your Smart Coach fitness operating system — by Capricorn Systems, built as a single offline-first PWA.**
+**Run today’s session, log it in two taps, and see honest progress — offline, on your device.**
 
 🔗 **Live:** https://shamikhahmed.github.io/PulseCap  
 📁 **Repo:** https://github.com/shamikhahmed/PulseCap
@@ -143,7 +143,7 @@ manifest.json       — PWA manifest
 
 ## Roadmap
 
-Shipped through **v6.34.0** (see `CHANGELOG.md`): Ember rebuild Phases 1–28. Same-screen updates keep scroll and focus. Today fills the viewport. Settings gutters and a single-row tab bar. Gym-specific machines (type-first catalogue) actually filter the plan. Light mode accent text meets WCAG AA. Smart Coach is rules-based — not an LLM. No 1RM estimator.
+Shipped through **v6.40.0** (see `CHANGELOG.md`): Ember rebuild Phases 1–35. Same-screen updates keep scroll and focus. Today fills the viewport. Settings gutters and a single-row tab bar. Gym-specific machines (type-first catalogue) actually filter the plan. Light mode accent text meets WCAG AA. Smart Coach is rules-based — not an LLM. No 1RM estimator.
 
 Still open / honest gaps (owner constraints):
 
@@ -224,7 +224,7 @@ Karachi, Pakistan
 
 ---
 
-*Built by Shamikh Ahmed — offline-first Smart Coach fitness OS.*
+*Built by Shamikh Ahmed — offline-first training PWA with rule-based Smart Coach.*
 
 ## Screen gallery
 
