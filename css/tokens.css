@@ -16,6 +16,8 @@
   --accent-press: #E86A0E;
   --accent-rgb: 255, 122, 26;
   --accent-text: var(--accent);
+  /* Readable on bright --accent / --grad fills (~7:1 on #FF7A1A) */
+  --on-accent: #1C1C1E;
 
   --success: #30D158;
   --success-text: var(--success);
@@ -105,6 +107,7 @@
   --accent-rgb: 255, 122, 26;
   /* Readable orange on light surfaces (~#C25100 family); fills keep --accent */
   --accent-text: #B44A00;
+  --on-accent: #1C1C1E;
 
   --success: #248A3D;
   --success-text: #1B6E30;

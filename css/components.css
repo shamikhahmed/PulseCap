@@ -73,7 +73,7 @@
 .btn:active{transform:scale(0.97);opacity:0.92;}
 .btn:active{transform:scale(0.96);opacity:0.88;}
 .btn-primary{
-  background:var(--grad);color:#fff;
+  background:var(--grad);color:var(--on-accent);
   box-shadow:0 4px 20px rgba(var(--c1-rgb),0.3),0 1px 4px rgba(0,0,0,0.2);
 }
 .btn-primary:active{box-shadow:0 2px 10px rgba(var(--c1-rgb),0.2);}
@@ -529,7 +529,7 @@ input[type="range"]::-moz-range-thumb{
   flex-shrink:0;transition:background 0.18s,border-color 0.18s;
   font-size:11px;color:transparent;
 }
-.ob-opt.sel .ob-opt-check{background:var(--accent);border-color:var(--accent);color:#fff;}
+.ob-opt.sel .ob-opt-check{background:var(--accent);border-color:var(--accent);color:var(--on-accent);}
 
 /* ══ EXPLORE GRID ════════════════════════════════════════════════ */
 .explore-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px;margin-bottom:20px;}
@@ -702,7 +702,7 @@ input[type="range"]::-moz-range-thumb{
   background:none;transition:all 0.2s var(--ease);
 }
 .bodymap-toggle-btn.on{
-  background:var(--grad);color:#fff;
+  background:var(--grad);color:var(--on-accent);
   box-shadow:0 2px 8px rgba(var(--c1-rgb),0.3);
 }
 .muscle-tooltip{

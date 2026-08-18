@@ -537,19 +537,65 @@ test.describe('Phase 28 — accent contrast + computed audit', () => {
                 1
               ];
             }
-            function effectiveBg(el) {
-              const root = parseColor(getComputedStyle(document.documentElement).getPropertyValue('--bg')) ||
+            function parseGradientStops(bgImage) {
+              if (!bgImage || bgImage === 'none' || bgImage.indexOf('gradient') < 0) return [];
+              const stops = [];
+              const re = /(#[0-9a-f]{3,8}|rgba?\([^)]+\))/gi;
+              let m;
+              while ((m = re.exec(bgImage))) {
+                const c = parseColor(m[1]);
+                if (c) stops.push(c);
+              }
+              if (!stops.length && bgImage.indexOf('gradient') >= 0) {
+                const grad = getComputedStyle(document.documentElement).getPropertyValue('--grad');
+                return parseGradientStops(grad);
+              }
+              return stops;
+            }
+            function rootBg() {
+              return parseColor(getComputedStyle(document.documentElement).getPropertyValue('--bg')) ||
                 parseColor(getComputedStyle(document.body).backgroundColor) || [245, 245, 247, 1];
-              let out = root;
+            }
+            function nodePaintLayers(cs) {
+              const layers = [];
+              const stops = parseGradientStops(cs.backgroundImage);
+              const solid = parseColor(cs.backgroundColor);
+              if (stops.length) {
+                stops.forEach(function(s) { layers.push(s); });
+              } else if (solid && solid[3] > 0.02) {
+                layers.push(solid);
+              }
+              return layers;
+            }
+            function bgVariantsFromRoot(el) {
+              const stack = [];
               let node = el;
-              const chain = [];
               while (node && node !== document.documentElement) {
-                const c = parseColor(getComputedStyle(node).backgroundColor);
-                if (c && c[3] > 0.02) chain.push(c);
+                stack.push(nodePaintLayers(getComputedStyle(node)));
                 node = node.parentElement;
               }
-              for (let i = chain.length - 1; i >= 0; i--) out = composite(chain[i], out);
-              return out;
+              let variants = [rootBg()];
+              for (let i = stack.length - 1; i >= 0; i--) {
+                const paints = stack[i];
+                if (!paints.length) continue;
+                const next = [];
+                variants.forEach(function(acc) {
+                  paints.forEach(function(p) {
+                    next.push(composite(p, acc));
+                  });
+                });
+                variants = next;
+              }
+              return variants;
+            }
+            function minContrastForEl(el, fg) {
+              const variants = bgVariantsFromRoot(el);
+              let minR = 99;
+              variants.forEach(function(bg) {
+                const r = contrastRatio(fg, bg);
+                if (r < minR) minR = r;
+              });
+              return minR;
             }
             function contrastRatio(fg, bg) {
               function lin(v) { v = v / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
@@ -561,26 +607,11 @@ test.describe('Phase 28 — accent contrast + computed audit', () => {
             const nodes = document.querySelectorAll('#view *');
             nodes.forEach(function(el) {
               if (el.closest('#nav')) return;
-              if (el.closest('.btn-primary')) return;
               if (el.closest('.toggle.on')) return;
               const cs = getComputedStyle(el);
               if (cs.visibility === 'hidden' || cs.opacity === '0') return;
               if (!el.getClientRects().length) return;
               const fg = parseColor(cs.color);
-              if (fg && fg[0] > 240 && fg[1] > 240 && fg[2] > 240) {
-                let p = el.parentElement;
-                while (p && p !== document.getElementById('view')) {
-                  const pb = getComputedStyle(p).backgroundColor;
-                  const bi = getComputedStyle(p).backgroundImage;
-                  if ((bi && bi !== 'none') || parseColor(pb)) {
-                    const bc = parseColor(pb);
-                    if (bc && bc[0] < 80 && bc[1] < 80 && bc[2] < 80) return;
-                    if (bi && bi.indexOf('gradient') >= 0) return;
-                  }
-                  if (p.classList && (p.classList.contains('btn-primary') || p.style.background && p.style.background.indexOf('var(--accent)') >= 0)) return;
-                  p = p.parentElement;
-                }
-              }
               if (cs.webkitTextFillColor && cs.webkitTextFillColor !== 'rgb(0, 0, 0)' &&
                   cs.color && cs.webkitTextFillColor.indexOf('rgba') === 0 &&
                   parseFloat(cs.webkitTextFillColor.split(',')[3] || '1') === 0) return;
@@ -592,8 +623,7 @@ test.describe('Phase 28 — accent contrast + computed audit', () => {
                 if (!own) return;
               }
               if (!fg || fg[3] < 0.4) return;
-              const bg = effectiveBg(el);
-              const ratio = contrastRatio(fg, bg);
+              const ratio = minContrastForEl(el, fg);
               const fs = parseFloat(cs.fontSize) || 14;
               const fw = parseInt(cs.fontWeight, 10) || 400;
               const large = fs >= 18 || (fs >= 14 && fw >= 700);
@@ -655,6 +685,96 @@ test.describe('Phase 28 — accent contrast + computed audit', () => {
       expect(style.minH).toBeGreaterThanOrEqual(44);
       expect(parseFloat(style.border)).toBeGreaterThan(0);
       expect(style.hasChevron).toBeTruthy();
+    }
+  });
+});
+
+test.describe('Phase 29 — selected-chip on-accent contrast', () => {
+  function ratioHex(bg, fg) {
+    function parseHex(h) {
+      const m = String(h).match(/^#([0-9a-f]{6})$/i);
+      if (!m) return null;
+      return [parseInt(m[1].slice(0, 2), 16), parseInt(m[1].slice(2, 4), 16), parseInt(m[1].slice(4, 6), 16)];
+    }
+    function lin(v) { v = v / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+    const a = parseHex(bg);
+    const b = parseHex(fg);
+    const L1 = 0.2126 * lin(a[0]) + 0.7152 * lin(a[1]) + 0.0722 * lin(a[2]);
+    const L2 = 0.2126 * lin(b[0]) + 0.7152 * lin(b[1]) + 0.0722 * lin(b[2]);
+    return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+  }
+
+  test('--on-accent meets 4.5:1 on --accent in both themes', async ({ page }) => {
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.applyTheme === 'function');
+    for (const theme of ['dark', 'light']) {
+      const tokens = await page.evaluate((t) => {
+        window.applyTheme(t, false);
+        const cs = getComputedStyle(document.documentElement);
+        return {
+          accent: cs.getPropertyValue('--accent').trim(),
+          onAccent: cs.getPropertyValue('--on-accent').trim()
+        };
+      }, theme);
+      expect(tokens.onAccent).toBe('#1C1C1E');
+      expect(ratioHex(tokens.accent, tokens.onAccent)).toBeGreaterThanOrEqual(4.5);
+    }
+  });
+
+  test('mesocycle selected chip (W1) passes contrast at 375/390/430 both themes', async ({ page }) => {
+    const widths = [375, 390, 430];
+    for (const w of widths) {
+      await page.setViewportSize({ width: w, height: 844 });
+      await page.goto('/?demo=1');
+      await page.waitForFunction(() => typeof window.go === 'function');
+      for (const theme of ['dark', 'light']) {
+        await page.evaluate((t) => window.applyTheme(t, false), theme);
+        await page.evaluate(() => window.go('progress'));
+        await page.waitForTimeout(80);
+        const bad = await page.evaluate(() => {
+          function parseColor(str) {
+            if (!str || str === 'transparent') return null;
+            const m = String(str).match(/rgba?\(([^)]+)\)/);
+            if (m) {
+              const p = m[1].split(',').map(function(s) { return parseFloat(s.trim()); });
+              return [p[0], p[1], p[2], p.length > 3 ? p[3] : 1];
+            }
+            const h = String(str).trim();
+            if (/^#[0-9a-f]{6}$/i.test(h)) {
+              return [parseInt(h.slice(1, 3), 16), parseInt(h.slice(3, 5), 16), parseInt(h.slice(5, 7), 16), 1];
+            }
+            return null;
+          }
+          function contrastRatio(fg, bg) {
+            function lin(v) { v = v / 255; return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4); }
+            const L1 = 0.2126 * lin(fg[0]) + 0.7152 * lin(fg[1]) + 0.0722 * lin(fg[2]);
+            const L2 = 0.2126 * lin(bg[0]) + 0.7152 * lin(bg[1]) + 0.0722 * lin(bg[2]);
+            return (Math.max(L1, L2) + 0.05) / (Math.min(L1, L2) + 0.05);
+          }
+          const hits = [];
+          document.querySelectorAll('#view *').forEach(function(el) {
+            const t = (el.textContent || '').trim();
+            if (t !== 'W1' && t !== 'Accumulation') return;
+            const cs = getComputedStyle(el);
+            const fg = parseColor(cs.color);
+            const accent = parseColor(getComputedStyle(document.documentElement).getPropertyValue('--accent'));
+            if (!fg || !accent) return;
+            const chip = t === 'W1' ? el.parentElement : el;
+            const chipBg = parseColor(getComputedStyle(chip).backgroundColor);
+            if (!chipBg) return;
+            const onFill = chipBg[0] === accent[0] && chipBg[1] === accent[1] && chipBg[2] === accent[2];
+            if (!onFill) return;
+            const r = contrastRatio(fg, chipBg);
+            const fs = parseFloat(cs.fontSize) || 14;
+            const min = fs <= 11 ? 3.0 : 4.5;
+            if (r + 0.01 < min) {
+              hits.push({ sample: t, ratio: Math.round(r * 100) / 100, fs: fs });
+            }
+          });
+          return hits;
+        });
+        expect(bad, JSON.stringify({ w: w, theme: theme, bad: bad }, null, 2)).toEqual([]);
+      }
     }
   });
 });

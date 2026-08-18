@@ -8,7 +8,7 @@ function _recoveryTabBar(tab) {
       const on = t.id === tab;
       return '<button type="button" onclick="go(\'recovery\',{tab:\'' + t.id + '\'})" class="press" style="flex-shrink:0;padding:8px 14px;border-radius:999px;border:1px solid ' +
         (on ? 'var(--accent)' : 'var(--border)') + ';background:' + (on ? 'var(--accent)' : 'var(--bg3)') +
-        ';color:' + (on ? '#fff' : 'var(--txt2)') + ';font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">' + esc(t.label) + '</button>';
+        ';color:' + (on ? 'var(--on-accent)' : 'var(--txt2)') + ';font-size:12px;font-weight:700;cursor:pointer;touch-action:manipulation">' + esc(t.label) + '</button>';
     }).join('') + '</div>';
 }
 

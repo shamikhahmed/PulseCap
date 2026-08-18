@@ -31,7 +31,8 @@ Constitution: offline gym app — **today’s session → ≤2-tap log → hones
 | 25 equipmentIds | done | c8c6c1d | Specific machines override kit via machine type. Gap banner. Empty session fills with alternatives |
 | 26 Catalogue | done | | Type-first catalogue (18 brands × core types) + search / select-all / My gym summary |
 | 27 QA sweep | done | 3c71cb2 | Interaction + contrast + width + extremes; docs/gallery/marketing synced |
-| 28 Accent contrast | done | | `--accent-text`, select styling, computed-background contrast audit |
+| 28 Accent contrast | done | d91dc51 | `--accent-text`, select styling, computed-background contrast audit |
+| 29 Selected chips | done | | `--on-accent` on bright accent fills; gradient-aware audit |
 
 ## Phase 1 checklist
 
@@ -189,5 +190,12 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 - `<select>` unified via `select.field` / `.split-select`: rounded, token border, custom chevron, ≥16px.
 - Playwright: full computed-background contrast audit — 19 screens × 3 widths × 2 themes; token test for accent-text.
 - Gallery regen at v6.34.0 (176 shots). Chromium: **138 passed**, 1 skipped.
+
+## Phase 29 — Selected-chip contrast (v6.35.0 / pulsecap-v115)
+
+- `--on-accent: #1C1C1E` for text/icons on bright `--accent` / `--grad` fills (~7:1); replaces white (~2.6:1). Applied to cap-tabs, recovery tabs, mesocycle chips, equipment checkmarks, coach radio, ob-opt check, PR badge, `.chip.on`, primary buttons.
+- Mesocycle phase label 9px → 11px.
+- Contrast audit: composite root→element (not reversed); expand gradient stops (worst-case min ratio); fallback to `--grad` token.
+- Chromium: **140 passed**, 1 skipped.
 
 

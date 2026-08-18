@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.34.0",
-  "swCache": "pulsecap-v114",
+  "version": "6.35.0",
+  "swCache": "pulsecap-v115",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 28 — light accent-text + select styling + computed contrast audit"
+  "notes": "Ember Phase 29 — on-accent text on bright accent fills + gradient contrast audit"
 }

@@ -52,7 +52,7 @@
 
 .btn-primary {
   background: var(--grad);
-  color: #fff;
+  color: var(--on-accent);
 }
 .btn-primary:active { background: var(--accent-press); }
 
@@ -103,9 +103,9 @@
   font-weight: 600;
 }
 .chip.on {
-  background: rgba(var(--accent-rgb), 0.16);
-  border-color: rgba(var(--accent-rgb), 0.4);
-  color: var(--accent-text);
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--on-accent);
 }
 
 .stat { text-align: center; }
@@ -269,7 +269,7 @@
   border: none;
   border-radius: 14px;
   background: var(--grad);
-  color: #fff;
+  color: var(--on-accent);
   font-size: 15px;
   font-weight: 700;
   cursor: pointer;
@@ -554,14 +554,14 @@ select.field:focus,
   flex-shrink: 0;
 }
 .set-check.done { background: var(--success); border-color: var(--success); color: #fff; }
-.set-row.pr .set-check.done { background: var(--accent); border-color: var(--accent); color: #fff; }
+.set-row.pr .set-check.done { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
 .set-pr-flag {
   position: absolute;
   top: -7px;
   right: 52px;
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   font-size: 9px;
   font-weight: 800;
   padding: 2px 7px;

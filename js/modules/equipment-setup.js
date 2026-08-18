@@ -61,7 +61,7 @@ reg('equipment-setup', function() {
     const badge = item.brand ? brandBadge(item.brand) : '';
     const typeBit = item.type ? '<div class="muted-11 mt-2">' + esc(String(item.type).replace(/_/g, ' ')) + (item.category ? ' · ' + esc(item.category.replace('_', ' ')) : '') + '</div>' : (item.category ? '<div class="muted-11 mt-2">' + esc(item.category.replace('_', ' ')) + '</div>' : '');
     return '<div onclick="toggleEquipment(\'' + item.id + '\')" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
-      '<div style="width:26px;height:26px;border-radius:8px;border:2px solid ' + (on ? 'var(--accent)' : 'var(--border)') + ';background:' + (on ? 'var(--accent)' : 'transparent') + ';display:flex;align-items:center;justify-content:center;color:#fff;font-size:13px;font-weight:700">' + (on ? '✓' : '') + '</div>' +
+      '<div style="width:26px;height:26px;border-radius:8px;border:2px solid ' + (on ? 'var(--accent)' : 'var(--border)') + ';background:' + (on ? 'var(--accent)' : 'transparent') + ';display:flex;align-items:center;justify-content:center;color:' + (on ? 'var(--on-accent)' : 'transparent') + ';font-size:13px;font-weight:700">' + (on ? '✓' : '') + '</div>' +
       '<div class="flex-1"><div class="row-strong">' + esc(item.name) + '</div>' +
       (badge || typeBit) +
       '</div></div>';

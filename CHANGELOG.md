@@ -1,3 +1,6 @@
+## 6.35.0 — 2026-08-18 — Ember rebuild Phase 29
+- Selected/active chips on bright `--accent` fills use `--on-accent` (#1C1C1E, ~7:1) instead of white (~2.6:1). Mesocycle phase label raised to 11px. Contrast audit resolves gradient stops (worst-case across stops). SW `pulsecap-v115`.
+
 ## 6.34.0 — 2026-08-18 — Ember rebuild Phase 28
 - Light mode adds `--accent-text` (#B44A00, ~#C25100 family) for readable orange on surfaces; bright `--accent` stays for fills, bars, and the nav indicator. `--c1` maps to accent-text; fill sites use `--accent` explicitly. `--success-text` for green labels on light backgrounds.
 - `<select>` styled to match Ember: 16px font, token border, custom chevron, 44px touch target.

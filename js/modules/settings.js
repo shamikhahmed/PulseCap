@@ -363,7 +363,7 @@ function _tabAppearance(u) {
       '<div style="flex:1;font-size:14px;font-weight:600;color:var(--txt)">'+esc(c.n)+'</div>' +
       '<div aria-hidden="true" style="width:20px;height:20px;border-radius:50%;flex-shrink:0;display:flex;align-items:center;justify-content:center;' +
       'border:2px solid ' + (curCoach===c.id ? 'var(--accent)' : 'var(--border2)') + ';background:' + (curCoach===c.id ? 'var(--accent)' : 'transparent') + '">' +
-      (curCoach===c.id ? '<span style="color:#fff;font-size:11px;font-weight:800">✓</span>' : '') +
+      (curCoach===c.id ? '<span style="color:var(--on-accent);font-size:11px;font-weight:800">✓</span>' : '') +
       '</div></button>'
     ).join('') +
 
@@ -431,7 +431,7 @@ function _tabNotifications(u) {
     ['daily','weekly'].map(function(freq) {
       const cur = S.g('settings.coachFrequency') || 'daily';
       const active = cur === freq;
-      return '<button type="button" onclick="_setSetting(\'settings.coachFrequency\',\''+freq+'\');go(\'settings\',{tab:\'notifications\'})" aria-pressed="'+active+'" style="flex:1;padding:10px;min-height:44px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(active?'var(--grad)':'var(--bg3)')+';color:'+(active?'#fff':'var(--txt3)')+'">'+freq.charAt(0).toUpperCase()+freq.slice(1)+'</button>';
+      return '<button type="button" onclick="_setSetting(\'settings.coachFrequency\',\''+freq+'\');go(\'settings\',{tab:\'notifications\'})" aria-pressed="'+active+'" style="flex:1;padding:10px;min-height:44px;border-radius:12px;font-size:13px;font-weight:600;cursor:pointer;touch-action:manipulation;border:1px solid var(--border);background:'+(active?'var(--grad)':'var(--bg3)')+';color:'+(active?'var(--on-accent)':'var(--txt3)')+'">'+freq.charAt(0).toUpperCase()+freq.slice(1)+'</button>';
     }).join('') +
     '</div>' +
     '<div style="font-size:12px;color:var(--txt3);margin-top:4px;padding:0 2px">Daily shows briefing every morning. Weekly shows full review on Mondays.</div>' +
