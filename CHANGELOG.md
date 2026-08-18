@@ -1,3 +1,9 @@
+## 6.38.0 — 2026-08-18 — Ember rebuild Phase 33
+- Onboarding as a welcome: added a Playwright guardrail that intentionally leaves optional size fields blank and verifies the onboarding flow still reaches `Today`.
+
+## 6.37.0 — 2026-08-18 — Ember rebuild Phase 32
+- Motion seam: removed the artificial splash boot floor so first paint feels continuous (kept the existing splash exit animation behavior).
+
 ## 6.36.0 — 2026-08-18 — Ember rebuild Phase 30
 - Brand integrity: updated `icon.svg` + regenerated `icon-{size}.png` set (including maskable variants) so Home Screen icon matches the opened app.
 - Theme seam: fixed `applyTheme()` so it no longer overwrites the correct `meta[name="theme-color"]`; manifest theme/background now match Ember tokens.

@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.37.0",
-  "swCache": "pulsecap-v117",
+  "version": "6.38.0",
+  "swCache": "pulsecap-v118",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 32 — motion seam: removed artificial splash floor; keeps existing splash exit motion"
+  "notes": "Ember Phase 33 — onboarding as welcome: guardrail for optional-field skip still reaching Today"
 }

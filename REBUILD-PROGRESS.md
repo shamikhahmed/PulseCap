@@ -212,3 +212,7 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 - Splash seam: removed the artificial 300ms splash “floor” so the app flows into the existing splash exit animation as fast as the device can paint.
 - Kept constraints: no new animations added; existing durations remain capped and `prefers-reduced-motion` behavior stays intact.
 
+## Phase 33 — Onboarding as a welcome (v6.38.0 / pulsecap-v118)
+
+- Guardrail: added a Playwright regression test that leaves optional size fields blank during onboarding and still asserts the app reaches `Today` after the full 4-step flow.
+
