@@ -1,3 +1,6 @@
+## 6.42.0 — 2026-08-18 — Manifest shortcut fix
+- Home Screen shortcut "Library" pointed at `./?go=settings&tab=privacy`, opening Settings instead of the exercise library — and `tab=` is not parsed by the deep-link handler, so it landed on Settings' default tab. Now points at `./?go=exercises`, which `bootDeepLink()` already routes to Programs. SW `pulsecap-v122`.
+
 ## 6.41.0 — 2026-08-18 — Ember rebuild Phase 36
 - Final verification: Firefox and WebKit full suite (quota-full toast stub made cross-engine); airplane-mode log-a-set → Progress; PWA chrome contract (theme-color tokens, maskable icons, iOS launch images). Closing section added to `PERFECTION-REVIEW.md`. SW `pulsecap-v121`.
 

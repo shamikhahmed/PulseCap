@@ -28,7 +28,7 @@
       "name": "Exercises",
       "short_name": "Library",
       "description": "Browse built-in exercises and sync metadata (optional)",
-      "url": "./?go=settings&tab=privacy",
+      "url": "./?go=exercises",
       "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
     }
   ],

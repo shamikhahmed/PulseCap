@@ -1,5 +1,7 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
+const fs = require('fs');
+const path = require('path');
 
 async function boot(page) {
   await page.setViewportSize({ width: 390, height: 844 });
@@ -779,3 +781,23 @@ test.describe('Phase 29 — selected-chip on-accent contrast', () => {
   });
 });
 
+
+test.describe('Manifest shortcuts resolve to real screens', () => {
+  test('every shortcut url lands on the screen its label promises', async ({ page }) => {
+    const manifest = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'manifest.json'), 'utf8'));
+    const expected = {
+      Today: 'dashboard',
+      Start: 'active',
+      Library: 'my-plan'
+    };
+    for (const sc of manifest.shortcuts || []) {
+      const want = expected[sc.short_name];
+      if (!want) continue;
+      const query = String(sc.url).replace(/^\.\//, '');
+      await page.goto(`/index.html?demo=1&${query.replace(/^\?/, '')}`);
+      await page.waitForFunction(() => window.currentScreenId && window.currentScreenId());
+      const landed = await page.evaluate(() => window.currentScreenId());
+      expect(landed, `shortcut "${sc.short_name}" (${sc.url}) should land on ${want}`).toBe(want);
+    }
+  });
+});
