@@ -1,3 +1,6 @@
+## 6.41.0 — 2026-08-18 — Ember rebuild Phase 36
+- Final verification: Firefox and WebKit full suite (quota-full toast stub made cross-engine); airplane-mode log-a-set → Progress; PWA chrome contract (theme-color tokens, maskable icons, iOS launch images). Closing section added to `PERFECTION-REVIEW.md`. SW `pulsecap-v121`.
+
 ## 6.40.0 — 2026-08-18 — Ember rebuild Phase 35
 - Documentation/site sync: replaced stale “fitness/performance OS” positioning with shipped offline-training copy, aligned exercise counts and versions, and marked pre-Ember IA/audit docs as archived references.
 - Regenerated the full screenshot gallery matrix and refreshed shipped changelog/site artifacts to match the current app truth.

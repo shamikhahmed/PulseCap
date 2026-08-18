@@ -1,6 +1,6 @@
 # PulseCap
 
-**Version:** 6.40.0
+**Version:** 6.41.0
 
 **Run today’s session, log it in two taps, and see honest progress — offline, on your device.**
 
@@ -143,7 +143,7 @@ manifest.json       — PWA manifest
 
 ## Roadmap
 
-Shipped through **v6.40.0** (see `CHANGELOG.md`): Ember rebuild Phases 1–35. Same-screen updates keep scroll and focus. Today fills the viewport. Settings gutters and a single-row tab bar. Gym-specific machines (type-first catalogue) actually filter the plan. Light mode accent text meets WCAG AA. Smart Coach is rules-based — not an LLM. No 1RM estimator.
+Shipped through **v6.41.0** (see `CHANGELOG.md`): Ember rebuild Phases 1–36. Same-screen updates keep scroll and focus. Today fills the viewport. Settings gutters and a single-row tab bar. Gym-specific machines (type-first catalogue) actually filter the plan. Light mode accent text meets WCAG AA. Smart Coach is rules-based — not an LLM. No 1RM estimator.
 
 Still open / honest gaps (owner constraints):
 

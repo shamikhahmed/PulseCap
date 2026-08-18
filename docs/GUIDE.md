@@ -3,7 +3,7 @@
 PulseCap is an offline-first training PWA: run today’s session, log fast, and review honest progress on your device.
 
 **Live app:** https://shamikhahmed.github.io/PulseCap  
-**Version:** 6.40.0 · SW `pulsecap-v120`
+**Version:** 6.41.0 · SW `pulsecap-v121`
 
 ---
 
@@ -125,7 +125,7 @@ Macro logging, water, supplements with timing. Quick-add meals + offline food se
 ## Offline & data
 
 - All data in localStorage (`fos_profiles_[id]`); photos in IndexedDB
-- Service worker cache-first (`pulsecap-v120`)
+- Service worker cache-first (`pulsecap-v121`)
 - No backend required · no account · no cloud sync
 - Export JSON before device reset
 

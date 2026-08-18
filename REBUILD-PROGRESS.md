@@ -227,3 +227,10 @@ Could not verify from this machine: clinical review of cues/joint ratings; Compe
 - Archived stale docs: marked pre-Ember `AUDIT.md` and `IA-RATIONALE.md` as archived references so they no longer present conflicting IA guidance.
 - Gallery: regenerated full screenshot matrix via `npm run gallery`.
 
+## Phase 36 — Final verification, then ship (v6.41.0 / pulsecap-v121)
+
+- Firefox + WebKit full suite: only failure was the Chromium-only `localStorage.setItem` quota stub; replaced with `Storage.prototype.setItem` so the storage-full toast contract holds on all three engines.
+- Added airplane-mode log-a-set → Progress, and a PWA chrome contract (theme-color tokens, maskable-only icons, iOS launch images, fresh boot → Today with no page errors).
+- Closing section written in `PERFECTION-REVIEW.md`: what changed, what we left, what a desktop browser cannot verify (real iPhone, live 6.6.0 overlay, clinical cue review).
+
+

@@ -7,7 +7,7 @@
 # PulseCap
 ### Personalized Program Intelligence
 
-*290 exercises · My Plan · Smart Coach (rules) · Offline PWA · v6.40.0*
+*290 exercises · My Plan · Smart Coach (rules) · Offline PWA · v6.41.0*
 
 **Live:** shamikhahmed.github.io/PulseCap
 
@@ -27,7 +27,7 @@ Serious lifters need **depth** — not generic 10-exercise libraries.
 
 ## Slide 3 — Solution
 
-**PulseCap** — production-grade offline-first PWA (v6.40.0):
+**PulseCap** — production-grade offline-first PWA (v6.41.0):
 
 - 290-exercise database with coaching cues
 - Personalized **My Plan**: built-in machine-only **shoulder-safe PPL**; local text-PDF / JSON / paste import with review (**no upload, no OCR**; scanned PDFs unsupported); prescribed gym-floor logger
@@ -112,10 +112,10 @@ app.js / engines.js / coach-kernel.js / training-plan.js / plan-import.js / gym-
 modules/            — Today · Train · Progress · Programs · Me
 storage.js          — Multi-profile S + seedPersonas
 foods-db.js         — Offline macros
-sw.js               — cache-first PWA (pulsecap-v120)
+sw.js               — cache-first PWA (pulsecap-v121)
 ```
 
-Vanilla JS. Zero framework. Core tracking works offline. **v6.40.0**.
+Vanilla JS. Zero framework. Core tracking works offline. **v6.41.0**.
 
 ---
 

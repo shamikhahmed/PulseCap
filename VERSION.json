@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.40.0",
-  "swCache": "pulsecap-v120",
+  "version": "6.41.0",
+  "swCache": "pulsecap-v121",
   "updated": "2026-08-18",
-  "notes": "Ember Phase 35 — docs and site sync to shipped truth + refreshed gallery"
+  "notes": "Ember Phase 36 — final verification: Firefox/WebKit, offline log, PWA chrome, closing review"
 }

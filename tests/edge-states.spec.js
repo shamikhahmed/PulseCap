@@ -3,25 +3,29 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('Phase 34 — edge states copy', () => {
   test('storage full shows export-backup next step', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForFunction(() => typeof window.S !== 'undefined' && typeof window.S.set === 'function');
+    await page.goto('/?demo=1');
+    await page.waitForFunction(() => window.S && window.S._pid && typeof window.toast === 'function');
 
-    await page.evaluate(() => {
-      // Force the localStorage write path to throw a QuotaExceededError.
-      // PulseCap catches this and surfaces a user-facing toast.
-      // @ts-ignore
-      localStorage.setItem = function() {
-        const e = new Error('quota exceeded');
+    const msg = await page.evaluate(() => {
+      const proto = Storage.prototype;
+      const orig = proto.setItem;
+      proto.setItem = function() {
+        const e = new Error('The quota has been exceeded.');
         e.name = 'QuotaExceededError';
         throw e;
       };
-      window.S.set('user.name', 'QuotaTest');
+      try {
+        window.S.set('user.name', 'QuotaTest');
+        const t = document.querySelector('#toast .toast-msg');
+        return t ? String(t.textContent || '') : '';
+      } finally {
+        proto.setItem = orig;
+      }
     });
 
-    const toastMsg = page.locator('#toast .toast-msg');
-    await expect(toastMsg).toContainText(/Storage is full/i);
-    await expect(toastMsg).toContainText(/Export a backup/i);
-    await expect(toastMsg).toContainText(/before adding more data/i);
+    expect(msg).toMatch(/Storage is full/i);
+    expect(msg).toMatch(/Export a backup/i);
+    expect(msg).toMatch(/before adding more data/i);
   });
 
   test('invalid plan JSON returns plain-language next steps', async ({ page }) => {
@@ -34,4 +38,3 @@ test.describe('Phase 34 — edge states copy', () => {
     expect(res.error).toMatch(/Export.*PulseCap JSON|paste the plan text/i);
   });
 });
-

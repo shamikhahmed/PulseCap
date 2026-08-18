@@ -1,6 +1,6 @@
 # PulseCap — Perfection Review (Phase 31)
 
-This file answers the six required interrogation questions for each shipped screen in the current v6.36.0 build (post Phase 30 brand + launch polish).
+This file answers the six required interrogation questions for each shipped screen. Screen notes were written against v6.36.0 (post Phase 30 brand + launch polish); the closing section records Phases 32–36.
 
 Findings are written from the current code contracts for each screen renderer (the `reg('<screen>', fn)` blocks) rather than from guesswork.
 
@@ -234,4 +234,44 @@ No Apple-standard failures are known to require Phase-31 code edits, because the
 
 Next phase candidates (not fixed here; handled in the brief later):
 - Phase 32 motion meaning and splash floor (directional transitions + possible removal of artificial splash delay).
+
+---
+
+## Closing (Phase 36) — what changed, what we left, what we could not verify
+
+### What changed in this pass (Phases 30–36)
+
+- **Brand seam (30):** Ember accent `#FF7A1A` on the icon set; real maskable icons with safe-zone padding; one theme-color source (`#0A0A0B` dark / `#F5F5F7` light); iOS launch images; manifest copy and Library shortcut pointed at the real exercise library; last light-mode Deload chip contrast.
+- **Interrogation (31):** This file. No layout splits were required; hierarchy already matches one job per screen.
+- **Motion (32):** Removed the artificial 300 ms splash floor. Existing motion stays capped and respects `prefers-reduced-motion`.
+- **Onboarding (33):** Guardrail that skipping optional size fields still reaches Today.
+- **Edge states (34):** Encouraging gym-gap copy; storage-full toast names Export Backup; invalid plan JSON speaks in next-step English.
+- **Docs/site (35):** README, GUIDE, landing, pitch, presentation, and Settings About copy match shipped positioning (offline training companion, 290 exercises). Pre-Ember `AUDIT.md` / `IA-RATIONALE.md` marked archived. Gallery regenerated.
+- **Final verify (36):** Firefox/WebKit full suite (quota-stub test made cross-engine). Airplane-mode log-a-set → Progress. PWA chrome contract (theme-color tokens, maskable-only icons, iOS launch images). Fresh boot → Today with no page errors.
+
+### What we chose not to change, and why
+
+- **Clipboard splash mark:** It is the brand, not a delay. The delay was the problem; the mark stays.
+- **Weekly consistency dots on Today:** They explain rest days; they are not a punishing streak. Removing them would hide the one honest weekly signal.
+- **Onboarding disclaimer as a required tick:** Educational, not legalistic — it is the one gate before a plan exists. Skipping it would hide the stop-on-sharp-pain rule.
+- **`AUDIT.md` / `IA-RATIONALE.md` kept, not deleted:** They are dated 30 July and describe a dead IA. Archiving them preserves history without presenting them as current truth.
+- **No new animation system:** Directional push/pop already exists on screen enter/exit. Adding a second motion language would be decoration.
+
+### Verified in this pass (automated)
+
+- Chromium full suite: 143 passed / 1 skipped (device-matrix capture, opt-in).
+- Firefox + WebKit: 284 passed / 2 skipped on the first full run; the only failures were the Chromium-only `localStorage.setItem` stub. After the prototype stub, the Phase 36 slice is green on all three engines (39/39).
+- Widths 375 / 390 / 430, both themes: overflow, gutters, Settings tab row, contrast (including computed backgrounds and on-accent chips) — existing `ux-integrity` + `viewport` specs.
+- Export → wipe → import restores workouts (`ember-spine`).
+- Skip-optional onboarding still lands on Today.
+- Offline: abort network after boot, log a set, open Progress.
+
+### Could not verify (say so plainly)
+
+1. **Real iPhone:** Add to Home Screen, lock-screen rest timer, VoiceOver, Dynamic Type 200%, and whether launch images actually paint before first JS. Desktop Playwright cannot stand in for a device.
+2. **Live 6.6.0 backup overlay:** Must export from Me on the phone still running that build before installing over it. Not performed here.
+3. **Clinical review** of ~290 exercise cue/joint records. Educational copy is not medical clearance; this remains the one item I would not ship without a clinician if dislocation history is in play.
+4. **Installed-PWA status bar / standalone chrome on a physical Home Screen icon.** Code and manifest match Ember tokens; the OS chrome was not observed on a device.
+
+A product is finished when someone who has never seen it can open it, understand it, and use it on a gym floor without being taught. The seams this pass could reach in a desktop browser now match that bar. The three items above still need a human with an iPhone.
 

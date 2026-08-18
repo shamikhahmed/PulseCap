@@ -55,4 +55,39 @@ test.describe('Offline + update', () => {
     const appV = await page.evaluate(() => window.APP_VERSION);
     expect(appV).toBe(ver.version);
   });
+
+  test('airplane-mode: log a set then view Progress', async ({ page }) => {
+    await page.goto('/');
+    await page.waitForFunction(() => typeof window.introQuickStart === 'function' && typeof window.startWorkout === 'function');
+    await page.evaluate(() => window.introQuickStart());
+    await page.waitForFunction(() => document.querySelector('.dash-session'));
+    await page.route('**/*', (route) => {
+      const t = route.request().resourceType();
+      if (t === 'document') return route.continue();
+      return route.abort();
+    });
+    const out = await page.evaluate(() => {
+      const before = (window.S.g('workouts') || []).length;
+      window.S.set('programWeightsConfirmed', true);
+      window.startWorkout();
+      window._doneSet(0, 0);
+      window.confirmFinishWorkout();
+      const save = Array.from(document.querySelectorAll('button')).find(function(b) {
+        return /SAVE WORKOUT/i.test(b.textContent || '');
+      });
+      if (save) save.click();
+      window.go('progress');
+      const html = document.getElementById('view') ? document.getElementById('view').innerHTML : '';
+      return {
+        before: before,
+        after: (window.S.g('workouts') || []).length,
+        progress: html.length,
+        error: /Screen error/i.test(html),
+        hasChart: /This lift vs itself|No workouts yet|Training Block/i.test(html)
+      };
+    });
+    expect(out.after).toBeGreaterThan(out.before);
+    expect(out.error).toBeFalsy();
+    expect(out.hasChart).toBeTruthy();
+  });
 });
