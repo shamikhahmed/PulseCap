@@ -258,15 +258,15 @@ function _progressionAnalysisBlock() {
       '</div>' +
       '<div style="display:flex;gap:10px;margin-bottom:6px">' +
       '<div  class="flex-1">' +
-      '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em">Best set</div>' +
+      '<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em">Best set</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--c1)">'+prog.currentWeight+u+' × '+prog.currentReps+'</div>' +
       '</div>' +
       '<div  class="flex-1">' +
-      '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em">Est. 1RM</div>' +
+      '<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em">Est. 1RM</div>' +
       '<div  class="row-title-14">'+prog.currentE1RM+u+'</div>' +
       '</div>' +
       '<div  class="flex-1">' +
-      '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em">Next target</div>' +
+      '<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em">Next target</div>' +
       '<div style="font-size:14px;font-weight:700;color:'+(prog.plateau?'#f5c842':'#10B981')+'">'+prog.suggestedWeight+u+'</div>' +
       '</div>' +
       '</div>' +

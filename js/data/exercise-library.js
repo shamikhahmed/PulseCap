@@ -181,7 +181,7 @@ const ExerciseLibrary = (() => {
       return '<div style="margin-bottom:14px;border-radius:16px;overflow:hidden;border:1px solid var(--border);background:var(--bg4)">' +
         '<img src="' + esc(src) + '" alt="' + esc(name) + '" loading="lazy" style="width:100%;max-height:' + h + 'px;object-fit:contain;display:block"/>' +
         (media.thumb && media.image && media.thumb !== media.image ?
-          '<div style="font-size:10px;color:var(--txt3);padding:6px 10px;text-align:center">wger exercise image · cached offline</div>' : '') +
+          '<div style="font-size:11px;color:var(--txt3);padding:6px 10px;text-align:center">wger exercise image · cached offline</div>' : '') +
         '</div>';
     }
     if (typeof FormLoops !== 'undefined' && FormLoops.forExercise(name)) {

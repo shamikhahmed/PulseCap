@@ -49,7 +49,7 @@ function _calSection(cals, target, p, c, f, user, n) {
     '</svg>' +
     '<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">' +
     '<div style="font-size:16px;font-weight:900;color:var(--txt);line-height:1">'+cals+'</div>' +
-    '<div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--txt3)">kcal</div>' +
+    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--txt3)">kcal</div>' +
     '</div></div>' +
     '<div  class="flex-1">' +
     '<div style="font-size:22px;font-weight:800;color:var(--c1)">'+remain+'<span style="font-size:13px;font-weight:500;color:var(--txt3)"> remaining</span></div>' +

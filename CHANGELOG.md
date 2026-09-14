@@ -1,3 +1,8 @@
+## [6.43.0] — 2026-09-15
+
+- PLS-P1: Today demo banner + remove duplicate Progress CTA; actionable insight; sentence-case tabs; type floor; safe-area tab/toast; §4.2 disclaimers (About, onboarding, Rehab); privacy notes (wger / not medical)
+- SW `pulsecap-v123`
+
 ## 6.42.0 — 2026-08-18 — Manifest shortcut fix
 - Home Screen shortcut "Library" pointed at `./?go=settings&tab=privacy`, opening Settings instead of the exercise library — and `tab=` is not parsed by the deep-link handler, so it landed on Settings' default tab. Now points at `./?go=exercises`, which `bootDeepLink()` already routes to Programs. SW `pulsecap-v122`.
 

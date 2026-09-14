@@ -305,6 +305,7 @@ const OB_STEPS = {
       '<div class="ob-opt-info"><div class="ob-opt-title">' + esc(title) + '</div><div class="ob-opt-sub">' + esc(suits) + '</div></div>' +
       '<div class="ob-opt-check">' + (seedOn ? '✓' : '') + '</div></button>' +
       '<div class="banner" style="margin-top:12px">Today will show one session and one insight. First time on a lift, Log will walk a light → 8 reps calibration. Logging stays on this phone.</div>' +
+      '<div class="banner" style="margin-top:8px">PulseCap is educational — not medical advice. Smart Coach uses on-device rules.</div>' +
       '</div>' + _footer(4) + '</div>';
   }
 };

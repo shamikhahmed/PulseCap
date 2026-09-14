@@ -332,7 +332,7 @@ const PlateEngine = {
     }
     const chips = r.perSide.map(function(p) {
       return '<span style="display:inline-flex;align-items:center;gap:4px;padding:6px 10px;border-radius:10px;background:var(--bg4);border:1px solid var(--border);font-size:13px;font-weight:700;color:var(--txt)">' +
-        (p.n > 1 ? '<span style="color:var(--c1)">' + p.n + '×</span>' : '') + p.w + '<span style="font-size:10px;color:var(--txt3);font-weight:600">' + r.unit + '</span></span>';
+        (p.n > 1 ? '<span style="color:var(--c1)">' + p.n + '×</span>' : '') + p.w + '<span style="font-size:11px;color:var(--txt3);font-weight:600">' + r.unit + '</span></span>';
     }).join('');
     return '<div style="font-size:11px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:8px">Plates per side · bar ' + r.bar + r.unit + '</div>' +
       '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:8px">' + (chips || '<span style="color:var(--txt3);font-size:13px">Bar only</span>') + '</div>' +
@@ -1191,7 +1191,7 @@ window.renderSplitDayPicker = function(opts) {
   const restNote = SplitEngine.isScheduledRestDay()
     ? '<div style="font-size:12px;color:var(--c5);margin-bottom:10px;line-height:1.45">Not a scheduled gym day — pick any session below or train anyway.</div>'
     : '';
-  const heading = '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Choose today\'s session</div>';
+  const heading = '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--txt3);margin-bottom:8px">Choose today\'s session</div>';
   if (opts.mode === 'train') {
     if (days.length <= 4) {
       const segs = days.map(function(d, i) {

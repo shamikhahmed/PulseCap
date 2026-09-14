@@ -491,6 +491,7 @@ function _tabAbout() {
     '<div class="card card-solid mb-14">' +
     '<div style="font-size:18px;font-weight:800;color:var(--txt);margin-bottom:4px">v' + ver + '</div>' +
     '<div style="font-size:13px;color:var(--txt2);line-height:1.55">Offline-first training app for iPhone and web. Rule-based coaching — not cloud AI.</div>' +
+    '<div style="font-size:12px;color:var(--txt3);line-height:1.5;margin-top:10px">PulseCap is educational fitness software — not medical advice. Smart Coach uses on-device rules.</div>' +
     '</div>' +
 
     _sectionTitle('Navigation') +

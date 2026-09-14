@@ -246,7 +246,7 @@ reg('photos', function() {
         '<img src="' + url + '" alt="Progress photo ' + esc(p.date) + '" style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block">' +
         '<div style="position:absolute;bottom:0;left:0;right:0;padding:20px 10px 8px;background:linear-gradient(transparent,rgba(0,0,0,0.75));display:flex;justify-content:space-between;align-items:flex-end">' +
         '<div><div style="font-size:11px;font-weight:700;color:#fff">' + esc(fmtDate(p.date)) + '</div>' +
-        (p.weight ? '<div style="font-size:10px;color:rgba(255,255,255,0.75)">' + esc(formatWeight(p.weight)) + '</div>' : '') + '</div>' +
+        (p.weight ? '<div style="font-size:11px;color:rgba(255,255,255,0.75)">' + esc(formatWeight(p.weight)) + '</div>' : '') + '</div>' +
         '<button type="button" onclick="deleteProgressPhoto(' + jsArg(p.id) + ')" aria-label="Delete photo" style="min-width:44px;min-height:44px;background:rgba(0,0,0,0.45);border:none;border-radius:8px;color:#fff;padding:5px 8px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center">' + icon('alert', 14, '#fff') + '</button>' +
         '</div></div>';
     }).join('');
