@@ -72,7 +72,7 @@ const FormLoops = (function() {
     if (!loop) return '';
     const escFn = typeof esc === 'function' ? esc : function(s) { return String(s || ''); };
     return '<div style="border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--bg3);margin-bottom:12px;padding:14px 16px">' +
-      '<div style="font-size:10px;font-weight:700;color:var(--c1);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">' +
+      '<div style="font-size:11px;font-weight:700;color:var(--c1);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:6px">' +
       escFn(loop.label) + ' · form cues</div>' +
       '<div style="font-size:14px;font-weight:700;color:var(--txt);line-height:1.4;margin-bottom:8px">' + escFn(loop.cue) + '</div>' +
       (loop.setup ? '<div style="font-size:12px;color:var(--txt2);line-height:1.45;margin-bottom:6px"><strong class="c-muted">Setup</strong> — ' + escFn(loop.setup) + '</div>' : '') +

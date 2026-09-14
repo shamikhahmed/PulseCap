@@ -690,9 +690,9 @@ reg('workout', function() {
       '<div  class="flex-1">' +
       '<div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">' +
       '<div  class="row-title-14">'+esc(name)+'</div>' +
-      (swap ? '<span style="font-size:10px;font-weight:700;color:var(--c5);background:rgba(255,159,10,0.12);border-radius:4px;padding:2px 6px">↔ '+esc(swap.original)+'</span>' : '') +
-      (diff ? '<span style="font-size:10px;font-weight:700;color:'+diff.c+';text-transform:uppercase;letter-spacing:0.06em">'+diff.l+'</span>' : '') +
-      (needsSpot ? '<span style="font-size:10px;color:var(--danger);font-weight:700;display:inline-flex;align-items:center;gap:3px">'+icon('alert',11,'var(--danger)')+'SPOTTER</span>' : '') +
+      (swap ? '<span style="font-size:11px;font-weight:700;color:var(--c5);background:rgba(255,159,10,0.12);border-radius:4px;padding:2px 6px">↔ '+esc(swap.original)+'</span>' : '') +
+      (diff ? '<span style="font-size:11px;font-weight:700;color:'+diff.c+';text-transform:uppercase;letter-spacing:0.06em">'+diff.l+'</span>' : '') +
+      (needsSpot ? '<span style="font-size:11px;color:var(--danger);font-weight:700;display:inline-flex;align-items:center;gap:3px">'+icon('alert',11,'var(--danger)')+'SPOTTER</span>' : '') +
       '</div>' +
       (ex?'<div  class="muted-12 mt-2">'+esc(ex.pri)+(ex.sec?', '+ex.sec:'')+'</div>':'') +
       (prev?'<div class="log-last" style="margin-top:2px">'+esc(prev)+'</div>':'') +
@@ -771,7 +771,7 @@ reg('cardio', function() {
     const diffColor = p.difficulty >= 3 ? 'var(--danger)' : p.difficulty === 2 ? 'var(--warn)' : 'var(--success)';
     return '<div onclick="showCardioProtocol(\''+key+'\')" ' +
       'style="background:var(--bg3);border:1.5px solid '+(rec?p.color:'var(--border)')+';border-radius:18px;padding:16px;margin-bottom:12px;cursor:pointer;touch-action:manipulation;position:relative">' +
-      (rec ? '<div style="position:absolute;top:14px;right:14px;background:rgba(var(--c1-rgb),0.15);border-radius:20px;padding:3px 10px;font-size:10px;font-weight:700;color:var(--c1)">RECOMMENDED</div>' : '') +
+      (rec ? '<div style="position:absolute;top:14px;right:14px;background:rgba(var(--c1-rgb),0.15);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:700;color:var(--c1)">RECOMMENDED</div>' : '') +
       '<div style="display:flex;align-items:center;gap:14px;margin-bottom:10px">' +
       '<div style="width:44px;height:44px;border-radius:12px;background:rgba(var(--c1-rgb),0.12);display:flex;align-items:center;justify-content:center;color:'+p.color+'">'+icon(p.icon||'run',26,p.color)+'</div>' +
       '<div>' +
@@ -879,8 +879,8 @@ reg('active', function() {
       '<div  class="flex-1">' +
       '<div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">' +
       '<div  class="row-title-15">'+esc(ex.name)+'</div>' +
-      (diff ? '<span style="font-size:9px;font-weight:700;color:'+diff.c+';text-transform:uppercase">'+diff.l+'</span>' : '') +
-      (needsSpot ? '<span style="font-size:9px;color:var(--danger);font-weight:700">SPOTTER</span>' : '') +
+      (diff ? '<span style="font-size:11px;font-weight:700;color:'+diff.c+';text-transform:uppercase">'+diff.l+'</span>' : '') +
+      (needsSpot ? '<span style="font-size:11px;color:var(--danger);font-weight:700">SPOTTER</span>' : '') +
       '</div>' +
       (prev ? '<div class="log-last" style="margin-top:2px">'+esc(prev)+'</div>' : '') +
       (barbell && !_focusMode ? '<button type="button" class="log-plates" onclick="showPlateCalc('+weightFromKg((ex.sets && ex.sets[0] && ex.sets[0].weight) || suggest || 0, user)+')">plates</button>' : '') +
@@ -890,7 +890,7 @@ reg('active', function() {
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;align-items:flex-end">' +
       '<button type="button" onclick="showExerciseDetail('+jsArg(ex.name)+')" aria-label="Details for '+esc(ex.name)+'" style="min-width:48px;min-height:48px;width:48px;height:48px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation">'+icon('book',15)+'</button>' +
-      (!_focusMode ? '<button type="button" onclick="swapExercise('+exIdx+')" style="padding:4px 7px;border-radius:8px;background:var(--bg4);border:1px solid var(--border);font-size:10px;font-weight:700;color:var(--txt3);cursor:pointer;touch-action:manipulation;white-space:nowrap">⇄ Swap</button>' : '') +
+      (!_focusMode ? '<button type="button" onclick="swapExercise('+exIdx+')" style="padding:4px 7px;border-radius:8px;background:var(--bg4);border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--txt3);cursor:pointer;touch-action:manipulation;white-space:nowrap">⇄ Swap</button>' : '') +
       '</div>' +
       '</div>' +
       (ex.rxNote ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(var(--c1-rgb),0.12);color:var(--c1);padding:4px 10px;border-radius:10px">'+esc(ex.rxNote)+'</span></div>' :
@@ -942,7 +942,7 @@ reg('active', function() {
     '</svg>' +
     '<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">' +
     '<div style="font-size:28px;font-weight:900;color:var(--txt);font-variant-numeric:tabular-nums" id="rest-countdown">'+fmtTime(restSecs)+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em">seconds</div>' +
+    '<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.06em">seconds</div>' +
     '</div></div></div>' +
     '<div style="display:flex;gap:10px">' +
     '<button type="button" onclick="skipRest()" style="flex:1;padding:14px;border-radius:14px;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);font-size:15px;font-weight:600;cursor:pointer;touch-action:manipulation">Skip</button>' +
@@ -1128,7 +1128,7 @@ window.swapExercise = function(exIdx) {
         '<div style="display:flex;align-items:center;gap:8px">' +
         '<div style="display:flex;color:var(--c1)">' + (typeof exChromeIcon === 'function' ? exChromeIcon(s.name, 18) : '') + '</div>' +
         '<div style="flex:1;font-size:14px;font-weight:700;color:var(--txt)">' + esc(s.name) + '</div>' +
-        (s.best ? '<span style="font-size:10px;font-weight:800;background:rgba(var(--c1-rgb),0.15);color:var(--c1);padding:3px 8px;border-radius:8px;letter-spacing:0.04em">BEST SWAP</span>' : '') +
+        (s.best ? '<span style="font-size:11px;font-weight:800;background:rgba(var(--c1-rgb),0.15);color:var(--c1);padding:3px 8px;border-radius:8px;letter-spacing:0.04em">BEST SWAP</span>' : '') +
         '</div>' +
         '<div style="display:flex;align-items:center;gap:10px;margin-top:8px">' +
         '<div style="flex:1;height:5px;background:var(--bg4);border-radius:3px;overflow:hidden">' +
@@ -1639,7 +1639,7 @@ function _recStat2(icon, label, val) {
   return '<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:10px;text-align:center">' +
     '<div class="fs-18">'+icon+'</div>' +
     '<div style="font-size:14px;font-weight:700;color:var(--c1);margin-top:4px">'+esc(val)+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);margin-top:2px;text-transform:uppercase;letter-spacing:0.06em">'+esc(label)+'</div>' +
+    '<div style="font-size:11px;color:var(--txt3);margin-top:2px;text-transform:uppercase;letter-spacing:0.06em">'+esc(label)+'</div>' +
     '</div>';
 }
 
@@ -1765,7 +1765,7 @@ function showBrowseExercises(filterGrp, filterQuery) {
       '<div  class="flex-1">' +
       '<div style="display:flex;align-items:center;gap:6px">' +
       '<div  class="row-title-14">'+esc(ex.n)+'</div>' +
-      (ex.custom ? '<span style="font-size:10px;background:rgba(var(--c1-rgb),0.15);color:var(--c1);border-radius:4px;padding:2px 6px;font-weight:700">CUSTOM</span>' : '') +
+      (ex.custom ? '<span style="font-size:11px;background:rgba(var(--c1-rgb),0.15);color:var(--c1);border-radius:4px;padding:2px 6px;font-weight:700">CUSTOM</span>' : '') +
       '</div>' +
       '<div style="font-size:12px;margin-top:2px">' +
       '<span style="color:'+diff.c+';font-weight:600">'+diff.l+'</span>' +
@@ -1802,7 +1802,7 @@ window.showBrowseExercises = showBrowseExercises;
 function _cStat(_ignored, label, val) {
   return '<div style="background:rgba(0,0,0,0.2);border-radius:10px;padding:8px;text-align:center">' +
     '<div  class="row-title">'+val+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);margin-top:1px;text-transform:uppercase;letter-spacing:0.06em">'+label+'</div>' +
+    '<div style="font-size:11px;color:var(--txt3);margin-top:1px;text-transform:uppercase;letter-spacing:0.06em">'+label+'</div>' +
     '</div>';
 }
 
@@ -1824,11 +1824,11 @@ window.showCardioProtocol = function(key) {
       _cStat('','Intensity',esc(pr.intensity)) +
       '</div>' +
       '<div class="mb-8">' +
-      '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:4px">Exercises</div>' +
+      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:4px">Exercises</div>' +
       pr.exercises.map(function(e){return '<div style="font-size:13px;color:var(--txt2);padding:3px 0;border-bottom:1px solid var(--border)">• '+esc(e)+'</div>';}).join('') +
       '</div>' +
       '<div class="mb-8">' +
-      '<div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:4px">Equipment</div>' +
+      '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:4px">Equipment</div>' +
       '<div  class="body-13">'+esc(pr.equipment)+'</div>' +
       '</div>' +
       '<div style="background:rgba(var(--c1-rgb),0.06);border-radius:10px;padding:10px">' +

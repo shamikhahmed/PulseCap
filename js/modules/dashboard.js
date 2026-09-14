@@ -33,8 +33,8 @@ reg('dashboard', function() {
         '<button type="button" class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="confirmSkipToday()">Can’t train today?</button>';
 
     const demoBanner = isDemoMode
-      ? '<div class="dash-demo-banner"><div class="dash-demo-label">Demo Mode</div>' +
-        '<button type="button" onclick="go(\'profiles\')" class="dash-demo-switch">Switch</button></div>'
+      ? '<div class="dash-demo-banner"><div class="dash-demo-label">Sample data — explore freely</div>' +
+        '<button type="button" onclick="go(\'profiles\')" class="dash-demo-switch">Switch profile</button></div>'
       : '';
 
     const topbar = '<div class="topbar"><div class="topbar-left"><div>' +
@@ -48,9 +48,9 @@ reg('dashboard', function() {
       cta +
       '</div>';
 
-    const insightLine = '<div class="banner" style="margin:0 16px 16px">' +
+    const insightLine = '<button type="button" class="banner dash-insight" style="margin:0 16px 16px;width:calc(100% - 32px);text-align:left" onclick="go(\'coach\')">' +
       '<strong>' + esc(insight.title || 'Insight') + '</strong> — ' + esc(insight.body || '') +
-      '</div>';
+      '<span class="dash-insight__go"> Open coach</span></button>';
 
     const ws = S.g('workouts') || [];
     const last = ws.slice().sort(function(a, b) {
@@ -102,7 +102,6 @@ reg('dashboard', function() {
     return '<div class="dash-screen">' + demoBanner + topbar +
       '<div class="dash-hero">' + sessionCard + insightLine + gapHtml + '</div>' +
       '<div class="dash-lower">' + lastBlock + nextBlock + weekBlock +
-      '<div style="padding:0 16px 8px"><button type="button" class="btn btn-secondary" style="width:100%" onclick="go(\'progress\')">Progress</button></div>' +
       '</div></div>';
   } catch (e) {
     console.error('dashboard', e);

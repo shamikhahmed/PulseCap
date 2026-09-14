@@ -114,7 +114,7 @@ function _pStat(val, label, iconName) {
   return '<div style="text-align:center;background:var(--bg4);border-radius:12px;padding:10px">' +
     '<div style="margin-bottom:4px;display:flex;justify-content:center;color:var(--c1)">'+icon(iconName, 18)+'</div>' +
     '<div  class="row-title-16">'+esc(String(val))+'</div>' +
-    '<div style="font-size:10px;color:var(--txt3);margin-top:2px">'+esc(label)+'</div>' +
+    '<div style="font-size:11px;color:var(--txt3);margin-top:2px">'+esc(label)+'</div>' +
     '</div>';
 }
 
@@ -430,7 +430,7 @@ function _bodyStatsChart(bodyStats, user) {
     '<polyline points="'+polyPts+'" fill="none" stroke="var(--c2)" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>' +
     dots +
     '</svg>' +
-    '<div style="display:flex;gap:14px;justify-content:center;margin-top:8px;font-size:10px;color:var(--txt3)">' +
+    '<div style="display:flex;gap:14px;justify-content:center;margin-top:8px;font-size:11px;color:var(--txt3)">' +
     '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#ffd60a;margin-right:4px;vertical-align:middle"></span>Fasted</span>' +
     '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#bf5af2;margin-right:4px;vertical-align:middle"></span>Fed</span>' +
     '</div></div>';

@@ -42,7 +42,7 @@ reg('equipment-setup', function() {
     '</div>';
 
   const brandBadge = function(brand) {
-    return '<span class="eq-brand-badge" style="display:inline-block;font-size:10px;font-weight:800;padding:2px 7px;border-radius:6px;margin-top:5px;letter-spacing:0.04em;text-transform:uppercase;background:rgba(var(--accent-rgb),0.12);color:var(--accent-text);border:1px solid rgba(var(--accent-rgb),0.28)">' + esc(brand) + '</span>';
+    return '<span class="eq-brand-badge" style="display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:6px;margin-top:5px;letter-spacing:0.04em;text-transform:uppercase;background:rgba(var(--accent-rgb),0.12);color:var(--accent-text);border:1px solid rgba(var(--accent-rgb),0.28)">' + esc(brand) + '</span>';
   };
 
   const mine = selected.map(function(id) { return EquipmentDB.byId(id); }).filter(Boolean);

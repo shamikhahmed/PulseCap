@@ -50,6 +50,7 @@
 }
 
 .nb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
   flex: 1 1 0; min-width: 0; max-width: 76px;
   display: flex; flex-direction: column;
   align-items: center; justify-content: center;
@@ -62,7 +63,7 @@
 }
 
 .nb svg { width: 22px; height: 22px; flex-shrink: 0; transition: transform 0.22s var(--spring), filter 0.2s; }
-.nb span { font-size: 10px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; text-align: center; transition: color 0.2s; }
+.nb span { font-size: 11px; font-weight: 600; letter-spacing: 0.01em; text-transform: none; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100%; text-align: center; transition: color 0.2s; }
 
 /* Active indicator pill */
 .nb::before {
@@ -222,7 +223,7 @@ button.back-chip {
 .c-muted { color: var(--txt3); }
 .c-warn { color: #f5c842; }
 .ta-right { text-align: right; }
-.muted-9 { font-size: 9px; color: var(--txt3); }
+.muted-9 { font-size: 11px; color: var(--txt3); }
 .mt-12 { margin-top: var(--space-3); }
 .mt-14 { margin-top: 14px; }
 .inline-chip { display: inline-flex; align-items: center; gap: 6px; }
@@ -242,7 +243,7 @@ button.back-chip {
   touch-action: manipulation;
 }
 .micro-label-9 {
-  font-size: 9px;
+  font-size: 11px;
   color: var(--txt3);
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -384,7 +385,7 @@ button.back-chip {
 .readiness-metric { background: rgba(255,255,255,0.04); border-radius: 12px; padding: 10px 6px; text-align: center; }
 [data-theme="light"] .readiness-metric { background: rgba(0,0,0,0.04); }
 .readiness-metric-v { font-size: 15px; font-weight: 700; color: var(--txt); }
-.readiness-metric-l { font-size: 10px; color: var(--txt3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
+.readiness-metric-l { font-size: 11px; color: var(--txt3); margin-top: 2px; text-transform: uppercase; letter-spacing: 0.06em; }
 .readiness-log-btn {
   margin-top: 14px; padding: 12px; border-radius: var(--r12);
   background: rgba(var(--c1-rgb), 0.1); border: 1px solid rgba(var(--c1-rgb), 0.2);
@@ -414,8 +415,8 @@ button.back-chip {
   align-items: center; justify-content: center;
 }
 .ring-pct { font-size: 12px; font-weight: 700; color: var(--txt); }
-.ring-sub { font-size: 8px; color: var(--txt3); }
-.ring-label { font-size: 10px; color: var(--txt3); font-weight: 600; text-align: center; }
+.ring-sub { font-size:11px; color: var(--txt3); }
+.ring-label { font-size: 11px; color: var(--txt3); font-weight: 600; text-align: center; }
 
 /* ── Supplement cards ───────────────────────── */
 .supp-card { display: flex; align-items: center; gap: 12px; padding: 12px 16px; background: var(--bg3); border-bottom: 1px solid var(--border); }
@@ -431,7 +432,7 @@ button.back-chip {
 .stat { background: var(--bg3); border-radius: var(--r16); padding: 14px 10px; text-align: center; flex: 1; border: 1px solid var(--border); }
 [data-theme="light"] .stat { background: #fff; box-shadow: var(--ds1); }
 .stat-v { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--txt); letter-spacing: -0.5px; }
-.stat-l { font-size: 10px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; color: var(--txt3); margin-top: 5px; }
+.stat-l { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; color: var(--txt3); margin-top: 5px; }
 .stat-accent .stat-v { background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
 
 /* ── Coach/AI cards ─────────────────────────── */
@@ -537,7 +538,7 @@ input[type=range] {
 .theme-item { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; touch-action: manipulation; }
 .theme-swatch { width: 48px; height: 48px; border-radius: 14px; border: 3px solid transparent; transition: transform 0.18s var(--spring), border-color 0.18s; }
 .theme-swatch.on { border-color: var(--txt); transform: scale(1.1); }
-.theme-label { font-size: 10px; color: var(--txt3); font-weight: 600; }
+.theme-label { font-size: 11px; color: var(--txt3); font-weight: 600; }
 
 /* ── Generic card helpers (used by workout, progress, coach) ── */
 .card { background: var(--bg3); border-radius: var(--r16); padding: 16px; border: 1px solid var(--border); margin-bottom: 12px; }
@@ -693,7 +694,7 @@ textarea:focus-visible,
 .stack-3 > * + * { margin-top: var(--space-3); }
 .stack-4 > * + * { margin-top: var(--space-4); }
 
-.muted-10 { font-size: 10px; color: var(--txt3); }
+.muted-10 { font-size: 11px; color: var(--txt3); }
 .muted-11 { font-size: var(--type-caption); color: var(--txt3); }
 .muted-12 { font-size: var(--type-label); color: var(--txt3); }
 .muted-13 { font-size: 13px; color: var(--txt3); }
@@ -733,7 +734,7 @@ textarea:focus-visible,
   margin-bottom: 10px;
 }
 .micro-label {
-  font-size: 10px;
+  font-size: 11px;
   color: var(--txt3);
   text-transform: uppercase;
   letter-spacing: 0.06em;
@@ -874,7 +875,7 @@ body.gym-floor #nav.cap-premium-nav .nav-label { font-size: 0.65rem; }
 }
 .dash-stat-n { font-size: 22px; font-weight: 900; line-height: 1; }
 .dash-stat-l {
-  font-size: 10px; color: var(--txt3); margin-top: 4px; font-weight: 600;
+  font-size: 11px; color: var(--txt3); margin-top: 4px; font-weight: 600;
   text-transform: uppercase; letter-spacing: 0.06em;
 }
 .dash-tint-card {
@@ -908,7 +909,7 @@ body.gym-floor #nav.cap-premium-nav .nav-label { font-size: 0.65rem; }
 }
 .chev-muted { color: var(--txt3); font-size: 18px; }
 .section-kicker {
-  font-size: 10px; font-weight: 700; text-transform: uppercase;
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
   letter-spacing: 0.1em; color: var(--txt3); padding: 0 16px; margin-bottom: 8px;
 }
 .section-kicker-in { padding: 0; margin-bottom: 8px; }

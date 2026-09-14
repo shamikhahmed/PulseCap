@@ -303,6 +303,7 @@ reg('rehab', function() {
   }
 
   return '<div class="topbar"><div class="topbar-title">Rehab & Recovery</div></div>' +
+    '<p style="padding:8px 16px 0;font-size:12px;color:var(--txt3);line-height:1.45">Rehab tools are educational — not medical advice. See a clinician for injuries.</p>' +
     '<div style="margin:0 16px 14px;padding:14px;background:rgba(255,159,10,0.08);border:1px solid rgba(255,159,10,0.24);border-radius:14px;font-size:12px;line-height:1.55;color:var(--txt2)"><strong>Educational guidance only.</strong> PulseCap cannot diagnose injuries or clear return to sport. Seek urgent care for severe pain, deformity, loss of function, numbness, breathing trouble, or rapidly worsening symptoms.</div>' +
     activeSection +
     sh('Log New Injury', '+ Log', 'showLogInjuryModal()') +
@@ -316,7 +317,7 @@ reg('rehab', function() {
         '<div  class="row-strong">' + inj.name + '</div>' +
         '<div  class="muted-12">Published recovery range: around ' + inj.return_to_gym_weeks.typical + ' weeks; individual clearance varies</div>' +
         '</div>' +
-        '<div style="padding:3px 8px;border-radius:8px;font-size:10px;font-weight:700;background:' + (inj.severity === 'mild' ? 'rgba(48,209,88,.1)' : inj.severity === 'moderate' ? 'rgba(255,159,10,.1)' : 'rgba(255,69,58,.1)') + ';color:' + (inj.severity === 'mild' ? 'var(--success)' : inj.severity === 'moderate' ? 'var(--warn)' : 'var(--danger)') + '">' + inj.severity + '</div>' +
+        '<div style="padding:3px 8px;border-radius:8px;font-size:11px;font-weight:700;background:' + (inj.severity === 'mild' ? 'rgba(48,209,88,.1)' : inj.severity === 'moderate' ? 'rgba(255,159,10,.1)' : 'rgba(255,69,58,.1)') + ';color:' + (inj.severity === 'mild' ? 'var(--success)' : inj.severity === 'moderate' ? 'var(--warn)' : 'var(--danger)') + '">' + inj.severity + '</div>' +
         '<div style="color:var(--txt3);font-size:16px;margin-left:4px">›</div>' +
         '</div>';
     }).join('') +
@@ -328,7 +329,7 @@ window.showInjuryProtocol = function(id) {
   if (!inj) return;
   modal(inj.name,
     '<div style="background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.2);border-radius:10px;padding:10px;margin-bottom:10px">' +
-    '<div style="font-size:10px;font-weight:700;color:var(--danger);margin-bottom:5px">CHECK RED FLAGS FIRST</div>' +
+    '<div style="font-size:11px;font-weight:700;color:var(--danger);margin-bottom:5px">CHECK RED FLAGS FIRST</div>' +
     inj.red_flags.map(function(f) { return '<div style="font-size:11px;color:var(--txt2);margin-bottom:2px">• ' + esc(f) + '</div>'; }).join('') +
     '</div>' +
     '<div style="font-size:12px;color:var(--txt2);line-height:1.6;margin-bottom:14px">' + esc(inj.anatomy) + '</div>' +
@@ -353,10 +354,10 @@ window.showInjuryProtocol = function(id) {
     '<div style="background:var(--bg4);border-radius:10px;padding:10px;text-align:center"><div style="font-size:16px;font-weight:800;color:var(--warn)">' + inj.return_to_gym_weeks.conservative + 'w</div><div class="muted-9">Conservative</div></div>' +
     '</div>' +
     '<div style="background:rgba(255,69,58,0.08);border:1px solid rgba(255,69,58,0.2);border-radius:10px;padding:10px;margin-bottom:10px">' +
-    '<div style="font-size:10px;font-weight:700;color:var(--danger);margin-bottom:5px;display:flex;align-items:center;gap:6px">' + icon('alert', 12, 'var(--danger)') + ' SEE A DOCTOR IF:</div>' +
+    '<div style="font-size:11px;font-weight:700;color:var(--danger);margin-bottom:5px;display:flex;align-items:center;gap:6px">' + icon('alert', 12, 'var(--danger)') + ' SEE A DOCTOR IF:</div>' +
     inj.red_flags.map(function(f) { return '<div style="font-size:11px;color:var(--txt2);margin-bottom:2px">• ' + f + '</div>'; }).join('') +
     '</div>' +
-    '<div style="font-size:10px;color:var(--txt3);font-style:italic">' + inj.evidence_source + '</div>',
+    '<div style="font-size:11px;color:var(--txt3);font-style:italic">' + inj.evidence_source + '</div>',
     '<div  class="flex-gap-8">' +
     '<button type="button" class="btn btn-primary flex-1"  onclick="logThisInjury(\'' + id + '\')">Track This Condition</button>' +
     '<button type="button" class="btn btn-ghost" onclick="closeModal()">Close</button>' +
