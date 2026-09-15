@@ -21,7 +21,7 @@ function _renderIntro(idx) {
     '<div style="display:flex;justify-content:flex-end"><button type="button" class="btn btn-ghost btn-sm" onclick="introQuickStart()">Skip</button></div>' +
     '<div style="flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center">' +
     '<div style="width:88px;height:88px;border-radius:24px;margin:0 auto 24px;background:var(--grad);display:flex;align-items:center;justify-content:center">' +
-    '<svg width="48" height="48" viewBox="0 0 512 512" fill="none" aria-hidden="true"><path d="M96 256 H176 L208 208 L256 304 L304 176 L352 256 H416" stroke="#fff" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/><circle cx="256" cy="256" r="18" fill="#fff"/></svg>' +
+    '<svg width="48" height="48" viewBox="0 0 512 512" fill="none" aria-hidden="true"><path d="M96 256 H176 L208 208 L256 304 L304 176 L352 256 H416" stroke=PCBrand.h_fff stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/><circle cx="256" cy="256" r="18" fill=PCBrand.h_fff/></svg>' +
     '</div>' +
     '<div class="ob-title" style="font-size:28px">' + esc(slide.title) + '</div>' +
     '<div class="ob-sub" style="max-width:320px;margin:8px auto 24px">' + esc(slide.sub) + '</div>' +

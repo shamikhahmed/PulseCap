@@ -245,9 +245,9 @@ reg('photos', function() {
       return '<div style="position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:var(--bg3)">' +
         '<img src="' + url + '" alt="Progress photo ' + esc(p.date) + '" style="width:100%;aspect-ratio:3/4;object-fit:cover;display:block">' +
         '<div style="position:absolute;bottom:0;left:0;right:0;padding:20px 10px 8px;background:linear-gradient(transparent,rgba(0,0,0,0.75));display:flex;justify-content:space-between;align-items:flex-end">' +
-        '<div><div style="font-size:11px;font-weight:700;color:#fff">' + esc(fmtDate(p.date)) + '</div>' +
+        '<div><div style="font-size:11px;font-weight:700;color:'+PCBrand.h_fff+'">' + esc(fmtDate(p.date)) + '</div>' +
         (p.weight ? '<div style="font-size:11px;color:rgba(255,255,255,0.75)">' + esc(formatWeight(p.weight)) + '</div>' : '') + '</div>' +
-        '<button type="button" onclick="deleteProgressPhoto(' + jsArg(p.id) + ')" aria-label="Delete photo" style="min-width:44px;min-height:44px;background:rgba(0,0,0,0.45);border:none;border-radius:8px;color:#fff;padding:5px 8px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center">' + icon('alert', 14, '#fff') + '</button>' +
+        '<button type="button" onclick="deleteProgressPhoto(' + jsArg(p.id) + ')" aria-label="Delete photo" style="min-width:44px;min-height:44px;background:rgba(0,0,0,0.45);border:none;border-radius:8px;color:'+PCBrand.h_fff+';padding:5px 8px;cursor:pointer;touch-action:manipulation;display:flex;align-items:center;justify-content:center">' + icon('alert', 14, PCBrand.h_fff) + '</button>' +
         '</div></div>';
     }).join('');
   }, 0);
@@ -255,7 +255,7 @@ reg('photos', function() {
   return moduleTopbar('Progress Photos', 'Private · stays on this phone') +
     '<div id="photo-legacy"></div>' +
     '<div style="padding:0 16px 8px">' +
-    '<label class="btn btn-primary" style="display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer">' + icon('camera', 18, '#fff') + ' Add today\'s photo' +
+    '<label class="btn btn-primary" style="display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer">' + icon('camera', 18, PCBrand.h_fff) + ' Add today\'s photo' +
     '<input type="file" accept="image/jpeg,image/png,image/webp" capture="environment" onchange="addProgressPhoto(this)" style="display:none"></label>' +
     '<div style="font-size:12px;color:var(--txt3);text-align:center;margin-top:8px">Same spot, same light, once a week — that\'s where change shows.</div>' +
     '</div>' +

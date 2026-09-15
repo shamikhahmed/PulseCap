@@ -408,8 +408,8 @@ function _bodyStatsChart(bodyStats, user) {
     var cx=toX(i), cy=toY(p.weight), isLast=i===pts.length-1;
     var w = weightFromKg(p.weight, user);
     var fasted = p.fasted !== false;
-    var dotFill = isLast ? 'white' : (fasted ? '#ffd60a' : '#bf5af2');
-    var dotStroke = fasted ? '#ffd60a' : '#bf5af2';
+    var dotFill = isLast ? 'white' : (fasted ? PCBrand.h_ffd60a : PCBrand.h_bf5af2);
+    var dotStroke = fasted ? PCBrand.h_ffd60a : PCBrand.h_bf5af2;
     return '<circle cx="'+cx+'" cy="'+cy+'" r="'+(isLast?7:4)+'" fill="'+dotFill+'" stroke="'+dotStroke+'" stroke-width="2"/>' +
       (isLast?'<text x="'+cx+'" y="'+(cy-12)+'" font-size="10" fill="var(--txt)" text-anchor="middle" font-weight="700">'+w+(isImperial?'lb':'kg')+'</text>':'');
   }).join('');
@@ -431,8 +431,8 @@ function _bodyStatsChart(bodyStats, user) {
     dots +
     '</svg>' +
     '<div style="display:flex;gap:14px;justify-content:center;margin-top:8px;font-size:11px;color:var(--txt3)">' +
-    '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#ffd60a;margin-right:4px;vertical-align:middle"></span>Fasted</span>' +
-    '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:#bf5af2;margin-right:4px;vertical-align:middle"></span>Fed</span>' +
+    '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+PCBrand.h_ffd60a+';margin-right:4px;vertical-align:middle"></span>Fasted</span>' +
+    '<span><span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:'+PCBrand.h_bf5af2+';margin-right:4px;vertical-align:middle"></span>Fed</span>' +
     '</div></div>';
 }
 

@@ -410,7 +410,7 @@ select.split-select {
 }
 select.field:focus,
 .split-select:focus {
-  outline: none;
+  outline: 0;
   border-color: var(--accent);
   box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.14);
 }
@@ -495,7 +495,7 @@ select.field:focus,
   -webkit-appearance: none;
   appearance: none;
 }
-.set-step__inp:focus { outline: none; }
+.set-step__inp:focus { outline: 0; }
 .set-step__side {
   display: flex;
   flex-direction: column;
@@ -536,7 +536,7 @@ select.field:focus,
   -webkit-appearance: none;
   appearance: none;
 }
-.set-rpe:focus { outline: none; border-color: var(--accent); }
+.set-rpe:focus { outline: 0; border-color: var(--accent); }
 
 .set-check {
   width: 44px;

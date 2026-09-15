@@ -221,3 +221,5 @@ body.cap-desktop-nav .app-frame {
   flex: 0 0 auto;
   white-space: nowrap;
 }
+
+.clipboard-pulse__dot{color:var(--c1);fill:currentColor}

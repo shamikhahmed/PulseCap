@@ -57,6 +57,7 @@ const ASSETS = [
   './js/data/training-plan-schema.js',
   './js/data/plans/machine-ppl.js',
   './js/data/plans/catalog.js',
+  './js/brand/colors.js',
   './js/app.js',
   './js/engines.js',
   './js/core/daily-decision.js',

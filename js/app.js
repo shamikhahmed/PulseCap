@@ -358,7 +358,7 @@ function go(id, data) {
         if (navSeq !== _navigationSeq) return;
         console.error('go(' + id + ') lazy', e);
         const view = document.getElementById('view');
-        if (view) view.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:#ff4444;font-size:14px;line-height:1.6">' +
+        if (view) view.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:'+PCBrand.h_ff4444+';font-size:14px;line-height:1.6">' +
           '<strong>Could not load screen</strong><br>' + esc(e.message) +
           '<br><br><button type="button" class="btn btn-secondary" onclick="go(\'dashboard\')">← Back to Home</button></div>';
       });
@@ -368,7 +368,7 @@ function go(id, data) {
   } catch(e) {
     console.error('go(' + id + ')', e);
     const v = document.getElementById('view');
-    if (v) v.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:#ff4444;font-size:14px;line-height:1.6">' +
+    if (v) v.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:'+PCBrand.h_ff4444+';font-size:14px;line-height:1.6">' +
       '<strong>Screen error: ' + esc(id) + '</strong><br>' + esc(e.message) +
       '<br><br><button type="button" class="btn btn-secondary" onclick="go(\'dashboard\')">← Back to Home</button></div>';
   }
@@ -685,7 +685,7 @@ function applyTheme(t, persist) {
      attribute — keep both in sync or light mode ships a dark navbar. */
   document.documentElement.setAttribute('data-cap-theme', theme);
   const themeMeta = document.querySelector('meta[name="theme-color"]');
-  if (themeMeta) themeMeta.setAttribute('content', theme === 'light' ? '#F5F5F7' : '#0A0A0B');
+  if (themeMeta) themeMeta.setAttribute('content', theme === 'light' ? PCBrand.h_f5f5f7 : PCBrand.h_0a0a0b);
   if (persist !== false) {
     S.set('user.theme', theme);
     S.set('user.mode', theme);

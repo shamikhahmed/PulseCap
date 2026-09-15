@@ -57,9 +57,9 @@ function _calSection(cals, target, p, c, f, user, n) {
     (line ? '<div class="muted-12" style="margin-top:6px;line-height:1.45">'+esc(line)+'</div>' : '') +
     '</div></div>' +
     '<div class="macro-bar-wrap">' +
-    _macroBar('Protein', p, macros.protein, '#10B981', 'macro-protein') +
-    _macroBar('Carbs', c, macros.carbs, '#3B82F6', 'macro-carbs') +
-    _macroBar('Fat', f, macros.fat, '#f5c842', 'macro-fat') +
+    _macroBar('Protein', p, macros.protein, PCBrand.h_10b981, 'macro-protein') +
+    _macroBar('Carbs', c, macros.carbs, PCBrand.h_3b82f6, 'macro-carbs') +
+    _macroBar('Fat', f, macros.fat, PCBrand.h_f5c842, 'macro-fat') +
     '</div></div>';
 }
 
@@ -116,7 +116,7 @@ function _mySuppsSection(userSupps, logs) {
         '<div class="supp-name">'+esc(s.name)+'</div>' +
         '<div class="supp-timing">'+esc(s.timing)+' · '+esc(s.dose||dbEntry.dose||'')+'</div>' +
         (taken&&lastTime?'<div class="supp-taken">Taken at '+lastTime+'</div>':'') +
-        (cafWarn?'<div class="supp-warn" style="display:flex;align-items:center;gap:4px">'+icon('alert',13,'#f5c842')+esc(cafWarn)+'</div>':'') +
+        (cafWarn?'<div class="supp-warn" style="display:flex;align-items:center;gap:4px">'+icon('alert',13,PCBrand.h_f5c842)+esc(cafWarn)+'</div>':'') +
         '</div>' +
         (!taken?'<button type="button" class="supp-mark" onclick="SupplementEngine.markTaken('+jsArg(s.id)+');go(\'nutrition\')">Done</button>':'') +
         '</div>';
@@ -237,7 +237,7 @@ window.startBarcodeFoodScan = async function() {
     video.srcObject = stream;
     await video.play();
     modal('Point at barcode',
-      '<div style="border-radius:12px;overflow:hidden;background:#000"><video id="bc-video" playsinline autoplay style="width:100%;max-height:280px"></video></div>' +
+      '<div style="border-radius:12px;overflow:hidden;background:'+PCBrand.h_000+'"><video id="bc-video" playsinline autoplay style="width:100%;max-height:280px"></video></div>' +
       '<div class="muted-11" style="margin-top:8px">Hold steady…</div>',
       '<button type="button" class="btn btn-ghost" onclick="_stopBarcodeScan()">Cancel</button>',
       { onClose: _cleanupBarcodeResources });
@@ -279,11 +279,17 @@ document.addEventListener('visibilitychange', function() {
   if (document.hidden) _cleanupBarcodeResources();
 });
 
+function clearTodayMeals() {
+  S.set('meals', (S.g('meals') || []).filter(function (m) { return m.date !== today(); }));
+  if (typeof Toast !== 'undefined') Toast.show("Today's meals cleared", 'info', 2000);
+  go('nutrition');
+}
+window.clearTodayMeals = clearTodayMeals;
+
 function _mealHistory(meals) {
   const todayMeals = meals.filter(m => m.date === today());
   if (!todayMeals.length) return '';
-  return sh('Today\'s Meals', 'Clear', 'if(confirm(\'Clear today\\\'s meals?\'))' +
-    '{S.set(\'meals\',(S.g(\'meals\')||[]).filter(function(m){return m.date!==today();}));go(\'nutrition\')}') +
+  return sh('Today\'s Meals', 'Clear', 'clearTodayMeals()') +
     '<div  class="pad-x-16">' +
     todayMeals.map(m =>
       '<div class="list-divider-row">' +

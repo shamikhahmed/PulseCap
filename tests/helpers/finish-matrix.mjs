@@ -1,4 +1,4 @@
-/** Vendored from capricorn-tooling/shared/testing/finish-matrix.js — keep in sync. */
+/** Vendored from capricorn-tooling/shared/testing/finish-matrix.mjs — keep in sync. */
 /**
  * Cap Fleet finish-matrix helpers (FLT-07 / §6.2).
  * Import from Playwright specs in each web repo.
