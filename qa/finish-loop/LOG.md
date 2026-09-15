@@ -23,3 +23,7 @@
   - __APP_READY__ missing (C-20)
   - Prior LOG sparse
   - finish-matrix / Lighthouse pending
+
+### 2026-09-15 PulseCap gallery regen
+- `npm run gallery` PASS (2 tests)
+- Regenerated docs/screenshots/gallery/* + manifest
