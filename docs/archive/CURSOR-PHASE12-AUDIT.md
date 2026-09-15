@@ -1,3 +1,5 @@
+> Superseded on 2026-09-15 by docs/audit-2026-09-14 + HANDOVER (C-24).
+
 # PulseCap — Deep Audit, Confidence Register & Phase 12–15 Cursor Prompts
 
 > Written by Claude Code after a hands-on audit of v6.17.0 (`2160fde`). Every claim below is marked **VERIFIED** (I ran it and saw the output), **CODE-READ** (I read the source but did not execute it), or **UNTESTED** (I could not check it — treat as unknown, not as fine).

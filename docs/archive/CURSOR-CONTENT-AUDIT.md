@@ -1,3 +1,5 @@
+> Superseded on 2026-09-15 by docs/audit-2026-09-14 + HANDOVER (C-24).
+
 # PulseCap — Content & Data Audit + Phases 16–21 Looping Cursor Prompt
 
 > Audited against **v6.21.0** (`e0f6057`) on 2026-08-18 by Claude Code. Content/data layer only — the code and personalization spine were audited separately in `CURSOR-PHASE12-AUDIT.md`.

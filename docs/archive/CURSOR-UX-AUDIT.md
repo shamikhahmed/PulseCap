@@ -1,3 +1,5 @@
+> Superseded on 2026-09-15 by docs/audit-2026-09-14 + HANDOVER (C-24).
+
 # PulseCap — UX / Layout Audit + Phases 22–27 Looping Cursor Prompt
 
 > Audited against **v6.27.0** (`2011a81`) on 2026-08-18 by Claude Code, at 390 px, **both themes**. Every finding below was reproduced with a measurement, and the measurement is included so Cursor can re-run it to confirm the fix.

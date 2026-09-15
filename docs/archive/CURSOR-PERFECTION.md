@@ -1,3 +1,5 @@
+> Superseded on 2026-09-15 by docs/audit-2026-09-14 + HANDOVER (C-24).
+
 # PulseCap — The Perfection Pass (Phases 30+)
 
 > Written by Claude Code after auditing **v6.35.0** (`8afcb1b`). This is the final brief: not "fix these bugs," but **"is this actually a product Apple would ship?"**

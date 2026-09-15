@@ -41,3 +41,5 @@ logs/
 
 # Device-matrix PNGs (keep REPORT.md + meta.json)
 qa/device-matrix/**/*.png
+
+qa/finish-loop/shots/

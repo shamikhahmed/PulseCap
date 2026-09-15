@@ -1,3 +1,5 @@
+> Superseded on 2026-09-15 by docs/audit-2026-09-14 + HANDOVER (C-24).
+
 # PulseCap — Redesign Brief & Cursor Build Prompts
 
 > **What this file is.** A complete, self-contained set of prompts you paste into Cursor (Agent / Composer mode) so it can redesign PulseCap on its own, phase by phase, in a loop. Written by Claude Code after a full audit of the running app + codebase.
