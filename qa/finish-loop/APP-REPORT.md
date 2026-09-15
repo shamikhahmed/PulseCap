@@ -14,3 +14,8 @@ Automated kill-list / SINKS / LH landed. ESM finish-matrix helper. VO ⛔.
 
 ## Appendix
 Evidence under qa/finish-loop/. No estimated scores (C-09). Fleet Tier 1 requires VO.
+
+
+### Evidence checklist
+- TIER1.json · SINKS.md · lighthouse JSON · ESM finish-matrix
+- VO pending · matrix:shots pending
