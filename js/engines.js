@@ -1484,9 +1484,9 @@ const MuscleEngine = {
         }
         const hrs = lastTrained[name] || null;
         if (!hrs) return { name, status:'fresh', label:'Ready', pct:100, hrs:null, color:'var(--c1)' };
-        if (hrs < 24) return { name, status:'sore', label:'Recovering', pct:Math.round(hrs/48*100), hrs:Math.round(hrs), color:'#ff6b35' };
-        if (hrs < 48) return { name, status:'recovering', label:'Moderate', pct:Math.round(hrs/48*100), hrs:Math.round(hrs), color:'#f5c842' };
-        return { name, status:'fresh', label:'Ready', pct:100, hrs:Math.round(hrs), color:'#10B981' };
+        if (hrs < 24) return { name, status:'sore', label:'Recovering', pct:Math.round(hrs/48*100), hrs:Math.round(hrs), color:PCBrand.h_ff6b35 };
+        if (hrs < 48) return { name, status:'recovering', label:'Moderate', pct:Math.round(hrs/48*100), hrs:Math.round(hrs), color:PCBrand.h_f5c842 };
+        return { name, status:'fresh', label:'Ready', pct:100, hrs:Math.round(hrs), color:PCBrand.h_10b981 };
       });
     } catch(e) { return []; }
   },
@@ -1674,7 +1674,7 @@ const CoachEngine = {
         m:m3(streak+' days straight. Schedule deload this week — same frequency, 50% volume.',
              streak+'-day consecutive training. Cumulative fatigue index elevated. Deload protocol: maintain frequency, reduce intensity 40-50%.',
              streak+' days. CNS is cooked. Deload week — same schedule, half volume. Non-negotiable.'),
-        i:'⚠️',c:'#f5c842'});
+        i:'⚠️',c:PCBrand.h_f5c842});
 
       const rem = weeklyGoal - weekWkts.length;
       if (rem > 0 && rem <= 2 && new Date().getDay() >= 4) msgs.push({t:'Weekly Goal',

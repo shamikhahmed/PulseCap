@@ -22,7 +22,7 @@ const DailyDecision = {
     const todayISO = typeof today === 'function' ? today() : new Date().toISOString().slice(0, 10);
     if (lastSkip && lastSkip.date === todayISO) {
       return {
-        decision: 'rest', allowTrain: true, title: 'Day Skipped', ic: 'calendar', tint: 'c2', color: '#8e8e93',
+        decision: 'rest', allowTrain: true, title: 'Day Skipped', ic: 'calendar', tint: 'c2', color: PCBrand.h_8e8e93,
         reason: lastSkip.shifted
           ? (lastSkip.name || 'Session') + ' moved to your next gym day. The week shifts with you.'
           : 'Schedule holds. A short walk today keeps the habit alive.',

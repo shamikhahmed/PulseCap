@@ -2,10 +2,10 @@
 /* ── PulseCap v4 — Coach Screen ── */
 
 const COACH_META = {
-  alex: { name:'Alex', ic:'flame', title:'Drill Sergeant', color:'#ff4444' },
+  alex: { name:'Alex', ic:'flame', title:'Drill Sergeant', color:PCBrand.h_ff4444 },
   maya: { name:'Maya', ic:'dna', title:'Sports Scientist', color:'var(--c1)' },
-  sam:  { name:'Sam',  ic:'sparkles', title:'The Motivator',   color:'#f5c842' },
-  zen:  { name:'Zen',  ic:'leaf', title:'Mindful Coach',   color:'#10B981' },
+  sam:  { name:'Sam',  ic:'sparkles', title:'The Motivator',   color:PCBrand.h_f5c842 },
+  zen:  { name:'Zen',  ic:'leaf', title:'Mindful Coach',   color:PCBrand.h_10b981 },
   rex:  { name:'Rex',  ic:'dumbbell', title:'The Powerlifter', color:'var(--c2)' }
 };
 
@@ -82,7 +82,7 @@ reg('briefing', function() {
     '<div  class="micro-label type-caption-mt">Sessions</div>' +
     '</div>' +
     '<div style="background:var(--bg3);border-radius:14px;padding:12px;text-align:center;border:1px solid var(--border)">' +
-    '<div style="font-size:22px;font-weight:800;color:#ffd60a">'+(S.g('prs')||[]).length+'</div>' +
+    '<div style="font-size:22px;font-weight:800;color:'+PCBrand.h_ffd60a+'">'+(S.g('prs')||[]).length+'</div>' +
     '<div  class="micro-label type-caption-mt">PRs</div>' +
     '</div></div>' +
 
@@ -144,7 +144,7 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
   };
 
   const deloadBanner = streak >= 5 ?
-    '<div class="ai-msg" style="border-left-color:#f5c842;margin:0 16px 12px">' +
+    '<div class="ai-msg" style="border-left-color:'+PCBrand.h_f5c842+';margin:0 16px 12px">' +
     '<div class="ai-msg-header"><span class="c-warn">' + icon('alert', 16) + '</span><span class="ai-msg-label c-warn">Deload Week Advised</span></div>' +
     '<div class="ai-msg-text">'+streak+' consecutive training days detected. Keep the schedule but cut volume 50% — your CNS and connective tissue need systemic recovery.</div></div>' : '';
 
@@ -190,13 +190,13 @@ function _splitSuggestionBlock(splitDay, cardioRec, score, user) {
       '<div style="width:32px;display:flex;justify-content:center;color:var(--c1)">'+(typeof exChromeIcon==='function'?exChromeIcon(ex||name,22):'')+'</div>' +
       '<div  class="flex-1">' +
       '<div  class="row-title-14">' +
-        (fatiguedMuscle?'<span style="color:#f5c842;font-weight:700">Fatigue · </span>':'') +
-        (injWarn?'<span style="color:#ff4444;font-weight:700">Caution · </span>':'') +
+        (fatiguedMuscle?'<span style="color:'+PCBrand.h_f5c842+';font-weight:700">Fatigue · </span>':'') +
+        (injWarn?'<span style="color:'+PCBrand.h_ff4444+';font-weight:700">Caution · </span>':'') +
         esc(name)+'</div>' +
       '<div  class="muted-12">'+sets+(suggest?' · Try '+(suggest||'—')+'kg':'')+'</div>' +
-      (fatiguedMuscle?'<div style="font-size:11px;color:#f5c842;margin-top:2px">'+fatiguePct+'% recovery — consider reduced volume</div>':'') +
-      (injWarn?'<div style="font-size:11px;color:#ff4444;margin-top:2px">Injury caution: '+esc(injWarn)+'</div>':'') +
-      (!fatiguedMuscle&&!injWarn&&progNote?'<div style="font-size:11px;color:#10B981;margin-top:2px">'+esc(progNote)+'</div>':'') +
+      (fatiguedMuscle?'<div style="font-size:11px;color:'+PCBrand.h_f5c842+';margin-top:2px">'+fatiguePct+'% recovery — consider reduced volume</div>':'') +
+      (injWarn?'<div style="font-size:11px;color:'+PCBrand.h_ff4444+';margin-top:2px">Injury caution: '+esc(injWarn)+'</div>':'') +
+      (!fatiguedMuscle&&!injWarn&&progNote?'<div style="font-size:11px;color:'+PCBrand.h_10B981+';margin-top:2px">'+esc(progNote)+'</div>':'') +
       '</div></div></div>';
   }).join('');
 
@@ -249,7 +249,7 @@ function _progressionAnalysisBlock() {
   if (!cards.length) return '';
 
   const cardHtml = cards.map(prog => {
-    const changeColor = !prog.pctChange ? 'var(--txt3)' : prog.pctChange > 0 ? '#10B981' : '#ff6b35';
+    const changeColor = !prog.pctChange ? 'var(--txt3)' : prog.pctChange > 0 ? PCBrand.h_10b981 : PCBrand.h_ff6b35;
     const changeLabel = !prog.pctChange ? 'No 4-wk data' : (prog.pctChange > 0 ? '↑' : '↓') + Math.abs(prog.pctChange) + '% vs 4wks';
     return '<div style="padding:14px 0;border-bottom:1px solid var(--border)">' +
       '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">' +
@@ -267,10 +267,10 @@ function _progressionAnalysisBlock() {
       '</div>' +
       '<div  class="flex-1">' +
       '<div style="font-size:11px;color:var(--txt3);text-transform:uppercase;letter-spacing:0.05em">Next target</div>' +
-      '<div style="font-size:14px;font-weight:700;color:'+(prog.plateau?'#f5c842':'#10B981')+'">'+prog.suggestedWeight+u+'</div>' +
+      '<div style="font-size:14px;font-weight:700;color:'+(prog.plateau?PCBrand.h_f5c842:PCBrand.h_10b981)+'">'+prog.suggestedWeight+u+'</div>' +
       '</div>' +
       '</div>' +
-      (prog.plateau ? '<div style="font-size:12px;color:#f5c842;background:rgba(245,200,66,0.1);padding:6px 8px;border-radius:8px">Plateau — '+prog.sessions+' sessions, 1RM unchanged. Try technique variation or a planned deload.</div>' : '') +
+      (prog.plateau ? '<div style="font-size:12px;color:'+PCBrand.h_f5c842+';background:rgba(245,200,66,0.1);padding:6px 8px;border-radius:8px">Plateau — '+prog.sessions+' sessions, 1RM unchanged. Try technique variation or a planned deload.</div>' : '') +
       '</div>';
   }).join('');
 
@@ -282,7 +282,7 @@ function _progressionAnalysisBlock() {
 function _weeklySummaryBlock(report) {
   if (!report) return '';
   const volLabel = report.thisVol > 1000 ? Math.round(report.thisVol/100)/10+'t' : report.thisVol+'kg';
-  const changeColor = report.change > 0 ? '#10B981' : report.change < 0 ? '#ff6b35' : 'var(--txt3)';
+  const changeColor = report.change > 0 ? PCBrand.h_10b981 : report.change < 0 ? PCBrand.h_ff6b35 : 'var(--txt3)';
   const changeLabel = report.change !== 0 ? (report.change>0?'↑':'↓')+Math.abs(report.change)+'% vs last week' : 'Same as last week';
   const completionPct = Math.round((report.weekWorkouts / Math.max(report.weeklyGoal,1)) * 100);
 
@@ -297,27 +297,27 @@ function _weeklySummaryBlock(report) {
     '<div class="tile-12">' +
     '<div  class="micro-label mb-6">Workouts</div>' +
     '<div style="font-size:22px;font-weight:900;color:var(--txt)">'+report.weekWorkouts+'/'+report.weeklyGoal+'</div>' +
-    '<div style="font-size:12px;color:'+(completionPct>=100?'#10B981':'var(--txt3)')+';margin-top:2px">'+(completionPct>=100?'Goal hit':completionPct+'% of goal')+'</div>' +
+    '<div style="font-size:12px;color:'+(completionPct>=100?PCBrand.h_10b981:'var(--txt3)')+';margin-top:2px">'+(completionPct>=100?'Goal hit':completionPct+'% of goal')+'</div>' +
     '</div>' +
     '</div>' +
     '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px">' +
     (report.bestMuscle ?
       '<div class="tile-12">' +
       '<div  class="micro-label mb-6">Best Recovered</div>' +
-      '<div style="font-size:15px;font-weight:800;color:#10B981">'+esc(report.bestMuscle)+'</div>' +
+      '<div style="font-size:15px;font-weight:800;color:'+PCBrand.h_10B981+'">'+esc(report.bestMuscle)+'</div>' +
       '<div  class="muted-12 mt-2">'+Math.round(report.bestMuscleScore)+'% ready</div>' +
       '</div>' : '<div></div>') +
     (report.mostImproved ?
       '<div class="tile-12">' +
       '<div  class="micro-label mb-6">Most Improved</div>' +
       '<div style="font-size:14px;font-weight:800;color:var(--c1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">'+esc(report.mostImproved.name)+'</div>' +
-      '<div style="font-size:12px;color:#10B981;margin-top:2px">+'+report.mostImproved.gain+'% 1RM</div>' +
+      '<div style="font-size:12px;color:'+PCBrand.h_10B981+';margin-top:2px">+'+report.mostImproved.gain+'% 1RM</div>' +
       '</div>' : '<div></div>') +
     '</div>' +
     '<div class="tile-12">' +
     '<div  class="micro-label mb-6">Current Readiness</div>' +
     '<div style="display:flex;align-items:center;gap:8px">' +
-    '<div style="font-size:22px;font-weight:900;color:'+(report.currentReadiness>=70?'#10B981':report.currentReadiness>=50?'#f5c842':'#ff6b35')+'">'+report.currentReadiness+'</div>' +
+    '<div style="font-size:22px;font-weight:900;color:'+(report.currentReadiness>=70?PCBrand.h_10b981:report.currentReadiness>=50?PCBrand.h_f5c842:PCBrand.h_ff6b35)+'">'+report.currentReadiness+'</div>' +
     '<div  class="muted-13">/ 100 — '+ReadinessEngine.label(report.currentReadiness).l+'</div>' +
     '</div></div>' +
     '</div>';
@@ -354,7 +354,7 @@ function _suppTimingBlock(userSupps, user) {
         '<div  class="row-strong">'+esc(s.name)+'</div>' +
         '<div  class="muted-12">'+esc(s.dose||dbEntry.dose||'')+'</div>' +
         (dbEntry.notes?'<div  class="muted-12 mt-2">'+esc(dbEntry.notes)+'</div>':'') +
-        (cafWarn?'<div style="font-size:12px;color:#f5c842;margin-top:4px">'+esc(cafWarn)+'</div>':'') +
+        (cafWarn?'<div style="font-size:12px;color:'+PCBrand.h_f5c842+';margin-top:4px">'+esc(cafWarn)+'</div>':'') +
         '</div></div>';
     }).join('');
     return '<div class="supp-time-group">' +
@@ -370,7 +370,7 @@ function _deloadBlock(user) {
   const needsDeload = WeightEngine.deloadCheck(user, ws);
   if (!needsDeload) return '';
   return sh('Recovery Alert') +
-    '<div class="ai-msg" style="border-left-color:#f5c842">' +
+    '<div class="ai-msg" style="border-left-color:'+PCBrand.h_f5c842+'">' +
     '<div class="ai-msg-header"><span class="c-warn">' + icon('alert', 16) + '</span><span class="ai-msg-label c-warn">Deload Recommended</span></div>' +
     '<div class="ai-msg-text">5+ weeks of progressive training detected. A lower-volume week may reduce accumulated fatigue. Adjust based on performance, soreness, and recovery.</div></div>';
 }

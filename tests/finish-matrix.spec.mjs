@@ -4,7 +4,7 @@ import path from 'node:path';
 import {
   matrixViewports, FINISH_THEMES, waitForAppReady,
   assertNoHorizontalOverflow, assertNotObscured, applyFinishTheme,
-} from './helpers/finish-matrix.js';
+} from './helpers/finish-matrix.mjs';
 
 const RUN = process.env.FINISH_MATRIX === '1' || process.env.FINISH_MATRIX_FULL === '1';
 const SHOTS = path.join('qa', 'finish-loop', 'shots');

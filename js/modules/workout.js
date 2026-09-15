@@ -403,7 +403,7 @@ const CARDIO_PROTOCOLS = {
     name: 'Circuit Training',
     full: 'Circuit Training',
     icon: 'refresh',
-    color: '#bf5af2',
+    color: PCBrand.h_bf5af2,
     tagline: 'Resistance + cardio combined — maximum efficiency',
     duration: '30–45 min',
     difficulty: 2,
@@ -584,7 +584,7 @@ function _setRowHTML(ex, exIdx, set, sIdx, suggestKg) {
     '<div class="set-at">@</div>' +
     '<input type="number" class="set-rpe" data-field="rpe" aria-label="RPE" placeholder="8" value="'+(set.rpe||'')+'" min="5" max="10" step="0.5" inputmode="decimal" onchange="_setVal('+exIdx+','+sIdx+',\'rpe\',parseFloat(this.value)||0)">' +
     '<button type="button" class="set-check'+(isDone?' done':'')+'" onclick="_doneSet('+exIdx+','+sIdx+')" aria-label="'+(isDone?'Set done':'Mark set done')+'">' +
-    (isDone ? (typeof icon === 'function' ? icon('check', 16, isPR ? '#fff' : 'currentColor') : '✓') : '') +
+    (isDone ? (typeof icon === 'function' ? icon('check', 16, isPR ? PCBrand.h_fff : 'currentColor') : '✓') : '') +
     '</button>' +
     (isPR ? '<div class="set-pr-flag">PR</div>' : '') +
     '</div>';
@@ -1033,7 +1033,7 @@ function _updateSetRow(exIdx, sIdx, set) {
   if (btn) {
     btn.className = 'set-check' + (set.done?' done':'');
     btn.innerHTML = set.done
-      ? (typeof icon === 'function' ? icon('check', 16, set._isPR ? '#fff' : 'currentColor') : '✓')
+      ? (typeof icon === 'function' ? icon('check', 16, set._isPR ? PCBrand.h_fff : 'currentColor') : '✓')
       : '';
   }
   const exCard = document.getElementById('ex-card-'+exIdx);
@@ -1175,7 +1175,7 @@ window.confirmFinishWorkout = function() {
     '<div style="font-size:20px;font-weight:800;color:var(--txt)">'+(usesImperial(user)?Math.round(totalVol*2.2046226218)+'lb':(totalVol>1000?round2(totalVol/1000)+'t':totalVol+'kg'))+'</div>' +
     '<div  class="micro-label type-caption-mt">Volume</div></div>' +
     '<div style="background:var(--bg3);border-radius:12px;padding:12px;text-align:center">' +
-    '<div style="font-size:20px;font-weight:800;color:#ffd60a">'+prs+'</div>' +
+    '<div style="font-size:20px;font-weight:800;color:'+PCBrand.h_ffd60a+'">'+prs+'</div>' +
     '<div  class="micro-label type-caption-mt">PRs</div></div>' +
     '</div>' +
     '<div class="field-wrap mb-8">' +
@@ -1684,7 +1684,7 @@ window.showAddCustomExercise = showAddCustomExercise;
 window.setCxDiff = function(d, btn) {
   window._cxDiff = d;
   document.querySelectorAll('.cx-diff-btn').forEach(function(b){b.style.background='var(--bg4)';b.style.color='var(--txt)';});
-  if (btn) { btn.style.background='var(--grad)'; btn.style.color='#fff'; }
+  if (btn) { btn.style.background='var(--grad)'; btn.style.color=PCBrand.h_fff; }
 };
 
 window.saveCustomExercise = function() {
@@ -1834,7 +1834,7 @@ window.showCardioProtocol = function(key) {
       '<div style="background:rgba(var(--c1-rgb),0.06);border-radius:10px;padding:10px">' +
       '<div style="font-size:12px;color:var(--txt2);line-height:1.6">💡 '+esc(pr.notes)+'</div>' +
       '</div>' +
-      '<button type="button" onclick="startCardioSession(\''+key+'\','+i+')" style="width:100%;margin-top:12px;padding:12px;border-radius:12px;background:'+p.color+';color:#fff;font-size:14px;font-weight:700;border:none;cursor:pointer;touch-action:manipulation">▶ Start This Protocol</button>' +
+      '<button type="button" onclick="startCardioSession(\''+key+'\','+i+')" style="width:100%;margin-top:12px;padding:12px;border-radius:12px;background:'+p.color+';color:'+PCBrand.h_fff+';font-size:14px;font-weight:700;border:none;cursor:pointer;touch-action:manipulation">▶ Start This Protocol</button>' +
       '</div>';
   }).join('');
 

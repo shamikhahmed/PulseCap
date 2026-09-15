@@ -173,8 +173,8 @@ const ExerciseLibrary = (() => {
     const media = getMedia(ex || name);
     const h = opts.height || 160;
     if (media.video) {
-      return '<div style="margin-bottom:14px;border-radius:16px;overflow:hidden;background:#000;border:1px solid var(--border)">' +
-        '<video src="' + esc(media.video) + '" poster="' + esc(media.thumb || '') + '" controls playsinline preload="metadata" style="width:100%;max-height:' + h + 'px;display:block;background:#000"></video></div>';
+      return '<div style="margin-bottom:14px;border-radius:16px;overflow:hidden;background:'+PCBrand.h_000+';border:1px solid var(--border)">' +
+        '<video src="' + esc(media.video) + '" poster="' + esc(media.thumb || '') + '" controls playsinline preload="metadata" style="width:100%;max-height:' + h + 'px;display:block;background:'+PCBrand.h_000+'"></video></div>';
     }
     if (media.image || media.thumb) {
       const src = media.image || media.thumb;
@@ -190,7 +190,7 @@ const ExerciseLibrary = (() => {
     return '<div style="margin-bottom:14px;border-radius:16px;padding:14px;background:var(--bg4);border:1px solid var(--border);display:flex;align-items:center;gap:12px">' +
       '<div  class="flex-1"><div style="font-size:13px;font-weight:700;color:var(--txt);margin-bottom:4px">Form guide</div>' +
       '<div style="font-size:12px;color:var(--txt3);line-height:1.45">No cached demo yet — open a curated YouTube search for proper form.</div></div>' +
-      '<a href="' + esc(media.formUrl) + '" target="_blank" rel="noopener noreferrer" onclick="haptic(15)" style="flex-shrink:0;padding:10px 14px;border-radius:12px;background:var(--grad);color:#fff;font-size:12px;font-weight:700;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Watch</a></div>';
+      '<a href="' + esc(media.formUrl) + '" target="_blank" rel="noopener noreferrer" onclick="haptic(15)" style="flex-shrink:0;padding:10px 14px;border-radius:12px;background:var(--grad);color:'+PCBrand.h_fff+';font-size:12px;font-weight:700;text-decoration:none;min-height:44px;display:inline-flex;align-items:center">Watch</a></div>';
   }
 
   async function _fetchJson(url, ms) {
