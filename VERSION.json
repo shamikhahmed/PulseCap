@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.43.0",
-  "swCache": "pulsecap-v123",
+  "version": "6.43.1",
+  "swCache": "pulsecap-v124",
   "updated": "2026-09-15",
-  "notes": "Tier1 finish P1 Today/a11y/disclaimers"
+  "notes": "C-20 __APP_READY__ after splash"
 }
