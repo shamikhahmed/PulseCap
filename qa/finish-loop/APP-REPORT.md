@@ -19,3 +19,12 @@ Evidence under qa/finish-loop/. No estimated scores (C-09). Fleet Tier 1 require
 ### Evidence checklist
 - TIER1.json · SINKS.md · lighthouse JSON · ESM finish-matrix
 - VO pending · matrix:shots pending
+
+
+## Status detail
+Automated `npm run tier1` reaches PASS once main CI is green after the ESM
+finish-matrix helper rename. Kill-list chrome colors live in `js/brand/colors.js`.
+Native meal-clear confirm replaced with `clearTodayMeals()`. Lighthouse JSON and
+SINKS.md are on disk under `qa/finish-loop/`.
+
+Fleet Tier 1 is not claimed without VoiceOver evidence (C-09 honesty).
