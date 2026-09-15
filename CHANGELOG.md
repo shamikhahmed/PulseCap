@@ -1,3 +1,7 @@
+## 6.43.1 — 2026-09-15
+- C-20: Set `window.__APP_READY__` after boot splash dismiss (first real screen).
+- SW `pulsecap-v124`.
+
 ## [6.43.0] — 2026-09-15
 
 - PLS-P1: Today demo banner + remove duplicate Progress CTA; actionable insight; sentence-case tabs; type floor; safe-area tab/toast; §4.2 disclaimers (About, onboarding, Rehab); privacy notes (wger / not medical)
