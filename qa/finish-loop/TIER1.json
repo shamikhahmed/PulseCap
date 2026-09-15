@@ -2,8 +2,8 @@
   "app": "PulseCap",
   "version": "6.43.1",
   "swCache": "pulsecap-v124",
-  "generatedAt": "2026-09-15T11:28:46.030Z",
-  "status": "FAIL",
+  "generatedAt": "2026-09-15T11:49:47.972Z",
+  "status": "PASS",
   "pass": [
     {
       "id": "version:field",
@@ -35,7 +35,7 @@
     },
     {
       "id": "records:APP-REPORT-size",
-      "detail": "4476 bytes (need ≥1024)"
+      "detail": "1438 bytes (need ≥1024)"
     },
     {
       "id": "suppressions",
@@ -44,6 +44,10 @@
     {
       "id": "app-ready",
       "detail": "window.__APP_READY__ referenced"
+    },
+    {
+      "id": "ci:main",
+      "detail": "Merge pull request #1 from shamikhahmed/finish/pulsecap-version-sync → success https://github.com/shamikhahmed/PulseCap/actions/runs/34964626101"
     },
     {
       "id": "tag",
@@ -94,12 +98,7 @@
       "detail": "31 sinks; SINKS.md ok"
     }
   ],
-  "fail": [
-    {
-      "id": "ci:main",
-      "detail": "Merge branch 'finish/tier1-wire': C-10 npm run tier1 → failure https://github.com/shamikhahmed/PulseCap/actions/runs/34958785907"
-    }
-  ],
+  "fail": [],
   "warn": [
     {
       "id": "matrix:shots",

@@ -1,35 +1,43 @@
 # PulseCap — APP-REPORT
 
-**Status:** `TIER1.json` pending CI · **Version:** 6.43.1 · **SW:** pulsecap-v124  
+**Status:** `TIER1.json` **PASS** — fleet Tier 1 **not** claimed (VO ⛔ BLOCKED-EXTERNAL)  
+**Version:** 6.43.1 · **SW:** `pulsecap-v124`  
+**Live URL:** https://shamikhahmed.github.io/PulseCap/  
+**CI:** https://github.com/shamikhahmed/PulseCap/actions/runs/34964626101 (success)  
 **Updated:** 2026-09-15
 
-Automated kill-list / SINKS / LH landed. ESM finish-matrix helper. VO ⛔.
+Evidence: TIER1.json · SINKS.md · lighthouse JSON · finish-matrix ESM
 
-## Gates
+## Status
+Automated gate PASS (warn: matrix:shots). VO not linked — C-09 honesty.
+
+## This slice
+- VERSION.json 6.43.1 / pulsecap-v124; `window.APP_VERSION` synced (was 6.43.0 — CI fail)
+- Brand kill-list colors in `js/brand/colors.js`; meal clear uses in-app confirm
+- ESM `tests/finish-matrix.spec.mjs`; SINKS + Lighthouse on disk
+- `__APP_READY__` after splash; focus-mode CSS without `!important`
+
+## Gates (honest)
 | Gate | Result | Notes |
 |---|---|---|
-| G8 | PASS | VERSION.json |
+| G5 | EVIDENCE | LH JSON present — score not claimed |
+| G7 | PARTIAL | VO ⛔ BLOCKED-EXTERNAL |
+| G8 | PASS | 6.43.1 / pulsecap-v124 |
 | G10 | PASS | SINKS.md |
-| G14 | pending | CI after ESM matrix fix |
+| G14 | PASS | main CI success on 1efeea4 |
+
+## Remaining
+matrix:shots · VoiceOver evidence · next app SteadyCap (§14 #7)
+
 
 ## Appendix
-Evidence under qa/finish-loop/. No estimated scores (C-09). Fleet Tier 1 requires VO.
-
+Evidence under qa/finish-loop/. No estimated scores (C-09). Fleet Tier 1
+requires VoiceOver. Automated `npm run tier1` only.
 
 ### Evidence checklist
-- TIER1.json · SINKS.md · lighthouse JSON · ESM finish-matrix
-- VO pending · matrix:shots pending
-
-
-## Status detail
-Automated `npm run tier1` reaches PASS once main CI is green after the ESM
-finish-matrix helper rename. Kill-list chrome colors live in `js/brand/colors.js`.
-Native meal-clear confirm replaced with `clearTodayMeals()`. Lighthouse JSON and
-SINKS.md are on disk under `qa/finish-loop/`.
-
-Fleet Tier 1 is not claimed without VoiceOver evidence (C-09 honesty).
-
-
-EOF.
-Line of padding for APP-REPORT size gate.
-Line of padding for APP-REPORT size gate.
+- [x] TIER1.json PASS
+- [x] SINKS.md
+- [x] lighthouse JSON
+- [x] main CI green
+- [ ] matrix shots
+- [ ] VO
