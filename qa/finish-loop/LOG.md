@@ -51,3 +51,13 @@
 - Change: CI-WORKFLOW=`PulseCap CI`; skip-allowlist for device-matrix+gallery; rename base→tokens.base; hex→`--pc-*` palette; strip non-a11y `!important`; sub-11→≥0.6875rem; nav `.on` uses `--accent-text`; axe JSON home×themes; matrix FULL 30 shots; test:matrix `--project=chromium`.
 - Verification: `npm run tier1` (expect remaining: ci:main until merge green; lighthouse thresholds/freshness; gallery until regen commit).
 - Risks: removing `!important` may weaken a few overrides; visual check via matrix/gallery.
+
+## 2026-09-16 — C-30 real Lighthouse (product)
+- Tool: `npx lighthouse@13.4.1` against live GH Pages `/?demo=1` (mobile + desktop).
+- Wrote `qa/finish-loop/lighthouse/home-demo-{mobile,desktop}.json` (no stubs / no null scores).
+- **Before (stale 2026-09-15 mobile):** perf 58 · a11y 98 · bp 96 · LCP 8276ms · TBT 0 · CLS 0
+- **After mobile:** perf 56 · a11y 98 · bp 96 · LCP 2676ms · TBT 5902ms · CLS 0
+- **After desktop:** perf 98 · a11y 98 · bp 96 · LCP 646ms · TBT 130ms · CLS 0
+- Thresholds: desktop meets; mobile still fails perf/LCP/TBT — honest JSON committed (LCP improved; TBT now accurately hot under mobile throttle).
+- Product follow-up: defer route-only DBs (exercise/foods) off first paint — not in this evidence commit.
+- Stub LH dirs for Aura/Car/DeePony/Idea/Ledger/Prism/Travel/DeeFoodie already empty (prior C-30 deletes).
