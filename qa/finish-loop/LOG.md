@@ -31,3 +31,6 @@
 ### 2026-09-16 C-57 PulseCap unblock
 - finish-matrix installed only chromium but matrix runs webkit/firefox → CI red → Pages never deployed allowlist.
 - Fix: install chromium+webkit+firefox in finish-matrix job.
+
+## 2026-09-16 — C-31 matrix evidence
+**Status:** ✅ FULL matrix 0 failures / 30 shots (`FINISH_MATRIX_FULL=1`, chromium).
