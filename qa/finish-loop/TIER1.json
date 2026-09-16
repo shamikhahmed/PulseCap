@@ -2,7 +2,7 @@
   "app": "PulseCap",
   "version": "6.43.1",
   "swCache": "pulsecap-v124",
-  "generatedAt": "2026-09-16T10:44:01.114Z",
+  "generatedAt": "2026-09-16T11:06:42.560Z",
   "status": "FAIL",
   "pass": [
     {
@@ -50,6 +50,10 @@
       "detail": "window.__APP_READY__ assigned in product code"
     },
     {
+      "id": "ci:main",
+      "detail": "PulseCap CI @ b8bc1ec → success https://github.com/shamikhahmed/PulseCap/actions/runs/35086244071"
+    },
+    {
       "id": "tag",
       "detail": "found v6.43.1"
     },
@@ -67,7 +71,7 @@
     },
     {
       "id": "matrix:freshness",
-      "detail": "2026-09-16T10:32:33.670Z"
+      "detail": "2026-09-16T10:57:16.155Z"
     },
     {
       "id": "axe:serious-critical",
@@ -121,7 +125,7 @@
   "fail": [
     {
       "id": "lighthouse:home-demo-desktop.json",
-      "detail": "perf 82 a11y 98 bp 96 LCP 1542.5776000000003 TBT 199.53339999999997 CLS 0"
+      "detail": "perf 86 a11y 98 bp 96 LCP 708.0245 TBT 210 CLS 0"
     },
     {
       "id": "lighthouse:home-demo-mobile.json",
@@ -132,12 +136,7 @@
       "detail": "0/2 files meet thresholds"
     }
   ],
-  "warn": [
-    {
-      "id": "ci:main",
-      "detail": "latest still in_progress: fix(ci): install all Playwright browsers for finish-matrix (C-57)"
-    }
-  ],
+  "warn": [],
   "killList": {
     "rawHex": 0,
     "sub11": 0,

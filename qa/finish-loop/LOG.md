@@ -67,3 +67,11 @@
 - Mobile: perf 72 / LCP ~8.3s / TBT 90 — FAIL thresholds (need ≥90 / ≤2500 / ≤200).
 - Desktop: perf 82 / LCP ~1.5s / TBT ~200 — FAIL perf≥90.
 - Not claiming lighthouse:passing. Kill-list / axe / matrix / gallery green on this branch.
+
+## 2026-09-16 — Step R evidence refresh (finish/pulsecap-stepR)
+
+### §15 mini-plan
+- Problem: need committed real matrix-results + LH JSON for hardened tier1.
+- Change: FINISH_MATRIX_FULL=1 → 30 shots / 0 failures; real LH desktop+mobile (no stubs); axe already present.
+- C-57: Pages allowlist ships root VERSION.json (docs/ forbidden — docs/VERSION.json N/A).
+- Verification: npm run tier1 — honest FAIL list (no Tier 1 claim).
