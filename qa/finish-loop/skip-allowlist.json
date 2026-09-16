@@ -1,0 +1,12 @@
+{
+  "entries": [
+    {
+      "pattern": "tests/device-matrix.spec.js",
+      "reason": "Device matrix capture gated behind DEVICE_MATRIX=1 — intentional skip when unset (C-32)"
+    },
+    {
+      "pattern": "gallery",
+      "reason": "Gallery capture gated behind CAPTURE_GALLERY=1 — only acceptable skip (C-32)"
+    }
+  ]
+}

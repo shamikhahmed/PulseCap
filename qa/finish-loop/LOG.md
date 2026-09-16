@@ -27,3 +27,12 @@
 ### 2026-09-15 PulseCap gallery regen
 - `npm run gallery` PASS (2 tests)
 - Regenerated docs/screenshots/gallery/* + manifest
+
+## 2026-09-16 — C-41
+### §15 mini-plan
+- Problem: buttons forced UPPERCASE; desktop still phone column; SW fail toast scary.
+- Root cause: shell.css hid #cap-nav-sidebar and capped 480px; .btn text-transform; catch toast warn.
+- Files: shell.css, layout.css, components.css, ember-components.css, capricorn-core.css, identity.css, index.html
+- Change: enable desktop shell ≥900; remove uppercase/wide tracking on btn+cited labels; calm SW catch / quiet if unsupported.
+- Risks: desktop nav depends on cap-desktop-nav.js already loaded.
+- Verification: ≥900 shows sidebar + wide content; buttons sentence case; no Offline setup failed on unsupported SW.

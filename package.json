@@ -9,10 +9,11 @@
     "gallery": "CAPTURE_GALLERY=1 playwright test tests/gallery.spec.js --project=chromium",
     "gallery:view": "python3 -m http.server 8766",
     "device-matrix": "DEVICE_MATRIX=1 playwright test tests/device-matrix.spec.js --project=chromium",
-    "test:matrix": "FINISH_MATRIX=1 playwright test tests/finish-matrix.spec.mjs",
+    "test:matrix": "FINISH_MATRIX=1 playwright test tests/finish-matrix.spec.mjs --project=chromium",
     "tier1": "node ../capricorn-tooling/shared/testing/tier1.mjs"
   },
   "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
     "@playwright/test": "^1.52.0"
   }
 }

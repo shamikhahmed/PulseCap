@@ -72,21 +72,20 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/configure-pages@v5
-      - name: Prepare verified static site
-        run: |
-          mkdir _site
-          rsync -a \
-            --exclude '.git' \
-            --exclude '.github' \
-            --exclude '.cursor' \
-            --exclude 'node_modules' \
-            --exclude 'tests' \
-            --exclude 'test-results' \
-            --exclude 'playwright-report' \
-            --exclude 'package.json' \
-            --exclude 'package-lock.json' \
-            --exclude 'playwright.config.js' \
-            ./ _site/
+      - name: Stage allowlisted site (C-57)
+        env:
+          ALLOW_PATHS: >-
+            index.html landing.html pitch.html presentation.html privacy.html
+            changelog.html screen-gallery.html
+            sw.js manifest.json VERSION.json
+            css js assets icons
+            apple-touch-icon.png mark.svg icon.svg
+            icon-48.png icon-72.png icon-96.png icon-128.png icon-144.png
+            icon-152.png icon-167.png icon-180.png icon-192.png icon-256.png
+            icon-384.png icon-512.png icon-1024.png
+            icon-maskable-192.png icon-maskable-512.png
+          FORBIDDEN_EXTRA: scripts docs qa
+        run: bash scripts/stage-pages-site.sh _site
       - uses: actions/upload-pages-artifact@v3
         with:
           path: _site

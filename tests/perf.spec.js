@@ -56,7 +56,7 @@ test.describe('Performance budgets', () => {
 
     const sizes = await page.evaluate(async () => {
       const hrefs = [
-        'css/tokens.css', 'css/base.css', 'css/layout.css', 'css/components.css', 'css/ember-components.css', 'css/shell.css', 'css/identity.css',
+        'css/tokens.css', 'css/tokens.base.css', 'css/layout.css', 'css/components.css', 'css/ember-components.css', 'css/shell.css', 'css/identity.css',
         'js/app.js', 'js/storage.js', 'js/engines.js', 'js/coach-kernel.js', 'js/gym-tools.js',
         'js/training-plan.js', 'js/plan-import.js',
         'js/modules/dashboard.js', 'js/modules/workout.js', 'js/modules/settings.js'

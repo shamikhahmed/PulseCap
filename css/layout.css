@@ -37,7 +37,7 @@
   height: calc(var(--nav-h) + var(--safe));
   display: flex; align-items: flex-start; justify-content: space-around;
   padding: 8px 4px var(--safe);
-  background: color-mix(in srgb, #07131f 88%, transparent);
+  background: color-mix(in srgb, var(--pc-07131f) 88%, transparent);
   backdrop-filter: blur(14px) saturate(160%);
   -webkit-backdrop-filter: blur(14px) saturate(160%);
   border-top: 1px solid rgba(var(--c1-rgb), 0.26);
@@ -132,35 +132,35 @@
 
 /* Skip link — hide off-screen until keyboard focus (iOS PWA was showing always) */
 .cap-skip-link {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  clip-path: inset(50%) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-  transform: none !important;
+  position: absolute ;
+  width: 1px ;
+  height: 1px ;
+  padding: 0 ;
+  margin: -1px ;
+  overflow: hidden ;
+  clip: rect(0, 0, 0, 0) ;
+  clip-path: inset(50%) ;
+  white-space: nowrap ;
+  border: 0 ;
+  transform: none ;
   pointer-events: none;
 }
 .cap-skip-link:focus,
 .cap-skip-link:focus-visible {
-  width: auto !important;
-  height: auto !important;
-  margin: 0 !important;
-  padding: 10px 18px !important;
-  overflow: visible !important;
-  clip: auto !important;
-  clip-path: none !important;
-  white-space: nowrap !important;
+  width: auto ;
+  height: auto ;
+  margin: 0 ;
+  padding: 10px 18px ;
+  overflow: visible ;
+  clip: auto ;
+  clip-path: none ;
+  white-space: nowrap ;
   pointer-events: auto;
   top: calc(8px + env(safe-area-inset-top, 0px));
   left: 8px;
   z-index: 10000;
   background: var(--c1, var(--cap-accent));
-  color: #0a0a0c;
+  color: var(--pc-0a0a0c);
   font-weight: 700;
   border-radius: 999px;
 }
@@ -206,22 +206,22 @@ button.back-chip {
   left: 0;
   right: 0;
   z-index: 9999;
-  background: var(--danger, #ff453a);
-  color: #fff;
+  background: var(--danger, var(--pc-ff453a));
+  color: var(--pc-ffffff);
   text-align: center;
   padding: 10px var(--space-4, 16px);
   padding-top: calc(10px + var(--top-safe, 0px));
   font-size: var(--type-label, 13px);
   font-weight: 600;
 }
-.pc-offline-banner[hidden] { display: none !important; }
+.pc-offline-banner[hidden] { display: none ; }
 
 .fs-18 { font-size: 18px; }
 .fs-20 { font-size: 20px; }
 .fs-28 { font-size: 28px; }
 .c-txt { color: var(--txt); }
 .c-muted { color: var(--txt3); }
-.c-warn { color: #f5c842; }
+.c-warn { color: var(--pc-f5c842); }
 .ta-right { text-align: right; }
 .muted-9 { font-size: 11px; color: var(--txt3); }
 .mt-12 { margin-top: var(--space-3); }
@@ -278,9 +278,9 @@ button.back-chip {
 #toast.t-ok    { background: rgba(48,209,88,0.15);  border: 1px solid rgba(48,209,88,0.3);  color: var(--success); }
 #toast.t-err   { background: rgba(255,69,58,0.15);  border: 1px solid rgba(255,69,58,0.3);  color: var(--danger); }
 #toast.t-warn  { background: rgba(255,159,10,0.15); border: 1px solid rgba(255,159,10,0.3); color: var(--warn); }
-#toast.t-pr    { background: rgba(255,214,10,0.15); border: 1px solid rgba(255,214,10,0.3); color: #ffd60a; }
+#toast.t-pr    { background: rgba(255,214,10,0.15); border: 1px solid rgba(255,214,10,0.3); color: var(--pc-ffd60a); }
 #toast.t-info  { background: rgba(var(--c1-rgb),0.15); border: 1px solid rgba(var(--c1-rgb),0.3); color: var(--c1); }
-#toast.t-achieve { background: rgba(191,90,242,0.15); border: 1px solid rgba(191,90,242,0.3); color: #bf5af2; }
+#toast.t-achieve { background: rgba(191,90,242,0.15); border: 1px solid rgba(191,90,242,0.3); color: var(--pc-bf5af2); }
 [data-theme="light"] #toast { background: rgba(255,255,255,0.95); color: var(--txt); }
 
 /* ── Modal / Bottom Sheet ───────────────────── */
@@ -430,7 +430,7 @@ button.back-chip {
 /* ── Stats row ──────────────────────────────── */
 .stats-row { display: flex; gap: 10px; padding: 0 16px 14px; }
 .stat { background: var(--bg3); border-radius: var(--r16); padding: 14px 10px; text-align: center; flex: 1; border: 1px solid var(--border); }
-[data-theme="light"] .stat { background: #fff; box-shadow: var(--ds1); }
+[data-theme="light"] .stat { background: var(--pc-ffffff); box-shadow: var(--ds1); }
 .stat-v { font-size: 22px; font-weight: 800; font-variant-numeric: tabular-nums; color: var(--txt); letter-spacing: -0.5px; }
 .stat-l { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; font-weight: 700; color: var(--txt3); margin-top: 5px; }
 .stat-accent .stat-v { background: var(--grad); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
@@ -480,14 +480,14 @@ input[type=range] {
   background: var(--bg4); border: none; position: relative;
   transition: background 0.22s; touch-action: manipulation; flex-shrink: 0;
 }
-.toggle::after { content: ''; position: absolute; left: 3px; top: 3px; width: 24px; height: 24px; border-radius: 50%; background: #fff; transition: transform 0.22s var(--spring); box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
+.toggle::after { content: ''; position: absolute; left: 3px; top: 3px; width: 24px; height: 24px; border-radius: 50%; background: var(--pc-ffffff); transition: transform 0.22s var(--spring); box-shadow: 0 1px 4px rgba(0,0,0,0.3); }
 .toggle.on { background: var(--accent); }
 .toggle.on::after { transform: translateX(20px); }
 .field-wrap { margin-bottom: 16px; }
 .field-label { display: block; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.08em; color: var(--txt3); margin-bottom: 8px; }
 .field { width: 100%; padding: 14px 16px; background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r14); font-size: 16px; color: var(--txt); outline: 0; touch-action: manipulation; transition: border-color 0.18s; }
 .field:focus { border-color: var(--c1); }
-[data-theme="light"] .field { background: #fff; box-shadow: var(--ds1); }
+[data-theme="light"] .field { background: var(--pc-ffffff); box-shadow: var(--ds1); }
 .field-row { display: flex; gap: 12px; }
 .field-row .field-wrap { flex: 1; }
 .select-wrap { position: relative; }
@@ -498,7 +498,7 @@ input[type=range] {
 /* ── Explore grid ───────────────────────────── */
 .explore-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; padding: 0 16px; margin-bottom: 20px; }
 .explore-card { background: var(--bg3); border: 1px solid var(--border); border-radius: var(--r20); padding: 18px 16px; cursor: pointer; touch-action: manipulation; text-align: left; width: 100%; transition: transform 0.15s, background 0.15s; position: relative; overflow: hidden; }
-[data-theme="light"] .explore-card { background: #fff; box-shadow: var(--ds1); }
+[data-theme="light"] .explore-card { background: var(--pc-ffffff); box-shadow: var(--ds1); }
 .explore-card:active { transform: scale(0.96); background: var(--bg4); }
 .explore-card-icon { font-size: 30px; margin-bottom: 10px; display: block; }
 .explore-card-t { font-size: 14px; font-weight: 700; color: var(--txt); letter-spacing: -0.2px; }
@@ -569,8 +569,8 @@ input[type=range] {
 }
 
 /* ── Desktop shell (Mac / Windows browsers) ── */
-@media (min-width: 700px) {
-  html.cap-desktop-bg { background: #030508; }
+@media (min-width: 900px) {
+  html.cap-desktop-bg { background: var(--pc-030508); }
   #app.cap-desktop-main {
     max-width: none;
     margin: 0;
@@ -600,8 +600,8 @@ input[type=range] {
 
 /* Fast app shell — topbar stays solid; the nav pill keeps its glass blur */
 body[data-cap-app="1"] .topbar {
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none ;
+  -webkit-backdrop-filter: none ;
 }
 
 /* ── Tab bar: floating glass pill, bug-free ──
@@ -609,7 +609,7 @@ body[data-cap-app="1"] .topbar {
    app column. Every scroll surface gets matching bottom padding so content
    can always scroll fully clear of the pill — nothing hides behind it. */
 #nav.cap-premium-nav {
-  clip-path: none !important;
+  clip-path: none ;
   border-top: none;
 }
 /* Base #nav (before the premium script upgrades it) stays docked+solid so
@@ -777,9 +777,9 @@ textarea:focus-visible,
 /* ── Gym Floor Mode — large tap targets, less chrome ── */
 body.gym-floor .set-inp {
   min-height: 44px;
-  font-size: 18px !important;
+  font-size: 18px ;
   font-weight: 800;
-  width: auto !important;
+  width: auto ;
   min-width: 0;
 }
 body.gym-floor .set-check {
@@ -793,7 +793,7 @@ body.gym-floor button.set-check {
 }
 body.gym-floor .ex-card-header { padding-top: 14px; padding-bottom: 14px; }
 body.gym-floor .micro-label { font-size: 11px; }
-body.gym-floor #nav.cap-premium-nav .nav-label { font-size: 0.65rem; }
+body.gym-floor #nav.cap-premium-nav .nav-label { font-size: 0.6875rem; }
 
 /* ── Today / dash chrome (prefer classes over style=) ── */
 .icon-flex { display: inline-flex; align-items: center; }
@@ -805,7 +805,7 @@ body.gym-floor #nav.cap-premium-nav .nav-label { font-size: 0.65rem; }
 .topbar-avatar {
   width: 32px; height: 32px; border-radius: 50%; background: var(--grad);
   display: flex; align-items: center; justify-content: center;
-  font-size: 14px; font-weight: 800; color: #fff;
+  font-size: 14px; font-weight: 800; color: var(--pc-ffffff);
   cursor: pointer; touch-action: manipulation; flex-shrink: 0;
 }
 .dash-demo-banner {
@@ -899,8 +899,8 @@ body.gym-floor #nav.cap-premium-nav .nav-label { font-size: 0.65rem; }
   height: 4px; border-radius: 2px; background: var(--accent);
 }
 .dash-equip {
-  background: rgba(255,69,58,0.08) !important;
-  border-color: rgba(255,69,58,0.2) !important;
+  background: rgba(255,69,58,0.08) ;
+  border-color: rgba(255,69,58,0.2) ;
 }
 .dash-recap {
   margin: 0 16px 14px; border-radius: 16px; padding: 18px;

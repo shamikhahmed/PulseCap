@@ -40,7 +40,7 @@ const ASSETS = [
   './assets/apple-touch-startup-428x926-dark.png',
   './manifest.json',
   './css/tokens.css',
-  './css/base.css',
+  './css/tokens.base.css',
   './css/layout.css',
   './css/components.css',
   './css/ember-components.css',

@@ -46,7 +46,7 @@
 <meta name="twitter:image" content="https://shamikhahmed.github.io/assets/screenshots/pulsecap.png">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/tokens.base.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/tokens.css">
@@ -366,9 +366,10 @@ window.updateOfflineBanner = updateOfflineBanner;
           location.reload();
         });
       }).catch(function() {
-        if (typeof toast === 'function') toast('Offline setup failed. Stay online and reload to retry.', 'warn', 5000);
+        if (typeof toast === 'function') toast('Offline install skipped — app still works online.', 'ok', 4000);
       });
     }
+    /* SW unsupported: stay quiet — online use is fine (C-41) */
   </script>
   <script src="js/cap-demo-mode.js"></script>
 </body>

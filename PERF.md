@@ -18,7 +18,7 @@
 ## Critical assets
 
 - `css/tokens.css`: 4539 B
-- `css/base.css`: 10966 B
+- `css/tokens.base.css`: 10966 B
 - `css/layout.css`: 40988 B
 - `css/components.css`: 45663 B
 - `css/ember-components.css`: 12406 B

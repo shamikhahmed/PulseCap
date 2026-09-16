@@ -2,8 +2,8 @@
   "app": "PulseCap",
   "version": "6.43.1",
   "swCache": "pulsecap-v124",
-  "generatedAt": "2026-09-15T11:49:47.972Z",
-  "status": "PASS",
+  "generatedAt": "2026-09-16T10:15:51.101Z",
+  "status": "FAIL",
   "pass": [
     {
       "id": "version:field",
@@ -42,12 +42,12 @@
       "detail": "none"
     },
     {
-      "id": "app-ready",
-      "detail": "window.__APP_READY__ referenced"
+      "id": "test-skip",
+      "detail": "none"
     },
     {
-      "id": "ci:main",
-      "detail": "Merge pull request #1 from shamikhahmed/finish/pulsecap-version-sync → success https://github.com/shamikhahmed/PulseCap/actions/runs/34964626101"
+      "id": "app-ready",
+      "detail": "window.__APP_READY__ assigned in product code"
     },
     {
       "id": "tag",
@@ -58,8 +58,20 @@
       "detail": "tests/finish-matrix.spec.mjs"
     },
     {
-      "id": "lighthouse:files",
-      "detail": "1 JSON"
+      "id": "matrix:failures",
+      "detail": "0"
+    },
+    {
+      "id": "matrix:shot-count",
+      "detail": "30 shots (need routes×viewports×themes = 30)"
+    },
+    {
+      "id": "matrix:freshness",
+      "detail": "2026-09-16T10:05:15.717Z"
+    },
+    {
+      "id": "live:VERSION.json",
+      "detail": "https://shamikhahmed.github.io/PulseCap/VERSION.json → 200"
     },
     {
       "id": "sinks:SINKS.md",
@@ -98,13 +110,29 @@
       "detail": "31 sinks; SINKS.md ok"
     }
   ],
-  "fail": [],
-  "warn": [
+  "fail": [
     {
-      "id": "matrix:shots",
-      "detail": "qa/finish-loop/shots missing (run matrix)"
+      "id": "ci:main",
+      "detail": "PulseCap CI @ 609d3b5 → failure https://github.com/shamikhahmed/PulseCap/actions/runs/35080881308"
+    },
+    {
+      "id": "lighthouse:home-demo-mobile.json",
+      "detail": "fetchTime 2026-09-15T11:26:37.002Z before last UI commit 2026-09-16T14:39:06+05:00"
+    },
+    {
+      "id": "lighthouse:passing",
+      "detail": "0/1 files meet thresholds"
+    },
+    {
+      "id": "axe:dir",
+      "detail": "missing qa/finish-loop/axe/ (JSON per route×theme)"
+    },
+    {
+      "id": "gallery:freshness",
+      "detail": "gallery 2026-09-15T17:38:58+05:00 before last UI commit 2026-09-16T14:39:06+05:00"
     }
   ],
+  "warn": [],
   "killList": {
     "rawHex": 0,
     "sub11": 0,
