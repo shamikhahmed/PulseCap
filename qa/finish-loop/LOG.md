@@ -27,3 +27,7 @@
 ### 2026-09-15 PulseCap gallery regen
 - `npm run gallery` PASS (2 tests)
 - Regenerated docs/screenshots/gallery/* + manifest
+
+### 2026-09-16 C-57 PulseCap unblock
+- finish-matrix installed only chromium but matrix runs webkit/firefox → CI red → Pages never deployed allowlist.
+- Fix: install chromium+webkit+firefox in finish-matrix job.
