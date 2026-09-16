@@ -2,7 +2,7 @@
   "app": "PulseCap",
   "version": "6.43.1",
   "swCache": "pulsecap-v124",
-  "generatedAt": "2026-09-16T10:15:51.101Z",
+  "generatedAt": "2026-09-16T10:34:30.834Z",
   "status": "FAIL",
   "pass": [
     {
@@ -67,7 +67,11 @@
     },
     {
       "id": "matrix:freshness",
-      "detail": "2026-09-16T10:05:15.717Z"
+      "detail": "2026-09-16T10:32:33.670Z"
+    },
+    {
+      "id": "axe:serious-critical",
+      "detail": "2 JSON clean"
     },
     {
       "id": "live:VERSION.json",
@@ -112,27 +116,28 @@
   ],
   "fail": [
     {
-      "id": "ci:main",
-      "detail": "PulseCap CI @ 609d3b5 → failure https://github.com/shamikhahmed/PulseCap/actions/runs/35080881308"
+      "id": "lighthouse:home-demo-desktop.json",
+      "detail": "fetchTime 2026-09-16T10:28:51.648Z before last UI commit 2026-09-16T15:30:30+05:00"
     },
     {
       "id": "lighthouse:home-demo-mobile.json",
-      "detail": "fetchTime 2026-09-15T11:26:37.002Z before last UI commit 2026-09-16T14:39:06+05:00"
+      "detail": "fetchTime 2026-09-16T10:26:19.442Z before last UI commit 2026-09-16T15:30:30+05:00"
     },
     {
       "id": "lighthouse:passing",
-      "detail": "0/1 files meet thresholds"
-    },
-    {
-      "id": "axe:dir",
-      "detail": "missing qa/finish-loop/axe/ (JSON per route×theme)"
+      "detail": "0/2 files meet thresholds"
     },
     {
       "id": "gallery:freshness",
-      "detail": "gallery 2026-09-15T17:38:58+05:00 before last UI commit 2026-09-16T14:39:06+05:00"
+      "detail": "gallery 2026-09-15T17:38:58+05:00 before last UI commit 2026-09-16T15:30:30+05:00"
     }
   ],
-  "warn": [],
+  "warn": [
+    {
+      "id": "ci:main",
+      "detail": "latest still in_progress: Merge pull request #3 from shamikhahmed/finish/c57-pages"
+    }
+  ],
   "killList": {
     "rawHex": 0,
     "sub11": 0,
