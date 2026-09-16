@@ -61,3 +61,9 @@
 - Thresholds: desktop meets; mobile still fails perf/LCP/TBT — honest JSON committed (LCP improved; TBT now accurately hot under mobile throttle).
 - Product follow-up: defer route-only DBs (exercise/foods) off first paint — not in this evidence commit.
 - Stub LH dirs for Aura/Car/DeePony/Idea/Ledger/Prism/Travel/DeeFoodie already empty (prior C-30 deletes).
+
+## 2026-09-16 — Step R LH refresh
+- Re-ran real Lighthouse after UI commit (fresh fetchTime).
+- Mobile: perf 72 / LCP ~8.3s / TBT 90 — FAIL thresholds (need ≥90 / ≤2500 / ≤200).
+- Desktop: perf 82 / LCP ~1.5s / TBT ~200 — FAIL perf≥90.
+- Not claiming lighthouse:passing. Kill-list / axe / matrix / gallery green on this branch.
