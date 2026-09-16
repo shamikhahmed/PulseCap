@@ -36,3 +36,18 @@
 - Change: enable desktop shell ≥900; remove uppercase/wide tracking on btn+cited labels; calm SW catch / quiet if unsupported.
 - Risks: desktop nav depends on cap-desktop-nav.js already loaded.
 - Verification: ≥900 shows sidebar + wide content; buttons sentence case; no Offline setup failed on unsupported SW.
+
+### 2026-09-16 C-57 Pages allowlist
+- **Problem:** Pages published repo-root internals (HANDOVER/CLAUDE/qa/worker/package.json).
+- **Root cause:** deploy copied (nearly) the whole tree.
+- **Change:** `scripts/stage-pages-site.sh` + `verify-pages-artifact.cjs`; workflow stages allowlisted paths only.
+- **Verification:** local stage dry-run + SW precache check; live curl after deploy.
+
+## 2026-09-16 — Step R (hardened tier1 a760cb4)
+### §15 mini-plan
+- Problem: honest FAIL on test-skip, CI-WORKFLOW, matrix:results, axe, kill-list, gallery, lighthouse.
+- Root cause: missing allowlist/CI name; FINISH_MATRIX not chromium-pinned (CI installed chromium only); hex/!important in component CSS; axe dir absent; gallery older than UI commits.
+- Files: css/tokens* + component CSS; package.json; qa/finish-loop/*; scripts/capture-axe.mjs; .github/workflows/ci.yml (C-57 staging).
+- Change: CI-WORKFLOW=`PulseCap CI`; skip-allowlist for device-matrix+gallery; rename base→tokens.base; hex→`--pc-*` palette; strip non-a11y `!important`; sub-11→≥0.6875rem; nav `.on` uses `--accent-text`; axe JSON home×themes; matrix FULL 30 shots; test:matrix `--project=chromium`.
+- Verification: `npm run tier1` (expect remaining: ci:main until merge green; lighthouse thresholds/freshness; gallery until regen commit).
+- Risks: removing `!important` may weaken a few overrides; visual check via matrix/gallery.

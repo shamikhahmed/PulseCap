@@ -141,7 +141,7 @@ html, body {
 }
 
 #nav .nb.on {
-  color: var(--accent);
+  color: var(--accent-text);
 }
 
 #nav .nb:active {

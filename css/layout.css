@@ -76,7 +76,7 @@
   transition: width 0.28s var(--spring);
 }
 
-.nb.on { color: var(--accent); }
+.nb.on { color: var(--accent-text); }
 .nb.on::before { width: 36px; }
 .nb.on svg { transform: scale(1.14); filter: drop-shadow(0 0 10px rgba(var(--c1-rgb), 0.58)); }
 .nb:active svg { transform: scale(0.86); }
