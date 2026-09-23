@@ -205,7 +205,7 @@ window.updateOfflineBanner = updateOfflineBanner;
   <div id="rest-sheet"></div>
 
   <script src="js/brand/colors.js"></script>
-<script src="js/storage.js"></script>
+  <script src="js/storage.js"></script>
   <script src="js/core/nutrition-math.js"></script>
   <script src="js/core/equipment.js"></script>
   <script src="js/data/equipment-db.js"></script>
@@ -223,24 +223,15 @@ window.updateOfflineBanner = updateOfflineBanner;
   <script src="js/core/engine.js"></script>
   <script src="js/plan-import.js"></script>
   <script src="js/gym-tools.js"></script>
-  <script src="js/data/foods-db.js"></script>
-  <!-- Eager boot: Today · Train · Progress · Programs · Me -->
+  <!-- Eager: Today shell · Progress · Me. Route DBs/modules load via MODULE_CHAIN. -->
   <script src="js/modules/onboarding.js"></script>
   <script src="js/modules/dashboard.js"></script>
-  <script src="js/data/exercise-db.js"></script>
-  <script src="js/modules/workout.js"></script>
-  <script src="js/data/exercise-library.js"></script>
-  <script src="js/data/form-loops.js"></script>
   <script src="js/modules/coach.js"></script>
   <script src="js/modules/progress.js"></script>
-  <script src="js/modules/nutrition.js"></script>
   <script src="js/modules/recovery.js"></script>
   <script src="js/modules/settings.js"></script>
   <script src="js/modules/profiles.js"></script>
-  <script src="js/modules/rehab.js"></script>
   <script src="js/modules/photos.js"></script>
-  <script src="js/modules/my-plan.js"></script>
-  <script src="js/modules/equipment-setup.js"></script>
   <!-- Ember survivors only — quarantined modules were deleted in Phase 9 -->
 
   <script>
@@ -272,8 +263,7 @@ window.updateOfflineBanner = updateOfflineBanner;
     else applySystemTheme();
     buildNav();
     if (typeof GymFloor !== 'undefined') GymFloor.apply();
-    if (typeof loadCustomExercises === 'function') loadCustomExercises();
-    if (typeof ExerciseLibrary !== 'undefined') ExerciseLibrary.mergeIntoExDB();
+    /* Exercise DB / custom merge deferred until Train (ensureWorkoutReady) — keeps mobile TBT down. */
     const _hasDeepLink = typeof bootDeepLink === 'function' && bootDeepLink();
     _bootAfterSplash(function() {
       if (typeof currentScreenId === 'function' && currentScreenId()) return;
@@ -333,7 +323,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=124').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=125').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {

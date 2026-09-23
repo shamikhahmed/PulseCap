@@ -376,7 +376,12 @@ test.describe('Phase 27 — QA sweep', () => {
   test('longest exercise and food names stay inside the viewport', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto('/?demo=1');
-    await page.waitForFunction(() => typeof window.go === 'function' && window.EXERCISE_DB);
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function' && typeof window.loadModuleChain === 'function');
+    await page.evaluate(async () => {
+      await window.ensureWorkoutReady();
+      await window.loadModuleChain('nutrition');
+    });
+    await page.waitForFunction(() => window.EXERCISE_DB && window.EXERCISE_DB.length && window.FOODS_DB && window.FOODS_DB.length);
     const names = await page.evaluate(() => {
       function longest(arr, key) {
         let best = '';
@@ -392,6 +397,9 @@ test.describe('Phase 27 — QA sweep', () => {
     await page.evaluate((name) => {
       window.S.set('user', Object.assign({}, window.S.g('user') || {}, { name: 'Alexandrina-Maximiliana von Somethinglong' }));
       window.go('workout');
+    }, names.ex);
+    await page.waitForFunction(() => window.ExDB && document.querySelector('#view .screen'));
+    await page.evaluate((name) => {
       const search = document.querySelector('#view input[type="search"], #view input[type="text"]');
       if (search) {
         search.value = name;
@@ -399,8 +407,9 @@ test.describe('Phase 27 — QA sweep', () => {
       }
     }, names.ex);
     expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2)).toBeFalsy();
+    await page.evaluate(() => window.go('nutrition'));
+    await page.waitForFunction(() => document.querySelector('#view .screen'));
     await page.evaluate((name) => {
-      window.go('nutrition');
       const search = document.querySelector('#view input[type="search"], #view input[type="text"]');
       if (search) {
         search.value = name;

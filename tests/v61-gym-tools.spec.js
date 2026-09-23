@@ -5,6 +5,11 @@ test.describe('v6.1 gym tools', () => {
   test('WakeLock / VoiceLogger / MobilityFlow / PainFlag / BarcodeFood online', async ({ page }) => {
     await page.goto('/?demo=1');
     await page.waitForFunction(() => window.S && window.S.activeId && window.S.activeId() === 'demo', undefined, { timeout: 30000 });
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function' && typeof window.loadModuleChain === 'function');
+    await page.evaluate(async () => {
+      await window.ensureWorkoutReady();
+      await window.loadModuleChain('nutrition');
+    });
     await page.waitForTimeout(400);
 
     const ok = await page.evaluate(() => {

@@ -68,10 +68,11 @@
 - Desktop: perf 82 / LCP ~1.5s / TBT ~200 — FAIL perf≥90.
 - Not claiming lighthouse:passing. Kill-list / axe / matrix / gallery green on this branch.
 
-## 2026-09-16 — Step R evidence refresh (finish/pulsecap-stepR)
+## 2026-09-23 — Review 3 mobile TBT
 
 ### §15 mini-plan
-- Problem: need committed real matrix-results + LH JSON for hardened tier1.
-- Change: FINISH_MATRIX_FULL=1 → 30 shots / 0 failures; real LH desktop+mobile (no stubs); axe already present.
-- C-57: Pages allowlist ships root VERSION.json (docs/ forbidden — docs/VERSION.json N/A).
-- Verification: npm run tier1 — honest FAIL list (no Tier 1 claim).
+- Problem: mobile LH perf ~71 / TBT ~1350ms / LCP ~2.6s — only remaining Tier1 fails (`lighthouse:home-demo-mobile.json`, `lighthouse:passing`). Desktop ~P93 already meets.
+- Root cause: eager parse/eval of route-only DBs (exercise-db ~207KB) + workout/nutrition/rehab/photos on every cold load; sync `createDemo(true)` + `ExerciseLibrary.mergeIntoExDB` on boot.
+- Change: `MODULE_CHAIN` + `ensureWorkoutReady` / `startWorkout` stub; strip those scripts from `index.html` eager list; `createDemo(false)`; SW `pulsecap-v125`.
+- Verification: real LH vs live Pages after deploy; `npm run tier1` honest (no PASS claim unless runner says PASS).
+

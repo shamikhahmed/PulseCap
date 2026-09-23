@@ -246,13 +246,31 @@ window.prettyMuscles = function(arr, max) {
   return (arr || []).slice(0, max || 99).map(prettyMuscle).join(' · ');
 };
 
-/* On-demand survivors only (quarantined modules redirected via SCREEN_ALIASES). */
-const MODULE_SRC = {
-  'equipment-setup': 'js/modules/equipment-setup.js',
-  'my-plan': 'js/modules/my-plan.js',
-  'plan-import': 'js/modules/my-plan.js'
+/* Route-only modules + DBs — kept off first paint (mobile TBT/LCP). */
+const WORKOUT_CHAIN = [
+  'js/data/exercise-db.js',
+  'js/data/form-loops.js',
+  'js/modules/workout.js'
+];
+const MODULE_CHAIN = {
+  'equipment-setup': ['js/modules/equipment-setup.js'],
+  'my-plan': ['js/modules/my-plan.js'],
+  'plan-import': ['js/modules/my-plan.js'],
+  workout: WORKOUT_CHAIN,
+  active: WORKOUT_CHAIN,
+  cardio: WORKOUT_CHAIN,
+  nutrition: ['js/data/foods-db.js', 'js/modules/nutrition.js'],
+  rehab: ['js/modules/rehab.js'],
+  photos: ['js/modules/photos.js']
 };
+/* Back-compat: last script in each chain (tests / docs mention MODULE_SRC). */
+const MODULE_SRC = {};
+Object.keys(MODULE_CHAIN).forEach(function(id) {
+  const chain = MODULE_CHAIN[id];
+  MODULE_SRC[id] = chain[chain.length - 1];
+});
 window.MODULE_SRC = MODULE_SRC;
+window.MODULE_CHAIN = MODULE_CHAIN;
 
 const _loadingScripts = {};
 function loadScript(src) {
@@ -272,6 +290,80 @@ function loadScript(src) {
   return _loadingScripts[src];
 }
 window.loadScript = loadScript;
+
+function loadScriptChain(srcs) {
+  return (srcs || []).reduce(function(p, src) {
+    return p.then(function() { return loadScript(src); });
+  }, Promise.resolve());
+}
+window.loadScriptChain = loadScriptChain;
+
+function loadModuleChain(id) {
+  const chain = MODULE_CHAIN[id];
+  if (!chain) return Promise.reject(new Error('No module chain for "' + id + '"'));
+  return loadScriptChain(chain);
+}
+window.loadModuleChain = loadModuleChain;
+
+/** Loads ExDB + workout module (and optional wger library). No-op if already present. */
+function ensureWorkoutReady(opts) {
+  const wantLib = !!(opts && opts.library);
+  const chain = wantLib
+    ? WORKOUT_CHAIN.concat(['js/data/exercise-library.js'])
+    : WORKOUT_CHAIN;
+  return loadScriptChain(chain).then(function() {
+    if (typeof loadCustomExercises === 'function') loadCustomExercises();
+    if (wantLib && typeof ExerciseLibrary !== 'undefined' && ExerciseLibrary.mergeIntoExDB) {
+      ExerciseLibrary.mergeIntoExDB();
+    }
+  });
+}
+window.ensureWorkoutReady = ensureWorkoutReady;
+
+/** Loader stub — real impl is window.__pcStartWorkout after workout.js loads. */
+window.startWorkout = function(templateName) {
+  if (typeof window.__pcStartWorkout === 'function') {
+    return window.__pcStartWorkout(templateName);
+  }
+  return ensureWorkoutReady().then(function() {
+    if (typeof window.__pcStartWorkout === 'function') {
+      return window.__pcStartWorkout(templateName);
+    }
+    go('workout');
+  }).catch(function(e) {
+    console.error('startWorkout load', e);
+    if (typeof toast === 'function') toast('Could not load workout', 'err');
+  });
+};
+
+window.startQuickWorkout = function() {
+  if (typeof window.__pcStartQuickWorkout === 'function') {
+    return window.__pcStartQuickWorkout();
+  }
+  return ensureWorkoutReady().then(function() {
+    if (typeof window.__pcStartQuickWorkout === 'function') {
+      return window.__pcStartQuickWorkout();
+    }
+    return window.startWorkout();
+  }).catch(function(e) {
+    console.error('startQuickWorkout load', e);
+    if (typeof toast === 'function') toast('Could not load workout', 'err');
+  });
+};
+
+window.syncExerciseLibrary = function(force) {
+  if (typeof window.__pcSyncExerciseLibrary === 'function') {
+    return window.__pcSyncExerciseLibrary(force);
+  }
+  return ensureWorkoutReady({ library: true }).then(function() {
+    if (typeof window.__pcSyncExerciseLibrary === 'function') {
+      return window.__pcSyncExerciseLibrary(force);
+    }
+  }).catch(function(e) {
+    console.error('syncExerciseLibrary load', e);
+    if (typeof toast === 'function') toast('Could not load exercise library', 'err');
+  });
+};
 
 function _renderScreen(id, data) {
   const sameScreen = id === _currentScreen;
@@ -344,16 +436,23 @@ function go(id, data) {
     id = resolved.id;
     data = resolved.data;
     if (!_screens[id]) {
-      const src = MODULE_SRC[id];
-      if (!src) throw new Error('Screen "' + id + '" not registered');
+      const chain = MODULE_CHAIN[id];
+      if (!chain) throw new Error('Screen "' + id + '" not registered');
       const v = document.getElementById('view');
       if (v) {
         v.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:var(--txt2);font-size:var(--type-body,14px)">Loading…</div>';
       }
-      loadScript(src).then(function() {
+      loadModuleChain(id).then(function() {
         if (navSeq !== _navigationSeq) return;
-        if (!_screens[id]) throw new Error('Screen "' + id + '" missing after load');
-        _renderScreen(id, data);
+        var after = Promise.resolve();
+        if (id === 'workout' || id === 'active' || id === 'cardio' || id === 'my-plan' || id === 'plan-import' || id === 'equipment-setup') {
+          after = ensureWorkoutReady();
+        }
+        return after.then(function() {
+          if (navSeq !== _navigationSeq) return;
+          if (!_screens[id]) throw new Error('Screen "' + id + '" missing after load');
+          _renderScreen(id, data);
+        });
       }).catch(function(e) {
         if (navSeq !== _navigationSeq) return;
         console.error('go(' + id + ') lazy', e);
@@ -380,7 +479,8 @@ function bootDemoIfRequested() {
   try {
     var demo = new URLSearchParams(location.search).get('demo') === '1';
     if (demo && typeof S !== 'undefined' && S.createDemo) {
-      S.createDemo(true);
+      /* false: reuse existing demo bucket — avoids heavy reseed on every ?demo=1 load (LH TBT). */
+      S.createDemo(false);
       if (typeof CapDemo !== 'undefined') {
         CapDemo.markActive();
         CapDemo.showBanner('pulsecap', '<strong>Demo mode</strong> — Alex Khan sample athlete. Data stays on this device.');

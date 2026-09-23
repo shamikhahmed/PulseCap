@@ -1,6 +1,6 @@
 ## 6.43.1 — 2026-09-15
 - C-20: Set `window.__APP_READY__` after boot splash dismiss (first real screen).
-- SW `pulsecap-v124`.
+- Review 3: defer route-only DBs/modules via `MODULE_CHAIN` / `ensureWorkoutReady` (mobile TBT); `createDemo(false)` for `?demo=1`. SW `pulsecap-v125`.
 
 ## [6.43.0] — 2026-09-15
 

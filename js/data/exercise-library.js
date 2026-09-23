@@ -374,7 +374,7 @@ const ExerciseLibrary = (() => {
 
 window.ExerciseLibrary = ExerciseLibrary;
 
-window.syncExerciseLibrary = async function(force) {
+window.__pcSyncExerciseLibrary = async function(force) {
   const btn = document.getElementById('ex-lib-sync-btn');
   if (btn) { btn.disabled = true; btn.textContent = 'Downloading…'; }
   try {

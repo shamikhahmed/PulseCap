@@ -9,12 +9,15 @@ test.describe('PulseCap flows', () => {
     const errors = [];
     page.on('pageerror', e => errors.push(e.message));
     await page.goto('/');
-    await page.waitForFunction(() => typeof window.go === 'function' && typeof window.startWorkout === 'function');
-    await page.evaluate(() => {
+    await page.waitForFunction(() => typeof window.go === 'function' && typeof window.startWorkout === 'function' && typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(async () => {
+      // @ts-ignore
+      await window.ensureWorkoutReady();
       // fresh profile, skip onboarding
       // @ts-ignore
       window.introQuickStart();
     });
+    await page.waitForFunction(() => window.ExDB && window.ExDB.db && window.ExDB.db.length);
     // @ts-ignore
     page._errors = errors;
   });
@@ -92,6 +95,9 @@ test.describe('PulseCap flows', () => {
   });
 
   test('all splits resolve every exercise to a known DB entry', async ({ page }) => {
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(() => window.ensureWorkoutReady());
+    await page.waitForFunction(() => window.ExDB && window.ExDB.db && window.ExDB.db.length);
     const problems = await page.evaluate(() => {
       // @ts-ignore
       const w = window;

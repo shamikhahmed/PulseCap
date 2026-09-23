@@ -1270,7 +1270,7 @@ function _startWktTimer() {
   }, 1000);
 }
 
-window.startWorkout = function(templateName) {
+window.__pcStartWorkout = function(templateName) {
   haptic(50);
   if (_workoutDraft()) {
     modal('Workout already in progress',
@@ -1337,7 +1337,7 @@ window.startWorkout = function(templateName) {
   go('active');
 };
 
-window.startQuickWorkout = function() {
+window.__pcStartQuickWorkout = function() {
   haptic(50);
   if (typeof TrainingPlanEngine !== 'undefined' && TrainingPlanEngine.hasActive()) {
     startWorkout();
