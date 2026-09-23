@@ -27,7 +27,6 @@
 ### 2026-09-15 PulseCap gallery regen
 - `npm run gallery` PASS (2 tests)
 - Regenerated docs/screenshots/gallery/* + manifest
-
 ## 2026-09-16 — C-41
 ### §15 mini-plan
 - Problem: buttons forced UPPERCASE; desktop still phone column; SW fail toast scary.
@@ -68,6 +67,13 @@
 - Desktop: perf 82 / LCP ~1.5s / TBT ~200 — FAIL perf≥90.
 - Not claiming lighthouse:passing. Kill-list / axe / matrix / gallery green on this branch.
 
+### 2026-09-16 C-57 PulseCap unblock
+- finish-matrix installed only chromium but matrix runs webkit/firefox → CI red → Pages never deployed allowlist.
+- Fix: install chromium+webkit+firefox in finish-matrix job.
+
+## 2026-09-16 — C-31 matrix evidence
+**Status:** ✅ FULL matrix 0 failures / 30 shots (`FINISH_MATRIX_FULL=1`, chromium).
+
 ## 2026-09-23 — Review 3 mobile TBT
 
 ### §15 mini-plan
@@ -75,4 +81,3 @@
 - Root cause: eager parse/eval of route-only DBs (exercise-db ~207KB) + workout/nutrition/rehab/photos on every cold load; sync `createDemo(true)` + `ExerciseLibrary.mergeIntoExDB` on boot.
 - Change: `MODULE_CHAIN` + `ensureWorkoutReady` / `startWorkout` stub; strip those scripts from `index.html` eager list; `createDemo(false)`; SW `pulsecap-v125`.
 - Verification: real LH vs live Pages after deploy; `npm run tier1` honest (no PASS claim unless runner says PASS).
-
