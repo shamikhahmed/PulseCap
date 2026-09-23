@@ -141,12 +141,12 @@ test.describe('Training plan intelligence', () => {
       window.TrainingPlanEngine._nowDate = '2026-08-17';
       if (window.TrainingPlanEngine.isRestToday()) window.TrainingPlanEngine.setTodaySession('pull_a');
     });
-    await page.evaluate(() => window.go('my-plan'));
+    await page.evaluate(async () => { await window.go('my-plan'); });
     await page.waitForTimeout(400);
     await expect(page.locator('#view')).toContainText(/Machine-only PPL|Push|Pull|Legs|Full rest/i);
-    await page.evaluate(() => {
+    await page.evaluate(async () => {
       if (window.TrainingPlanEngine.isRestToday()) window.TrainingPlanEngine.setTodaySession('push_a');
-      window.startWorkout();
+      await window.startWorkout();
     });
     await page.waitForTimeout(500);
     const wkt = await page.evaluate(() => {

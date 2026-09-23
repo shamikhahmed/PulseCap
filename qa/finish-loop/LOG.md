@@ -81,3 +81,11 @@
 - Root cause: eager parse/eval of route-only DBs (exercise-db ~207KB) + workout/nutrition/rehab/photos on every cold load; sync `createDemo(true)` + `ExerciseLibrary.mergeIntoExDB` on boot.
 - Change: `MODULE_CHAIN` + `ensureWorkoutReady` / `startWorkout` stub; strip those scripts from `index.html` eager list; `createDemo(false)`; SW `pulsecap-v125`.
 - Verification: real LH vs live Pages after deploy; `npm run tier1` honest (no PASS claim unless runner says PASS).
+
+## 2026-09-23 — defer-module CI verify fix
+
+### §15 mini-plan
+- Problem: `finish/pulsecap-stepR` CI verify 44 failed after route-only MODULE_CHAIN defer (`getActiveWorkout`/`_doneSet` missing; Programs/nutrition async `go`).
+- Root cause: tests still treated `go`/`startQuickWorkout` as sync; leftover `activeWorkoutDraft` blocked re-starts across viewports.
+- Change: `go()` returns Promise + optimistic `currentScreenId`; await chains in e2e; clear draft before quick start; merge main finish-matrix browsers.
+- Verification: chromium subset (a11y/ember/module-smoke/v6/offline/persona) 24/24; full CI pending push.

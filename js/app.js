@@ -291,6 +291,24 @@ function loadScript(src) {
 }
 window.loadScript = loadScript;
 
+/** Same-origin sync load for callers that expect ExDB/workout APIs immediately (tests). Not used on Today first paint. */
+function loadScriptSync(src) {
+  if (!src) return;
+  if (document.querySelector('script[data-pc-mod="' + src + '"]')) {
+    _loadingScripts[src] = _loadingScripts[src] || Promise.resolve();
+    return;
+  }
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', src, false);
+  xhr.send(null);
+  if (xhr.status < 200 || xhr.status >= 300) throw new Error('Failed to load ' + src);
+  const s = document.createElement('script');
+  s.setAttribute('data-pc-mod', src);
+  s.text = xhr.responseText;
+  document.head.appendChild(s);
+  _loadingScripts[src] = Promise.resolve();
+}
+
 function loadScriptChain(srcs) {
   return (srcs || []).reduce(function(p, src) {
     return p.then(function() { return loadScript(src); });
@@ -298,12 +316,22 @@ function loadScriptChain(srcs) {
 }
 window.loadScriptChain = loadScriptChain;
 
+function loadScriptChainSync(srcs) {
+  (srcs || []).forEach(loadScriptSync);
+}
+
 function loadModuleChain(id) {
   const chain = MODULE_CHAIN[id];
   if (!chain) return Promise.reject(new Error('No module chain for "' + id + '"'));
   return loadScriptChain(chain);
 }
 window.loadModuleChain = loadModuleChain;
+
+function loadModuleChainSync(id) {
+  const chain = MODULE_CHAIN[id];
+  if (!chain) throw new Error('No module chain for "' + id + '"');
+  loadScriptChainSync(chain);
+}
 
 /** Loads ExDB + workout module (and optional wger library). No-op if already present. */
 function ensureWorkoutReady(opts) {
@@ -320,49 +348,59 @@ function ensureWorkoutReady(opts) {
 }
 window.ensureWorkoutReady = ensureWorkoutReady;
 
+function ensureWorkoutReadySync(opts) {
+  const wantLib = !!(opts && opts.library);
+  const chain = wantLib
+    ? WORKOUT_CHAIN.concat(['js/data/exercise-library.js'])
+    : WORKOUT_CHAIN;
+  loadScriptChainSync(chain);
+  if (typeof loadCustomExercises === 'function') loadCustomExercises();
+  if (wantLib && typeof ExerciseLibrary !== 'undefined' && ExerciseLibrary.mergeIntoExDB) {
+    ExerciseLibrary.mergeIntoExDB();
+  }
+}
+
 /** Loader stub — real impl is window.__pcStartWorkout after workout.js loads. */
 window.startWorkout = function(templateName) {
-  if (typeof window.__pcStartWorkout === 'function') {
-    return window.__pcStartWorkout(templateName);
-  }
-  return ensureWorkoutReady().then(function() {
-    if (typeof window.__pcStartWorkout === 'function') {
-      return window.__pcStartWorkout(templateName);
+  if (typeof window.__pcStartWorkout !== 'function') {
+    try { ensureWorkoutReadySync(); }
+    catch (e) {
+      console.error('startWorkout sync load', e);
+      return ensureWorkoutReady().then(function() {
+        if (typeof window.__pcStartWorkout === 'function') return window.__pcStartWorkout(templateName);
+        go('workout');
+      });
     }
-    go('workout');
-  }).catch(function(e) {
-    console.error('startWorkout load', e);
-    if (typeof toast === 'function') toast('Could not load workout', 'err');
-  });
+  }
+  return window.__pcStartWorkout(templateName);
 };
 
 window.startQuickWorkout = function() {
-  if (typeof window.__pcStartQuickWorkout === 'function') {
-    return window.__pcStartQuickWorkout();
-  }
-  return ensureWorkoutReady().then(function() {
-    if (typeof window.__pcStartQuickWorkout === 'function') {
-      return window.__pcStartQuickWorkout();
+  if (typeof window.__pcStartQuickWorkout !== 'function') {
+    try { ensureWorkoutReadySync(); }
+    catch (e) {
+      console.error('startQuickWorkout sync load', e);
+      return ensureWorkoutReady().then(function() {
+        if (typeof window.__pcStartQuickWorkout === 'function') return window.__pcStartQuickWorkout();
+        return window.startWorkout();
+      });
     }
-    return window.startWorkout();
-  }).catch(function(e) {
-    console.error('startQuickWorkout load', e);
-    if (typeof toast === 'function') toast('Could not load workout', 'err');
-  });
+  }
+  return window.__pcStartQuickWorkout();
 };
 
 window.syncExerciseLibrary = function(force) {
-  if (typeof window.__pcSyncExerciseLibrary === 'function') {
-    return window.__pcSyncExerciseLibrary(force);
-  }
-  return ensureWorkoutReady({ library: true }).then(function() {
-    if (typeof window.__pcSyncExerciseLibrary === 'function') {
-      return window.__pcSyncExerciseLibrary(force);
+  if (typeof window.__pcSyncExerciseLibrary !== 'function') {
+    try { ensureWorkoutReadySync({ library: true }); }
+    catch (e) {
+      return ensureWorkoutReady({ library: true }).then(function() {
+        if (typeof window.__pcSyncExerciseLibrary === 'function') {
+          return window.__pcSyncExerciseLibrary(force);
+        }
+      });
     }
-  }).catch(function(e) {
-    console.error('syncExerciseLibrary load', e);
-    if (typeof toast === 'function') toast('Could not load exercise library', 'err');
-  });
+  }
+  return window.__pcSyncExerciseLibrary(force);
 };
 
 function _renderScreen(id, data) {
@@ -438,38 +476,63 @@ function go(id, data) {
     if (!_screens[id]) {
       const chain = MODULE_CHAIN[id];
       if (!chain) throw new Error('Screen "' + id + '" not registered');
-      const v = document.getElementById('view');
-      if (v) {
-        v.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:var(--txt2);font-size:var(--type-body,14px)">Loading…</div>';
-      }
-      loadModuleChain(id).then(function() {
-        if (navSeq !== _navigationSeq) return;
-        var after = Promise.resolve();
+      try {
+        loadModuleChainSync(id);
         if (id === 'workout' || id === 'active' || id === 'cardio' || id === 'my-plan' || id === 'plan-import' || id === 'equipment-setup') {
-          after = ensureWorkoutReady();
+          ensureWorkoutReadySync();
         }
-        return after.then(function() {
+        if (!_screens[id]) throw new Error('Screen "' + id + '" missing after load');
+        _renderScreen(id, data);
+        return Promise.resolve();
+      } catch (syncErr) {
+        /* Optimistic id so currentScreenId() matches the target during lazy load. */
+        _currentScreen = id;
+        document.title = (id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ')) + ' — PulseCap';
+        const v = document.getElementById('view');
+        if (v) {
+          v.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:var(--txt2);font-size:var(--type-body,14px)">Loading…</div>';
+        }
+        const nav = document.getElementById('nav');
+        if (nav) nav.style.display = 'flex';
+        const navId = NAV_PARENT[id] || id;
+        document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
+        const nb = document.getElementById('nb-' + navId);
+        if (nb) nb.classList.add('on');
+        document.querySelectorAll('.cap-side-btn').forEach(b => b.classList.remove('on'));
+        const sb = document.getElementById('cap-sb-' + navId);
+        if (sb) sb.classList.add('on');
+        const p = loadModuleChain(id).then(function() {
           if (navSeq !== _navigationSeq) return;
-          if (!_screens[id]) throw new Error('Screen "' + id + '" missing after load');
-          _renderScreen(id, data);
+          var after = Promise.resolve();
+          if (id === 'workout' || id === 'active' || id === 'cardio' || id === 'my-plan' || id === 'plan-import' || id === 'equipment-setup') {
+            after = ensureWorkoutReady();
+          }
+          return after.then(function() {
+            if (navSeq !== _navigationSeq) return;
+            if (!_screens[id]) throw new Error('Screen "' + id + '" missing after load');
+            _renderScreen(id, data);
+          });
+        }).catch(function(e) {
+          if (navSeq !== _navigationSeq) return;
+          console.error('go(' + id + ') lazy', e || syncErr);
+          const view = document.getElementById('view');
+          if (view) view.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:'+PCBrand.h_ff4444+';font-size:14px;line-height:1.6">' +
+            '<strong>Could not load screen</strong><br>' + esc((e && e.message) || String(e)) +
+            '<br><br><button type="button" class="btn btn-secondary" onclick="go(\'dashboard\')">← Back to Home</button></div>';
         });
-      }).catch(function(e) {
-        if (navSeq !== _navigationSeq) return;
-        console.error('go(' + id + ') lazy', e);
-        const view = document.getElementById('view');
-        if (view) view.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:'+PCBrand.h_ff4444+';font-size:14px;line-height:1.6">' +
-          '<strong>Could not load screen</strong><br>' + esc(e.message) +
-          '<br><br><button type="button" class="btn btn-secondary" onclick="go(\'dashboard\')">← Back to Home</button></div>';
-      });
-      return;
+        window.__pcNavPromise = p;
+        return p;
+      }
     }
     _renderScreen(id, data);
+    return Promise.resolve();
   } catch(e) {
     console.error('go(' + id + ')', e);
     const v = document.getElementById('view');
     if (v) v.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:'+PCBrand.h_ff4444+';font-size:14px;line-height:1.6">' +
       '<strong>Screen error: ' + esc(id) + '</strong><br>' + esc(e.message) +
       '<br><br><button type="button" class="btn btn-secondary" onclick="go(\'dashboard\')">← Back to Home</button></div>';
+    return Promise.reject(e);
   }
 }
 window.go = go;

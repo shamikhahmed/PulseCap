@@ -33,10 +33,12 @@ test.describe('Ember rebuild UI', () => {
 
   test('per-side loads average into the logged set', async ({ page }) => {
     await page.goto('/?demo=1');
-    await page.waitForFunction(() => typeof window.startQuickWorkout === 'function');
-    const out = await page.evaluate(() => {
+    await page.waitForFunction(() => typeof window.startQuickWorkout === 'function' && typeof window.ensureWorkoutReady === 'function');
+    const out = await page.evaluate(async () => {
+      await window.ensureWorkoutReady();
+      window.S.set('activeWorkoutDraft', null);
       if (window.discardWorkoutDraft) window.discardWorkoutDraft();
-      window.startQuickWorkout();
+      await window.startQuickWorkout();
       const w = window.getActiveWorkout();
       if (!w || !w.exercises[0]) return { l: 0, r: 0, avg: 0 };
       w.exercises[0]._plan = { unit: 'kg_per_side' };
@@ -63,15 +65,15 @@ test.describe('Ember rebuild UI', () => {
   test('Programs tab chrome (not Settings back-stack)', async ({ page }) => {
     await page.goto('/?demo=1');
     await page.waitForFunction(() => typeof window.go === 'function');
-    await page.evaluate(() => window.go('my-plan'));
+    await page.evaluate(async () => { await window.go('my-plan'); });
     await expect(page.locator('.topbar-title')).toHaveText('Programs');
     await expect(page.locator('#view')).toContainText(/Machine-only PPL|Import a plan/i);
   });
 
   test('Me limitations update deriveContext for Today and Log', async ({ page }) => {
     await page.goto('/?demo=1');
-    await page.waitForFunction(() => window.Profile && window.toggleLimitation);
-    const out = await page.evaluate(() => {
+    await page.waitForFunction(() => window.Profile && window.toggleLimitation && window.ensureWorkoutReady);
+    const out = await page.evaluate(async () => {
       if (window.discardWorkoutDraft) window.discardWorkoutDraft();
       window.S.set('user.limitations', []);
       window.S.set('user.injuries', []);
@@ -80,11 +82,13 @@ test.describe('Ember rebuild UI', () => {
       const has = (ctx.limitations || []).some(function(l) {
         return String((l && (l.joint || l.id)) || l).toLowerCase().indexOf('shoulder') >= 0;
       });
+      await window.ensureWorkoutReady();
+      window.S.set('activeWorkoutDraft', null);
       if (window.discardWorkoutDraft) window.discardWorkoutDraft();
-      window.startQuickWorkout();
-      window.go('active');
+      await window.startQuickWorkout();
+      await window.go('active');
       const log = document.getElementById('view').innerText;
-      window.go('settings', { tab: 'about' });
+      await window.go('settings', { tab: 'about' });
       const about = document.getElementById('view').innerText;
       return {
         has,
@@ -102,10 +106,12 @@ test.describe('Ember rebuild UI', () => {
     for (const width of widths) {
       await page.setViewportSize({ width, height: 812 });
       await page.goto('/?demo=1');
-      await page.waitForFunction(() => typeof window.startQuickWorkout === 'function');
-      const out = await page.evaluate(() => {
+      await page.waitForFunction(() => typeof window.startQuickWorkout === 'function' && typeof window.ensureWorkoutReady === 'function');
+      const out = await page.evaluate(async () => {
+        await window.ensureWorkoutReady();
+        window.S.set('activeWorkoutDraft', null);
         if (window.discardWorkoutDraft) window.discardWorkoutDraft();
-        window.startQuickWorkout();
+        await window.startQuickWorkout();
         const header = document.getElementById('wkt-header');
         const actions = Array.from(document.querySelectorAll('#wkt-header .wkt-bar__actions > button')).map(function(b) {
           return (b.textContent || '').trim();
@@ -143,8 +149,8 @@ test.describe('Ember rebuild UI', () => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto('/?demo=1');
     await page.waitForFunction(() => typeof window.go === 'function');
-    const out = await page.evaluate(() => {
-      window.go('workout');
+    const out = await page.evaluate(async () => {
+      await window.go('workout');
       const view = document.getElementById('view');
       const text = view ? view.innerText : '';
       return {
@@ -163,7 +169,7 @@ test.describe('Ember rebuild UI', () => {
   test('no registered screen is orphaned from the five tabs', async ({ page }) => {
     await page.goto('/?demo=1');
     await page.waitForFunction(() => typeof window.go === 'function' && window.listScreens);
-    const out = await page.evaluate(() => {
+    const out = await page.evaluate(async () => {
       const aliases = window.SCREEN_ALIASES || {};
       const resolve = function(id) {
         const a = aliases[id];
@@ -180,24 +186,24 @@ test.describe('Ember rebuild UI', () => {
       const reachable = {};
       const queue = ['dashboard', 'workout', 'progress', 'my-plan', 'settings'];
       const settingsTabs = ['account', 'training', 'fuel', 'appearance', 'accessibility', 'notifications', 'privacy', 'about'];
-      settingsTabs.forEach(function(t) {
-        window.go('settings', { tab: t });
+      for (const t of settingsTabs) {
+        await window.go('settings', { tab: t });
         extract(document.getElementById('view').innerHTML).forEach(function(id) { queue.push(id); });
-      });
+      }
       while (queue.length) {
         const raw = queue.shift();
         const id = resolve(raw);
         if (reachable[id]) continue;
         reachable[id] = true;
         try {
-          window.go(id);
+          await window.go(id);
           extract(document.getElementById('view').innerHTML).forEach(function(next) {
             if (!reachable[resolve(next)]) queue.push(next);
           });
         } catch (e) { /* skip unloadable */ }
       }
       if (typeof window.startQuickWorkout === 'function') {
-        window.startQuickWorkout();
+        await window.startQuickWorkout();
         reachable.active = true;
         if (window.discardWorkoutDraft) window.discardWorkoutDraft();
       }
@@ -214,6 +220,8 @@ test.describe('Ember rebuild UI', () => {
 
   test('rest timer is wall-clock based across a 3-minute gap', async ({ page }) => {
     await page.goto('/?demo=1');
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(() => window.ensureWorkoutReady());
     await page.waitForFunction(() => typeof window.startRestTimer === 'function');
     const out = await page.evaluate(() => {
       window.startRestTimer(180);

@@ -46,10 +46,10 @@ test.describe('Accessibility', () => {
 
   test('settings switches expose role=switch + aria-checked', async ({ page }) => {
     await page.goto('/?demo=1');
-    await page.waitForFunction(() => typeof window.go === 'function');
-    await page.evaluate(() => window.go('settings', { tab: 'notifications' }));
-    const switches = page.locator('[role="switch"]');
-    await expect(switches.first()).toBeVisible();
+    await page.waitForFunction(() => window.__APP_READY__ === true && typeof window.go === 'function');
+    await page.evaluate(async () => { await window.go('settings', { tab: 'notifications' }); });
+    const switches = page.locator('#view [role="switch"]');
+    await expect(switches.first()).toBeVisible({ timeout: 10000 });
     const n = await switches.count();
     expect(n).toBeGreaterThan(2);
     for (let i = 0; i < Math.min(n, 5); i++) {

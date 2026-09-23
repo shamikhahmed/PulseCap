@@ -11,8 +11,13 @@ async function boot(page) {
 }
 
 async function goScreen(page, id, data) {
-  await page.evaluate(({ id, data }) => window.go(id, data || undefined), { id, data });
-  await page.waitForFunction((want) => window.currentScreenId && window.currentScreenId() === want, id, { timeout: 8000 });
+  await page.evaluate(async ({ id, data }) => { await window.go(id, data || undefined); }, { id, data });
+  await page.waitForFunction((want) => {
+    const view = document.getElementById('view');
+    const text = (view && view.innerText) || '';
+    if (/Loading…/.test(text)) return false;
+    return window.currentScreenId && window.currentScreenId() === want && !!document.querySelector('#view .screen');
+  }, id, { timeout: 15000 });
 }
 
 async function padAndScroll(page, y) {
@@ -394,11 +399,11 @@ test.describe('Phase 27 — QA sweep', () => {
       return { ex: longest(window.EXERCISE_DB, 'n'), food: longest(window.FOODS_DB || [], 'name') };
     });
     expect(names.ex.length).toBeGreaterThan(8);
-    await page.evaluate((name) => {
+    await page.evaluate(async (name) => {
       window.S.set('user', Object.assign({}, window.S.g('user') || {}, { name: 'Alexandrina-Maximiliana von Somethinglong' }));
-      window.go('workout');
+      await window.go('workout');
     }, names.ex);
-    await page.waitForFunction(() => window.ExDB && document.querySelector('#view .screen'));
+    await page.waitForFunction(() => window.ExDB && document.querySelector('#view .screen') && !/Loading…/.test(document.getElementById('view').innerText || ''));
     await page.evaluate((name) => {
       const search = document.querySelector('#view input[type="search"], #view input[type="text"]');
       if (search) {
@@ -407,8 +412,8 @@ test.describe('Phase 27 — QA sweep', () => {
       }
     }, names.ex);
     expect(await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2)).toBeFalsy();
-    await page.evaluate(() => window.go('nutrition'));
-    await page.waitForFunction(() => document.querySelector('#view .screen'));
+    await page.evaluate(async () => { await window.go('nutrition'); });
+    await page.waitForFunction(() => document.querySelector('#view .screen') && !/Loading…/.test(document.getElementById('view').innerText || ''));
     await page.evaluate((name) => {
       const search = document.querySelector('#view input[type="search"], #view input[type="text"]');
       if (search) {

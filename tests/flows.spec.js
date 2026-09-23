@@ -23,11 +23,11 @@ test.describe('PulseCap flows', () => {
   });
 
   test('workout chain: start → log sets → finish → saved + streak', async ({ page }) => {
-    const out = await page.evaluate(() => {
+    const out = await page.evaluate(async () => {
       // @ts-ignore
       const w = window;
     w.S.set('programWeightsConfirmed', true);
-      w.startWorkout();
+      await await w.startWorkout();
       w._doneSet(0, 0); w._doneSet(0, 1);
       const counter = document.getElementById('wkt-count') && document.getElementById('wkt-count').textContent;
       w.confirmFinishWorkout();
@@ -43,12 +43,12 @@ test.describe('PulseCap flows', () => {
   });
 
   test('strength program prescribes and progresses (stronglifts)', async ({ page }) => {
-    const out = await page.evaluate(() => {
+    const out = await page.evaluate(async () => {
       // @ts-ignore
       const w = window;
       w.S.set('user.split', 'stronglifts');
       w.S.set('programWeightsConfirmed', true);
-      w.startWorkout();
+      await w.startWorkout();
       // main lift must be program-prescribed: 5 sets of 5
       const wkt = (function(){ w.go('active'); return document.body.innerText; })();
       const rxShown = /5×5 @ \d+(\.\d+)?kg/.test(wkt);
@@ -150,11 +150,11 @@ test.describe('PulseCap flows', () => {
   });
 
   test('warmup ramp inserts sets ahead of working sets', async ({ page }) => {
-    const out = await page.evaluate(() => {
+    const out = await page.evaluate(async () => {
       // @ts-ignore
       const w = window;
       w.S.set('programWeightsConfirmed', true);
-      w.startWorkout();
+      await w.startWorkout();
       const wkt = w.getActiveWorkout();
       // Force first exercise to a barbell compound
       wkt.exercises[0] = { name: 'Back Squat', sets: [{ weight: 100, reps: 5, done: false }] };
