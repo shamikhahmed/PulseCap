@@ -135,28 +135,28 @@
 [data-theme="carbon"], [data-theme="stealth"], [data-theme="forest"],
 [data-theme="electric"], [data-theme="sunset"], [data-theme="aurora"],
 [data-theme="midnight"], [data-theme="arctic"] {
-  --c1: #FF453A; --c1-rgb: 255,69,58;
-  --c2: #FF3B30; --c2-rgb: 255,59,48;
-  --c3: #73ffcf; --c3-rgb: 115,255,207;
+  --c1: #FF7A1A; --c1-rgb: 255,122,26;
+  --c2: #FF9F0A; --c2-rgb: 255,159,10;
+  --c3: #30D158; --c3-rgb: 48,209,88;
   --c4: #FF453A; --c4-rgb: 255,69,58;
-  --c5: #ffe04a; --c5-rgb: 255,224,74;
-  --grad: linear-gradient(128deg, #FF453A 0%, #FF3B30 58%, #ff6b5e 100%);
-  --grad2: linear-gradient(128deg, #FF3B30 0%, #FF453A 100%);
-  --orb1: #FF453A; --orb2: #FF3B30;
-  --shadow: 0 10px 30px rgba(255,69,58,0.14);
-  --glow: rgba(255,69,58,0.2);
+  --c5: #FFD60A; --c5-rgb: 255,214,10;
+  --grad: linear-gradient(128deg, #FF7A1A 0%, #E86A0E 55%, #FF9F0A 100%);
+  --grad2: linear-gradient(128deg, #E86A0E 0%, #FF7A1A 100%);
+  --orb1: #FF7A1A; --orb2: #E86A0E;
+  --shadow: 0 10px 30px rgba(255,122,26,0.14);
+  --glow: rgba(255,122,26,0.2);
 }
 
-/* Light keeps chalk-red DNA (same brand as dark) — no blue/purple fad accents */
+/* Light: accent-text family for labels; fills stay Ember orange */
 [data-theme="light"] {
-  --c1: #C41E3A; --c1-rgb: 196,30,58;
-  --c2: #FF3B30; --c2-rgb: 255,59,48;
+  --c1: #B44A00; --c1-rgb: 180,74,0;
+  --c2: #E86A0E; --c2-rgb: 232,106,14;
   --c3: #248A3D; --c3-rgb: 36,138,61;
   --c4: #C41E3A; --c4-rgb: 196,30,58;
   --c5: #B25000; --c5-rgb: 178,80,0;
-  --grad: linear-gradient(128deg, #C41E3A 0%, #FF3B30 58%, #ff6b5e 100%);
-  --grad2: linear-gradient(128deg, #FF3B30 0%, #C41E3A 100%);
-  --orb1: #C41E3A; --orb2: #FF3B30;
+  --grad: linear-gradient(128deg, #FF7A1A 0%, #E86A0E 55%, #FF9F0A 100%);
+  --grad2: linear-gradient(128deg, #E86A0E 0%, #FF7A1A 100%);
+  --orb1: #FF7A1A; --orb2: #E86A0E;
   --shadow: 0 4px 24px rgba(196,30,58,0.12);
   --glow: rgba(196,30,58,0.12);
 }

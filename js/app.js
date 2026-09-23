@@ -347,6 +347,7 @@ function ensureWorkoutReady(opts) {
   });
 }
 window.ensureWorkoutReady = ensureWorkoutReady;
+window.ensureWorkoutReadySync = ensureWorkoutReadySync;
 
 function ensureWorkoutReadySync(opts) {
   const wantLib = !!(opts && opts.library);

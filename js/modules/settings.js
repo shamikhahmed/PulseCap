@@ -456,7 +456,7 @@ function _tabPrivacy() {
 
     _sectionTitle('Exercise Library') +
     (function() {
-      if (typeof ExDB === 'undefined' && typeof ensureWorkoutReady === 'function' && !window.__pcExLibHydrating) {
+      if (_activeSettingsTab === 'privacy' && typeof ExDB === 'undefined' && typeof ensureWorkoutReady === 'function' && !window.__pcExLibHydrating) {
         window.__pcExLibHydrating = true;
         ensureWorkoutReady({ library: true }).then(function() {
           window.__pcExLibHydrating = false;

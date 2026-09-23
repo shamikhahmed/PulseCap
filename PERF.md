@@ -1,39 +1,39 @@
 # PulseCap — PERF
 
-> 2026-08-18 · chromium · `/?demo=1` · local :8766
+> 2026-09-23 · chromium · `/?demo=1` · local :8766
 
 ## Budgets
 
 | Metric | Budget | Measured | Pass |
 |--------|-------:|---------:|:----:|
-| DOMContentLoaded | ≤8000ms | 397ms | yes |
-| Wall-clock ready (go/S) | ≤20000ms | 484ms | yes |
-| Critical CSS+JS bytes | ≤921600 | 535215 | yes |
-| Max route go() | ≤800ms | 34ms (avg 31) | yes |
+| DOMContentLoaded | ≤8000ms | 80ms | yes |
+| Wall-clock ready (go/S) | ≤20000ms | 97ms | yes |
+| Critical CSS+JS bytes | ≤921600 | 544585 | yes |
+| Max route go() | ≤800ms | 35ms (avg 32) | yes |
 
 ## Route samples
 
-`23, 33, 33, 34, 34` ms for workout→progress→my-plan→settings→dashboard
+`28, 33, 33, 31, 35` ms for workout→progress→my-plan→settings→dashboard
 
 ## Critical assets
 
-- `css/tokens.css`: 4539 B
+- `css/tokens.css`: 6012 B
 - `css/tokens.base.css`: 10966 B
-- `css/layout.css`: 40988 B
-- `css/components.css`: 45663 B
-- `css/ember-components.css`: 12406 B
-- `css/shell.css`: 4327 B
-- `css/identity.css`: 14599 B
-- `js/app.js`: 39186 B
+- `css/layout.css`: 40903 B
+- `css/components.css`: 46187 B
+- `css/ember-components.css`: 12465 B
+- `css/shell.css`: 4596 B
+- `css/identity.css`: 14551 B
+- `js/app.js`: 45468 B
 - `js/storage.js`: 26127 B
-- `js/engines.js`: 111068 B
+- `js/engines.js`: 111096 B
 - `js/coach-kernel.js`: 15101 B
 - `js/gym-tools.js`: 10752 B
 - `js/training-plan.js`: 21534 B
 - `js/plan-import.js`: 11966 B
-- `js/modules/dashboard.js`: 6645 B
-- `js/modules/workout.js`: 103329 B
-- `js/modules/settings.js`: 56019 B
+- `js/modules/dashboard.js`: 6660 B
+- `js/modules/workout.js`: 103402 B
+- `js/modules/settings.js`: 56799 B
 
 **Splash:** absent (must dissolve when load done — no artificial delay).
 
