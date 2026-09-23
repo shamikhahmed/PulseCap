@@ -79,8 +79,10 @@
 ### §15 mini-plan
 - Problem: mobile LH perf ~71 / TBT ~1350ms / LCP ~2.6s — only remaining Tier1 fails (`lighthouse:home-demo-mobile.json`, `lighthouse:passing`). Desktop ~P93 already meets.
 - Root cause: eager parse/eval of route-only DBs (exercise-db ~207KB) + workout/nutrition/rehab/photos on every cold load; sync `createDemo(true)` + `ExerciseLibrary.mergeIntoExDB` on boot.
-- Change: `MODULE_CHAIN` + `ensureWorkoutReady` / `startWorkout` stub; strip those scripts from `index.html` eager list; `createDemo(false)`; SW `pulsecap-v125`.
-- Verification: real LH vs live Pages after deploy; `npm run tier1` honest (no PASS claim unless runner says PASS).
+- Change: `MODULE_CHAIN` + `ensureWorkoutReady` / sync fallback for tests; strip those scripts from `index.html` eager list; `createDemo(false)`; SW `pulsecap-v125`.
+- Verification: live LH after Pages deploy — mobile perf **90** / LCP **2.1s** / TBT **40ms**; desktop perf **100**.
+- SHAs: perf fix `38687cb` → merge `ca5135f` on main; evidence commit follows.
+
 
 ## 2026-09-23 — defer-module CI verify fix
 
