@@ -1,9 +1,9 @@
 {
   "app": "PulseCap",
   "version": "6.43.1",
-  "swCache": "pulsecap-v124",
-  "generatedAt": "2026-09-16T11:06:42.560Z",
-  "status": "FAIL",
+  "swCache": "pulsecap-v125",
+  "generatedAt": "2026-09-23T06:29:10.289Z",
+  "status": "PASS",
   "pass": [
     {
       "id": "version:field",
@@ -11,7 +11,7 @@
     },
     {
       "id": "version:sw-cache-match",
-      "detail": "sw.js contains pulsecap-v124"
+      "detail": "sw.js contains pulsecap-v125"
     },
     {
       "id": "records:BASELINE.md",
@@ -51,7 +51,7 @@
     },
     {
       "id": "ci:main",
-      "detail": "PulseCap CI @ b8bc1ec → success https://github.com/shamikhahmed/PulseCap/actions/runs/35086244071"
+      "detail": "PulseCap CI @ ca5135f → success https://github.com/shamikhahmed/PulseCap/actions/runs/35826058212"
     },
     {
       "id": "tag",
@@ -71,7 +71,19 @@
     },
     {
       "id": "matrix:freshness",
-      "detail": "2026-09-16T10:57:16.155Z"
+      "detail": "2026-09-23T06:27:22.661Z"
+    },
+    {
+      "id": "lighthouse:home-demo-desktop.json",
+      "detail": "perf 100 a11y 98 bp 96 LCP 425.58299999999997 TBT 0 CLS 0"
+    },
+    {
+      "id": "lighthouse:home-demo-mobile.json",
+      "detail": "perf 90 a11y 98 bp 96 LCP 2072.9610000000002 TBT 35 CLS 0"
+    },
+    {
+      "id": "lighthouse:passing",
+      "detail": "2/2 files meet thresholds"
     },
     {
       "id": "axe:serious-critical",
@@ -79,7 +91,7 @@
     },
     {
       "id": "gallery:freshness",
-      "detail": "docs/screenshots/gallery/gallery-manifest.json @ 2026-09-16T15:36:50+05:00"
+      "detail": "docs/screenshots/gallery/gallery-manifest.json @ 2026-09-23T11:28:58+05:00"
     },
     {
       "id": "live:VERSION.json",
@@ -122,20 +134,7 @@
       "detail": "31 sinks; SINKS.md ok"
     }
   ],
-  "fail": [
-    {
-      "id": "lighthouse:home-demo-desktop.json",
-      "detail": "perf 86 a11y 98 bp 96 LCP 708.0245 TBT 210 CLS 0"
-    },
-    {
-      "id": "lighthouse:home-demo-mobile.json",
-      "detail": "perf 58 a11y 98 bp 96 LCP 3336.3695 TBT 8818.5 CLS 0"
-    },
-    {
-      "id": "lighthouse:passing",
-      "detail": "0/2 files meet thresholds"
-    }
-  ],
+  "fail": [],
   "warn": [],
   "killList": {
     "rawHex": 0,
