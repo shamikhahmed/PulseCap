@@ -508,8 +508,11 @@ window.discardWorkoutDraft = function() {
   _wkt = null;
   _wktNotes = {};
   clearInterval(_wktTimer);
-  go('workout');
-  toast('Workout draft discarded', 'info');
+  if (typeof go === 'function' && typeof currentScreenId === 'function') {
+    const id = currentScreenId();
+    if (id === 'active' || id === 'workout') go('workout');
+  }
+  if (typeof toast === 'function') toast('Workout draft discarded', 'info');
 };
 
 function _fillTrainInsight() {
@@ -1270,7 +1273,7 @@ function _startWktTimer() {
   }, 1000);
 }
 
-window.startWorkout = function(templateName) {
+window.__pcStartWorkout = function(templateName) {
   haptic(50);
   if (_workoutDraft()) {
     modal('Workout already in progress',
@@ -1334,14 +1337,13 @@ window.startWorkout = function(templateName) {
   _checkpointWorkout(true);
   if (typeof WakeLock !== 'undefined') WakeLock.request();
   if (typeof GymFloor !== 'undefined') GymFloor.apply();
-  go('active');
+  return go('active');
 };
 
-window.startQuickWorkout = function() {
+window.__pcStartQuickWorkout = function() {
   haptic(50);
   if (typeof TrainingPlanEngine !== 'undefined' && TrainingPlanEngine.hasActive()) {
-    startWorkout();
-    return;
+    return startWorkout();
   }
   if (_workoutDraft()) {
     toast('Resume or discard the current workout first', 'warn');
@@ -1367,7 +1369,7 @@ window.startQuickWorkout = function() {
   _startWktTimer();
   _checkpointWorkout(true);
   if (typeof WakeLock !== 'undefined') WakeLock.request();
-  go('active');
+  return go('active');
 };
 
 if (typeof registerRouteCleanup === 'function') {

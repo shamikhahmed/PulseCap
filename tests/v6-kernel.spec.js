@@ -5,7 +5,10 @@ test.describe('v6 Coach Kernel', () => {
   test('kernel + foods + food engine online after demo boot', async ({ page }) => {
     await page.goto('/?demo=1');
     await page.waitForFunction(() => window.S && window.S.activeId && window.S.activeId() === 'demo', undefined, { timeout: 30000 });
-    await page.waitForTimeout(400);
+    await page.waitForFunction(() => typeof window.loadModuleChain === 'function');
+    await page.evaluate(() => window.loadModuleChain('nutrition'));
+    await page.waitForFunction(() => window.FoodEngine && typeof window.FoodEngine.search === 'function');
+    await page.waitForTimeout(200);
 
     const ok = await page.evaluate(() => {
       const need = ['CoachKernel', 'AutoregEngine', 'VolumeLander', 'JointBudget', 'MesocycleEngine', 'PushPullEngine', 'FoodEngine', 'GymFloor'];

@@ -4,6 +4,8 @@ const { test, expect } = require('@playwright/test');
 test.describe('Exercise content integrity', () => {
   test('no duplicate names or ids in ExDB', async ({ page }) => {
     await page.goto('/');
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(() => window.ensureWorkoutReady());
     await page.waitForFunction(() => window.ExDB && window.ExDB.db && window.ExDB.db.length);
     const out = await page.evaluate(() => {
       const names = [];
@@ -28,6 +30,8 @@ test.describe('Exercise content integrity', () => {
 
   test('pre-id backup restores Hack Squat history onto hack-squat', async ({ page }) => {
     await page.goto('/');
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(() => window.ensureWorkoutReady());
     await page.waitForFunction(() => window.S && window.S._migrate && window.ExDB);
     const out = await page.evaluate(() => {
       const old = {
@@ -75,6 +79,8 @@ test.describe('Exercise content integrity', () => {
 
   test('every exercise has all eight joint keys', async ({ page }) => {
     await page.goto('/');
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(() => window.ensureWorkoutReady());
     await page.waitForFunction(() => window.ExDB && window.Equipment);
     const out = await page.evaluate(() => {
       const keys = window.Equipment.JOINTS;
@@ -96,6 +102,8 @@ test.describe('Exercise content integrity', () => {
 
   test('wrist limitation changes the library and Swap pool', async ({ page }) => {
     await page.goto('/');
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(() => window.ensureWorkoutReady());
     await page.waitForFunction(() => window.Equipment && window.ExDB && window.SplitEngine);
     const out = await page.evaluate(() => {
       const user = {
@@ -125,6 +133,8 @@ test.describe('Exercise content integrity', () => {
 
   test('every exercise has a vocabulary pattern and 2+ resolvable substitutions', async ({ page }) => {
     await page.goto('/');
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(() => window.ensureWorkoutReady());
     await page.waitForFunction(() => window.ExDB && window.ExDB.db.length);
     const out = await page.evaluate(() => {
       const vocab = ['horizontal_push','vertical_push','horizontal_pull','vertical_pull','hinge','squat','lunge','carry','core','isolation','conditioning'];
@@ -152,6 +162,8 @@ test.describe('Exercise content integrity', () => {
 
   test('plyos are not sports; cricket exists; every lift has a MET source', async ({ page }) => {
     await page.goto('/');
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(() => window.ensureWorkoutReady());
     await page.waitForFunction(() => window.ExDB && window.ExDB.db.length);
     const out = await page.evaluate(() => {
       const box = window.ExDB.byName('Box Jump');
@@ -175,6 +187,8 @@ test.describe('Exercise content integrity', () => {
 
   test('food library is sourced, portioned, and includes Karachi staples', async ({ page }) => {
     await page.goto('/');
+    await page.waitForFunction(() => typeof window.loadModuleChain === 'function');
+    await page.evaluate(() => window.loadModuleChain('nutrition'));
     await page.waitForFunction(() => window.FOODS_DB && window.FOODS_DB.length);
     const out = await page.evaluate(() => {
       const db = window.FOODS_DB;
@@ -198,6 +212,8 @@ test.describe('Exercise content integrity', () => {
 
   test('named injuries collapse to eight joints; tennis elbow and left-shoulder filter', async ({ page }) => {
     await page.goto('/');
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(() => window.ensureWorkoutReady());
     await page.waitForFunction(() => window.InjuriesDB && window.Equipment && window.ExDB);
     const out = await page.evaluate(() => {
       const map = {
@@ -236,6 +252,8 @@ test.describe('Exercise content integrity', () => {
 
   test('every kit × joint still has a trainable chest/back/legs/shoulders pool', async ({ page }) => {
     await page.goto('/');
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(() => window.ensureWorkoutReady());
     await page.waitForFunction(() => window.Equipment && window.ExDB);
     const out = await page.evaluate(() => {
       const kits = Object.keys(window.Equipment.KITS);
@@ -269,7 +287,9 @@ test.describe('Exercise content integrity', () => {
 
   test('all SplitsDB ids produce a coherent day list; catalog stays a separate layer', async ({ page }) => {
     await page.goto('/');
-    await page.waitForFunction(() => window.SplitsDB && window.SplitEngine && window.PlanCatalog);
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(() => window.ensureWorkoutReady());
+    await page.waitForFunction(() => window.SplitsDB && window.SplitEngine && window.PlanCatalog && window.ExDB);
     const out = await page.evaluate(() => {
       const ids = window.SplitsDB.splits.map(function(s) { return s.id; });
       const unresolved = [];
@@ -298,6 +318,8 @@ test.describe('Exercise content integrity', () => {
 
   test('specific machines override kit: leg press + lat pulldown only', async ({ page }) => {
     await page.goto('/');
+    await page.waitForFunction(() => typeof window.ensureWorkoutReady === 'function');
+    await page.evaluate(() => window.ensureWorkoutReady());
     await page.waitForFunction(() => window.Equipment && window.ExDB && window.EquipmentDB);
     const out = await page.evaluate(() => {
       const user = {

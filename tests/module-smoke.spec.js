@@ -39,14 +39,14 @@ test.describe('PulseCap per-module smoke', () => {
   test('IA aliases resolve to Ember survivors', async ({ page }) => {
     await page.goto('/?demo=1');
     await page.waitForLoadState('domcontentloaded');
-    await page.waitForFunction(() => typeof window.go === 'function');
+    await page.waitForFunction(() => typeof window.go === 'function' && window.__APP_READY__ && window.listScreens && window.listScreens().includes('dashboard'));
 
-    const map = await page.evaluate(() => {
+    const map = await page.evaluate(async () => {
       const out = {};
-      ['today', 'home', 'train', 'body', 'learn', 'explore', 'me', 'programs'].forEach(function(alias) {
-        window.go(alias);
+      for (const alias of ['today', 'home', 'train', 'body', 'learn', 'explore', 'me', 'programs']) {
+        await window.go(alias);
         out[alias] = { title: document.title, id: window.currentScreenId() };
-      });
+      }
       return out;
     });
 

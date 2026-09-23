@@ -114,8 +114,11 @@ test.describe('PulseCap smoke', () => {
   test('active workout draft survives navigation and reload', async ({ page }) => {
     await page.goto('/?demo=1');
     await page.locator('html[data-boot-ready="true"]').waitFor();
+    await page.evaluate(async () => {
+      await window.startQuickWorkout();
+    });
+    await page.waitForFunction(() => typeof window._setVal === 'function' && window.getActiveWorkout);
     await page.evaluate(() => {
-      window.startQuickWorkout();
       window._setVal(0, 0, 'weight', 42.5);
       window._setVal(0, 0, 'reps', 8);
       window._doneSet(0, 0);

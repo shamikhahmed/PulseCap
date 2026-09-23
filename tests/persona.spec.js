@@ -37,8 +37,8 @@ test.describe('Persona personalization spine', () => {
     await page.goto('/');
     await page.waitForFunction(() => window.NutritionMath && window.PlanCatalog && window.Equipment);
 
-    const out = await page.evaluate((personas) => {
-      function seed(p) {
+    const out = await page.evaluate(async (personas) => {
+      async function seed(p) {
         const tags = window.Equipment.tagsForKit(p.equipmentKit);
         window.S.set('onboarded', true);
         window.S.set('trainingPlan', null);
@@ -60,7 +60,7 @@ test.describe('Persona personalization spine', () => {
         const blocked = names.filter(function(name) {
           return !window.Equipment.canPerform(name, user);
         });
-        window.go('nutrition');
+        await window.go('nutrition');
         const text = document.getElementById('view').innerText;
         return {
           calories: n.calories,
@@ -75,10 +75,10 @@ test.describe('Persona personalization spine', () => {
         };
       }
       return {
-        sara: seed(personas.sara),
-        bilal: seed(personas.bilal),
-        tim: seed(personas.tim),
-        ayesha: seed(personas.ayesha)
+        sara: await seed(personas.sara),
+        bilal: await seed(personas.bilal),
+        tim: await seed(personas.tim),
+        ayesha: await seed(personas.ayesha)
       };
     }, PERSONAS);
 

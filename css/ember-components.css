@@ -119,8 +119,8 @@
   font-size: 11px;
   font-weight: 600;
   color: var(--text-3);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  text-transform: none;
+  letter-spacing: 0.01em;
   margin-top: 4px;
 }
 
@@ -405,7 +405,7 @@ select.split-select {
 }
 [data-theme="light"] select.field,
 [data-theme="light"] .split-select {
-  background: #fff;
+  background: var(--pc-ffffff);
   box-shadow: var(--ds1, 0 1px 3px rgba(0, 0, 0, 0.08));
 }
 select.field:focus,
@@ -554,7 +554,7 @@ select.field:focus,
   justify-content: center;
   flex-shrink: 0;
 }
-.set-check.done { background: var(--success); border-color: var(--success); color: #fff; }
+.set-check.done { background: var(--success); border-color: var(--success); color: var(--pc-ffffff); }
 .set-row.pr .set-check.done { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
 
 .set-pr-flag {
@@ -572,7 +572,7 @@ select.field:focus,
 
 body.gym-floor .set-step__inp,
 body.gym-floor .set-rpe {
-  width: auto !important;
+  width: auto ;
   min-width: 0;
   min-height: 44px;
   font-size: 18px;

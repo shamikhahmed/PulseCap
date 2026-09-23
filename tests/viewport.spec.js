@@ -24,7 +24,7 @@ test.describe('PulseCap viewport contract', () => {
   test('390px — iPhone 12/13 shell, no horizontal overflow', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await assertCapSharedMobile(page, expect);
-    await page.evaluate(() => window.go('my-plan'));
+    await page.evaluate(async () => { await window.go('my-plan'); });
     await page.waitForTimeout(200);
     const overflow = await page.evaluate(() => document.documentElement.scrollWidth > document.documentElement.clientWidth + 2);
     expect(overflow).toBeFalsy();
@@ -70,7 +70,7 @@ test.describe('PulseCap viewport contract', () => {
       return txt3.includes('0.58') || txt3.includes('0.55') || !txt3.includes('0.42');
     });
     expect(ok).toBeTruthy();
-    await page.evaluate(() => window.go('nutrition'));
+    await page.evaluate(async () => { await window.go('nutrition'); });
     await page.waitForTimeout(300);
     await expect(page.locator('#view .screen')).toBeVisible();
   });

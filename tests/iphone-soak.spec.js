@@ -44,12 +44,12 @@ test.describe('iPhone soak — automated slice', () => {
   });
 
   test('Train → start active logger path', async ({ page }) => {
-    await page.evaluate(() => window.go('workout'));
+    await page.evaluate(async () => { await window.go('workout'); });
     await page.waitForTimeout(300);
     await expect(page.locator('#view')).toBeVisible();
-    const started = await page.evaluate(() => {
+    const started = await page.evaluate(async () => {
       if (typeof window.startWorkout === 'function') {
-        window.startWorkout();
+        await window.startWorkout();
         return true;
       }
       return false;
@@ -75,17 +75,17 @@ test.describe('iPhone soak — automated slice', () => {
   });
 
   test('Programs + Progress routes paint', async ({ page }) => {
-    await page.evaluate(() => window.go('progress'));
+    await page.evaluate(async () => { await window.go('progress'); });
     await page.waitForTimeout(250);
     await expect(page.locator('#view')).toBeVisible();
-    await page.evaluate(() => window.go('programs'));
+    await page.evaluate(async () => { await window.go('programs'); });
     await page.waitForTimeout(250);
     const text = await page.locator('#view').innerText();
     expect(text.length).toBeGreaterThan(20);
   });
 
   test('My Plan route paints at iPhone width', async ({ page }) => {
-    await page.evaluate(() => window.go('my-plan'));
+    await page.evaluate(async () => { await window.go('my-plan'); });
     await page.waitForTimeout(400);
     await expect(page.locator('#view')).toContainText(/My Plan|Machine-only|Import/i);
     const overflow = await page.evaluate(() =>

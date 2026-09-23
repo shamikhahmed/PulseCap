@@ -28,7 +28,7 @@ Today (`dashboard`) · Train (`workout`) · Body (`bodymap`) · Learn (`hub`) ·
 
 ### Design system
 
-Tokens in `css/base.css` (`--c*`, `--bg*`, `--txt*`, `--space-*` in layout). Residual debt: inline `style=` still high in deep modules; fad hex purged from hot paths, duplicate utility blocks in `layout.css`, marketing + Today fad closed in 6.5.1.
+Tokens in `css/tokens.base.css` (`--c*`, `--bg*`, `--txt*`, `--space-*` in layout). Residual debt: inline `style=` still high in deep modules; fad hex purged from hot paths, duplicate utility blocks in `layout.css`, marketing + Today fad closed in 6.5.1.
 
 ### Tests / deps
 

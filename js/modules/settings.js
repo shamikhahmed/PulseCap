@@ -456,12 +456,23 @@ function _tabPrivacy() {
 
     _sectionTitle('Exercise Library') +
     (function() {
+      if (_activeSettingsTab === 'privacy' && typeof ExDB === 'undefined' && typeof ensureWorkoutReady === 'function' && !window.__pcExLibHydrating) {
+        window.__pcExLibHydrating = true;
+        ensureWorkoutReady({ library: true }).then(function() {
+          window.__pcExLibHydrating = false;
+          if (typeof currentScreenId === 'function' && currentScreenId() === 'settings') {
+            go('settings', { tab: 'privacy' });
+          }
+        }).catch(function() { window.__pcExLibHydrating = false; });
+      }
       const st = typeof ExerciseLibrary !== 'undefined' ? ExerciseLibrary.status() : { cached: false, count: 0 };
       const exCount = typeof ExDB !== 'undefined' ? ExDB.db.length : 0;
       return '<div class="card card-solid mb-14">' +
         '<div style="font-size:13px;color:var(--txt2);line-height:1.55;margin-bottom:12px">' +
-        'Built-in: <strong class="c-txt">' + exCount + '</strong> exercises. ' +
-        (st.cached ? 'wger metadata cache: <strong class="c-txt">' + st.count + '</strong>' + (st.mediaCount ? ' · ' + st.mediaCount + ' remote media links' : '') + '. Images and videos still need network access unless your browser has cached them.' : 'Optional sync from wger.de while online. Exercise metadata is cached on this device; remote images and videos are not guaranteed offline. Built-in FormLoops cues always work offline.') +
+        (typeof ExDB === 'undefined'
+          ? 'Loading built-in exercise library…'
+          : ('Built-in: <strong class="c-txt">' + exCount + '</strong> exercises. ' +
+        (st.cached ? 'wger metadata cache: <strong class="c-txt">' + st.count + '</strong>' + (st.mediaCount ? ' · ' + st.mediaCount + ' remote media links' : '') + '. Images and videos still need network access unless your browser has cached them.' : 'Optional sync from wger.de while online. Exercise metadata is cached on this device; remote images and videos are not guaranteed offline. Built-in FormLoops cues always work offline.'))) +
         '</div>' +
         '<button type="button" id="ex-lib-sync-btn" class="btn btn-secondary w-full" style="min-height:44px" onclick="syncExerciseLibrary(' + (st.cached ? 'true' : 'false') + ')">' +
         (st.cached ? 'Re-sync wger library' : 'Sync wger library') +

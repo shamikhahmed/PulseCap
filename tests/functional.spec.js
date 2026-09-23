@@ -79,7 +79,7 @@ test.describe('Functional — every screen as every user type', () => {
 
     // Nutrition: water + quick-add meal
     ctx = 'nutrition';
-    await page.evaluate(() => window.go('nutrition'));
+    await page.evaluate(async () => { await window.go('nutrition'); });
     await waitReady(page);
     const waterBefore = await page.evaluate(() => {
       const t = window.today();
@@ -97,7 +97,7 @@ test.describe('Functional — every screen as every user type', () => {
     });
     expect(waterAfter).toBe(waterBefore + 1);
 
-    await page.evaluate(() => window.go('nutrition'));
+    await page.evaluate(async () => { await window.go('nutrition'); });
     await waitReady(page);
     const mealsBefore = await page.evaluate(() => (window.S.g('meals') || []).length);
     await page.evaluate(() => { window.showMealPresets('breakfast'); window.quickAddMeal(0, 'breakfast'); });
@@ -114,7 +114,7 @@ test.describe('Functional — every screen as every user type', () => {
 
     // Active workout: start, mark a set done, save
     ctx = 'workout';
-    await page.evaluate(() => { window.S.set('programWeightsConfirmed', true); window.startWorkout(); });
+    await page.evaluate(async () => { window.S.set('programWeightsConfirmed', true); await window.startWorkout(); });
     await page.waitForTimeout(400);
     const hasActive = await page.evaluate(() => !!document.getElementById('wkt-header'));
     expect(hasActive).toBe(true);
@@ -139,9 +139,10 @@ test.describe('Functional — every screen as every user type', () => {
     await bootDemo(page);
 
     const steps = [
-      ['settings-tabs', () => page.evaluate(() => {
-        ['account', 'training', 'fuel', 'appearance', 'accessibility', 'notifications', 'privacy', 'about']
-          .forEach((t) => window.go('settings', { tab: t }));
+      ['settings-tabs', () => page.evaluate(async () => {
+        for (const t of ['account', 'training', 'fuel', 'appearance', 'accessibility', 'notifications', 'privacy', 'about']) {
+          await window.go('settings', { tab: t });
+        }
         return true;
       })],
       ['theme-cycle', () => page.evaluate(() => {
@@ -167,29 +168,29 @@ test.describe('Functional — every screen as every user type', () => {
         if (window.saveMeasurements) window.saveMeasurements();
         return true;
       })],
-      ['programs', () => page.evaluate(() => {
-        window.go('programs');
+      ['programs', () => page.evaluate(async () => {
+        await window.go('programs');
         return window.currentScreenId() === 'my-plan';
       })],
-      ['settings-alias', () => page.evaluate(() => {
-        window.go('calculators');
+      ['settings-alias', () => page.evaluate(async () => {
+        await window.go('calculators');
         return window.currentScreenId() === 'settings';
       })],
-      ['assistant-alias', () => page.evaluate(() => {
-        window.go('assistant');
+      ['assistant-alias', () => page.evaluate(async () => {
+        await window.go('assistant');
         return window.currentScreenId() === 'dashboard';
       })],
-      ['rehab-protocol', () => page.evaluate(() => {
-        window.go('rehab');
+      ['rehab-protocol', () => page.evaluate(async () => {
+        await window.go('rehab');
         if (window.showInjuryProtocol) window.showInjuryProtocol('shoulder_impingement');
         return true;
       })],
-      ['rehab-alias-anatomy', () => page.evaluate(() => {
-        window.go('anatomy');
+      ['rehab-alias-anatomy', () => page.evaluate(async () => {
+        await window.go('anatomy');
         return window.currentScreenId() === 'rehab';
       })],
-      ['quests-alias', () => page.evaluate(() => {
-        window.go('quests');
+      ['quests-alias', () => page.evaluate(async () => {
+        await window.go('quests');
         return window.currentScreenId() === 'dashboard';
       })],
       ['profiles-seed', () => page.evaluate(() => {
@@ -197,23 +198,23 @@ test.describe('Functional — every screen as every user type', () => {
         if (window.loadSamplePersonas) window.loadSamplePersonas();
         return (window.S.profiles() || []).length >= 5;
       })],
-      ['split-picker', () => page.evaluate(() => {
-        window.go('workout');
+      ['split-picker', () => page.evaluate(async () => {
+        await window.go('workout');
         if (window.pickSplitDay) window.pickSplitDay(0);
         return true;
       })],
-      ['quick-workout', () => page.evaluate(() => {
+      ['quick-workout', () => page.evaluate(async () => {
         window.S.set('programWeightsConfirmed', true);
-        if (window.startQuickWorkout) window.startQuickWorkout();
+        if (window.startQuickWorkout) await window.startQuickWorkout();
         return !!document.getElementById('wkt-header') || !!document.querySelector('#view .screen');
       })],
-      ['cardio', () => page.evaluate(() => {
-        window.go('cardio');
+      ['cardio', () => page.evaluate(async () => {
+        await window.go('cardio');
         if (window.showLogCardio) window.showLogCardio();
         return true;
       })],
-      ['equipment', () => page.evaluate(() => {
-        window.go('equipment-setup');
+      ['equipment', () => page.evaluate(async () => {
+        await window.go('equipment-setup');
         if (window.selectEquipmentPreset) window.selectEquipmentPreset('gym');
         return true;
       })],
@@ -236,8 +237,8 @@ test.describe('Functional — every screen as every user type', () => {
         window.go('recovery', { tab: 'debt' });
         return true;
       })],
-      ['training-alias', () => page.evaluate(() => {
-        window.go('training-intel', { tab: 'intel' });
+      ['training-alias', () => page.evaluate(async () => {
+        await window.go('training-intel', { tab: 'intel' });
         return window.currentScreenId() === 'workout';
       })],
       ['briefing', () => page.evaluate(() => {
@@ -245,8 +246,8 @@ test.describe('Functional — every screen as every user type', () => {
         if (window.openMorningBriefing) window.openMorningBriefing();
         return true;
       })],
-      ['supp-mark', () => page.evaluate(() => {
-        window.go('nutrition');
+      ['supp-mark', () => page.evaluate(async () => {
+        await window.go('nutrition');
         const supps = window.S.g('supplements') || [];
         if (supps[0] && window.SupplementEngine && window.SupplementEngine.markTaken) {
           window.SupplementEngine.markTaken(supps[0].id);

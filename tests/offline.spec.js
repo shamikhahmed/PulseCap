@@ -24,7 +24,15 @@ test.describe('Offline + update', () => {
 
   test('core navigation works while network aborted (cached scripts in page)', async ({ page }) => {
     await page.goto('/?demo=1');
-    await page.waitForFunction(() => typeof window.go === 'function');
+    await page.waitForFunction(() => typeof window.go === 'function' && typeof window.ensureWorkoutReady === 'function');
+    // Warm deferred chains while online (SW/cache also precaches them for real offline).
+    await page.evaluate(async () => {
+      await window.ensureWorkoutReady();
+      await window.loadModuleChain('my-plan');
+      await window.loadModuleChain('nutrition');
+      await window.loadModuleChain('rehab');
+      await window.loadModuleChain('equipment-setup');
+    });
     // Abort further network after boot — shell already in memory
     await page.route('**/*', (route) => {
       const t = route.request().resourceType();
@@ -32,7 +40,7 @@ test.describe('Offline + update', () => {
       return route.abort();
     });
     for (const id of ['workout', 'progress', 'my-plan', 'settings', 'dashboard']) {
-      await page.evaluate((s) => window.go(s), id);
+      await page.evaluate(async (s) => { await window.go(s); }, id);
       await page.waitForTimeout(50);
       const html = await page.locator('#view').innerHTML();
       expect(html.length).toBeGreaterThan(40);
@@ -61,15 +69,17 @@ test.describe('Offline + update', () => {
     await page.waitForFunction(() => typeof window.introQuickStart === 'function' && typeof window.startWorkout === 'function');
     await page.evaluate(() => window.introQuickStart());
     await page.waitForFunction(() => document.querySelector('.dash-session'));
+    await page.evaluate(async () => { await window.ensureWorkoutReady(); });
+    await page.waitForFunction(() => typeof window._doneSet === 'function');
     await page.route('**/*', (route) => {
       const t = route.request().resourceType();
       if (t === 'document') return route.continue();
       return route.abort();
     });
-    const out = await page.evaluate(() => {
+    const out = await page.evaluate(async () => {
       const before = (window.S.g('workouts') || []).length;
       window.S.set('programWeightsConfirmed', true);
-      window.startWorkout();
+      await window.startWorkout();
       window._doneSet(0, 0);
       window.confirmFinishWorkout();
       const save = Array.from(document.querySelectorAll('button')).find(function(b) {
