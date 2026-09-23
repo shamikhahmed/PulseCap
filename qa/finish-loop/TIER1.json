@@ -2,8 +2,8 @@
   "app": "PulseCap",
   "version": "6.43.1",
   "swCache": "pulsecap-v125",
-  "generatedAt": "2026-09-23T06:28:40.141Z",
-  "status": "FAIL",
+  "generatedAt": "2026-09-23T06:29:10.289Z",
+  "status": "PASS",
   "pass": [
     {
       "id": "version:field",
@@ -90,6 +90,10 @@
       "detail": "2 JSON clean"
     },
     {
+      "id": "gallery:freshness",
+      "detail": "docs/screenshots/gallery/gallery-manifest.json @ 2026-09-23T11:28:58+05:00"
+    },
+    {
       "id": "live:VERSION.json",
       "detail": "https://shamikhahmed.github.io/PulseCap/VERSION.json → 200"
     },
@@ -130,12 +134,7 @@
       "detail": "31 sinks; SINKS.md ok"
     }
   ],
-  "fail": [
-    {
-      "id": "gallery:freshness",
-      "detail": "gallery 2026-09-16T15:36:50+05:00 before last UI commit 2026-09-23T11:08:53+05:00"
-    }
-  ],
+  "fail": [],
   "warn": [],
   "killList": {
     "rawHex": 0,
