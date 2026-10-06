@@ -30,6 +30,7 @@ reg('dashboard', function() {
         (dd && dd.allowTrain ? '<button type="button" class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="startWorkout&&startWorkout()">Train anyway</button>' : '')
       : '<button type="button" class="btn btn-primary" style="width:100%" onclick="startWorkout&&startWorkout()">' +
         (isLight ? 'Start light session' : 'Start workout') + '</button>' +
+        '<button type="button" class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="go(\'library\')">Do a different workout</button>' +
         '<button type="button" class="btn btn-ghost" style="width:100%;margin-top:8px" onclick="confirmSkipToday()">Can’t train today?</button>';
 
     const demoBanner = isDemoMode
@@ -51,6 +52,11 @@ reg('dashboard', function() {
     const insightLine = '<button type="button" class="banner dash-insight" style="margin:0 16px 16px;width:calc(100% - 32px);text-align:left" onclick="go(\'coach\')">' +
       '<strong>' + esc(insight.title || 'Insight') + '</strong> — ' + esc(insight.body || '') +
       '<span class="dash-insight__go"> Open coach</span></button>';
+
+    const tip = (typeof CoachTips !== 'undefined') ? CoachTips.forUser(user) : '';
+    const tipCard = tip ? '<div class="dash-meta dash-tip">' +
+      '<div class="dash-meta__kicker">Coach tip</div>' +
+      '<div class="dash-tip__body">' + esc(tip) + '</div></div>' : '';
 
     const ws = S.g('workouts') || [];
     const last = ws.slice().sort(function(a, b) {
@@ -101,7 +107,7 @@ reg('dashboard', function() {
 
     return '<div class="dash-screen">' + demoBanner + topbar +
       '<div class="dash-hero">' + sessionCard + insightLine + gapHtml + '</div>' +
-      '<div class="dash-lower">' + lastBlock + nextBlock + weekBlock +
+      '<div class="dash-lower">' + tipCard + lastBlock + nextBlock + weekBlock +
       '</div></div>';
   } catch (e) {
     console.error('dashboard', e);

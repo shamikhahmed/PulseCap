@@ -31,12 +31,17 @@ reg('my-plan', function() {
   const top = '<div class="topbar"><div class="topbar-title">Programs</div></div>';
 
   if (!active) {
-    const templates = (typeof PlanCatalog !== 'undefined' && PlanCatalog.all) ? PlanCatalog.all() : [];
+    let templates = (typeof PlanCatalog !== 'undefined' && PlanCatalog.all) ? PlanCatalog.all() : [];
+    const best = (typeof PlanCatalog !== 'undefined' && PlanCatalog.match) ? PlanCatalog.match(S.g('user') || {}) : null;
+    const bestId = best && best.id;
+    if (bestId) templates = templates.filter(function(t) { return t.id === bestId; }).concat(templates.filter(function(t) { return t.id !== bestId; }));
     const cards = templates.map(function(t) {
-      return '<div class="card card-solid mb-14">' +
+      const isBest = t.id === bestId;
+      return '<div class="card card-solid mb-14"' + (isBest ? ' style="border-color:var(--accent)"' : '') + '>' +
+        (isBest ? '<div class="dash-meta__kicker" style="color:var(--accent-text,var(--accent))">Best match for you</div>' : '') +
         '<div class="row-title-15">' + esc(t.title || t.id) + '</div>' +
         '<div class="body-13" style="margin:8px 0 12px">' + esc(t.suits || t.notes || '') + ' · ' + ((t.rotation || []).length) + ' sessions.</div>' +
-        '<button type="button" class="btn btn-primary" style="width:100%;min-height:44px" onclick="beginInstallTemplate(' + jsArg(t.id) + ')">Review & install</button>' +
+        '<button type="button" class="btn ' + (isBest || !bestId ? 'btn-primary' : 'btn-secondary') + '" style="width:100%;min-height:44px" onclick="beginInstallTemplate(' + jsArg(t.id) + ')">Review & install</button>' +
         '</div>';
     }).join('');
     return top +
@@ -132,7 +137,7 @@ reg('plan-import', function() {
     sessHtml +
     _planSafetyCard(d) +
     '<label class="card card-solid mb-14" style="display:flex;gap:10px;align-items:flex-start;min-height:44px">' +
-    '<input id="plan-ack" type="checkbox" style="width:22px;height:22px;margin-top:2px">' +
+    '<input id="plan-ack" type="checkbox">' +
     '<span class="body-13">I understand this is not medical clearance. I will stop on sharp pain, clunk, or instability.</span></label>' +
     '<button type="button" class="btn btn-primary" style="width:100%;min-height:44px" onclick="confirmImportedPlan()">Save this plan</button>' +
     '<button type="button" class="btn btn-ghost" style="width:100%;min-height:44px;margin-top:8px" onclick="cancelPlanImport()">Discard import</button>' +
@@ -145,7 +150,7 @@ window.beginInstallTemplate = function(id) {
   const suits = (t && (t.suits || t.notes)) || '';
   modal(title,
     '<div class="body-13" style="line-height:1.55;margin-bottom:12px">' + esc(suits) + ' Educational — not medical clearance. Stop on clunk, shift, or sharp pain.</div>' +
-    '<label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px"><input id="ppl-ack" type="checkbox" style="width:22px;height:22px"><span class="body-13">I will stop on sharp pain and keep listed range limits.</span></label>',
+    '<label style="display:flex;gap:10px;align-items:flex-start;margin-bottom:12px"><input id="ppl-ack" type="checkbox"><span class="body-13">I will stop on sharp pain and keep listed range limits.</span></label>',
     '<button type="button" class="btn btn-primary" style="width:100%;min-height:44px" onclick="installNamedTemplate(' + jsArg(id) + ')">Install plan</button>' +
     '<button type="button" class="btn btn-secondary mt-8" style="width:100%;min-height:44px" onclick="closeModal()">Cancel</button>');
 };

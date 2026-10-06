@@ -846,6 +846,32 @@ const SplitEngine = {
     { n:'Lower B', muscles:['glutes','hamstrings','calves'], exercises:['Hip Thrust','Leg Curl','Goblet Squat','Seated Calf Raise','Plank'],
       warmup:['5 min bike','Leg Swings — 15 each','Glute Bridge — 2×20'] }
   ],
+  _torso_limbs: [
+    { n:'Torso A — Chest, Back & Shoulders', muscles:['chest','back','shoulders'], exercises:['Barbell Bench Press','Barbell Row','Overhead Press','Lat Pulldown','Face Pulls'],
+      warmup:['5 min light cardio','Band Pull-Aparts — 3×15','Arm Circles — 10 each','Light DB Press — 2×12'] },
+    { n:'Limbs A — Legs & Arms', muscles:['quads','hamstrings','biceps','triceps'], exercises:['Back Squat','Romanian Deadlift','Leg Extension','EZ Bar Curl','Tricep Pushdown'],
+      warmup:['5 min bike','Hip Circles — 10 each','Bodyweight Squat — 2×15','Wrist Circles — 10 each'] },
+    { n:'Torso B — Back, Chest & Shoulders', muscles:['back','chest','shoulders'], exercises:['Incline Dumbbell Press','Seated Cable Row','Dumbbell Lateral Raise','Pull-Ups','Rear Delt Fly'],
+      warmup:['5 min rowing machine','Band Pull-Aparts — 3×15','Dead Hang — 2×20s'] },
+    { n:'Limbs B — Legs & Arms', muscles:['glutes','hamstrings','biceps','triceps'], exercises:['Hip Thrust','Leg Press','Leg Curl','Hammer Curl','Overhead Tricep Extension'],
+      warmup:['5 min bike','Leg Swings — 15 each','Glute Bridge — 2×20'] }
+  ],
+  _pplul: [
+    { n:'Push', muscles:['chest','shoulders','triceps'], exercises:['Barbell Bench Press','Overhead Press','Incline Dumbbell Press','Dumbbell Lateral Raise','Tricep Pushdown'],
+      warmup:['5 min light cardio','Band Pull-Aparts — 3×15','Wall Slides — 2×10','Push-Up — 2×10'] },
+    { n:'Pull', muscles:['back','biceps','rear_delts'], exercises:['Barbell Row','Lat Pulldown','Seated Cable Row','Face Pulls','EZ Bar Curl'],
+      warmup:['5 min rowing machine','Dead Hang — 2×20s','Scapular Pull-Ups — 2×8'] },
+    { n:'Legs', muscles:['quads','hamstrings','glutes','calves'], exercises:['Back Squat','Romanian Deadlift','Leg Press','Leg Curl','Standing Calf Raise'],
+      warmup:['5 min bike','Hip Circles — 10 each','Bodyweight Squat — 2×15'] },
+    { n:'Upper', muscles:['chest','back','shoulders','arms'], exercises:['Incline Barbell Bench Press','Pull-Ups','Dumbbell Shoulder Press','Dumbbell Row','Hammer Curl','Skull Crushers'],
+      warmup:['5 min light cardio','Arm Circles — 10 each','Band Pull-Aparts — 3×15'] },
+    { n:'Lower', muscles:['glutes','hamstrings','quads'], exercises:['Deadlift','Bulgarian Split Squat','Hip Thrust','Leg Extension','Seated Calf Raise'],
+      warmup:['5 min bike','Leg Swings — 15 each','Glute Bridge — 2×20'] }
+  ],
+  _fb_d: { n:'Full Body D', muscles:['legs','back','shoulders','core'], exercises:['Front Squat','Pull-Ups','Dumbbell Shoulder Press','Romanian Deadlift','Hanging Leg Raise'],
+    warmup:['5 min treadmill walk','Full Body Joint Circles','Bodyweight Squat — 15 reps','Dead Hang — 20s'] },
+  _recovery_day: { n:'Active Recovery — Mobility & Zone 2', muscles:['full_body'], exercises:['Zone 2 Cardio','Couch Stretch','Thread the Needle','Deep Squat Hold','Downward Dog'],
+    warmup:['Easy 5 min walk','Breathe slowly — this day should leave you fresher'] },
   _custom: [
     { n:'Flexible Day — Choose Your Focus', muscles:['full_body'], exercises:['Back Squat','Barbell Bench Press','Barbell Row','Overhead Press','Plank'],
       warmup:['5 min light cardio','Joint circles head to toe','Pick exercises that match how you feel today'] }
@@ -961,6 +987,16 @@ const SplitEngine = {
      schedule holds and the skip costs nothing. Returns {shifted, msg}. */
   skipToday() {
     const user = S.g('user') || {};
+    /* An installed program drives the session and its rotation already waits
+       for you — don't reshuffle the (unused) split's weekday map. */
+    if (typeof TrainingPlanEngine !== 'undefined' && TrainingPlanEngine.hasActive && TrainingPlanEngine.hasActive()) {
+      const ps = TrainingPlanEngine.todaySession ? TrainingPlanEngine.todaySession() : null;
+      const pname = (ps && (ps.name || ps.key)) || 'Today’s session';
+      const msg = pname + ' waits for your next training day — the program picks up where you left off.';
+      S.push('skippedDays', { date: today(), day: null, name: pname, shifted: true, plan: true });
+      S.set('user.splitDayOverride', null);
+      return { shifted: true, msg: msg, missed: pname };
+    }
     const days = this._getSplitDays(user.split || 'ppl');
     const map = this.weekdayAssignments() || {};
     const wd = this.todayWeekdayId();
@@ -1054,6 +1090,10 @@ const SplitEngine = {
       cardio_strength: this._cardio_strength,
       starting_strength: this._starting_strength, stronglifts: this._stronglifts,
       '531': this._531, upper_lower_fb: this._upper_lower_fb,
+      torso_limbs: this._torso_limbs, pplul: this._pplul, ppl_3: this._ppl.slice(0, 3),
+      fb_4: this._fb.concat([this._fb_d]), ul_6: this._ul.concat(this._ul.slice(0, 2)),
+      arnold_3: this._arnold.slice(0, 3),
+      seven_day: this._ppl.slice(0, 3).concat([this._recovery_day], this._ul.slice(0, 2), [this._recovery_day]),
       custom: this._customDays()
     };
     return m[split] || this._ppl;
@@ -1102,7 +1142,9 @@ const SplitEngine = {
     const ranked = ExDB.db.filter(function(e) {
       const samePattern = ex.pattern && e.pattern && e.pattern === ex.pattern;
       const sameFamily = e.grp === ex.grp || (ex.pri && e.pri === ex.pri);
+      /* Stretches never stand in for a lift (or vice versa). */
       return e.n !== exerciseName &&
+        (e.grp === 'mobility') === (ex.grp === 'mobility') &&
         (samePattern || sameFamily) &&
         (!reason || !reason.includes('shoulder') || (e.joint && (e.joint.shoulder || 0) < 2)) &&
         self._exerciseAvailable(e.n) &&
@@ -1131,6 +1173,8 @@ const SplitEngine = {
       });
       if (safer) why.push('easier on your injury');
       if (e.bw) why.push('no equipment needed');
+      /* Hand-curated entries first; the imported library fills gaps. */
+      if (e.src === 'el') score -= 12;
       return { name: e.n, pct: Math.max(35, Math.min(98, score)), why: why.slice(0, 2), diff: e.diff, grp: e.grp };
     }).sort(function(a, b) { return b.pct - a.pct; })
       /* Built-in DB + wger import can both carry an exercise — keep the top-scored copy */
@@ -1238,9 +1282,50 @@ const WeightEngine = {
       'Barbell Row': isMale?[0.4,0.55,0.75,1.0]:[0.3,0.4,0.6,0.8]
     };
     const expMap = { beginner:0, intermediate:1, advanced:2, athlete:3 };
-    const expIdx = expMap[user.exp || 'intermediate'] || 1;
-    if (ratios[exerciseName]) return Math.round(bw * ratios[exerciseName][expIdx] / 2.5) * 2.5;
-    return isMale ? Math.round(bw * 0.4) : Math.round(bw * 0.25);
+    const expIdx = expMap[user.exp || 'intermediate'] ?? 1;
+    /* An empty Olympic bar is 20 kg — never prescribe less on a barbell lift */
+    if (ratios[exerciseName]) return Math.max(20, Math.round(bw * ratios[exerciseName][expIdx] / 2.5) * 2.5);
+    /* Saved first-time calibration beats any formula */
+    const cal = (user.calibrations || {})[exerciseName];
+    if (cal && cal.kg > 0) return cal.kg;
+    return this.starterLoad(exerciseName, user);
+  },
+  /* A sensible FIRST load by lift type — the old fallback (bodyweight × 0.4
+     for everything) prescribed 30kg lateral raises and loaded push-ups. */
+  starterLoad(exerciseName, user) {
+    const ex = (typeof ExDB !== 'undefined' && ExDB.byName) ? ExDB.byName(exerciseName)
+      : ((window.EXERCISE_DB || []).find(e => e.n === exerciseName) || null);
+    const bw = user.weight || 75;
+    const female = user.gender === 'female';
+    const lvl = { beginner: 0.7, intermediate: 1, advanced: 1.25, athlete: 1.4 }[user.exp || 'intermediate'] || 1;
+    if (!ex) return 0;
+    const eq = (ex.eq || []).join(' ');
+    const grp = ex.grp || '';
+    const pattern = ex.pattern || '';
+    if (ex.bw || !eq || ['cardio', 'sports', 'warmup_drills', 'plyometrics', 'neck'].includes(grp) || pattern === 'conditioning') return 0;
+    if (/\bbar\b/.test(eq)) return 0;     /* pull-up bar, dip bars */
+    /* Small = single-joint work. Judge by the movement name — presses that
+       hit the front delt are still compounds. */
+    const small = ['biceps', 'triceps', 'forearms'].includes(grp) ||
+      /raise|fly|flye|kickback|pull-?apart|face pull|shrug|curl|crossover|pec deck|extension|pushdown|abduction|y-raise/i.test(ex.n);
+    const compound = ['squat', 'hinge', 'lunge', 'horizontal_push', 'vertical_push', 'horizontal_pull', 'vertical_pull', 'carry'].includes(pattern) && !small;
+    const legs = ['squat', 'hinge', 'lunge'].includes(pattern) || ['legs', 'glutes'].includes(grp);
+    let kg;
+    if (/dumbbell/.test(eq)) {
+      kg = small ? (female ? 4 : 7) : bw * (female ? 0.12 : 0.18) * (legs ? 1.2 : 1);   /* per hand */
+    } else if (/kettlebell/.test(eq)) {
+      kg = female ? 8 : 16;
+    } else if (/machine|smith|cable|band/.test(eq)) {
+      if (small) kg = bw * (female ? 0.12 : 0.18);
+      else if (legs) kg = bw * (female ? 0.6 : 0.9);
+      else kg = bw * (female ? 0.25 : 0.4);
+    } else {                                         /* barbell accessories */
+      kg = small ? bw * (female ? 0.2 : 0.3) : bw * (female ? 0.3 : 0.45) * (legs ? 1.3 : 1);
+    }
+    kg *= lvl;
+    if (/dumbbell|kettlebell/.test(eq) && kg < 10) return Math.max(2, Math.round(kg));
+    if (/barbell/.test(eq) && !/ez|curl|landmine/i.test(ex.n)) return Math.max(20, Math.round(kg / 2.5) * 2.5);
+    return Math.max(2.5, Math.round(kg / 2.5) * 2.5);
   },
   warmupSets(workingWeight) {
     const w = parseFloat(workingWeight) || 20;

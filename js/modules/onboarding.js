@@ -21,7 +21,7 @@ function _renderIntro(idx) {
     '<div style="display:flex;justify-content:flex-end"><button type="button" class="btn btn-ghost btn-sm" onclick="introQuickStart()">Skip</button></div>' +
     '<div style="flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center">' +
     '<div style="width:88px;height:88px;border-radius:24px;margin:0 auto 24px;background:var(--grad);display:flex;align-items:center;justify-content:center">' +
-    '<svg width="48" height="48" viewBox="0 0 512 512" fill="none" aria-hidden="true"><path d="M96 256 H176 L208 208 L256 304 L304 176 L352 256 H416" stroke=PCBrand.h_fff stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/><circle cx="256" cy="256" r="18" fill=PCBrand.h_fff/></svg>' +
+    '<svg width="48" height="48" viewBox="0 0 512 512" fill="none" aria-hidden="true"><path d="M96 256 H176 L208 208 L256 304 L304 176 L352 256 H416" stroke="#fff" stroke-width="34" stroke-linecap="round" stroke-linejoin="round"/><circle cx="256" cy="256" r="18" fill="#fff"/></svg>' +
     '</div>' +
     '<div class="ob-title" style="font-size:28px">' + esc(slide.title) + '</div>' +
     '<div class="ob-sub" style="max-width:320px;margin:8px auto 24px">' + esc(slide.sub) + '</div>' +
@@ -30,7 +30,7 @@ function _renderIntro(idx) {
       return '<div class="card" style="margin-bottom:8px;padding:12px 14px;font-size:14px;color:var(--txt)">' + esc(b) + '</div>';
     }).join('') +
     '</div></div>' +
-    '<button type="button" class="btn btn-primary" style="width:100%;max-width:320px;margin:0 auto" onclick="go(\'onboarding\')">Get started</button>' +
+    '<button type="button" class="btn btn-primary" style="width:100%;max-width:320px;margin:0 auto" onclick="go(\'onboarding\',{resetScroll:true})">Get started</button>' +
     '</div>';
 }
 
@@ -42,7 +42,7 @@ window.introQuickStart = function() {
 
 window._introNext = function() {
   _introSlide++;
-  if (_introSlide >= INTRO_SLIDES.length) { go('onboarding'); return; }
+  if (_introSlide >= INTRO_SLIDES.length) { go('onboarding', { resetScroll: true }); return; }
   go('intro');
 };
 
@@ -75,14 +75,37 @@ window.obToggle = function(field, val) {
   if (el) el.classList.toggle('sel', _obData[field].includes(val));
 };
 
+/* "No injuries" and joint picks are mutually exclusive — one explicit answer
+   for people who have nothing to report. */
+window.obNoLimitations = function() {
+  _obData.limitations = [];
+  _obData.noLimitations = true;
+  go('onboarding');
+};
+window.obToggleLimitation = function(id) {
+  const list = (_obData.limitations || []).slice();
+  const i = list.indexOf(id);
+  if (i >= 0) list.splice(i, 1); else list.push(id);
+  _obData.limitations = list;
+  _obData.noLimitations = false;
+  go('onboarding');
+};
+window.obSetAck = function(on) {
+  _obData.disclaimerAck = !!on;
+  const row = document.getElementById('ob-ack-row');
+  if (row) { row.classList.toggle('on', !!on); row.classList.remove('err'); }
+};
+
+/* Step changes are the same router screen — without resetScroll every step
+   opened wherever the previous one was scrolled (title hidden off-screen). */
 window.obBack = function() {
-  if (_obStep > 1) { _obStep--; go('onboarding'); }
+  if (_obStep > 1) { _obStep--; go('onboarding', { resetScroll: true }); }
 };
 
 window.obContinue = function() {
   if (typeof haptic === 'function') haptic(30);
   if (!_validateStep(_obStep)) return;
-  if (_obStep < OB_TOTAL) { _obStep++; go('onboarding'); }
+  if (_obStep < OB_TOTAL) { _obStep++; go('onboarding', { resetScroll: true }); }
   else _finishOnboarding();
 };
 
@@ -112,7 +135,9 @@ function _validateStep(step) {
     }
   }
   if (step === 3 && !_obData.disclaimerAck) {
-    toast('Tick the educational disclaimer to continue', 'warn');
+    const row = document.getElementById('ob-ack-row');
+    if (row) row.classList.add('err');
+    toast('Tick “I understand” above Continue', 'warn');
     return false;
   }
   return true;
@@ -215,7 +240,7 @@ const OB_STEPS = {
       '<div class="ob-sub">Then pick one goal. You can change this in Me.</div>' +
       '<div class="ob-body">' +
       '<div class="field-wrap"><label class="field-label" for="ob-name-inp">Name</label>' +
-      '<input id="ob-name-inp" class="field" type="text" placeholder="Your name" value="' + esc(_obData.name || '') + '" oninput="_obData.name=this.value" autocomplete="name" autofocus></div>' +
+      '<input id="ob-name-inp" class="field" type="text" placeholder="Your name" value="' + esc(_obData.name || '') + '" oninput="_obData.name=this.value" autocomplete="name"></div>' +
       _opt('goal', 'hypertrophy', 'Build muscle', 'Log progressive sets') +
       _opt('goal', 'fat_loss', 'Lose fat', 'Keep protein and sessions honest') +
       _opt('goal', 'strength', 'Get stronger', 'Same lifts, better logs') +
@@ -268,18 +293,27 @@ const OB_STEPS = {
   },
   3: function() {
     const ack = !!_obData.disclaimerAck;
+    const lims = _obData.limitations || [];
+    const none = !!_obData.noLimitations && !lims.length;
     return '<div class="ob-screen">' + _dots(3) +
-      '<div class="ob-title">Limitations</div>' +
-      '<div class="ob-sub">Optional. Used to caution lifts — this is not a diagnosis.</div>' +
+      '<div class="ob-title">Anything bothering you?</div>' +
+      '<div class="ob-sub">Tap any joint that hurts or has been injured and we’ll steer lifts around it. All good? Pick the first option.</div>' +
       '<div class="ob-body">' +
+      '<button type="button" class="ob-opt' + (none ? ' sel' : '') + '" data-field="noLimitations" onclick="obNoLimitations()">' +
+      '<div class="ob-opt-info"><div class="ob-opt-title">No injuries — I’m good to go</div>' +
+      '<div class="ob-opt-sub">Add one any time in Me → Training → Limitations.</div></div>' +
+      '<div class="ob-opt-check">' + (none ? '✓' : '') + '</div></button>' +
+      '<div class="field-label" style="margin-top:14px">Or tap any that apply</div>' +
       OB_JOINTS.map(function(j) {
-        const on = (_obData.limitations || []).indexOf(j.id) >= 0;
-        return '<button type="button" class="ob-opt' + (on ? ' sel' : '') + '" data-field="limitations" data-val="' + j.id + '" onclick="obToggle(\'limitations\',\'' + j.id + '\')"><div class="ob-opt-info"><div class="ob-opt-title">' + esc(j.title) + '</div><div class="ob-opt-sub">' + esc(j.sub) + '</div></div></button>';
+        const on = lims.indexOf(j.id) >= 0;
+        return '<button type="button" class="ob-opt' + (on ? ' sel' : '') + '" data-field="limitations" data-val="' + j.id + '" onclick="obToggleLimitation(\'' + j.id + '\')">' +
+          '<div class="ob-opt-info"><div class="ob-opt-title">' + esc(j.title) + '</div><div class="ob-opt-sub">' + esc(j.sub) + '</div></div>' +
+          '<div class="ob-opt-check">' + (on ? '✓' : '') + '</div></button>';
       }).join('') +
-      '<div class="banner banner--caution" style="margin-top:16px">PulseCap is educational training software. It is not medical advice or clearance. Stop on sharp pain, clunk, or instability and see a clinician.</div>' +
-      '<label class="card" style="display:flex;gap:12px;align-items:flex-start;margin-top:12px;min-height:44px">' +
-      '<input id="ob-ack" type="checkbox" style="width:22px;height:22px;margin-top:2px"' + (ack ? ' checked' : '') + ' onchange="_obData.disclaimerAck=this.checked">' +
-      '<span class="body-13">I understand this is educational, not medical clearance.</span></label>' +
+      '<div class="banner banner--caution" style="margin-top:16px">PulseCap is educational training software, not medical advice. Stop on sharp pain, clunk, or instability and see a clinician.</div>' +
+      '<label id="ob-ack-row" class="ob-ack' + (ack ? ' on' : '') + '">' +
+      '<input id="ob-ack" type="checkbox"' + (ack ? ' checked' : '') + ' onchange="obSetAck(this.checked)">' +
+      '<span>I understand — educational, not medical clearance.</span></label>' +
       '</div>' + _footer(3) + '</div>';
   },
   4: function() {

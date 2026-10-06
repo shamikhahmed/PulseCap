@@ -1,7 +1,7 @@
 # PulseCap — CLAUDE.md
 
 ## Current truth
-- Version: 6.43.1
+- Version: 6.44.0
 - App type: offline-first **PWA only**. No native shell, HealthKit, Live Activity, WidgetKit, or RevenueCat unless owner reverses.
 - Stack: vanilla JS, no framework, no bundler.
 - Router: `reg('screen', fn)` + synchronous `go('screen')`. Same-screen `go()` preserves scroll and focus unless `resetScroll` or a tab change.
@@ -29,7 +29,8 @@
 - `js/plan-import.js` — local PDF/JSON import
 - `js/coach-kernel.js` — autoreg / volume / joints / meso / GymFloor
 - `js/gym-tools.js` — WakeLock / VoiceLogger / BarcodeFood / MobilityFlow / PainFlag
-- `js/data/exercise-db.js` — canonical ExDB (ids, joints, patterns, MET sources)
+- `js/data/exercise-db.js` — canonical ExDB, 1,872 entries — GENERATED: edit `scripts/exercise-additions.mjs` / `exercise-links.mjs` / vendor data, then `node scripts/build-regressions.mjs`
+- `js/data/training-guide.js` — Training Guide methods + goals; `js/data/workout-library.js` — 30 ready workouts
 - `js/modules/workout.js` — ExDB methods + active logger
 - `js/modules/dashboard.js` — Today screen
 - `js/modules/coach.js` — Smart Coach screen
@@ -45,3 +46,5 @@
 - Form cues are not videos; real clips require wger library download.
 - Plan import: text PDF/JSON/paste only — scanned PDFs unsupported (no OCR); no upload.
 - Programs / Rehab / Smart Coach = educational, not medical clearance.
+- Imported Exercises Library rows (`src:'el'`) are MIT text. Animations/thumbs (`ex.media`) are © Gym visual, shown under the owner's licence: keep the on-screen credit, 180×180 max, hotlink the pinned jsDelivr commit only — never bundle or precache. Don't copy ExerciseDB (paid API).
+- Local preview: `node scripts/static-server.mjs <port>` (no-store). python http.server + SW serves stale JS.

@@ -1,14 +1,14 @@
 # PulseCap — Handover
 
 > Read this + `ROADMAP.md` + `~/Capricorn-Brain/01 Projects/PulseCap.md` before working here.
-> Last updated: 2026-08-18 · Fleet-wide standard: `capricorn-tooling/shared/CAP-STANDARD.md`
+> Last updated: 2026-10-06 · Fleet-wide standard: `capricorn-tooling/shared/CAP-STANDARD.md`
 
 ## What this is
 Offline-first training app — **PWA only** (no native HealthKit / Live Activity / widgets planned). Ember IA: Today · Train · Progress · Programs · Me.
 
 ## Facts
-**Version:** 6.41.0
-**SW cache:** `pulsecap-v121`
+**Version:** 6.44.0
+**SW cache:** `pulsecap-v126`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.
@@ -17,7 +17,7 @@ Offline-first training app — **PWA only** (no native HealthKit / Live Activity
 
 ## Run & verify
 ```bash
-python3 -m http.server 8766   # or npm run serve
+node scripts/static-server.mjs 8766   # no-store; python http.server serves stale JS to the SW
 npx playwright test           # current suite
 npm run gallery               # regen ~176-shot matrix: dark+light × mobile+desktop (--project=chromium)
 open screen-gallery.html      # Dark/Light + viewport + section filters
@@ -40,7 +40,12 @@ open screen-gallery.html      # Dark/Light + viewport + section filters
 - `js/training-plan.js` — opt-in `trainingPlan` (rotation, deload, double progression, safety)
 - `js/plan-import.js` — local JSON / text-PDF / paste → review UI. No upload. No OCR (scanned PDFs rejected).
 - `js/gym-tools.js` — WakeLock / VoiceLogger / BarcodeFood / MobilityFlow / PainFlag
-- `js/data/exercise-db.js` — canonical exercise library (ids, 8 joints, patterns, MET)
+- `js/data/exercise-db.js` — canonical exercise library, **1,872 entries** (ids, 8 joints, patterns, MET, steps, easier/harder). Generated — edit the sources, then run `node scripts/build-regressions.mjs` (idempotent; validates every link):
+  - `scripts/exercise-additions.mjs` — hand-written rows (skills, kettlebell, TRX, Olympic, strongman, yoga, Pilates, rehab, sports…)
+  - `scripts/vendor/exercises-library.en.json` — English subset of the MIT **Exercises Library**. Rows carry `src: 'el'`; `media` (`0025-EIeI8Vf`) points at its © Gym visual animation — shown under the owner's licence via `exMediaUrl()` (pinned jsDelivr commit, 180×180, credit always visible, never bundled/precached). See `THIRD-PARTY-NOTICES.md`.
+  - `scripts/exercise-import.mjs` — normalizes/dedupes and fills joints, MET, mistakes from the movement pattern
+  - `scripts/exercise-links.mjs` + `CURATED` maps — hand-picked easier/harder links; `scripts/exercise-steps.mjs` — hand-written steps
+- `js/data/workout-library.js` — 30 ready workouts (`go('library')`); `js/data/training-guide.js` — methods + goals (`go('guide')`)
 - `js/data/foods-db.js` — 235 sourced foods (USDA + Karachi staples)
 - `js/core/nutrition-math.js` — Mifflin-St Jeor + g/kg macros
 - `js/core/equipment.js` — kit fallback, `equipmentIds` by machine type, 8-joint filters, gap banners
@@ -86,6 +91,10 @@ open screen-gallery.html      # Dark/Light + viewport + section filters
 - Settings version footer uses `window.APP_VERSION`.
 - Deprecated routes use `SCREEN_ALIASES` only — old `reg()` handlers removed in v6.2.0.
 - Glass floating nav is current truth (V5.2-PLAN WS12).
+- Exercise sheet (`showExerciseDetail`) is an iOS page sheet: tab changes and easier/harder links update the open sheet (`exSheetTab` / `exSheetPush` / `exSheetBack`) — never call `modal()` again for those. Training Guide sheets reuse it.
+- New gear tags (rings, trx, stability_ball, foam_roller, ab_wheel, bosu, box, medball, sled, sandbag, ghd, rope, battle_rope, strongman, plate) are `Equipment.APPARATUS` — they gate bodyweight moves too. Cardio machine tags stay informational.
+- Browse shows every exercise (equipment = filter); injury-avoid moves stay hidden. Search input must only update `#ex-browse-list` (iOS keyboard).
+- ExerciseDB (exercisedb.dev) is a paid API with no open data licence — don't copy from it.
 
 ## Where decisions live
 - Capricorn-Brain project note

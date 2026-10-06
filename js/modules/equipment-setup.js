@@ -5,6 +5,52 @@ let _eqFilter = 'all';
 let _eqBrand = '';
 let _eqQuery = '';
 
+function _eqItems() {
+  const q = String(_eqQuery || '').trim().toLowerCase();
+  let items = EquipmentDB.items;
+  if (_eqBrand && _eqBrand !== 'No brand / Generic') items = items.filter(i => !i.brand || i.brand === _eqBrand);
+  else if (_eqBrand === 'No brand / Generic') items = items.filter(i => !i.brand);
+  if (_eqFilter !== 'all') items = items.filter(i => i.category === _eqFilter);
+  if (q) {
+    items = items.filter(function(i) {
+      return (i.name || '').toLowerCase().indexOf(q) >= 0 ||
+        (i.brand || '').toLowerCase().indexOf(q) >= 0 ||
+        (i.type || '').toLowerCase().indexOf(q) >= 0 ||
+        (i.category || '').replace('_', ' ').indexOf(q) >= 0;
+    });
+  }
+  return items;
+}
+
+function _eqRowsHTML(selected) {
+  const items = _eqItems();
+  const brandBadge = function(brand) {
+    return '<span class="eq-brand-badge" style="display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:6px;margin-top:5px;letter-spacing:0.04em;text-transform:uppercase;background:rgba(var(--accent-rgb),0.12);color:var(--accent-text);border:1px solid rgba(var(--accent-rgb),0.28)">' + esc(brand) + '</span>';
+  };
+
+  const rows = items.map(item => {
+    const on = selected.includes(item.id);
+    const badge = item.brand ? brandBadge(item.brand) : '';
+    const typeBit = item.type ? '<div class="muted-11 mt-2">' + esc(String(item.type).replace(/_/g, ' ')) + (item.category ? ' · ' + esc(item.category.replace('_', ' ')) : '') + '</div>' : (item.category ? '<div class="muted-11 mt-2">' + esc(item.category.replace('_', ' ')) + '</div>' : '');
+    return '<div onclick="toggleEquipment(\'' + item.id + '\')" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
+      '<div style="width:26px;height:26px;border-radius:8px;border:2px solid ' + (on ? 'var(--accent)' : 'var(--border)') + ';background:' + (on ? 'var(--accent)' : 'transparent') + ';display:flex;align-items:center;justify-content:center;color:' + (on ? 'var(--on-accent)' : 'transparent') + ';font-size:13px;font-weight:700">' + (on ? '✓' : '') + '</div>' +
+      '<div class="flex-1"><div class="row-strong">' + esc(item.name) + '</div>' +
+      (badge || typeBit) +
+      '</div></div>';
+  }).join('');
+  return rows || '<div class="screen-pad muted-12">No matches. Clear search or brand.</div>';
+}
+
+/* Typing must not rebuild the screen (iPhone keyboard closes when the
+   focused input is replaced) — refresh only the list. */
+window._eqSearch = function(v) {
+  _eqQuery = v;
+  const el = document.getElementById('eq-rows');
+  if (!el) { go('equipment-setup'); return; }
+  el.innerHTML = _eqRowsHTML(S.g('user.equipmentIds') || []);
+  if (typeof upgradeInteractiveMarkup === 'function') upgradeInteractiveMarkup(el);
+};
+
 reg('equipment-setup', function() {
   const user = S.g('user') || {};
   const selected = S.g('user.equipmentIds') || [];
@@ -21,29 +67,13 @@ reg('equipment-setup', function() {
     '<option value="' + esc(b) + '"' + (_eqBrand === b ? ' selected' : '') + '>' + esc(b) + '</option>'
   ).join('');
 
-  let items = EquipmentDB.items;
-  if (_eqBrand && _eqBrand !== 'No brand / Generic') items = items.filter(i => !i.brand || i.brand === _eqBrand);
-  else if (_eqBrand === 'No brand / Generic') items = items.filter(i => !i.brand);
-  if (_eqFilter !== 'all') items = items.filter(i => i.category === _eqFilter);
-  if (q) {
-    items = items.filter(function(i) {
-      return (i.name || '').toLowerCase().indexOf(q) >= 0 ||
-        (i.brand || '').toLowerCase().indexOf(q) >= 0 ||
-        (i.type || '').toLowerCase().indexOf(q) >= 0 ||
-        (i.category || '').replace('_', ' ').indexOf(q) >= 0;
-    });
-  }
 
-  const cats = ['all', 'free_weights', 'racks', 'benches', 'cables', 'machines', 'legs', 'cardio', 'bodyweight', 'accessory'];
-  const catLabels = { all: 'All', free_weights: 'Free Weights', racks: 'Racks', benches: 'Benches', cables: 'Cables', machines: 'Machines', legs: 'Legs', cardio: 'Cardio', bodyweight: 'BW', accessory: 'Accessories' };
+  const cats = ['all', 'free_weights', 'racks', 'benches', 'cables', 'machines', 'legs', 'cardio', 'bodyweight', 'functional', 'accessory'];
+  const catLabels = { all: 'All', free_weights: 'Free Weights', racks: 'Racks', benches: 'Benches', cables: 'Cables', machines: 'Machines', legs: 'Legs', cardio: 'Cardio', bodyweight: 'BW', functional: 'Functional', accessory: 'Accessories' };
 
   const catTabs = '<div class="cap-tab-bar" data-full-bleed="1" role="tablist" aria-label="Equipment categories">' +
     cats.map(c => '<button type="button" class="cap-tab' + (_eqFilter === c ? ' on' : '') + '" role="tab" aria-selected="' + (_eqFilter === c) + '" onclick="_eqFilter=\'' + c + '\';go(\'equipment-setup\')">' + (catLabels[c] || c) + '</button>').join('') +
     '</div>';
-
-  const brandBadge = function(brand) {
-    return '<span class="eq-brand-badge" style="display:inline-block;font-size:11px;font-weight:800;padding:2px 7px;border-radius:6px;margin-top:5px;letter-spacing:0.04em;text-transform:uppercase;background:rgba(var(--accent-rgb),0.12);color:var(--accent-text);border:1px solid rgba(var(--accent-rgb),0.28)">' + esc(brand) + '</span>';
-  };
 
   const mine = selected.map(function(id) { return EquipmentDB.byId(id); }).filter(Boolean);
   const summary = mine.length
@@ -56,16 +86,7 @@ reg('equipment-setup', function() {
       '</div></div>'
     : '';
 
-  const rows = items.map(item => {
-    const on = selected.includes(item.id);
-    const badge = item.brand ? brandBadge(item.brand) : '';
-    const typeBit = item.type ? '<div class="muted-11 mt-2">' + esc(String(item.type).replace(/_/g, ' ')) + (item.category ? ' · ' + esc(item.category.replace('_', ' ')) : '') + '</div>' : (item.category ? '<div class="muted-11 mt-2">' + esc(item.category.replace('_', ' ')) + '</div>' : '');
-    return '<div onclick="toggleEquipment(\'' + item.id + '\')" style="display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation">' +
-      '<div style="width:26px;height:26px;border-radius:8px;border:2px solid ' + (on ? 'var(--accent)' : 'var(--border)') + ';background:' + (on ? 'var(--accent)' : 'transparent') + ';display:flex;align-items:center;justify-content:center;color:' + (on ? 'var(--on-accent)' : 'transparent') + ';font-size:13px;font-weight:700">' + (on ? '✓' : '') + '</div>' +
-      '<div class="flex-1"><div class="row-strong">' + esc(item.name) + '</div>' +
-      (badge || typeBit) +
-      '</div></div>';
-  }).join('');
+  const rows = _eqRowsHTML(selected);
 
   return moduleTopbar('My Equipment', {
     left: '<button type="button" class="topbar-icon press" onclick="go(\'settings\',{tab:\'training\'})" aria-label="Back">←</button>'
@@ -75,7 +96,7 @@ reg('equipment-setup', function() {
     '<p class="mod-lede" style="padding:0;margin-bottom:12px">Pick machine <strong>types</strong> you can use. Brand is optional — a Life Fitness leg press and a generic leg press both count as a leg press. Plate numbers are not comparable across brands.</p>' +
     '<div style="display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap">' + envBtns + '</div>' +
     '<div class="field-wrap"><label class="field-label" for="eq-search">Search</label>' +
-    '<input id="eq-search" class="field" type="search" placeholder="leg press, cables, Rogue…" value="' + esc(_eqQuery) + '" oninput="_eqQuery=this.value;go(\'equipment-setup\')"></div>' +
+    '<input id="eq-search" class="field" type="search" placeholder="leg press, cables, Rogue…" value="' + esc(_eqQuery) + '" oninput="_eqSearch(this.value)" autocomplete="off" autocorrect="off" spellcheck="false" enterkeyhint="search"></div>' +
     '<div class="field-wrap"><label class="field-label">Filter by brand (optional)</label>' +
     '<select class="field" onchange="_eqBrand=this.value;go(\'equipment-setup\')">' + brandOpts + '</select></div>' +
     '<div style="display:flex;gap:8px;margin-top:4px;flex-wrap:wrap">' +
@@ -87,7 +108,7 @@ reg('equipment-setup', function() {
 
     summary +
     catTabs +
-    '<div style="background:var(--bg3);border-top:1px solid var(--border)">' + (rows || '<div class="screen-pad muted-12">No matches. Clear search or brand.</div>') + '</div>' +
+    '<div id="eq-rows" style="background:var(--bg3);border-top:1px solid var(--border)">' + rows + '</div>' +
     '<div style="padding:16px calc(16px + var(--safe))">' +
     '<div style="font-size:12px;color:var(--txt3);margin-bottom:10px;text-align:center">' + selected.length + ' items · ' + EquipmentDB.items.length + ' in catalogue</div>' +
     '<button type="button" class="btn btn-primary w-full" onclick="saveEquipmentSetup()">Save Equipment</button></div>';

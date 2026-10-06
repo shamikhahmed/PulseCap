@@ -61,8 +61,13 @@ const NutritionMath = {
     }
     if (calories < floor) calories = floor;
 
-    let protein = Math.round(kg * 1.8);
-    const protMax = Math.round(kg * 2.2);
+    /* Above BMI 30, 1.8 g per kg of TOTAL weight overshoots (130 kg → 234 g).
+       Use the weight at BMI 27 for the protein maths instead. */
+    const cmH = Number(user.height) > 0 ? Number(user.height) : 170;
+    const bmi = kg / Math.pow(cmH / 100, 2);
+    const protKg = bmi >= 30 ? 27 * Math.pow(cmH / 100, 2) : kg;
+    let protein = Math.round(protKg * 1.8);
+    const protMax = Math.round(protKg * 2.2);
     if (protein > protMax) protein = protMax;
     const proteinPerKg = Math.round((protein / kg) * 100) / 100;
 

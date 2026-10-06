@@ -473,9 +473,17 @@ window.showDayWorkouts = function(dateStr) {
           '<div  class="muted-12">'+doneSets.length+' sets · Best: '+_progressWeight(bestSet.weight||0)+_progressUnit()+'×'+(bestSet.reps||0)+(bestSet.isPR?'  '+icon('gradcap',12):'')+'</div>' +
           '</div>';
       }).join('') +
+      (w.id ? '<button type="button" class="btn btn-ghost" style="width:100%;margin-top:6px" onclick="openWorkoutSummary(' + jsArg(String(w.id)) + ')">Full summary — muscles, records, vs last time</button>' : '') +
       '</div>';
   }).join('');
   modal(fmtDate(dateStr), body, '<button type="button" class="btn btn-ghost mt-12" onclick="closeModal()">Close</button>');
+};
+window.openWorkoutSummary = function(id) {
+  closeModal();
+  const ready = typeof ensureWorkoutReady === 'function' ? ensureWorkoutReady() : null;
+  Promise.resolve(ready).then(function() {
+    if (typeof showWorkoutSummary === 'function') showWorkoutSummary(id);
+  });
 };
 
 /* Weigh-in (ported from quarantined bodymap — Progress owns body metrics). */

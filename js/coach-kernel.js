@@ -326,6 +326,16 @@ const CoachKernel = {
     if (s.decision && s.decision.decision === 'rest') {
       return { title: 'Rest today', body: s.decision.reason || 'Recovery takes priority.', go: 'recovery' };
     }
+    /* Volume / balance nags need data. Before the first session of the week
+       they just scold someone who hasn't started ("0/8 chest sets"). */
+    const all = S.g('workouts') || [];
+    if (!all.length) {
+      return { title: 'Day one', body: 'Log today’s session. Every number after this compares to it.', go: 'workout' };
+    }
+    const thisWeek = (typeof StreakEngine !== 'undefined' && StreakEngine.weekWorkouts) ? StreakEngine.weekWorkouts().length : 1;
+    if (!thisWeek) {
+      return { title: s.today.n || 'Train', body: 'First session of the week — set the tone.', go: 'workout' };
+    }
     if (s.meso.deload) {
       return { title: 'Deload week', body: 'Cut volume ~50%. Keep technique sharp.', go: 'workout' };
     }
@@ -342,12 +352,85 @@ const CoachKernel = {
     }
     return {
       title: s.today.n || 'Train',
-      body: 'Readiness ' + s.readiness + '/100. ' + (s.decision.reason || 'Execute the plan.'),
+      body: ((typeof ReadinessEngine !== 'undefined' && ReadinessEngine.display && ReadinessEngine.display().hideScore)
+        ? '' : 'Readiness ' + s.readiness + '/100. ') + (s.decision.reason || 'Execute the plan.'),
       go: 'workout'
     };
   }
 };
 window.CoachKernel = CoachKernel;
+
+/* ── Coach tips — goal + experience aware, uses the user's own targets ──
+   One tip per day (stable within the day), beginners get form/safety tips
+   mixed in. Plain rules, not AI. */
+const CoachTips = {
+  GOAL: {
+    fat_loss: [
+      'Aim for about {cal} kcal and {prot} g protein a day. Protein is what keeps your muscle while the fat comes off.',
+      'Walk 7–10k steps a day. Daily walking burns more over a week than one hard cardio session.',
+      'Keep lifting with real effort. Lifting tells your body to hold on to muscle while you eat less.',
+      'Weigh in 2–3 mornings a week and watch the weekly average — single days bounce with water and salt.',
+      'Fill half your plate with vegetables and add a palm of protein. It keeps you full on fewer calories.'
+    ],
+    hypertrophy: [
+      'Get about {prot} g protein a day, spread over 3–4 meals.',
+      'Finish most sets with 1–3 reps left in the tank. That builds muscle without burning you out.',
+      'Beat last time: one more rep or a little more weight on the same lift is progress.',
+      'Sleep 7–9 hours. Muscle is built while you recover, not while you train.',
+      'Eat around {cal} kcal. A small surplus builds muscle faster than eating at maintenance.'
+    ],
+    strength: [
+      'Rest 2–4 minutes between heavy sets. Strength needs full recovery.',
+      'Warm up with 2–3 lighter ramp sets before your first heavy set.',
+      'Add 2.5 kg only when every rep looked clean. Grinding ugly reps is how lifts stall.',
+      'Get about {prot} g protein. Strength comes faster when you’re not under-eating.',
+      'Brace before every rep: big breath into your belly, then lift.'
+    ],
+    weight_gain: [
+      'Eat about {cal} kcal a day. Struggling? Add milk, a handful of nuts, or a peanut-butter sandwich.',
+      'Aim to gain about 0.25–0.5 kg a week. Faster than that is mostly fat.',
+      'Drink some calories: milk, banana, oats and peanut butter blended is 600+ kcal.',
+      'Push the big lifts up over time — your extra food needs a reason to become muscle.',
+      'Get {prot} g protein a day and don’t skip breakfast. Missed meals are the usual reason the scale won’t move.'
+    ],
+    general_health: [
+      'Showing up beats a perfect session. Two good weeks build the habit.',
+      'Walk every day and keep some strength work — that is the core of long-term health.',
+      'Sleep 7–9 hours and drink water through the day.',
+      'About {prot} g protein a day helps you keep muscle as you get older.',
+      'Can’t make the gym? A 20-minute walk still counts. Something beats nothing.'
+    ]
+  },
+  BEGINNER: [
+    'New lift? Pick a weight you could do 3–4 more reps with. Learn the move before you load it.',
+    'Stick with the same exercises for 6–8 weeks. Small weekly wins are the whole game.',
+    'Sore for a day or two is normal at first. Sharp pain is not — stop and tap Easier in the logger.',
+    'Not sure how a lift should feel? Tap the book icon on any exercise for setup and cues.',
+    'Rest 1–2 minutes between sets. You don’t need to rush — breathing slows, then go.'
+  ],
+  forUser: function(user, dateIso) {
+    user = user || S.g('user') || {};
+    const goalKey = this.GOAL[user.goal] ? user.goal : 'general_health';
+    let pool = this.GOAL[goalKey].slice();
+    if (user.exp === 'beginner' || S.g('user.beginnerMode')) {
+      /* interleave so beginners see a form/safety tip every other day */
+      const mixed = [];
+      for (let i = 0; i < Math.max(pool.length, this.BEGINNER.length); i++) {
+        if (this.BEGINNER[i]) mixed.push(this.BEGINNER[i]);
+        if (pool[i]) mixed.push(pool[i]);
+      }
+      pool = mixed;
+    }
+    const d = String(dateIso || (typeof today === 'function' ? today() : '')).replace(/-/g, '');
+    const idx = (parseInt(d.slice(-3), 10) || 0) % pool.length;
+    const cal = Math.round(user.calorieTarget || 0);
+    const prot = Math.round(user.proteinTarget || 0);
+    return pool[idx]
+      .replace('{cal}', cal ? cal.toLocaleString('en-GB') : 'your target')
+      .replace('{prot}', prot ? String(prot) : 'enough');
+  }
+};
+window.CoachTips = CoachTips;
 
 /* ── Gym floor helpers ── */
 const GymFloor = {
@@ -367,7 +450,7 @@ window.exChromeIcon = function(exOrName, size) {
     : exOrName;
   var grp = (ex && (ex.grp || ex.group)) || 'fullbody';
   var map = {
-    chest: 'heart', back: 'trendDown', legs: 'run', shoulders: 'target',
+    chest: 'dumbbell', back: 'dumbbell', legs: 'run', shoulders: 'target',
     biceps: 'dumbbell', triceps: 'dumbbell', core: 'flame', glutes: 'run',
     fullbody: 'dumbbell', cardio: 'run', calves: 'run'
   };

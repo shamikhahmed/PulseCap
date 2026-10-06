@@ -241,9 +241,17 @@
       if (kit === 'home_minimal') {
         return { id: 'home_bw', plan: home_bw, days: Math.min(3, Math.max(2, days)) };
       }
-      if (shoulder) {
+      /* Shoulder-safe machine PPL is a 6-session rotation — only offer it to
+         people who can actually train 5+ days. Fewer days: machine full body. */
+      if (shoulder && kit !== 'dumbbells') {
         const p = (window.PLAN_TEMPLATES || {}).machine_ppl_shoulder;
-        if (p) return { id: 'machine_ppl_shoulder', plan: p, days: (p.rotation || []).length || 6 };
+        if (days >= 5 && p) return { id: 'machine_ppl_shoulder', plan: p, days: (p.rotation || []).length || 6 };
+        return { id: 'machines_fb_3', plan: machines_fb_3, days: 3 };
+      }
+      if (kit === 'dumbbells') {
+        /* Full-body / upper-lower templates resolve to dumbbell lifts per session */
+        if (days <= 3) return { id: 'fullbody_3', plan: fullbody_3, days: 3 };
+        return { id: 'upper_lower_4', plan: upper_lower_4, days: 4 };
       }
       if (kit === 'machines_cables') {
         if (days <= 4) return { id: 'machines_fb_3', plan: machines_fb_3, days: 3 };

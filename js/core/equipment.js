@@ -6,12 +6,13 @@ const Equipment = {
     full_gym: {
       id: 'full_gym',
       label: 'Full gym',
-      tags: ['barbell', 'dumbbell', 'machine', 'cables', 'cable', 'smith', 'bar', 'bands', 'kettlebell', 'legpress']
+      tags: ['barbell', 'dumbbell', 'machine', 'cables', 'cable', 'smith', 'bar', 'bands', 'kettlebell', 'legpress',
+        'plate', 'rings', 'trx', 'stability_ball', 'foam_roller', 'ab_wheel', 'bosu', 'box', 'medball', 'sled', 'ghd', 'battle_rope', 'landmine']
     },
     machines_cables: {
       id: 'machines_cables',
       label: 'Machines + cables',
-      tags: ['machine', 'cables', 'cable', 'smith', 'bar', 'bands']
+      tags: ['machine', 'cables', 'cable', 'smith', 'bar', 'bands', 'plate', 'stability_ball', 'foam_roller', 'ab_wheel', 'bosu', 'box', 'medball']
     },
     dumbbells: {
       id: 'dumbbells',
@@ -193,6 +194,17 @@ const Equipment = {
     return { user: user, equipment: user.equipment || [], limitations: user.limitations || user.injuries || [] };
   },
 
+  /* Bodyweight is not apparatus-free: pull-ups and dips need a bar, ring
+     rows need rings, ball crunches need a ball. Returns the tags such a move
+     still requires. Cardio machine tags (treadmill, bike…) stay informational. */
+  APPARATUS: ['bar', 'rings', 'trx', 'stability_ball', 'foam_roller', 'ab_wheel', 'bosu', 'box', 'medball',
+    'sled', 'sandbag', 'ghd', 'rope', 'battle_rope', 'strongman', 'plate'],
+  apparatusFor: function(ex) {
+    const app = this.APPARATUS;
+    return (Array.isArray(ex && ex.eq) ? ex.eq : []).map(function(t) { return String(t).toLowerCase(); })
+      .filter(function(t) { return app.indexOf(t) >= 0; });
+  },
+
   canPerform: function(exercise, profile) {
     const ctx = this._profile(profile);
     const user = ctx.user || {};
@@ -210,7 +222,7 @@ const Equipment = {
           const n = String(exercise || '').toLowerCase();
           return !(/\bbarbell\b|dumbbell|machine|cable|smith|leg press|lat pulldown/.test(n));
         }
-        return !!ex.bw;
+        return !!ex.bw && !this.apparatusFor(ex).length;
       }
       if (!ex) {
         const n = String(exercise || '').toLowerCase();
@@ -220,7 +232,10 @@ const Equipment = {
         if (/dumbbell/.test(n)) return !!sel.tags.dumbbell;
         return true;
       }
-      if (ex.bw) return true;
+      if (ex.bw) {
+        const app = this.apparatusFor(ex);
+        return !app.length || app.some(function(t) { return !!sel.tags[t]; });
+      }
       const needs = this.needTypes(ex);
       if (needs && needs.length) {
         for (let i = 0; i < needs.length; i++) {
@@ -241,9 +256,11 @@ const Equipment = {
 
     const configured = !!(user.equipmentConfigured || kitId);
     if (!configured) return true;
-    const tags = Array.isArray(user.equipment) && user.equipment.length
+    /* user.equipment is a snapshot of the kit's tags at setup time; union with
+       the current kit so gear added to a kit later (rings, sled…) still counts. */
+    const tags = (Array.isArray(user.equipment) && user.equipment.length
       ? user.equipment
-      : this.tagsForKit(kitId || 'full_gym');
+      : this.tagsForKit(kitId || 'full_gym')).concat(kitId && this.KITS[kitId] ? this.tagsForKit(kitId) : []);
     const allow = {};
     tags.forEach(function(t) { allow[String(t).toLowerCase()] = true; });
 
@@ -261,7 +278,10 @@ const Equipment = {
       return true;
     }
     if (!ex) return true;
-    if (ex.bw) return true;
+    if (ex.bw) {
+      const app = this.apparatusFor(ex);
+      return !app.length || app.some(function(t) { return !!allow[t]; });
+    }
     const eq = Array.isArray(ex.eq) ? ex.eq : [];
     if (!eq.length) return true;
     for (let i = 0; i < eq.length; i++) {

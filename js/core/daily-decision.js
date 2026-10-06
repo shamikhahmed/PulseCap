@@ -24,7 +24,7 @@ const DailyDecision = {
       return {
         decision: 'rest', allowTrain: true, title: 'Day Skipped', ic: 'calendar', tint: 'c2', color: PCBrand.h_8e8e93,
         reason: lastSkip.shifted
-          ? (lastSkip.name || 'Session') + ' moved to your next gym day. The week shifts with you.'
+          ? (lastSkip.name || 'Session') + (lastSkip.plan ? ' waits for your next training day — the program picks up where you left off.' : ' moved to your next gym day. The week shifts with you.')
           : 'Schedule holds. A short walk today keeps the habit alive.',
         actions: ['Walk 15-20 min if you can', 'Hit protein anyway', 'Back next gym day'],
         confidence: 90

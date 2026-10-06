@@ -258,8 +258,33 @@ const TrainingPlanEngine = {
           swaps.push(resolved);
         }
       }
+      /* Templates assume a full gym. Someone with dumbbells or a home setup
+         must never be prescribed a barbell or machine they don't have. */
+      if (typeof Equipment !== 'undefined' && Equipment.canPerform) {
+        const fits = function(n) { return Equipment.canPerform(n) && (!Equipment.jointOk || Equipment.jointOk(n)); };
+        if (!fits(resolved.name)) {
+          let alt = null;
+          (ex.alternatives || []).some(function(a) { if (fits(a.name)) { alt = a.name; return true; } return false; });
+          if (!alt && typeof SplitEngine !== 'undefined' && SplitEngine.rankSubstitutes) {
+            const r = SplitEngine.rankSubstitutes(resolved.name, '').find(function(s) { return fits(s.name); });
+            if (r) alt = r.name;
+          }
+          if (alt) {
+            resolved = { name: alt, swapped: true, reason: 'Matched to your equipment' };
+            swaps.push(resolved);
+          } else if (ex.skipOk) {
+            return;
+          }
+        }
+      }
       const advice = self.nextLoadAdvice(ex);
       let kg = advice.kg;
+      /* A substitute lift can't inherit the original's load (barbell squat kg
+         ≠ goblet squat kg). Use its own history, else a starter load. */
+      if (resolved.swapped && resolved.name !== ex.name) {
+        const own = self.loadFor(resolved.name, 0);
+        kg = (own && own.kg) || (typeof WeightEngine !== 'undefined' ? (WeightEngine.suggest(resolved.name, (typeof S !== 'undefined' && S.g('user')) || {}) || 0) : 0);
+      }
       let setsN = ex.sets;
       if (deload) setsN = Math.max(1, setsN - (p.progression.deloadDropSets || 1));
       if (ex.setsMin && setsN < ex.setsMin) setsN = ex.setsMin;

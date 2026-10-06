@@ -571,7 +571,11 @@ function _setRowHTML(ex, exIdx, set, sIdx, suggestKg) {
       '</div>'
     : '';
   return '<div class="set-row' + (isDone?' done':'') + (isPR?' pr':'') + '" id="set-'+exIdx+'-'+sIdx+'">' +
-    '<div class="set-num">'+(sIdx+1)+'</div>' +
+    (function() {
+      const t = set._warmup ? 'W' : set._drop ? 'D' : set._failure ? 'F' : '';
+      const label = t === 'W' ? 'Warm-up set' : t === 'D' ? 'Drop set' : t === 'F' ? 'Set to failure' : 'Working set';
+      return '<button type="button" class="set-num' + (t ? ' set-num--' + t.toLowerCase() : '') + '" onclick="_cycleSetType('+exIdx+','+sIdx+')" aria-label="Set '+(sIdx+1)+': '+label+'. Tap to change type">'+(t || (sIdx+1))+'</button>';
+    })() +
     '<div class="set-step'+(perSide?' set-step--side':'')+'">' +
     sideToggle +
     '<button type="button" class="set-step__btn" onclick="_stepVal('+exIdx+','+sIdx+',\'weight\',-1)" aria-label="Decrease weight">−</button>' +
@@ -712,7 +716,12 @@ reg('workout', function() {
     draftBanner +
 
     '<div  class="pad-x-16-b">' +
-    '<div class="readiness-label '+readiness.cls+' mb-12" >Readiness: '+score+' — '+readiness.l+'</div>' +
+    (function() {
+      const rd = typeof ReadinessEngine !== 'undefined' && ReadinessEngine.display ? ReadinessEngine.display() : null;
+      /* No number until 3 logged sessions — a score from zero data is a guess */
+      if (rd && rd.hideScore) return '<div class="readiness-label rl-ready mb-12">Readiness: ' + esc(rd.word) + '</div>';
+      return '<div class="readiness-label '+readiness.cls+' mb-12" >Readiness: '+score+' — '+readiness.l+'</div>';
+    })() +
     '</div>' +
 
     sh('Today\'s Plan') +
@@ -746,7 +755,9 @@ reg('workout', function() {
     '<div style="padding:16px 16px 0">' +
     '<button type="button" class="btn btn-primary" onclick="startWorkout()">Start Workout</button>' +
     '<button type="button" class="btn btn-secondary" style="margin-top:10px" onclick="startQuickWorkout()">Quick Workout (20 min)</button>' +
-    '<button type="button" class="btn btn-secondary" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="showBrowseExercises()">' + icon('search', 16) + ' Browse All Exercises</button>' +
+    '<button type="button" class="btn btn-secondary" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="go(\'library\')">' + icon('book', 16) + ' Workout library — 30 ready workouts</button>' +
+    '<button type="button" class="btn btn-secondary" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="go(\'guide\')">' + icon('gradcap', 16) + ' Training guide — methods, splits, goals</button>' +
+    '<button type="button" class="btn btn-secondary" style="margin-top:10px;display:flex;align-items:center;justify-content:center;gap:8px" onclick="showBrowseExercises()">' + icon('search', 16) + ' Browse all ' + ExDB.db.length.toLocaleString('en-GB') + ' exercises</button>' +
     '<button type="button" class="btn" style="margin-top:10px;background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.2);color:var(--danger);font-weight:700" onclick="go(\'cardio\')">Cardio Protocols</button>' +
     '<button type="button" class="btn" style="margin-top:10px;background:rgba(var(--c1-rgb),0.1);border:1px solid rgba(var(--c1-rgb),0.2);color:var(--c1)" onclick="showAddCustomExercise()">+ Add Custom Exercise</button>' +
     '</div>' +
@@ -887,17 +898,19 @@ reg('active', function() {
       '</div>' +
       (prev ? '<div class="log-last" style="margin-top:2px">'+esc(prev)+'</div>' : '') +
       (barbell && !_focusMode ? '<button type="button" class="log-plates" onclick="showPlateCalc('+weightFromKg((ex.sets && ex.sets[0] && ex.sets[0].weight) || suggest || 0, user)+')">plates</button>' : '') +
-      (typeof AutoregEngine !== 'undefined' && AutoregEngine.nextWeightDelta ?
-        (function(){ var ar = AutoregEngine.nextWeightDelta(ex.name); return ar && ar.reason ? '<div style="font-size:11px;color:var(--txt3);margin-top:2px">'+esc(ar.reason)+'</div>' : ''; })() : '') +
-      (exData && !_focusMode ? '<div style="font-size:11px;color:var(--txt3);margin-top:1px">'+esc(exData.cues.slice(0,60))+'...</div>' : '') +
+      (prev && typeof AutoregEngine !== 'undefined' && AutoregEngine.nextWeightDelta ?
+        (function(){ var ar = AutoregEngine.nextWeightDelta(ex.name); return ar && ar.reason && !/No RPE logged/i.test(ar.reason) ? '<div style="font-size:11px;color:var(--txt3);margin-top:2px">'+esc(ar.reason)+'</div>' : ''; })() : '') +
+      (exData && exData.cues && !_focusMode ? '<div class="log-tip"><strong>Tip</strong> '+esc(exData.cues)+'</div>' : '') +
+      (!_focusMode ? ytLink(ex.name, 'Watch form') : '') +
       '</div>' +
       '<div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;align-items:flex-end">' +
       '<button type="button" onclick="showExerciseDetail('+jsArg(ex.name)+')" aria-label="Details for '+esc(ex.name)+'" style="min-width:48px;min-height:48px;width:48px;height:48px;border-radius:50%;background:var(--bg4);border:1px solid var(--border);color:var(--txt2);display:flex;align-items:center;justify-content:center;cursor:pointer;touch-action:manipulation">'+icon('book',15)+'</button>' +
-      (!_focusMode ? '<button type="button" onclick="swapExercise('+exIdx+')" style="padding:4px 7px;border-radius:8px;background:var(--bg4);border:1px solid var(--border);font-size:11px;font-weight:700;color:var(--txt3);cursor:pointer;touch-action:manipulation;white-space:nowrap">⇄ Swap</button>' : '') +
+      (!_focusMode ? '<button type="button" class="log-chip-btn" onclick="swapExercise('+exIdx+')">⇄ Swap</button>' +
+        '<button type="button" class="log-chip-btn" onclick="makeEasier('+exIdx+')">Easier</button>' : '') +
       '</div>' +
       '</div>' +
       (ex.rxNote ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(var(--c1-rgb),0.12);color:var(--c1);padding:4px 10px;border-radius:10px">'+esc(ex.rxNote)+'</span></div>' :
-       (suggest && !_focusMode ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(48,209,88,0.12);color:var(--success);padding:4px 10px;border-radius:10px">Try '+suggest+'kg ↑</span></div>' : '')) +
+       (suggest && !_focusMode ? '<div style="padding:2px 16px 8px"><span style="font-size:11px;font-weight:700;background:rgba(48,209,88,0.12);color:var(--success);padding:4px 10px;border-radius:10px">'+(prev ? 'Try '+weightFromKg(suggest, user)+displayUnit.toLowerCase()+' ↑' : 'Start around '+weightFromKg(suggest, user)+displayUnit.toLowerCase())+'</span></div>' : '')) +
       (ex._plan && !_focusMode ? '<div style="padding:0 16px 10px;font-size:12px;color:var(--txt2);line-height:1.45">' +
         (ex._plan.rom ? '<div style="margin-bottom:6px;color:var(--danger)"><strong>Stop:</strong> '+esc(ex._plan.rom)+'</div>' : '') +
         (ex._plan.cue ? '<div style="margin-bottom:6px">'+esc(ex._plan.cue)+'</div>' : '') +
@@ -990,7 +1003,7 @@ window._doneSet = function(exIdx, sIdx) {
 
   set.done = !set.done;
 
-  if (set.done && w > 0 && r > 0) {
+  if (set.done && w > 0 && r > 0 && !set._warmup) {
     const isPR = ProgEngine.checkPR(ex.name, w, r);
     set._isPR = isPR;
     if (isPR) {
@@ -1013,7 +1026,7 @@ window._doneSet = function(exIdx, sIdx) {
       nextSet.reps = r;
     }
 
-    const restSecs = (ex._plan && ex._plan.restSec) || (S.g('user.restSecs') || 120);
+    const restSecs = ex.restSec || (ex._plan && ex._plan.restSec) || (S.g('user.restSecs') || 120);
     if (restSecs > 0) startRestTimer(restSecs);
   } else {
     set._isPR = false;
@@ -1144,13 +1157,81 @@ window.swapExercise = function(exIdx) {
   modal('Swap: ' + name, body, '<button type="button" class="btn btn-ghost mt-8" onclick="closeModal()" >Keep original</button>');
 };
 
-window._doSwapExercise = function(exIdx, newName) {
+window._doSwapExercise = function(exIdx, newName, msg) {
   if (!_wkt || !_wkt.exercises[exIdx]) return;
-  _wkt.exercises[exIdx].name = newName;
-  if (typeof ExDB !== 'undefined' && ExDB.stamp) ExDB.stamp(_wkt.exercises[exIdx]);
+  const ex = _wkt.exercises[exIdx];
+  ex.name = newName;
+  ex.rxNote = '';
+  /* A different lift needs its own load — 60kg bench must not become 60kg push-ups */
+  const user = S.g('user') || {};
+  const load = (typeof WeightEngine !== 'undefined') ? (WeightEngine.suggest(newName, user) || 0) : 0;
+  (ex.sets || []).forEach(function(set) { if (!set.done) set.weight = load; });
+  if (typeof ExDB !== 'undefined' && ExDB.stamp) ExDB.stamp(ex);
   _checkpointWorkout(true);
   closeModal();
-  toast('Swapped in ' + newName, 'ok');
+  toast(msg || ('Swapped in ' + newName), 'ok');
+  go('active');
+};
+
+/* "Make it easier" — a real easier variation when one fits the user's kit
+   and joints, plus same-lift dials (lighter, fewer reps) that always work. */
+window.makeEasier = function(exIdx) {
+  if (!_wkt || !_wkt.exercises[exIdx]) return;
+  const ex = _wkt.exercises[exIdx];
+  const data = ExDB.byName(ex.name) || {};
+  const regs = (data.regressions || []).filter(function(n) {
+    return typeof Equipment === 'undefined' || (Equipment.canPerform(n) && Equipment.jointOk(n));
+  });
+  const variants = regs.length ?
+    '<div class="field-label">Easier version</div>' +
+    regs.map(function(n) {
+      const r = ExDB.byName(n) || {};
+      return '<button type="button" class="ob-opt" onclick="_doSwapExercise(' + exIdx + ',' + jsArg(n) + ',' + jsArg('Easier version: ' + n) + ')">' +
+        '<div class="ob-opt-info"><div class="ob-opt-title">' + esc(n) + '</div>' +
+        (r.cues ? '<div class="ob-opt-sub">' + esc(r.cues) + '</div>' : '') + '</div></button>';
+    }).join('') :
+    '<div class="banner" style="margin-bottom:12px">' + esc(ex.name) + ' is already a starter-level movement. Make it easier with the dials below.</div>';
+  const dials =
+    '<div class="field-label" style="margin-top:12px">Same lift, easier</div>' +
+    '<button type="button" class="ob-opt" onclick="_easierDial(' + exIdx + ',\'lighter\')"><div class="ob-opt-info"><div class="ob-opt-title">Go 20% lighter</div><div class="ob-opt-sub">For the sets you haven’t done yet</div></div></button>' +
+    '<button type="button" class="ob-opt" onclick="_easierDial(' + exIdx + ',\'reps\')"><div class="ob-opt-info"><div class="ob-opt-title">Two fewer reps</div><div class="ob-opt-sub">Stop with 2–3 good reps still in the tank</div></div></button>' +
+    '<div class="body-13" style="margin-top:8px;color:var(--txt2);line-height:1.5">Also easier: slow the lowering to 3 seconds with less weight, shorten the range to pain-free, rest an extra 30–60s.</div>';
+  modal('Make it easier', variants + dials,
+    '<button type="button" class="btn btn-ghost mt-8" onclick="closeModal()">Keep as is</button>');
+};
+
+/* Hevy-style set types: Working → W warm-up → D drop set → F to failure.
+   Warm-ups never count toward volume, PRs or calibration. */
+window._cycleSetType = function(exIdx, sIdx) {
+  if (!_wkt || !_wkt.exercises[exIdx] || !_wkt.exercises[exIdx].sets[sIdx]) return;
+  const set = _wkt.exercises[exIdx].sets[sIdx];
+  const order = ['', 'W', 'D', 'F'];
+  const cur = set._warmup ? 'W' : set._drop ? 'D' : set._failure ? 'F' : '';
+  const next = order[(order.indexOf(cur) + 1) % order.length];
+  set._warmup = next === 'W'; set._drop = next === 'D'; set._failure = next === 'F';
+  if (set._warmup) set._isPR = false;
+  _checkpointWorkout(true);
+  if (typeof haptic === 'function') haptic(10);
+  toast(next === 'W' ? 'Warm-up set — not counted in volume or PRs' : next === 'D' ? 'Drop set' : next === 'F' ? 'Set taken to failure' : 'Working set', 'info', 1600);
+  go('active');
+};
+
+window._easierDial = function(exIdx, mode) {
+  if (!_wkt || !_wkt.exercises[exIdx]) return;
+  const ex = _wkt.exercises[exIdx];
+  let changed = 0;
+  (ex.sets || []).forEach(function(set) {
+    if (set.done) return;
+    if (mode === 'lighter' && Number(set.weight) > 0) {
+      const w = Number(set.weight) * 0.8;
+      set.weight = w < 10 ? Math.max(1, Math.round(w)) : Math.round(w / 2.5) * 2.5;
+      changed++;
+    }
+    if (mode === 'reps' && Number(set.reps) > 3) { set.reps = Number(set.reps) - 2; changed++; }
+  });
+  _checkpointWorkout(true);
+  closeModal();
+  toast(changed ? (mode === 'lighter' ? 'Lighter for the rest of ' + ex.name : 'Two fewer reps per set') : 'Nothing left to adjust on this lift', changed ? 'ok' : 'info');
   go('active');
 };
 
@@ -1188,7 +1269,7 @@ window.confirmFinishWorkout = function() {
     (_wkt.painLog ? '<div class="field-wrap mb-8"><label class="field-label">Shoulder 0–10 (push/pull early warning)</label>' +
       '<input id="wkt-shoulder" class="field" type="number" min="0" max="10" step="1" inputmode="numeric" value="0" style="font-size:18px;font-weight:700">' +
       '<div class="muted-12" style="margin-top:6px">0 is none. 7+ means stop that lift and use an alternative next time.</div></div>' : ''),
-    '<button type="button" class="btn btn-primary" onclick="saveWorkout()" style="margin-top:4px">💾 Save Workout</button>' +
+    '<button type="button" class="btn btn-primary" onclick="saveWorkout()" style="margin-top:4px">Save workout</button>' +
     '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()" >Keep Training</button>'
   );
 };
@@ -1201,7 +1282,7 @@ window.saveWorkout = function() {
   const shoulderEl = document.getElementById('wkt-shoulder');
   if (shoulderEl) _wkt.shoulderPain = Number(shoulderEl.value) || 0;
   const totalVol = _wkt.exercises.reduce(function(a,ex){
-    return a + (ex.sets||[]).filter(function(s){return s.done;}).reduce(function(b,s){return b+((s.weight||0)*(s.reps||0));},0);
+    return a + (ex.sets||[]).filter(function(s){return s.done && !s._warmup;}).reduce(function(b,s){return b+((s.weight||0)*(s.reps||0));},0);
   },0);
   const workout = {
     id: _wkt.id || ('wkt_' + Date.now()),
@@ -1214,7 +1295,8 @@ window.saveWorkout = function() {
     exercises: _wkt.exercises,
     notes: finalNote,
     exerciseNotes: Object.assign({}, _wktNotes),
-    splitDay: SplitEngine.todayDayNumber(),
+    splitDay: _wkt.libraryId ? null : SplitEngine.todayDayNumber(),
+    libraryId: _wkt.libraryId || null,
     planKey: _wkt.planKey || null,
     shoulderPain: _wkt.shoulderPain,
     stopFlag: !!_wkt.stopFlag
@@ -1223,14 +1305,17 @@ window.saveWorkout = function() {
   if (!workouts.some(function(w) { return w.id === workout.id; })) workouts.push(workout);
   if (S.set('workouts', workouts) === false) return;
   S.set('activeWorkoutDraft', null);
-  if (typeof TrainingPlanEngine !== 'undefined' && TrainingPlanEngine.hasActive()) {
+  /* A library workout is an extra — it must not advance the split rotation,
+     the installed program, or strength-program weights. */
+  const isLibrary = !!_wkt.libraryId;
+  if (!isLibrary && typeof TrainingPlanEngine !== 'undefined' && TrainingPlanEngine.hasActive()) {
     const planMsgs = TrainingPlanEngine.onFinish(workout);
     if (planMsgs && planMsgs.length) {
       setTimeout(function() { toast(planMsgs[0], 'ok', 5000); }, 1800);
     }
   }
   /* Strength programs: advance working weights / training max */
-  const progMsgs = (typeof TrainingPlanEngine === 'undefined' || !TrainingPlanEngine.hasActive()) && typeof ProgramEngine !== 'undefined' ? ProgramEngine.onFinish(workout) : null;
+  const progMsgs = !isLibrary && (typeof TrainingPlanEngine === 'undefined' || !TrainingPlanEngine.hasActive()) && typeof ProgramEngine !== 'undefined' ? ProgramEngine.onFinish(workout) : null;
   if (progMsgs && progMsgs.length) {
     setTimeout(function() { toast(progMsgs[0], 'ok', 5000); }, 1800);
   }
@@ -1240,7 +1325,7 @@ window.saveWorkout = function() {
   }
   if (typeof WakeLock !== 'undefined') WakeLock.release();
   if (typeof VoiceLogger !== 'undefined') VoiceLogger.stop();
-  SplitEngine.nextDay();
+  if (!isLibrary) SplitEngine.nextDay();
   AchEngine.check();
   _wkt = null;
   _wktElapsed = 0;
@@ -1259,6 +1344,53 @@ window.saveWorkout = function() {
     }, 900);
   }
   go('dashboard');
+  showWorkoutSummary(workout.id);
+};
+
+/* Hevy-style "workout complete" — what you did, what improved, what it hit.
+   Also opened from Progress history. */
+window.showWorkoutSummary = function(id) {
+  const ws = S.g('workouts') || [];
+  const w = ws.find(function(x) { return String(x.id) === String(id); });
+  if (!w) return;
+  const user = S.g('user') || {};
+  const work = function(ex) { return (ex.sets || []).filter(function(s) { return s.done && !s._warmup; }); };
+  let sets = 0, prs = [];
+  const muscles = {};
+  const lines = (w.exercises || []).map(function(ex) {
+    const done = work(ex);
+    sets += done.length;
+    if (done.some(function(s) { return s._isPR; })) prs.push(ex.name);
+    ((ex.muscles && ex.muscles.primary) || []).forEach(function(m) { muscles[m] = (muscles[m] || 0) + done.length; });
+    if (!done.length) return '';
+    const best = done.slice().sort(function(a, b) { return (b.weight || 0) * (b.reps || 0) - (a.weight || 0) * (a.reps || 0) || (b.reps || 0) - (a.reps || 0); })[0];
+    return '<div class="sum-ex"><span class="row-title">' + esc(ex.name) + '</span>' +
+      '<span class="muted-12">' + done.length + ' set' + (done.length > 1 ? 's' : '') + ' · best ' +
+      (Number(best.weight) > 0 ? esc(formatWeight(best.weight, user)) + ' × ' : '') + (best.reps || 0) + '</span></div>';
+  }).join('');
+  const prev = ws.filter(function(x) { return x.id !== w.id && x.name === w.name && String(x.date) <= String(w.date); })
+    .sort(function(a, b) { return String(b.date).localeCompare(String(a.date)); })[0];
+  let vs = '';
+  if (prev && prev.totalVol > 0 && w.totalVol > 0) {
+    const pct = Math.round((w.totalVol - prev.totalVol) / prev.totalVol * 100);
+    vs = '<div class="banner" style="margin-bottom:12px">' + (pct >= 0 ? 'Up ' + pct + '%' : 'Down ' + Math.abs(pct) + '%') +
+      ' in volume vs last ' + esc(w.name) + '.' + (pct < 0 ? ' Normal on a lighter or tired day.' : '') + '</div>';
+  }
+  const topM = Object.keys(muscles).filter(function(m) { return muscles[m] > 0; }).sort(function(a, b) { return muscles[b] - muscles[a]; }).slice(0, 5);
+  const maxM = topM.length ? muscles[topM[0]] : 1;
+  const tile = function(v, l) { return '<div class="ex-rec"><div class="ex-rec__val">' + v + '</div><div class="ex-rec__label">' + l + '</div></div>'; };
+  const body =
+    '<div class="ex-recs" style="margin-bottom:12px">' +
+    tile(esc(String(w.duration || 0)) + ' min', 'Time') + tile(esc(formatWeight(Math.round(w.totalVol || 0), user)), 'Volume') +
+    tile(String(sets), 'Sets') + tile(String(prs.length), prs.length === 1 ? 'Record' : 'Records') + '</div>' +
+    vs +
+    (prs.length ? '<div class="field-label">New records</div><div class="body-13 mb-14">' + prs.map(esc).join(', ') + '</div>' : '') +
+    (topM.length ? '<div class="field-label">Muscles worked</div>' + topM.map(function(m) {
+      return '<div class="sum-m"><span>' + esc(prettyMuscle(m)) + '</span><span class="sum-m__bar"><i style="width:' + Math.round(muscles[m] / maxM * 100) + '%"></i></span><span class="muted-11">' + muscles[m] + ' sets</span></div>';
+    }).join('') : '') +
+    (lines ? '<div class="field-label" style="margin-top:12px">Exercises</div>' + lines : '');
+  modal('Workout complete — ' + w.name, body,
+    '<button type="button" class="btn btn-primary mt-14" onclick="closeModal()">Done</button>');
 };
 
 function _startWktTimer() {
@@ -1281,6 +1413,36 @@ window.__pcStartWorkout = function(templateName) {
       '<button type="button" class="btn btn-primary mt-14" onclick="closeModal();resumeWorkoutDraft()">Resume workout</button>' +
       '<button type="button" class="btn btn-secondary mt-8" onclick="closeModal()">Cancel</button>');
     return;
+  }
+  /* Library workout: run any ready workout today, independent of the split */
+  const libW = templateName && typeof WorkoutLibrary !== 'undefined' ? WorkoutLibrary.byId(templateName) : null;
+  if (libW) {
+    const u = S.g('user') || {};
+    const exs = WorkoutLibrary.resolve(libW).map(function(r) {
+      const item = r.item;
+      const row = ExDB.byName(r.name);
+      const reps = WorkoutLibrary.parseReps(item.reps);
+      const timed = !!item.time;
+      const load = (timed || !row) ? 0 : (WeightEngine.suggest(r.name, u) || 0);
+      const sets = [];
+      for (let i = 0; i < (item.sets || 3); i++) sets.push({ weight: load, reps: reps, done: false });
+      const unit = timed ? (item.unit === 'min' ? ' min' : ' s') : '';
+      const note = (item.sets || 3) + ' × ' + item.reps + unit + (timed ? ' — log ' + (item.unit === 'min' ? 'minutes' : 'seconds') + ' in the reps box' : '') +
+        (item.rest ? ' · rest ' + (item.rest >= 60 ? Math.round(item.rest / 60 * 10) / 10 + ' min' : item.rest + 's') : '') +
+        (r.swapped ? ' · in place of ' + r.original : '') + (item.note ? ' · ' + item.note : '');
+      return ExDB.stamp({ name: r.name, sets: sets, rxNote: note, restSec: item.rest || null,
+        muscles: row ? row.muscles : { primary: [], secondary: [] } });
+    });
+    if (!exs.length) { toast('Nothing in this workout fits your equipment — try another', 'warn'); return; }
+    _wkt = { id: 'wkt_' + Date.now(), name: libW.name, libraryId: libW.id, exercises: exs, startTime: Date.now(),
+      planKey: null, painLog: false, cardio: null, planWarmup: [] };
+    _wktNotes = {}; _supersetMode = false; _quickMode = false; _focusMode = false;
+    _startWktTimer();
+    _checkpointWorkout(true);
+    if (typeof WakeLock !== 'undefined') WakeLock.request();
+    if (typeof GymFloor !== 'undefined') GymFloor.apply();
+    closeModal();
+    return go('active');
   }
   const planActive = typeof TrainingPlanEngine !== 'undefined' && TrainingPlanEngine.hasActive();
   if (!planActive && typeof ProgramEngine !== 'undefined' && ProgramEngine.needsWeightConfirm && ProgramEngine.needsWeightConfirm()) {
@@ -1533,117 +1695,365 @@ window.svgCheck = function() {
 };
 
 /* ── Exercise Detail Modal ── */
-function showExerciseDetail(name) {
+/* ── Exercise guide (How to / History / Records) ── */
+let _exDetailTab = 'how';
+
+/* YouTube SEARCH (not a fixed video id): never goes dead, always current,
+   and we can't vouch for any single creator's video. Opens outside the app. */
+function ytFormUrl(name) {
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(name + ' exercise proper form tutorial');
+}
+window.ytFormUrl = ytFormUrl;
+function ytLink(name, label, cls) {
+  return '<a class="' + (cls || 'yt-link') + '" href="' + esc(ytFormUrl(name)) + '" target="_blank" rel="noopener noreferrer">' +
+    (typeof icon === 'function' ? icon('play', 14) : '') + '<span>' + esc(label || 'Watch form on YouTube') + '</span></a>';
+}
+window.ytLink = ytLink;
+
+function _exHistory(name) {
+  const ws = (S.g('workouts') || []).slice().sort(function(a, b) { return String(b.date || '').localeCompare(String(a.date || '')); });
+  const out = [];
+  ws.forEach(function(w) {
+    (w.exercises || []).forEach(function(ex) {
+      const same = (typeof ProgEngine !== 'undefined' && ProgEngine._same) ? ProgEngine._same(ex, name) : ex.name === name;
+      if (!same) return;
+      const sets = (ex.sets || []).filter(function(s) { return s.done && !s._warmup; });
+      if (sets.length) out.push({ date: w.date, workout: w.name, sets: sets });
+    });
+  });
+  return out;
+}
+window._exHistory = _exHistory;
+
+function _exRecords(hist) {
+  const r = { heaviest: null, bestSet: null, bestSession: null, mostReps: null, sets: 0, reps: 0, sessions: hist.length };
+  hist.forEach(function(h) {
+    let vol = 0;
+    h.sets.forEach(function(s) {
+      const w = Number(s.weight) || 0, n = Number(s.reps) || 0;
+      r.sets++; r.reps += n; vol += w * n;
+      if (w > 0 && (!r.heaviest || w > r.heaviest.w || (w === r.heaviest.w && n > r.heaviest.n))) r.heaviest = { w: w, n: n, date: h.date };
+      if (w * n > 0 && (!r.bestSet || w * n > r.bestSet.v)) r.bestSet = { v: w * n, w: w, n: n, date: h.date };
+      if (!r.mostReps || n > r.mostReps.n) r.mostReps = { n: n, w: w, date: h.date };
+    });
+    if (vol > 0 && (!r.bestSession || vol > r.bestSession.v)) r.bestSession = { v: vol, date: h.date };
+  });
+  return r;
+}
+window._exRecords = _exRecords;
+
+/* ── Exercise sheet — iOS page-sheet layout ──
+   Nav bar (Back · title · Done), large title, sliding segmented control and
+   inset-grouped lists. Tab changes and "easier / harder" links update the
+   open sheet in place; it is never torn down and presented again. */
+const _EX_TABS = [['how', 'How to'], ['history', 'History'], ['records', 'Records']];
+
+/* Exercise animations © Gym visual (gymvisual.com), from the Exercises Library
+   repo — shown under the owner's licence at the 180×180 size they are
+   distributed at, always with the credit. Online only (not precached). */
+const EX_MEDIA_BASE = 'https://cdn.jsdelivr.net/gh/plataformafitness/exercises-library@e54213fddbff4979da0af7546048b2743e4521f9/';
+const EX_MEDIA_CREDIT = '© Gym visual — gymvisual.com';
+function exMediaUrl(ex, kind) {
+  if (!ex || !/^\d{4}-[A-Za-z0-9]+$/.test(ex.media || '')) return '';
+  return EX_MEDIA_BASE + (kind === 'thumb' ? 'images/' + ex.media + '.jpg' : 'videos/' + ex.media + '.gif');
+}
+window.exMediaUrl = exMediaUrl;
+function _exAnimHTML(ex) {
+  const gif = exMediaUrl(ex, 'gif');
+  if (!gif) return '';
+  return '<figure class="ios-anim"><picture>' +
+    '<source media="(prefers-reduced-motion: reduce)" srcset="' + esc(exMediaUrl(ex, 'thumb')) + '">' +
+    '<img src="' + esc(gif) + '" width="180" height="180" alt="' + esc('Animation: ' + ex.n) + '" decoding="async" onload="this.classList.add(\'on\')" ' +
+    'onerror="var f=this.closest(\'figure\');if(f)f.hidden=true"></picture>' +
+    '<figcaption>' + EX_MEDIA_CREDIT + '</figcaption></figure>';
+}
+
+function _exFmtDay(d) {
+  try { return new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }); } catch (e) { return d || ''; }
+}
+function _exReduceMotion() {
+  return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+}
+function _iosSection(header, inner, footer) {
+  return '<section class="ios-sec">' + (header ? '<h3 class="ios-sec__h">' + esc(header) + '</h3>' : '') +
+    '<div class="ios-group">' + inner + '</div>' +
+    (footer ? '<p class="ios-sec__f">' + esc(footer) + '</p>' : '') + '</section>';
+}
+function _exEmpty(ic, title, body) {
+  return '<div class="ios-empty"><span class="ios-empty__ic">' + icon(ic, 36) + '</span>' +
+    '<div class="ios-empty__t">' + esc(title) + '</div><div class="ios-empty__b">' + esc(body) + '</div></div>';
+}
+
+function _exTabHTML(ex, tab) {
+  const user = S.g('user') || {};
+  const wt = function(kg) { return esc(formatWeight(kg, user)); };
+
+  if (tab === 'history') {
+    const hist = _exHistory(ex.n);
+    if (!hist.length) return _exEmpty('clock', 'No History Yet', 'Log ' + ex.n + ' once and every session shows up here.');
+    return _iosSection(hist.length + (hist.length === 1 ? ' session' : ' sessions'), hist.slice(0, 30).map(function(h) {
+      return '<div class="ios-row">' +
+        '<div class="ios-row__main"><div class="ios-row__t">' + esc(_exFmtDay(h.date)) + '</div>' +
+        '<div class="ios-row__s tnum">' + h.sets.map(function(s) {
+          return (Number(s.weight) > 0 ? wt(s.weight) + ' × ' : '') + (Number(s.reps) || 0);
+        }).join('<span class="ios-dot" aria-hidden="true">·</span>') + '</div></div>' +
+        (h.workout ? '<div class="ios-row__v">' + esc(h.workout) + '</div>' : '') + '</div>';
+    }).join(''), hist.length > 30 ? 'Showing your 30 most recent sessions.' : '');
+  }
+
+  if (tab === 'records') {
+    const r = _exRecords(_exHistory(ex.n));
+    if (!r.sessions) return _exEmpty('trophy', 'No Records Yet', 'Records appear after you log ' + ex.n + ' once.');
+    const tile = function(label, val, sub, wide) {
+      return '<div class="ios-stat' + (wide ? ' ios-stat--wide' : '') + '"><div class="ios-stat__l">' + esc(label) + '</div>' +
+        '<div class="ios-stat__v tnum">' + val + '</div>' + (sub ? '<div class="ios-stat__s">' + esc(sub) + '</div>' : '') + '</div>';
+    };
+    return '<div class="ios-stats">' +
+      (r.heaviest ? tile('Heaviest weight', wt(r.heaviest.w), r.heaviest.n + ' reps · ' + _exFmtDay(r.heaviest.date)) : '') +
+      (r.bestSet ? tile('Best set', wt(r.bestSet.w) + ' × ' + r.bestSet.n, _exFmtDay(r.bestSet.date)) : '') +
+      (r.bestSession ? tile('Best session volume', wt(Math.round(r.bestSession.v)), _exFmtDay(r.bestSession.date)) : '') +
+      (r.mostReps ? tile('Most reps in a set', String(r.mostReps.n), (r.mostReps.w > 0 ? formatWeight(r.mostReps.w, user) + ' · ' : '') + _exFmtDay(r.mostReps.date)) : '') +
+      tile('Sessions', String(r.sessions), r.sets + ' sets · ' + r.reps + ' reps', true) +
+      '</div>';
+  }
+
+  const rec = GUIDANCE.setsReps(user.goal || 'hypertrophy');
+  const link = function(n, dir) {
+    const t = ExDB.byName(n);
+    return '<button type="button" class="ios-row ios-row--link" onclick="exSheetPush(' + jsArg(n) + ')">' +
+      '<span class="ios-badge ios-badge--' + dir + '" aria-hidden="true">' + (dir === 'down' ? '↓' : '↑') + '</span>' +
+      '<span class="ios-row__main"><span class="ios-row__t">' + esc(n) + '</span>' +
+      (t ? '<span class="ios-row__s">' + esc(GUIDANCE.diffLabel(t.diff).l) + '</span>' : '') + '</span>' +
+      '<span class="ios-row__chev" aria-hidden="true">' + icon('chevronRight', 15) + '</span></button>';
+  };
+  const steps = (ex.steps || [ex.setup, ex.cues]).filter(Boolean);
+  const joints = Object.entries(ex.joint || {}).filter(function(e) { return e[1] > 0; })
+    .sort(function(a, b) { return b[1] - a[1]; });
+  const LVL = ['', 'Low', 'Medium', 'High'];
+  const anim = _exAnimHTML(ex);
+  const media = !anim && typeof ExerciseLibrary !== 'undefined' && ExerciseLibrary.mediaHTML ? ExerciseLibrary.mediaHTML(ex, { height: 180 }) : '';
+
+  return anim + '<a class="ios-group ios-video" href="' + esc(ytFormUrl(ex.n)) + '" target="_blank" rel="noopener noreferrer">' +
+      '<span class="ios-video__ic" aria-hidden="true">' + icon('play', 15) + '</span>' +
+      '<span class="ios-row__main"><span class="ios-row__t">Watch form on YouTube</span>' +
+      '<span class="ios-row__s">Video guides for ' + esc(ex.n) + '</span></span>' +
+      '<span class="ios-row__chev" aria-hidden="true">' + icon('external', 15) + '</span></a>' +
+    (media ? '<div class="ios-media">' + media + '</div>' : '') +
+    (steps.length ? _iosSection('How to do it', steps.map(function(st, i) {
+      return '<div class="ios-row ios-step"><span class="ios-step__n" aria-hidden="true">' + (i + 1) + '</span>' +
+        '<span class="ios-step__t">' + esc(st) + '</span></div>';
+    }).join('')) : '') +
+    _iosSection('For your goal', '<div class="ios-quad">' +
+      [['Sets', rec.sets], ['Reps', rec.reps], ['Rest', rec.rest], ['Tempo', rec.tempo]].map(function(q) {
+        return '<div><div class="ios-quad__v tnum">' + esc(q[1]) + '</div><div class="ios-quad__l">' + q[0] + '</div></div>';
+      }).join('') + '</div>', rec.note || '') +
+    (ex.mistakes ? _iosSection('Common mistakes', '<div class="ios-row ios-row--text">' + esc(ex.mistakes) + '</div>') : '') +
+    ((ex.regressions || []).length ? _iosSection('Easier versions', ex.regressions.map(function(n) { return link(n, 'down'); }).join('')) : '') +
+    ((ex.progressions || []).length ? _iosSection('When it gets easy', ex.progressions.map(function(n) { return link(n, 'up'); }).join('')) : '') +
+    (joints.length ? _iosSection('Joint load', joints.map(function(e) {
+      const v = Math.min(3, e[1]);
+      const k = v >= 3 ? 'hi' : v >= 2 ? 'md' : 'lo';
+      return '<div class="ios-row"><span class="ios-row__main"><span class="ios-row__t">' +
+        esc(e[0].charAt(0).toUpperCase() + e[0].slice(1)) + '</span></span>' +
+        '<span class="ios-meter ios-meter--' + k + '" aria-hidden="true">' +
+        [1, 2, 3].map(function(i) { return '<i' + (i <= v ? ' class="on"' : '') + '></i>'; }).join('') + '</span>' +
+        '<span class="ios-row__v ios-lvl--' + k + '">' + LVL[v] + '</span></div>';
+    }).join(''), ex.met ? 'Effort about ' + ex.met + ' MET (Compendium estimate) — not a calorie count.' : '') : '');
+}
+
+function _exSheetHTML(ex, tab, canBack) {
+  const diff = GUIDANCE.diffLabel(ex.diff);
+  const eq = (ex.eq || []).length ? ex.eq.map(function(e) { return String(e).replace(/_/g, ' '); }).join(', ') : 'No equipment';
+  const caution = GUIDANCE.needsSpotter(ex.n) ? 'Use a spotter or safety arms for heavy sets.'
+    : (ex.assistanceRequired ? 'Get coaching before loading this lift.' : '');
+  const idx = Math.max(0, _EX_TABS.findIndex(function(t) { return t[0] === tab; }));
+  return '<div class="ex-nav">' +
+      '<div class="ex-grab" aria-hidden="true"></div>' +
+      '<div class="ex-nav__bar">' +
+        '<div class="ex-nav__side">' + (canBack ? '<button type="button" class="ex-nav__btn ex-nav__back" onclick="exSheetBack()">' +
+          icon('chevronLeft', 22) + '<span>Back</span></button>' : '') + '</div>' +
+        '<div class="ex-nav__title" aria-hidden="true">' + esc(ex.n) + '</div>' +
+        '<div class="ex-nav__side ex-nav__side--r"><button type="button" class="ex-nav__btn ex-nav__done" onclick="closeModal()">Done</button></div>' +
+      '</div></div>' +
+    '<div class="ex-scroll"><div class="ex-page">' +
+      '<header class="ex-hero">' +
+        '<span class="ex-hero__ic" aria-hidden="true">' + (typeof exChromeIcon === 'function' ? exChromeIcon(ex, 28) : '') + '</span>' +
+        '<h2 class="ex-hero__t">' + esc(ex.n) + '</h2>' +
+        '<p class="ex-hero__s">' + esc(ex.pri || '') + (ex.sec ? ' · ' + esc(ex.sec) : '') + '</p>' +
+        '<div class="ex-hero__tags"><span class="ex-tag ex-tag--' + diff.l.toLowerCase() + '">' + diff.l + '</span>' +
+        '<span class="ex-tag">' + esc(eq.charAt(0).toUpperCase() + eq.slice(1)) + '</span></div>' +
+      '</header>' +
+      (caution ? '<div class="ios-note">' + icon('alert', 16) + '<span>' + esc(caution) + '</span></div>' : '') +
+      '<div class="ex-segwrap"><div class="ios-seg" role="tablist" aria-label="Exercise sections" style="--i:' + idx + '">' +
+        '<span class="ios-seg__thumb" aria-hidden="true"></span>' +
+        _EX_TABS.map(function(t, i) {
+          return '<button type="button" role="tab" id="ex-tab-' + t[0] + '" aria-controls="ex-panel" aria-selected="' + (i === idx) + '" ' +
+            'tabindex="' + (i === idx ? 0 : -1) + '" onclick="exSheetTab(\'' + t[0] + '\')">' + t[1] + '</button>';
+        }).join('') +
+      '</div></div>' +
+      '<div class="ex-panel" id="ex-panel" role="tabpanel" aria-labelledby="ex-tab-' + _EX_TABS[idx][0] + '">' +
+        _exTabHTML(ex, _EX_TABS[idx][0]) + '</div>' +
+    '</div></div>';
+}
+
+function _exSheetEl() { return document.querySelector('#_modal .ex-sheet'); }
+
+/* Panel never shorter than the visible area under the pinned control, so a
+   short tab can't clamp the scroll position and make the header jump. */
+function _exSizePanel(sheet) {
+  const sc = sheet.querySelector('.ex-scroll');
+  const seg = sheet.querySelector('.ex-segwrap');
+  if (sc && seg) sheet.style.setProperty('--ex-panel-min', Math.max(220, sc.clientHeight - seg.offsetHeight) + 'px');
+}
+
+function _exSwap(panel, html, dir, onSwap) {
+  const tok = panel._tok = (panel._tok || 0) + 1;
+  if (_exReduceMotion()) { panel.innerHTML = html; if (onSwap) onSwap(); return; }
+  panel.classList.remove('is-entering');
+  panel.classList.add('is-leaving');
+  setTimeout(function() {
+    if (panel._tok !== tok) return;
+    panel.innerHTML = html;
+    if (onSwap) onSwap();
+    panel.style.setProperty('--dx', (dir * 14) + 'px');
+    panel.classList.remove('is-leaving');
+    panel.classList.add('is-entering');
+    void panel.offsetWidth;
+    panel.classList.remove('is-entering');
+  }, 90);
+}
+
+function _exRender(sheet, mode) {
+  const st = sheet._ex;
+  const cur = st.stack[st.stack.length - 1];
+  const ex = ExDB.byName(cur.n);
+  if (!ex) return;
+  _exDetailTab = cur.tab;
+  sheet.setAttribute('aria-label', ex.n);
+  sheet.innerHTML = _exSheetHTML(ex, cur.tab, st.stack.length > 1);
+  const sc = sheet.querySelector('.ex-scroll');
+  if (sc) {
+    sc.scrollTop = mode === 'pop' ? (cur.scroll || 0) : 0;
+    sc.dispatchEvent(new Event('scroll'));
+  }
+  const page = sheet.querySelector('.ex-page');
+  if (page && mode && !_exReduceMotion()) page.classList.add(mode === 'pop' ? 'is-pop' : 'is-push');
+  sheet.focus({ preventScroll: true });
+}
+
+function _exBindSheet(sheet) {
+  sheet.addEventListener('animationend', function(e) {
+    /* Drop the present animation so drag-to-dismiss can set transform. */
+    if (e.target === sheet) sheet.style.animation = 'none';
+  });
+  sheet.addEventListener('scroll', function(e) {
+    const sc = e.target;
+    if (!sc.classList || !sc.classList.contains('ex-scroll')) return;
+    const t = sheet.querySelector('.ex-hero__t');
+    sheet.classList.toggle('is-scrolled', sc.scrollTop > (t ? t.offsetTop + t.offsetHeight - 12 : 60));
+  }, true);
+  sheet.addEventListener('keydown', function(e) {
+    const tab = e.target.closest && e.target.closest('.ios-seg [role=tab]');
+    if (!tab || (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft')) return;
+    e.preventDefault();
+    const btns = Array.from(sheet.querySelectorAll('.ios-seg [role=tab]'));
+    const i = btns.indexOf(tab) + (e.key === 'ArrowRight' ? 1 : -1);
+    const next = btns[(i + btns.length) % btns.length];
+    next.click();
+    const fresh = sheet.querySelector('#' + next.id);
+    if (fresh) fresh.focus();
+  });
+  /* Drag the grabber / nav bar down to dismiss, like a system sheet. */
+  let y0 = null, t0 = 0, dy = 0, pid = null;
+  sheet.addEventListener('pointerdown', function(e) {
+    if (!e.target.closest('.ex-nav') || e.target.closest('button')) return;
+    y0 = e.clientY; t0 = performance.now(); dy = 0; pid = e.pointerId;
+    try { sheet.setPointerCapture(pid); } catch (_) {}
+    sheet.style.transition = 'none';
+  });
+  sheet.addEventListener('pointermove', function(e) {
+    if (y0 == null || e.pointerId !== pid) return;
+    dy = Math.max(0, e.clientY - y0);
+    sheet.style.transform = dy ? 'translateY(' + dy + 'px)' : '';
+  });
+  const end = function() {
+    if (y0 == null) return;
+    const v = dy / Math.max(1, performance.now() - t0);
+    y0 = null;
+    if (dy > 120 || (dy > 30 && v > 0.5)) { closeModal(); return; }
+    sheet.style.transition = 'transform .35s cubic-bezier(.32,.72,0,1)';
+    sheet.style.transform = '';
+  };
+  sheet.addEventListener('pointerup', end);
+  sheet.addEventListener('pointercancel', end);
+}
+
+window.exSheetTab = function(tab) {
+  const sheet = _exSheetEl();
+  if (!sheet) return;
+  const cur = sheet._ex.stack[sheet._ex.stack.length - 1];
+  const order = _EX_TABS.map(function(t) { return t[0]; });
+  const from = order.indexOf(cur.tab), to = order.indexOf(tab);
+  if (to < 0 || to === from) return;
+  cur.tab = tab;
+  _exDetailTab = tab;
+  const ex = ExDB.byName(cur.n);
+  const seg = sheet.querySelector('.ios-seg');
+  seg.style.setProperty('--i', to);
+  seg.querySelectorAll('[role=tab]').forEach(function(b, i) {
+    b.setAttribute('aria-selected', String(i === to));
+    b.tabIndex = i === to ? 0 : -1;
+  });
+  const panel = sheet.querySelector('.ex-panel');
+  panel.setAttribute('aria-labelledby', 'ex-tab-' + tab);
+  const sc = sheet.querySelector('.ex-scroll');
+  const wrap = sheet.querySelector('.ex-segwrap');
+  /* Where the control sits un-pinned; if it is pinned now, keep it pinned. */
+  const natural = panel.getBoundingClientRect().top - sc.getBoundingClientRect().top + sc.scrollTop - wrap.offsetHeight;
+  const pinned = sc.scrollTop > natural + 1;
+  _exSwap(panel, _exTabHTML(ex, tab), to > from ? 1 : -1, function() { if (pinned) sc.scrollTop = natural; });
+};
+
+window.exSheetPush = function(name, tab) {
+  const sheet = _exSheetEl();
+  if (!sheet) { showExerciseDetail(name, tab); return; }
   const ex = ExDB.byName(name);
   if (!ex) return;
-  const goal = S.g('user.goal') || 'hypertrophy';
-  const rec = GUIDANCE.setsReps(goal);
-  const diff = GUIDANCE.diffLabel(ex.diff);
-  const needsSpotter = GUIDANCE.needsSpotter(name);
-  const supersetWith = GUIDANCE.supersets[ex.grp] || [];
-  const techs = GUIDANCE.techniques(goal);
+  const st = sheet._ex;
+  const sc = sheet.querySelector('.ex-scroll');
+  if (sc) st.stack[st.stack.length - 1].scroll = sc.scrollTop;
+  st.stack.push({ n: ex.n, tab: tab || 'how', scroll: 0 });
+  _exRender(sheet, 'push');
+};
 
-  const html =
-    (typeof ExerciseLibrary !== 'undefined' ? ExerciseLibrary.mediaHTML(ex, { height: 180 }) : '') +
+window.exSheetBack = function() {
+  const sheet = _exSheetEl();
+  if (!sheet || sheet._ex.stack.length < 2) return;
+  sheet._ex.stack.pop();
+  _exRender(sheet, 'pop');
+};
 
-    '<div style="display:flex;align-items:center;gap:14px;margin-bottom:20px">' +
-    '<div style="display:flex;color:var(--c1)">'+(typeof exChromeIcon==='function'?exChromeIcon(ex,40):'')+'</div>' +
-    '<div>' +
-    '<div style="font-size:19px;font-weight:800;color:var(--txt)">'+esc(ex.n)+'</div>' +
-    '<div style="font-size:12px;color:'+diff.c+';font-weight:700;text-transform:uppercase;letter-spacing:0.06em;margin-top:4px">'+diff.l+'</div>' +
-    '<div  class="muted-12 mt-2">'+esc(ex.pri)+(ex.sec?' · '+ex.sec:'')+'</div>' +
-    '</div></div>' +
-
-    (needsSpotter || ex.assistanceRequired ?
-      '<div style="background:rgba(255,69,58,0.1);border:1px solid rgba(255,69,58,0.25);border-radius:12px;padding:12px;margin-bottom:14px;display:flex;gap:10px">' +
-      '<span style="display:flex;color:var(--danger)">'+(typeof icon==='function'?icon('alert',18,'var(--danger)'):'!')+'</span>' +
-      '<div style="font-size:13px;color:var(--danger);line-height:1.5">' +
-      (needsSpotter ? '<strong>Spotter recommended</strong> for this exercise. Do not attempt heavy sets alone.' :
-        '<strong>Assistance required.</strong> Ensure proper coaching before loading.') +
-      '</div></div>' : '') +
-
-    '<div style="background:rgba(var(--c1-rgb),0.06);border:1px solid rgba(var(--c1-rgb),0.15);border-radius:14px;padding:14px;margin-bottom:14px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--c1);margin-bottom:10px">Coach Recommendation for '+esc(goal.replace('_',' '))+'</div>' +
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">' +
-    _recStat2('📦','Sets',rec.sets) +
-    _recStat2('🔁','Reps',rec.reps) +
-    _recStat2('⏱️','Rest',rec.rest) +
-    _recStat2('🎵','Tempo',rec.tempo) +
-    '</div>' +
-    '<div style="font-size:12px;color:var(--txt2);margin-top:10px;font-style:italic">💡 '+esc(rec.note)+'</div>' +
-    '</div>' +
-
-    '<div  class="mb-14">' +
-    '<div  class="type-caption type-caption-mb-xs">Setup</div>' +
-    '<div class="body-14">'+esc(ex.setup)+'</div>' +
-    '</div>' +
-
-    '<div  class="mb-14">' +
-    '<div  class="type-caption type-caption-mb-xs">Coaching Cues</div>' +
-    '<div class="body-14">'+esc(ex.cues)+'</div>' +
-    '</div>' +
-    (ex.met ? '<div class="banner" style="margin-bottom:14px">Effort ~' + esc(String(ex.met)) + ' MET — Compendium estimate' + (ex.metSource ? ' (' + esc(ex.metSource) + ')' : '') + '. Not a calorie total. Assumes a typical pace.</div>' : '') +
-    (ex.sessionNote ? '<div class="muted-12" style="margin-bottom:14px">' + esc(ex.sessionNote) + '</div>' : '') +
-
-    '<div  class="mb-14">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--warn);margin-bottom:6px">Common Mistakes</div>' +
-    '<div class="body-14">'+esc(ex.mistakes)+'</div>' +
-    '</div>' +
-
-    '<div  class="mb-14">' +
-    '<div  class="type-caption type-caption-mb-xs">Breathing</div>' +
-    '<div style="font-size:14px;color:var(--txt2)">'+esc(ex.breathing)+'</div>' +
-    '</div>' +
-
-    '<div  class="mb-14">' +
-    '<div  class="type-caption type-caption-mb-xs">Intensity Techniques</div>' +
-    techs.slice(0,2).map(function(t) {
-      return '<div style="font-size:13px;color:var(--txt2);padding:6px 0;border-bottom:1px solid var(--border)">⚡ '+esc(t)+'</div>';
-    }).join('') +
-    '</div>' +
-
-    (supersetWith.length ?
-      '<div  class="mb-14">' +
-      '<div  class="type-caption type-caption-mb-xs">Superset With</div>' +
-      supersetWith.slice(0,2).map(function(s) {
-        return '<div style="font-size:13px;color:var(--c1);padding:6px 0;border-bottom:1px solid var(--border)">🔗 '+esc(s)+'</div>';
-      }).join('') +
-      '</div>' : '') +
-
-    '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px">' +
-    '<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--success);margin-bottom:6px">Progressions</div>' +
-    (ex.progressions||[]).map(function(p){return '<div style="font-size:12px;color:var(--txt2);padding:3px 0">↑ '+esc(p)+'</div>';}).join('') +
-    '</div>' +
-    '<div><div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.06em;color:var(--warn);margin-bottom:6px">Regressions</div>' +
-    (ex.regressions||[]).map(function(r){return '<div style="font-size:12px;color:var(--txt2);padding:3px 0">↓ '+esc(r)+'</div>';}).join('') +
-    '</div></div>' +
-
-    '<div style="margin-bottom:4px">' +
-    '<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;color:var(--txt3);margin-bottom:8px">Joint Stress</div>' +
-    '<div style="display:flex;flex-wrap:wrap;gap:6px">' +
-    Object.entries(ex.joint||{}).filter(function(e){return e[1]>0;}).map(function(e){
-      const j = e[0], v = e[1];
-      const c = v >= 3 ? 'var(--danger)' : v >= 2 ? 'var(--warn)' : 'var(--success)';
-      return '<div style="background:rgba(0,0,0,0.2);border:1px solid '+c+';border-radius:8px;padding:4px 10px;font-size:11px;font-weight:600;color:'+c+'">' +
-        j.charAt(0).toUpperCase()+j.slice(1)+' ●'.repeat(v)+'</div>';
-    }).join('') +
-    '</div></div>';
-
-  modal(ex.n, html,
-    '<div style="display:flex;gap:10px;margin-top:16px">' +
-    '<button type="button" class="btn btn-primary flex-1" onclick="closeModal()" >Got it</button>' +
-    '</div>'
-  );
+function showExerciseDetail(name, tab) {
+  const ex = ExDB.byName(name);
+  if (!ex) return;
+  const open = _exSheetEl();
+  if (open && open._ex) {
+    const cur = open._ex.stack[open._ex.stack.length - 1];
+    if (cur.n === ex.n) { if (tab) exSheetTab(tab); return; }
+    exSheetPush(ex.n, tab);
+    return;
+  }
+  _exDetailTab = tab || 'how';
+  modal('', _exSheetHTML(ex, _exDetailTab, false), '',
+    { bare: true, className: 'ex-sheet sheet-animated-exit', label: ex.n, focusSheet: true });
+  const sheet = _exSheetEl();
+  if (!sheet) return;
+  sheet._ex = { stack: [{ n: ex.n, tab: _exDetailTab, scroll: 0 }] };
+  _exBindSheet(sheet);
+  _exSizePanel(sheet);
 }
 window.showExerciseDetail = showExerciseDetail;
 
-function _recStat2(icon, label, val) {
-  return '<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:10px;text-align:center">' +
-    '<div class="fs-18">'+icon+'</div>' +
-    '<div style="font-size:14px;font-weight:700;color:var(--c1);margin-top:4px">'+esc(val)+'</div>' +
-    '<div style="font-size:11px;color:var(--txt3);margin-top:2px;text-transform:uppercase;letter-spacing:0.06em">'+esc(label)+'</div>' +
-    '</div>';
-}
 
 /* ── Custom Exercise Adding ── */
 function showAddCustomExercise() {
@@ -1732,51 +2142,164 @@ function loadCustomExercises() {
 }
 window.loadCustomExercises = loadCustomExercises;
 
-/* ── Browse Exercises Screen ── */
-function showBrowseExercises(filterGrp, filterQuery) {
-  const grp = filterGrp || '';
-  const query = filterQuery || '';
-  const groups = ['all','chest','back','legs','shoulders','biceps','triceps','core','glutes','cardio','sports','plyometrics','fullbody','forearms'];
+/* ── Browse Exercises Screen ──
+   Every exercise is browsable (Hevy-style); equipment is a filter, not a
+   gate. Moves your setup can't do are labelled, not hidden. Injury-avoid
+   moves stay hidden. Typing never rebuilds the screen (iOS keyboard). */
+const BROWSE_GROUPS = [
+  ['all', 'All'], ['chest', 'Chest'], ['back', 'Back'], ['shoulders', 'Shoulders'], ['biceps', 'Biceps'],
+  ['triceps', 'Triceps'], ['forearms', 'Forearms'], ['legs', 'Legs'], ['glutes', 'Glutes'], ['core', 'Core'],
+  ['fullbody', 'Full body'], ['cardio', 'Cardio'], ['plyometrics', 'Plyometrics'], ['sports', 'Sports'],
+  ['mobility', 'Mobility'], ['yoga', 'Yoga'], ['pilates', 'Pilates'], ['rehab', 'Rehab'],
+  ['warmup_drills', 'Warm-up & agility'], ['neck', 'Neck']
+];
+const BROWSE_EQ = [
+  ['all', 'Any equipment'], ['mine', 'My setup'], ['bodyweight', 'Bodyweight'], ['dumbbell', 'Dumbbell'],
+  ['barbell', 'Barbell'], ['kettlebell', 'Kettlebell'], ['machine', 'Machine'], ['cables', 'Cable'],
+  ['bands', 'Bands'], ['other', 'Other gear']
+];
+const BROWSE_PAGE = 60;
+/* The lifts most people search for — float them above rarer variations. */
+const BROWSE_POPULAR = {};
+['Barbell Bench Press', 'Dumbbell Bench Press', 'Incline Barbell Bench Press', 'Incline Dumbbell Press', 'Back Squat',
+ 'Front Squat', 'Goblet Squat', 'Deadlift', 'Romanian Deadlift', 'Overhead Press', 'Dumbbell Shoulder Press', 'Pull-Ups',
+ 'Chin-Ups', 'Lat Pulldown', 'Barbell Row', 'Dumbbell Row', 'Seated Cable Row', 'Leg Press', 'Hip Thrust', 'Leg Curl',
+ 'Leg Extension', 'Bulgarian Split Squat', 'Walking Lunges', 'Push-Ups', 'Chest Dip', 'Dumbbell Lateral Raise', 'Face Pulls',
+ 'Tricep Pushdown', 'Skull Crushers', 'Barbell Curl', 'EZ Bar Curl', 'Hammer Curl', 'Dumbbell Curl', 'Plank',
+ 'Hanging Leg Raise', 'Cable Crunch', 'Standing Calf Raise', 'Kettlebell Swing', 'Farmer\'s Walk', 'Treadmill Run',
+ 'Rowing Machine', 'Stationary Bike'].forEach(function(n) { BROWSE_POPULAR[n] = true; });
+let _browseGrp = 'all';
+let _browseEq = 'all';
+let _browseLimit = BROWSE_PAGE;
 
-  let exercises = typeof EquipmentDB !== 'undefined' ? EquipmentDB.filterExercises(ExDB.db) : ExDB.db;
-  if (grp && grp !== 'all') exercises = exercises.filter(function(e){return e.grp===grp;});
-  if (query) exercises = exercises.filter(function(e){
-    return e.n.toLowerCase().includes(query.toLowerCase()) || (e.pri||'').toLowerCase().includes(query.toLowerCase());
-  });
+function _browseGrpMatch(e, g) {
+  if (!g || g === 'all') return true;
+  if (g === 'yoga' || g === 'pilates' || g === 'rehab') return e.style === g;
+  return e.grp === g;
+}
+function _browseEqMatch(e, f) {
+  if (!f || f === 'all') return true;
+  const eq = (e.eq || []).map(function(t) { return String(t).toLowerCase(); });
+  const has = function(t) { return eq.indexOf(t) >= 0; };
+  if (f === 'mine') return typeof Equipment === 'undefined' || Equipment.canPerform(e);
+  if (f === 'bodyweight') return !!e.bw;
+  if (f === 'machine') return has('machine') || has('smith') || has('legpress');
+  if (f === 'cables') return has('cables') || has('cable');
+  if (f === 'other') {
+    return !e.bw && !eq.some(function(t) {
+      return ['dumbbell', 'barbell', 'kettlebell', 'machine', 'smith', 'legpress', 'cables', 'cable', 'bands'].indexOf(t) >= 0;
+    }) || (e.bw && typeof Equipment !== 'undefined' && Equipment.apparatusFor(e).some(function(t) { return t !== 'bar'; }));
+  }
+  return has(f);
+}
+function _browseFilter(grp, query) {
+  let exercises = ExDB.db.filter(function(e) { return _browseGrpMatch(e, grp) && _browseEqMatch(e, _browseEq); });
+  const words = String(query || '').trim().toLowerCase().split(/\s+/).filter(Boolean);
+  if (words.length) {
+    const hay = function(e) { return (e.n + ' ' + (e.pri || '') + ' ' + (e.sec || '') + ' ' + (e.eq || []).join(' ') + ' ' + (e.style || '') + ' ' + e.grp).toLowerCase().replace(/_/g, ' '); };
+    const q = words.join(' ');
+    exercises = exercises.filter(function(e) {
+      const h = hay(e);
+      return words.every(function(w) { return h.indexOf(w) >= 0; });
+    }).map(function(e) {
+      const n = e.n.toLowerCase();
+      const match = n === q ? 0 : (' ' + n).indexOf(' ' + q) >= 0 ? 1 : n.indexOf(q) >= 0 ? 2 : 3;
+      const pop = BROWSE_POPULAR[e.n] ? 0 : e.src === 'el' ? 2 : 1;
+      return { e: e, r: match * 3 + pop };
+    }).sort(function(a, b) { return (a.r - b.r) || (a.e.n.length - b.e.n.length); })
+      .map(function(x) { return x.e; });
+  }
   if (typeof InjuriesDB !== 'undefined') {
     exercises = exercises.filter(function(e) { return !InjuriesDB.shouldAvoidExercise(e.n).avoid; });
   }
+  return exercises;
+}
 
-  const filterTabs = '<div class="cap-tab-bar" role="tablist" aria-label="Exercise groups">' +
-    groups.map(function(g) {
-      const active = (grp||'all') === g;
-      return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" onclick="showBrowseExercises('+jsArg(g)+','+jsArg(query)+')">' +
-        g.charAt(0).toUpperCase()+g.slice(1)+'</button>';
-    }).join('') + '</div>';
+function _browseEqLabel(ex) {
+  const eq = (ex.eq || []).filter(function(t) { return t !== 'cable'; });
+  if (!eq.length) return 'No equipment';
+  return eq.map(function(t) { return String(t).replace(/_/g, ' '); }).join(' / ').replace(/^./, function(c) { return c.toUpperCase(); });
+}
 
-  const searchBar = '<div class="pad-x-16-b12">' +
-    '<input class="field" type="text" placeholder="Search exercises..." value="'+esc(query)+'" ' +
-    'oninput="showBrowseExercises(\''+esc(grp||'all')+'\',this.value)" ' +
-    'style="padding:12px 16px"></div>';
-
-  const exList = exercises.slice(0,80).map(function(ex) {
+function _browseListHTML(exercises) {
+  const canDo = function(ex) { return typeof Equipment === 'undefined' || Equipment.canPerform(ex); };
+  const rows = exercises.slice(0, _browseLimit).map(function(ex) {
     const diff = GUIDANCE.diffLabel(ex.diff);
     const needsSpot = GUIDANCE.needsSpotter(ex.n);
+    const ok = canDo(ex);
     return '<div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--border);cursor:pointer;touch-action:manipulation" onclick="showExerciseDetail('+jsArg(ex.n)+')">' +
-      '<div style="width:36px;display:flex;justify-content:center;color:var(--c1)">'+(typeof exChromeIcon==='function'?exChromeIcon(ex,22):'')+'</div>' +
-      '<div  class="flex-1">' +
+      '<div class="browse-ic">'+(typeof exChromeIcon==='function'?exChromeIcon(ex,22):'') +
+        (ex.media ? '<img src="'+esc(exMediaUrl(ex,'thumb'))+'" width="40" height="40" alt="" loading="lazy" decoding="async" title="'+EX_MEDIA_CREDIT+'" onload="this.classList.add(\'on\')" onerror="this.remove()">' : '') +
+      '</div>' +
+      '<div class="flex-1" style="min-width:0">' +
       '<div style="display:flex;align-items:center;gap:6px">' +
-      '<div  class="row-title-14">'+esc(ex.n)+'</div>' +
+      '<div class="row-title-14">'+esc(ex.n)+'</div>' +
       (ex.custom ? '<span style="font-size:11px;background:rgba(var(--c1-rgb),0.15);color:var(--c1);border-radius:4px;padding:2px 6px;font-weight:700">CUSTOM</span>' : '') +
       '</div>' +
       '<div style="font-size:12px;margin-top:2px">' +
       '<span style="color:'+diff.c+';font-weight:600">'+diff.l+'</span>' +
-      '<span class="c-muted"> · '+esc(ex.pri)+'</span>' +
+      '<span class="c-muted"> · '+esc(ex.pri)+' · '+esc(_browseEqLabel(ex))+'</span>' +
       (needsSpot ? '<span style="color:var(--danger);font-weight:700"> · Spotter</span>' : '') +
+      (ok ? '' : '<span style="color:var(--txt3);font-weight:600"> · Not in your setup</span>') +
       '</div></div>' +
       '<div style="color:var(--txt3);font-size:16px">›</div>' +
       '</div>';
   }).join('');
+  if (!rows) return '<div class="pad-16 muted-12">No exercise matches that. Try a muscle (e.g. “chest”), a piece of equipment, or part of a name.</div>';
+  const more = exercises.length - _browseLimit;
+  return rows + (more > 0
+    ? '<div class="pad-16"><button type="button" class="btn btn-ghost" style="width:100%" onclick="_browseMore()">Show ' + Math.min(BROWSE_PAGE, more) + ' more of ' + more + '</button></div>'
+    : '');
+}
+
+function _browseQuery() { return (document.getElementById('ex-browse-q') || {}).value || ''; }
+function _browseRefresh() {
+  const ex = _browseFilter(_browseGrp, _browseQuery());
+  const list = document.getElementById('ex-browse-list');
+  const count = document.getElementById('ex-browse-count');
+  if (list) {
+    list.innerHTML = _browseListHTML(ex);
+    if (typeof upgradeInteractiveMarkup === 'function') upgradeInteractiveMarkup(list);
+  }
+  if (count) count.textContent = ex.length.toLocaleString('en-GB') + ' exercise' + (ex.length === 1 ? '' : 's');
+}
+window._browseType = function() { _browseLimit = BROWSE_PAGE; _browseRefresh(); };
+window._browseMore = function() { _browseLimit += BROWSE_PAGE; _browseRefresh(); };
+window._browseSetEq = function(f) {
+  _browseEq = f;
+  _browseLimit = BROWSE_PAGE;
+  document.querySelectorAll('#ex-browse-eq [data-eq]').forEach(function(b) {
+    const on = b.getAttribute('data-eq') === f;
+    b.classList.toggle('on', on);
+    b.setAttribute('aria-pressed', String(on));
+  });
+  _browseRefresh();
+};
+
+function showBrowseExercises(filterGrp, filterQuery) {
+  const grp = filterGrp || 'all';
+  _browseGrp = grp;
+  _browseLimit = BROWSE_PAGE;
+  const query = filterQuery || '';
+  const exercises = _browseFilter(grp, query);
+
+  const filterTabs = '<div class="cap-tab-bar" role="tablist" aria-label="Exercise groups">' +
+    BROWSE_GROUPS.map(function(g) {
+      const active = grp === g[0];
+      return '<button type="button" class="cap-tab' + (active ? ' on' : '') + '" role="tab" aria-selected="' + active + '" onclick="showBrowseExercises('+jsArg(g[0])+',(document.getElementById(\'ex-browse-q\')||{}).value||\'\')">' +
+        esc(g[1]) + '</button>';
+    }).join('') + '</div>';
+
+  const eqChips = '<div id="ex-browse-eq" class="browse-eq" role="group" aria-label="Equipment">' +
+    BROWSE_EQ.map(function(f) {
+      const on = _browseEq === f[0];
+      return '<button type="button" class="mod-chip' + (on ? ' on' : '') + '" data-eq="' + f[0] + '" aria-pressed="' + on + '" onclick="_browseSetEq(\'' + f[0] + '\')">' + esc(f[1]) + '</button>';
+    }).join('') + '</div>';
+
+  const searchBar = '<div class="pad-x-16-b12">' +
+    '<input id="ex-browse-q" class="field" type="search" inputmode="search" enterkeyhint="search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search ' + ExDB.db.length.toLocaleString('en-GB') + ' exercises, muscles, equipment…" value="'+esc(query)+'" ' +
+    'oninput="_browseType(this.value)" ' +
+    'style="padding:12px 16px"></div>';
 
   const v = document.getElementById('view');
   if (!v) return;
@@ -1785,12 +2308,13 @@ function showBrowseExercises(filterGrp, filterQuery) {
   div.className = 'screen';
   div.innerHTML =
     '<div class="topbar"><div class="topbar-title">Exercise Library</div>' +
-    '<div class="topbar-right"><button type="button" class="topbar-icon press" onclick="go(\'workout\')">✕</button></div></div>' +
-    filterTabs + searchBar +
-    '<div style="font-size:12px;color:var(--txt3);padding:0 16px 8px">'+exercises.length+' exercises</div>' +
-    exList +
-    '<div  class="pad-16"><button type="button" class="btn btn-secondary" onclick="showAddCustomExercise()">+ Add Custom Exercise</button></div>' +
-    '<div  class="spacer-bottom"></div>';
+    '<div class="topbar-right"><button type="button" class="topbar-icon press" onclick="go(\'workout\')" aria-label="Close">✕</button></div></div>' +
+    filterTabs + searchBar + eqChips +
+    '<div id="ex-browse-count" style="font-size:12px;color:var(--txt3);padding:0 16px 8px">'+exercises.length.toLocaleString('en-GB')+' exercises</div>' +
+    '<div id="ex-browse-list">' + _browseListHTML(exercises) + '</div>' +
+    '<div class="pad-16"><button type="button" class="btn btn-secondary" onclick="showAddCustomExercise()">+ Add Custom Exercise</button></div>' +
+    '<div class="muted-11" style="padding:0 16px 16px;line-height:1.5">Includes exercise names and instructions from the open Exercises Library (MIT, Hasan Emir Yıldırım). Exercise images and animations ' + EX_MEDIA_CREDIT + ', used under licence. Form videos open on YouTube.</div>' +
+    '<div class="spacer-bottom"></div>';
   v.innerHTML = '';
   v.appendChild(div);
   if (typeof upgradeInteractiveMarkup === 'function') upgradeInteractiveMarkup(div);
@@ -1997,3 +2521,272 @@ window._applyPainFlag = function(part) {
   toast(r.advice || 'Logged', 'warn', 4000);
   go(r.go || 'rehab');
 };
+
+/* ── Workout library (any ready workout, any day) ── */
+let _libCat = 'all';
+let _libFitOnly = true;
+reg('library', function() {
+  const user = S.g('user') || {};
+  const all = typeof WorkoutLibrary !== 'undefined' ? WorkoutLibrary.all() : [];
+  const kitLabel = (typeof Equipment !== 'undefined' && Equipment.KITS && Equipment.KITS[user.equipmentKit || 'full_gym'])
+    ? Equipment.KITS[user.equipmentKit || 'full_gym'].label : 'Full gym';
+  const list = all.filter(function(w) {
+    if (_libCat !== 'all' && w.cat !== _libCat) return false;
+    if (_libFitOnly && !WorkoutLibrary.fitsAsWritten(w, user)) return false;
+    return true;
+  }).sort(function(a, b) {
+    const ga = (a.goals || []).indexOf(user.goal) >= 0 ? 0 : 1;
+    const gb = (b.goals || []).indexOf(user.goal) >= 0 ? 0 : 1;
+    if (ga !== gb) return ga - gb;
+    const lv = function(w) { return w.level === user.exp || w.level === 'all' ? 0 : 1; };
+    return lv(a) - lv(b);
+  });
+  const chips = WorkoutLibrary.CATS.map(function(c) {
+    return '<button type="button" class="press mod-chip' + (_libCat === c.id ? ' on' : '') + '" onclick="_libSetCat(' + jsArg(c.id) + ')">' + esc(c.label) + '</button>';
+  }).join('');
+  const levelWord = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced', all: 'Any level' };
+  const cards = list.map(function(w, idx) {
+    const forGoal = idx < 3 && (w.goals || []).indexOf(user.goal) >= 0;
+    return '<button type="button" class="card card-solid lib-card mb-12" onclick="previewLibraryWorkout(' + jsArg(w.id) + ')">' +
+      (forGoal ? '<div class="dash-meta__kicker" style="color:var(--accent-text,var(--accent))">Good for your goal</div>' : '') +
+      '<div class="row-title-15">' + esc(w.name) + '</div>' +
+      '<div class="muted-12" style="margin:4px 0 6px">' + w.minutes + ' min · ' + esc(levelWord[w.level] || 'Any level') + ' · ' + w.exercises.length + ' exercises</div>' +
+      '<div class="body-13">' + esc(w.about) + '</div></button>';
+  }).join('');
+  return moduleTopbar('Workout library', { backScreen: 'workout' }) +
+    '<div class="pad-16">' +
+    moduleLede('Ready workouts you can do any day. Doing one doesn’t move your weekly plan.') +
+    '<div class="mod-chip-row" style="padding:0 0 12px;border:none;background:none">' + chips + '</div>' +
+    '<label class="ob-ack" style="margin:0 0 14px">' +
+    '<input type="checkbox"' + (_libFitOnly ? ' checked' : '') + ' onchange="_libSetFit(this.checked)">' +
+    '<span>Only workouts made for my setup (' + esc(kitLabel) + ')</span></label>' +
+    (cards || '<div class="banner">Nothing here for that filter. Turn off “Only workouts made for my setup” — the rest adapt to your equipment automatically.</div>') +
+    '</div>' + (typeof uiSpacer === 'function' ? uiSpacer() : '');
+});
+window._libSetCat = function(c) { _libCat = c; go('library'); };
+window._libSetFit = function(on) { _libFitOnly = !!on; go('library'); };
+
+window.previewLibraryWorkout = function(id) {
+  const w = typeof WorkoutLibrary !== 'undefined' ? WorkoutLibrary.byId(id) : null;
+  if (!w) return;
+  const rows = WorkoutLibrary.resolve(w);
+  const dropped = w.exercises.length - rows.length;
+  const body =
+    '<div class="body-13" style="margin-bottom:12px">' + esc(w.about) + '</div>' +
+    '<div class="field-label">How to run it</div>' +
+    '<ul class="lib-guide">' + (w.guidance || []).map(function(g) { return '<li>' + esc(g) + '</li>'; }).join('') + '</ul>' +
+    '<div class="field-label" style="margin-top:12px">Exercises</div>' +
+    rows.map(function(r) {
+      const it = r.item;
+      const unit = it.time ? (it.unit === 'min' ? ' min' : ' s') : '';
+      return '<div class="lib-ex">' +
+        '<button type="button" class="lib-ex__main" onclick="showExerciseDetail(' + jsArg(r.name) + ')">' +
+        '<div class="row-title">' + esc(r.name) + '</div>' +
+        (r.swapped ? '<div class="muted-11">Your version of ' + esc(r.original) + '</div>' : '') +
+        (it.note ? '<div class="muted-11">' + esc(it.note) + '</div>' : '') + '</button>' +
+        '<div class="lib-ex__side"><div class="lib-ex__rx">' + it.sets + ' × ' + esc(it.reps) + unit + '</div>' +
+        ytLink(r.name, 'Video') + '</div></div>';
+    }).join('') +
+    (dropped > 0 ? '<div class="muted-12" style="margin-top:8px">' + dropped + ' exercise' + (dropped > 1 ? 's' : '') + ' left out — no version fits your equipment or limitations.</div>' : '');
+  modal(w.name, body,
+    '<button type="button" class="btn btn-primary mt-14" onclick="startWorkout(' + jsArg(w.id) + ')">Start this workout</button>' +
+    '<button type="button" class="btn btn-ghost mt-8" onclick="closeModal()">Not now</button>');
+};
+
+/* ── Training Guide — methods, splits, goals ──
+   Inset-grouped lists with a sliding segmented control; tapping a row opens
+   the same page sheet the exercise guide uses. Educational only. */
+let _guideTab = 'methods';
+let _guideCat = 'all';
+const _GUIDE_TABS = [['methods', 'Methods'], ['splits', 'Splits'], ['goals', 'Goals']];
+const _GUIDE_LEVEL = { beginner: 'Beginner', intermediate: 'Intermediate', advanced: 'Advanced' };
+const _GUIDE_CAT = { sets: 'Set style', intensity: 'Intensity', tempo: 'Tempo', conditioning: 'Conditioning', progression: 'Progression' };
+
+function _guideRow(onclick, title, sub, badge) {
+  return '<button type="button" class="ios-row ios-row--link" onclick="' + onclick + '">' +
+    (badge ? '<span class="ios-badge ios-badge--up" aria-hidden="true">' + badge + '</span>' : '') +
+    '<span class="ios-row__main"><span class="ios-row__t">' + esc(title) + '</span>' +
+    (sub ? '<span class="ios-row__s">' + esc(sub) + '</span>' : '') + '</span>' +
+    '<span class="ios-row__chev" aria-hidden="true">' + icon('chevronRight', 15) + '</span></button>';
+}
+
+function _guideListHTML() {
+  if (_guideTab === 'splits') {
+    const splits = (typeof SplitsDB !== 'undefined' ? SplitsDB.splits : []).filter(function(s) { return s.days; })
+      .slice().sort(function(a, b) { return a.days - b.days; });
+    const byDays = {};
+    splits.forEach(function(s) { (byDays[s.days] = byDays[s.days] || []).push(s); });
+    const current = (S.g('user') || {}).split;
+    return Object.keys(byDays).map(function(d) {
+      return _iosSection(d + ' days a week', byDays[d].map(function(s) {
+        return _guideRow('guideOpen(\'split\',' + jsArg(s.id) + ')', s.name + (s.id === current ? ' · current' : ''), s.desc, d);
+      }).join(''));
+    }).join('');
+  }
+  if (_guideTab === 'goals') {
+    return _iosSection('Train for', (window.TRAINING_GOALS || []).map(function(g) {
+      return _guideRow('guideOpen(\'goal\',' + jsArg(g.id) + ')', g.name, g.reps + ' reps · ' + g.rest + ' rest');
+    }).join(''), 'Common coaching ranges — a starting point, not a prescription.');
+  }
+  const cats = window.TRAINING_METHOD_CATS || [];
+  const list = (window.TRAINING_METHODS || []).filter(function(m) { return _guideCat === 'all' || m.cat === _guideCat; });
+  return '<div class="browse-eq" role="group" aria-label="Method type" style="padding:0 0 14px">' + cats.map(function(c) {
+      const on = _guideCat === c.id;
+      return '<button type="button" class="mod-chip' + (on ? ' on' : '') + '" aria-pressed="' + on + '" onclick="guideCat(' + jsArg(c.id) + ')">' + esc(c.label) + '</button>';
+    }).join('') + '</div>' +
+    _iosSection(list.length + ' methods', list.map(function(m) {
+      return _guideRow('guideOpen(\'method\',' + jsArg(m.id) + ')', m.name, (_GUIDE_CAT[m.cat] || '') + ' · ' + (_GUIDE_LEVEL[m.level] || ''));
+    }).join(''));
+}
+
+function _guideRefresh() {
+  const list = document.getElementById('guide-list');
+  if (list) list.innerHTML = _guideListHTML();
+}
+window.guideTab = function(tab) {
+  const idx = _GUIDE_TABS.findIndex(function(t) { return t[0] === tab; });
+  if (idx < 0 || tab === _guideTab) return;
+  const from = _GUIDE_TABS.findIndex(function(t) { return t[0] === _guideTab; });
+  _guideTab = tab;
+  const seg = document.querySelector('.guide-seg');
+  if (seg) {
+    seg.style.setProperty('--i', idx);
+    seg.querySelectorAll('[role=tab]').forEach(function(b, i) { b.setAttribute('aria-selected', String(i === idx)); b.tabIndex = i === idx ? 0 : -1; });
+  }
+  const list = document.getElementById('guide-list');
+  if (list) _exSwap(list, _guideListHTML(), idx > from ? 1 : -1);
+};
+window.guideCat = function(c) { _guideCat = c; _guideRefresh(); };
+
+function _guideSheetBody(kind, id) {
+  if (kind === 'method') {
+    const m = (window.TRAINING_METHODS || []).find(function(x) { return x.id === id; });
+    if (!m) return null;
+    const goals = (m.goals || []).filter(function(g) { return g !== 'all'; }).map(function(g) {
+      const G = (window.TRAINING_GOALS || []).find(function(x) { return x.id === g; });
+      return G ? G.name : g.replace(/_/g, ' ');
+    });
+    return { title: m.name, ic: 'book', sub: (_GUIDE_CAT[m.cat] || '') + ' · ' + (_GUIDE_LEVEL[m.level] || ''),
+      tags: goals.length ? goals : ['Any goal'],
+      body: (m.caution ? '<div class="ios-note">' + icon('alert', 16) + '<span>' + esc(m.caution) + '</span></div>' : '') +
+        _iosSection('What it is', '<div class="ios-row ios-row--text">' + esc(m.what) + '</div>') +
+        _iosSection('How to do it', m.how.map(function(st, i) {
+          return '<div class="ios-row ios-step"><span class="ios-step__n" aria-hidden="true">' + (i + 1) + '</span><span class="ios-step__t">' + esc(st) + '</span></div>';
+        }).join('')) +
+        _iosSection('Example', '<div class="ios-row ios-row--text">' + esc(m.example) + '</div>') +
+        _iosSection('When to use it', '<div class="ios-row ios-row--text">' + esc(m.when) + '</div>') };
+  }
+  if (kind === 'goal') {
+    const g = (window.TRAINING_GOALS || []).find(function(x) { return x.id === id; });
+    if (!g) return null;
+    const methods = (g.methods || []).map(function(mid) { return (window.TRAINING_METHODS || []).find(function(x) { return x.id === mid; }); }).filter(Boolean);
+    return { title: g.name, ic: 'target', sub: g.focus, tags: [],
+      body: _iosSection('Typical ranges', '<div class="ios-quad">' + [['Reps', g.reps], ['Sets', g.sets], ['Rest', g.rest], ['Effort', g.effort]].map(function(q) {
+          return '<div><div class="ios-quad__v" style="white-space:normal;font-size:14px">' + esc(q[1]) + '</div><div class="ios-quad__l">' + q[0] + '</div></div>';
+        }).join('') + '</div>') +
+        (methods.length ? _iosSection('Methods that fit', methods.map(function(m) {
+          return _guideRow('guidePush(\'method\',' + jsArg(m.id) + ')', m.name, _GUIDE_CAT[m.cat] || '');
+        }).join('')) : '') +
+        (g.splits && g.splits.length ? _iosSection('Splits that fit', g.splits.map(function(n) {
+          const s = (typeof SplitsDB !== 'undefined' ? SplitsDB.splits : []).find(function(x) { return x.name === n; });
+          return s ? _guideRow('guidePush(\'split\',' + jsArg(s.id) + ')', s.name, s.days + ' days a week') : '';
+        }).join('')) : '') };
+  }
+  if (kind === 'split') {
+    const s = typeof SplitsDB !== 'undefined' ? SplitsDB.byId(id) : null;
+    if (!s) return null;
+    const days = (typeof SplitEngine !== 'undefined' && SplitEngine._getSplitDays) ? SplitEngine._getSplitDays(id) : [];
+    const current = (S.g('user') || {}).split === id;
+    return { title: s.name, ic: 'calendar', sub: s.desc,
+      tags: [s.days + ' days a week'].concat((s.level || []).map(function(l) { return _GUIDE_LEVEL[l] || l; })),
+      body: days.map(function(d, i) {
+          return _iosSection('Day ' + (i + 1) + ' · ' + (d.n || ''), (d.exercises || []).map(function(n) {
+            return _guideRow('showExerciseDetail(' + jsArg(n) + ')', n, '');
+          }).join(''));
+        }).join('') +
+        '<button type="button" class="btn ' + (current ? 'btn-secondary' : 'btn-primary') + '" style="width:100%;margin-bottom:24px" ' +
+        (current ? 'disabled' : 'onclick="guideUseSplit(' + jsArg(s.id) + ')"') + '>' + (current ? 'This is your current split' : 'Use this split') + '</button>' };
+  }
+  return null;
+}
+
+function _guideSheetHTML(kind, id, canBack) {
+  const d = _guideSheetBody(kind, id);
+  if (!d) return '';
+  return '<div class="ex-nav"><div class="ex-grab" aria-hidden="true"></div><div class="ex-nav__bar">' +
+      '<div class="ex-nav__side">' + (canBack ? '<button type="button" class="ex-nav__btn ex-nav__back" onclick="guideBack()">' + icon('chevronLeft', 22) + '<span>Back</span></button>' : '') + '</div>' +
+      '<div class="ex-nav__title" aria-hidden="true">' + esc(d.title) + '</div>' +
+      '<div class="ex-nav__side ex-nav__side--r"><button type="button" class="ex-nav__btn ex-nav__done" onclick="closeModal()">Done</button></div>' +
+    '</div></div>' +
+    '<div class="ex-scroll"><div class="ex-page">' +
+      '<header class="ex-hero"><span class="ex-hero__ic" aria-hidden="true">' + icon(d.ic, 28) + '</span>' +
+      '<h2 class="ex-hero__t">' + esc(d.title) + '</h2>' +
+      (d.sub ? '<p class="ex-hero__s">' + esc(d.sub) + '</p>' : '') +
+      (d.tags && d.tags.length ? '<div class="ex-hero__tags">' + d.tags.map(function(t) { return '<span class="ex-tag">' + esc(t) + '</span>'; }).join('') + '</div>' : '') +
+      '</header>' + d.body +
+    '</div></div>';
+}
+
+window.guideOpen = function(kind, id) {
+  const html = _guideSheetHTML(kind, id, false);
+  if (!html) return;
+  modal('', html, '', { bare: true, className: 'ex-sheet sheet-animated-exit', label: 'Training guide', focusSheet: true });
+  const sheet = document.querySelector('#_modal .ex-sheet');
+  if (!sheet) return;
+  sheet._guide = [{ kind: kind, id: id }];
+  _exBindSheet(sheet);
+};
+function _guideRender(sheet, mode) {
+  const st = sheet._guide;
+  const cur = st[st.length - 1];
+  sheet.innerHTML = _guideSheetHTML(cur.kind, cur.id, st.length > 1);
+  const sc = sheet.querySelector('.ex-scroll');
+  if (sc) { sc.scrollTop = mode === 'pop' ? (cur.scroll || 0) : 0; sc.dispatchEvent(new Event('scroll')); }
+  const page = sheet.querySelector('.ex-page');
+  if (page && !_exReduceMotion()) page.classList.add(mode === 'pop' ? 'is-pop' : 'is-push');
+  sheet.focus({ preventScroll: true });
+}
+window.guidePush = function(kind, id) {
+  const sheet = document.querySelector('#_modal .ex-sheet');
+  if (!sheet || !sheet._guide) { guideOpen(kind, id); return; }
+  const sc = sheet.querySelector('.ex-scroll');
+  sheet._guide[sheet._guide.length - 1].scroll = sc ? sc.scrollTop : 0;
+  sheet._guide.push({ kind: kind, id: id });
+  _guideRender(sheet, 'push');
+};
+window.guideBack = function() {
+  const sheet = document.querySelector('#_modal .ex-sheet');
+  if (!sheet || !sheet._guide || sheet._guide.length < 2) return;
+  sheet._guide.pop();
+  _guideRender(sheet, 'pop');
+};
+window.guideUseSplit = function(id) {
+  const s = typeof SplitsDB !== 'undefined' ? SplitsDB.byId(id) : null;
+  if (!s) return;
+  S.set('user.split', id);
+  S.set('user.splitDay', 1);
+  /* New split — the old weekday map points at day numbers that no longer match */
+  S.set('user.dayAssignments', null);
+  S.set('user.splitDayOverride', null);
+  closeModal();
+  const plan = typeof TrainingPlanEngine !== 'undefined' && TrainingPlanEngine.hasActive && TrainingPlanEngine.hasActive();
+  toast(plan ? s.name + ' saved. Your active program still sets today’s session until you end it.' : 'Split set to ' + s.name, 'ok');
+  _guideRefresh();
+};
+
+reg('guide', function() {
+  const idx = Math.max(0, _GUIDE_TABS.findIndex(function(t) { return t[0] === _guideTab; }));
+  return '<div class="screen ios-scope">' +
+    '<div class="topbar"><div class="topbar-title">Training Guide</div>' +
+    '<div class="topbar-right"><button type="button" class="topbar-icon press" onclick="go(\'workout\')" aria-label="Close">✕</button></div></div>' +
+    '<div style="padding:0 16px">' +
+      '<p class="muted-12" style="margin:0 0 12px;line-height:1.5">How to train, explained simply: set styles and progressions, every common split, and what each goal needs.</p>' +
+      '<div class="ios-seg guide-seg" role="tablist" aria-label="Guide sections" style="--i:' + idx + ';margin-bottom:16px">' +
+        '<span class="ios-seg__thumb" aria-hidden="true"></span>' +
+        _GUIDE_TABS.map(function(t, i) {
+          return '<button type="button" role="tab" aria-selected="' + (i === idx) + '" tabindex="' + (i === idx ? 0 : -1) + '" onclick="guideTab(\'' + t[0] + '\')">' + t[1] + '</button>';
+        }).join('') +
+      '</div>' +
+      '<div id="guide-list" class="ex-panel" style="min-height:0">' + _guideListHTML() + '</div>' +
+    '</div><div class="spacer-bottom"></div></div>';
+});

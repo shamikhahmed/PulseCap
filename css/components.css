@@ -530,6 +530,18 @@ input[type="range"]::-moz-range-thumb{
   font-size:11px;color:transparent;
 }
 .ob-opt.sel .ob-opt-check{background:var(--accent);border-color:var(--accent);color:var(--on-accent);}
+/* Consent row — same width/rhythm as .ob-opt so it reads as part of the list */
+.ob-ack{
+  display:flex;align-items:center;gap:14px;
+  width:100%;margin-top:12px;padding:14px 18px;min-height:56px;
+  border-radius:var(--r16);background:var(--bg3);
+  border:1.5px solid var(--border);
+  font-size:14px;font-weight:600;line-height:1.4;color:var(--txt);
+  cursor:pointer;touch-action:manipulation;
+  transition:border-color 0.18s,background 0.18s;
+}
+.ob-ack.on{border-color:var(--accent);background:rgba(var(--c1-rgb),0.08);}
+.ob-ack.err{border-color:var(--danger);box-shadow:0 0 0 3px rgba(255,69,58,0.15);}
 
 /* ══ EXPLORE GRID ════════════════════════════════════════════════ */
 .explore-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 16px;margin-bottom:20px;}
@@ -990,6 +1002,13 @@ input[type="range"]::-webkit-slider-thumb {
   background: rgba(var(--c1-rgb), 0.15);
   color: var(--c1);
 }
+/* Exercise library equipment filter — one horizontally scrolling row */
+.browse-eq {
+  display: flex; gap: 8px; overflow-x: auto; padding: 0 16px 12px;
+  scrollbar-width: none; -webkit-overflow-scrolling: touch;
+}
+.browse-eq::-webkit-scrollbar { display: none; }
+.browse-eq .mod-chip { flex: 0 0 auto; white-space: nowrap; padding: 9px 14px; min-height: 36px; font-size: 12px; }
 .mod-metric {
   background: var(--bg4);
   border-radius: 14px;

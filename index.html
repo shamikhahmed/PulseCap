@@ -2,7 +2,7 @@
 <html lang="en" data-theme="dark">
 <head>
   <meta charset="UTF-8">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://wger.de; media-src 'self' blob: https://wger.de; connect-src 'self' https://wger.de; frame-src 'none'; object-src 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://wger.de https://cdn.jsdelivr.net; media-src 'self' blob: https://wger.de; connect-src 'self' https://wger.de; frame-src 'none'; object-src 'none'">
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -181,9 +181,9 @@ window.updateOfflineBanner = updateOfflineBanner;
             <svg class="clipboard-pulse" width="120" height="48" viewBox="0 0 120 48" fill="none" aria-hidden="true">
               <defs>
                 <linearGradient id="clipboard-pulse-grad" x1="0" y1="0" x2="120" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color=PCBrand.h_FF7A1A/>
-                  <stop offset="55%" stop-color=PCBrand.h_E86A0E/>
-                  <stop offset="100%" stop-color=PCBrand.h_FF9F0A/>
+                  <stop offset="0%" stop-color="#FF7A1A"/>
+                  <stop offset="55%" stop-color="#E86A0E"/>
+                  <stop offset="100%" stop-color="#FF9F0A"/>
                 </linearGradient>
               </defs>
               <path class="clipboard-pulse__line" d="M4 24 H28 L38 14 L52 34 L66 10 L80 24 H116" stroke="url(#clipboard-pulse-grad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -323,7 +323,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=125').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=126').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {

@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.43.1';
+window.APP_VERSION = '6.44.0';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -158,7 +158,7 @@ window.resolveScreenAlias = resolveScreenAlias;
 /** Which bottom-nav tab stays lit for nested screens (Ember IA). */
 const NAV_PARENT = {
   dashboard: 'dashboard', briefing: 'dashboard', quests: 'dashboard', assistant: 'dashboard', coach: 'dashboard',
-  workout: 'workout', active: 'workout', cardio: 'workout', calisthenics: 'workout',
+  workout: 'workout', active: 'workout', cardio: 'workout', calisthenics: 'workout', library: 'workout', guide: 'workout',
   'training-intel': 'workout', 'training-style': 'workout', search: 'workout',
   progress: 'progress', photos: 'progress', visualizations: 'progress', physique: 'progress',
   'physique-archetype': 'progress', 'physique-timeline': 'progress', bodymap: 'progress',
@@ -216,7 +216,11 @@ const _ICONS = {
   target:   'M12 21a9 9 0 100-18 9 9 0 000 18zM12 17a5 5 0 100-10 5 5 0 000 10zM12 13a1 1 0 100-2 1 1 0 000 2z',
   clock:    'M12 21a9 9 0 100-18 9 9 0 000 18zM12 7v5l3 3',
   star:     'M12 3l2.6 5.6 6.1.7-4.5 4.2 1.2 6-5.4-3-5.4 3 1.2-6-4.5-4.2 6.1-.7z',
-  edit:     'M4 20h4L18.5 9.5l-4-4L4 16zM14 6l4 4'
+  edit:     'M4 20h4L18.5 9.5l-4-4L4 16zM14 6l4 4',
+  chevronRight: 'M9 5l7 7-7 7',
+  chevronLeft:  'M15 5l-7 7 7 7',
+  external: 'M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5',
+  trophy:   'M8 4h8v5a4 4 0 01-8 0zM8 6H5a3 3 0 003 4M16 6h3a3 3 0 01-3 4M12 13v4M9 21h6M10 17h4'
 };
 function icon(name, size, color) {
   const d = _ICONS[name];
@@ -250,6 +254,8 @@ window.prettyMuscles = function(arr, max) {
 const WORKOUT_CHAIN = [
   'js/data/exercise-db.js',
   'js/data/form-loops.js',
+  'js/data/workout-library.js',
+  'js/data/training-guide.js',
   'js/modules/workout.js'
 ];
 const MODULE_CHAIN = {
@@ -259,6 +265,8 @@ const MODULE_CHAIN = {
   workout: WORKOUT_CHAIN,
   active: WORKOUT_CHAIN,
   cardio: WORKOUT_CHAIN,
+  library: WORKOUT_CHAIN,
+  guide: WORKOUT_CHAIN,
   nutrition: ['js/data/foods-db.js', 'js/modules/nutrition.js'],
   rehab: ['js/modules/rehab.js'],
   photos: ['js/modules/photos.js']
@@ -759,10 +767,13 @@ function modal(title, bodyHtml, footerHtml, options) {
   d._onClose = options && typeof options.onClose === 'function' ? options.onClose : null;
   d.onclick = e => { if(e.target===d) closeModal(); };
   const titleId = '_modal_title';
-  d.innerHTML = '<div class="modal-sheet" role="dialog" aria-modal="true" ' +
-    (title ? 'aria-labelledby="' + titleId + '"' : 'aria-label="Dialog"') + ' tabindex="-1"><div class="modal-handle" aria-hidden="true"></div>' +
-    '<button type="button" class="modal-close" aria-label="Close" onclick="closeModal()">✕</button>' +
-    (title?'<div class="modal-title" id="' + titleId + '">'+esc(title)+'</div>':'') +
+  const opt = options || {};
+  /* opt.bare: caller draws its own nav bar (no handle / ✕ / title). */
+  d.innerHTML = '<div class="modal-sheet' + (opt.className ? ' ' + esc(opt.className) : '') + '" role="dialog" aria-modal="true" ' +
+    (title && !opt.bare ? 'aria-labelledby="' + titleId + '"' : 'aria-label="' + esc(opt.label || title || 'Dialog') + '"') + ' tabindex="-1">' +
+    (opt.bare ? '' : '<div class="modal-handle" aria-hidden="true"></div>' +
+      '<button type="button" class="modal-close" aria-label="Close" onclick="closeModal()">✕</button>' +
+      (title?'<div class="modal-title" id="' + titleId + '">'+esc(title)+'</div>':'')) +
     bodyHtml + (footerHtml||'') + '</div>';
   d.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
@@ -792,8 +803,8 @@ function modal(title, bodyHtml, footerHtml, options) {
   /* Lock the page behind the sheet so iOS keyboard focus-scroll can't yank it */
   const v = document.getElementById('view');
   if (v) { d._viewScroll = v.scrollTop; v.style.overflow = 'hidden'; }
-  const initialFocus = d.querySelector('button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),a[href]');
-  (initialFocus || d.querySelector('.modal-sheet')).focus();
+  const initialFocus = opt.focusSheet ? null : d.querySelector('button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),a[href]');
+  (initialFocus || d.querySelector('.modal-sheet')).focus({ preventScroll: true });
 }
 function closeModal() {
   const m = document.getElementById('_modal');
@@ -806,7 +817,21 @@ function closeModal() {
     }
     const v = document.getElementById('view');
     if (v) { v.style.overflow = ''; if (m._viewScroll != null) v.scrollTop = m._viewScroll; }
-    m.remove();
+    const sheet = m.querySelector('.modal-sheet');
+    const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (sheet && sheet.classList.contains('sheet-animated-exit') && !reduce) {
+      /* Free the id now so a modal opened right after this one is unaffected. */
+      m.id = '_modal_closing';
+      /* Out of the a11y tree and unclickable while it slides away. */
+      m.setAttribute('aria-hidden', 'true');
+      m.inert = true;
+      sheet.style.animation = '';
+      sheet.style.transition = '';
+      m.classList.add('is-closing');
+      setTimeout(function() { m.remove(); }, 300);
+    } else {
+      m.remove();
+    }
     if (returnFocus && typeof returnFocus.focus === 'function' && document.contains(returnFocus)) returnFocus.focus();
   }
 }

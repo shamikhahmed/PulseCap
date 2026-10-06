@@ -25,7 +25,9 @@ test.describe('Exercise content integrity', () => {
     expect(out.dupIds).toEqual([]);
     expect(out.missingId).toEqual([]);
     expect(out.count).toBeGreaterThanOrEqual(250);
-    expect(out.count).toBeLessThanOrEqual(400);
+    /* Curated core + hand-written expansion + open Exercises Library import. */
+    expect(out.count).toBeGreaterThanOrEqual(1800);
+    expect(out.count).toBeLessThanOrEqual(2500);
   });
 
   test('pre-id backup restores Hack Squat history onto hack-squat', async ({ page }) => {
