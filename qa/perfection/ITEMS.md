@@ -7,7 +7,7 @@ Where: Chromium macbook + android · `?demo=1` boot · Evidence: baseline `error
 Cause: `_renderScreen` called `haptic(10)` on first screen paint (and `celebrate` used raw `navigator.vibrate`) before any user gesture
 Fix: `js/app.js` `canVibrate()` gates on `navigator.userActivation.hasBeenActive`; `haptic()` + `celebrate` use it
 Test: device-qa post-fix hub-console/vibrate **0** · smoke assert no vibrate-before-activation console
-Auditor: _(pending verification)_
+Auditor: _(pending formal VERIFIED)_ · Live device-qa 2026-10-14: 7/7 hard=0, vibrate=0 on Pages 6.45.0
 
 ### PLS-V3-2 — hub screenshot stale (v4.5.1 / "300+ exercises")
 severity: P2     status: ⏳ OPEN
