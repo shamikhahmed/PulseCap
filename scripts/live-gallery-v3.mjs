@@ -25,11 +25,20 @@ const VIEWPORTS = {
 };
 
 const SCREENS = [
-  { nav: 'dashboard', group: 'Today', screen: 'Today', caption: 'Today briefing and coach glance (demo).' },
-  { nav: 'workout', group: 'Train', screen: 'Train', caption: 'Workout plan and session entry.' },
-  { nav: 'progress', group: 'Progress', screen: 'Progress', caption: 'Body metrics and PR trends.' },
-  { nav: 'my-plan', group: 'Programs', screen: 'Programs', caption: 'Plans, explore, and import.' },
-  { nav: 'settings', group: 'Me', screen: 'Settings', caption: 'Account, training, and appearance.', data: { tab: 'account' } },
+  { nav: 'dashboard', group: 'Today', screen: 'Today', caption: 'Today’s session, readiness and Smart Coach at a glance.' },
+  { nav: 'workout', group: 'Train', screen: 'Workout', caption: 'Log a set in two taps — rest timer included.' },
+  { nav: 'library', group: 'Train', screen: 'Exercise library', caption: '1,872 exercises with muscles, cues and equipment.' },
+  { nav: 'my-plan', group: 'Plan', screen: 'My plan', caption: 'Your program, week by week.' },
+  { nav: 'plan-import', group: 'Plan', screen: 'Import a plan', caption: 'Paste text or JSON, or pick a PDF — you review it before it’s saved.' },
+  { nav: 'split-builder', group: 'Plan', screen: 'Split builder', caption: 'Build your own training split.' },
+  { nav: 'progress', group: 'Progress', screen: 'Progress', caption: 'PRs, volume and trends.' },
+  { nav: 'recovery', group: 'Progress', screen: 'Recovery', caption: 'Recovery readiness without a wearable.' },
+  { nav: 'photos', group: 'Progress', screen: 'Photos', caption: 'Progress photos that stay on your phone.' },
+  { nav: 'rehab', group: 'Health', screen: 'Rehab', caption: 'Mobility and rehab work — general guidance, not medical advice.' },
+  { nav: 'nutrition', group: 'Health', screen: 'Nutrition', caption: 'Meals and macros, offline.' },
+  { nav: 'profiles', group: 'You', screen: 'Profiles', caption: 'A profile for everyone who trains on this device.' },
+  { nav: 'equipment-setup', group: 'You', screen: 'Equipment', caption: 'Tell PulseCap what your gym has.' },
+  { nav: 'settings', group: 'You', screen: 'Settings', caption: 'Units, theme, data and privacy.' },
 ];
 
 function slug(s) {
@@ -162,7 +171,12 @@ async function main() {
         await setTheme(page, theme);
 
         for (const scr of SCREENS) {
-          await goNav(page, scr);
+          try {
+            await goNav(page, scr);
+          } catch (err) {
+            process.stdout.write(`skip ${theme}/${device} ${scr.nav || scr.path}: unreachable — skipped\n`);
+            continue;
+          }
           await setTheme(page, theme);
           const rel = shotPath(theme, device, scr.group, scr.screen);
           const webpPath = join(GALLERY_DIR, rel);
