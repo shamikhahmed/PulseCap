@@ -7,13 +7,20 @@ const version = require('../VERSION.json');
 test.describe('PulseCap smoke', () => {
   test('loads shell without fatal errors', async ({ page }) => {
     const errors = [];
+    const consoleErrors = [];
     page.on('pageerror', e => errors.push(e.message));
+    page.on('console', msg => {
+      if (msg.type() === 'error') consoleErrors.push(msg.text());
+    });
     await page.goto('/?demo=1');
     await page.waitForLoadState('domcontentloaded');
     await expect(page.locator('body')).toBeVisible();
     await page.waitForTimeout(800);
     const fatal = errors.filter(e => !/serviceWorker|ResizeObserver|favicon/i.test(e));
     expect(fatal).toEqual([]);
+    // PLS-V3-1: silent demo boot must not call vibrate before userActivation
+    const vibrateBlocked = consoleErrors.filter(e => /navigator\.vibrate|user hasn't tapped/i.test(e));
+    expect(vibrateBlocked).toEqual([]);
   });
 
   test('manifest link present', async ({ page }) => {

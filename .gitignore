@@ -43,3 +43,8 @@ logs/
 qa/device-matrix/**/*.png
 
 qa/finish-loop/shots/
+
+# Perfection Loop v3 screenshots (JSON committed)
+qa/perfection/**/*.png
+qa/perfection/**/*.jpg
+qa/perfection/**/*.webp

@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.44.0';
+window.APP_VERSION = '6.45.0';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -689,7 +689,15 @@ function toast(msg, type, dur) {
 }
 window.toast = toast;
 
-function haptic(p) { if (navigator.vibrate) navigator.vibrate(p||25); }
+/** Chromium blocks vibrate until a prior user activation (§7.5 / PLS-V3-1). */
+function canVibrate() {
+  if (typeof navigator.vibrate !== 'function') return false;
+  var ua = navigator.userActivation;
+  if (ua && !ua.hasBeenActive) return false;
+  return true;
+}
+function haptic(p) { if (canVibrate()) navigator.vibrate(p || 25); }
+window.canVibrate = canVibrate;
 window.haptic = haptic;
 
 /* ══════════════════════════════════════════════════════
@@ -1001,7 +1009,7 @@ window.celebrate = function(icon, title, sub, duration) {
     '<div class="cel-title">' + (title || 'Achievement Unlocked!') + '</div>' +
     (sub ? '<div class="cel-sub">' + sub + '</div>' : '');
   document.body.appendChild(el);
-  if (navigator.vibrate) navigator.vibrate([50, 30, 80]);
+  if (typeof canVibrate === 'function' ? canVibrate() : false) navigator.vibrate([50, 30, 80]);
   setTimeout(function() {
     el.style.opacity = '0';
     el.style.transition = 'opacity 0.4s ease';
