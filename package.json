@@ -7,6 +7,7 @@
     "test:e2e": "playwright test",
     "verify": "playwright test",
     "gallery": "CAPTURE_GALLERY=1 playwright test tests/gallery.spec.js --project=chromium",
+    "gallery:v3": "node scripts/live-gallery-v3.mjs",
     "gallery:view": "python3 -m http.server 8766",
     "device-matrix": "DEVICE_MATRIX=1 playwright test tests/device-matrix.spec.js --project=chromium",
     "test:matrix": "FINISH_MATRIX=1 FINISH_MATRIX_FULL=1 playwright test tests/finish-matrix.spec.mjs --project=chromium --workers=1",

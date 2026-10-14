@@ -15,10 +15,9 @@ Where: Hub `assets/screenshots/` + Capricorn OS window · Phase Hub / G
 Note: Hand to Hub Engineer after Phase G gallery refresh (app is 6.44.0 / 1,872 exercises). Builder does not edit hub repo while PulseCap lock held.
 
 ### PLS-V3-3 — gallery v3 extend + viewer migrate
-severity: P2 · status: **L (time-box 2026-10-14)**  
-Where: `docs/screenshots/gallery/gallery-manifest.json` (manifest **6.43.1** / 2026-09-23) vs `VERSION.json` **6.45.0**  
-Reason: Gallery Builder skipped full 178-shot `npm run gallery` refresh (≈45m+); live app is 6.45.0 clean — stale gallery assets only.  
-Next: schema-v2 migrate + Training Guide coverage + shared v3 viewer (future Gallery wave).
+severity: P2 · status: **✅ FIXED**  
+Where: `docs/screenshots/gallery/gallery-manifest.json` · `scripts/live-gallery-v3.mjs`  
+Evidence: **30** schema-v2 WebP shots (5 primary tabs × light/dark × iphone/ipad/mac) · manifest **6.45.0** · live `?demo=1` capture 2026-10-14 · G17 ✅ (`check-completeness --skip-blank`)
 
 ## Hard-gate summary (local post-fix)
 `qa/perfection/device/device-qa.json` — hard=0, tap&lt;32=0, text&lt;11=0, pageErr=0, vibrate console=0.
