@@ -1,17 +1,17 @@
 {
   "app": "PulseCap",
-  "version": "6.43.1",
-  "swCache": "pulsecap-v125",
-  "generatedAt": "2026-09-23T06:29:10.289Z",
-  "status": "PASS",
+  "version": "6.45.0",
+  "swCache": "pulsecap-v127",
+  "generatedAt": "2026-10-14T12:27:14.804Z",
+  "status": "FAIL",
   "pass": [
     {
       "id": "version:field",
-      "detail": "6.43.1"
+      "detail": "6.45.0"
     },
     {
       "id": "version:sw-cache-match",
-      "detail": "sw.js contains pulsecap-v125"
+      "detail": "sw.js contains pulsecap-v127"
     },
     {
       "id": "records:BASELINE.md",
@@ -50,48 +50,8 @@
       "detail": "window.__APP_READY__ assigned in product code"
     },
     {
-      "id": "ci:main",
-      "detail": "PulseCap CI @ ca5135f → success https://github.com/shamikhahmed/PulseCap/actions/runs/35826058212"
-    },
-    {
       "id": "tag",
-      "detail": "found v6.43.1"
-    },
-    {
-      "id": "matrix:spec",
-      "detail": "tests/finish-matrix.spec.mjs"
-    },
-    {
-      "id": "matrix:failures",
-      "detail": "0"
-    },
-    {
-      "id": "matrix:shot-count",
-      "detail": "30 shots (need routes×viewports×themes = 30)"
-    },
-    {
-      "id": "matrix:freshness",
-      "detail": "2026-09-23T06:27:22.661Z"
-    },
-    {
-      "id": "lighthouse:home-demo-desktop.json",
-      "detail": "perf 100 a11y 98 bp 96 LCP 425.58299999999997 TBT 0 CLS 0"
-    },
-    {
-      "id": "lighthouse:home-demo-mobile.json",
-      "detail": "perf 90 a11y 98 bp 96 LCP 2072.9610000000002 TBT 35 CLS 0"
-    },
-    {
-      "id": "lighthouse:passing",
-      "detail": "2/2 files meet thresholds"
-    },
-    {
-      "id": "axe:serious-critical",
-      "detail": "2 JSON clean"
-    },
-    {
-      "id": "gallery:freshness",
-      "detail": "docs/screenshots/gallery/gallery-manifest.json @ 2026-09-23T11:28:58+05:00"
+      "detail": "found v6.45.0"
     },
     {
       "id": "live:VERSION.json",
@@ -102,23 +62,11 @@
       "detail": "present"
     },
     {
-      "id": "kill:raw-hex",
-      "detail": "0"
-    },
-    {
       "id": "kill:sub-11px",
       "detail": "0"
     },
     {
-      "id": "kill:important",
-      "detail": "0"
-    },
-    {
       "id": "kill:native-dialogs",
-      "detail": "0"
-    },
-    {
-      "id": "kill:outline-none",
       "detail": "0"
     },
     {
@@ -131,19 +79,73 @@
     },
     {
       "id": "kill:innerHTML-classified",
-      "detail": "31 sinks; SINKS.md ok"
+      "detail": "38 sinks; SINKS.md ok"
     }
   ],
-  "fail": [],
-  "warn": [],
+  "fail": [
+    {
+      "id": "g19:minisite-lh",
+      "detail": "mini-site live at https://shamikhahmed.github.io/apps/pulsecap/ but no LH JSON under qa/perfection/minisite/lighthouse | qa/finish-loop/lighthouse-minisite | qa/finish-loop/minisite-lighthouse — run Lighthouse and save evidence"
+    },
+    {
+      "id": "kill:raw-hex",
+      "detail": "14"
+    },
+    {
+      "id": "kill:important",
+      "detail": "2"
+    },
+    {
+      "id": "kill:outline-none",
+      "detail": "1"
+    }
+  ],
+  "warn": [
+    {
+      "id": "ci:main",
+      "detail": "skipped via TIER1_SKIP_CI"
+    },
+    {
+      "id": "matrix",
+      "detail": "skipped"
+    },
+    {
+      "id": "lighthouse",
+      "detail": "skipped"
+    },
+    {
+      "id": "axe",
+      "detail": "skipped"
+    },
+    {
+      "id": "gallery",
+      "detail": "skipped"
+    },
+    {
+      "id": "g15:architecture",
+      "detail": "skipped via TIER1_SKIP_ARCH"
+    },
+    {
+      "id": "g16:device-qa",
+      "detail": "skipped"
+    },
+    {
+      "id": "g17:gallery-v3",
+      "detail": "skipped"
+    },
+    {
+      "id": "g18:docs-truth",
+      "detail": "skipped"
+    }
+  ],
   "killList": {
-    "rawHex": 0,
+    "rawHex": 14,
     "sub11": 0,
-    "important": 0,
+    "important": 2,
     "nativeDialog": 0,
-    "outlineNone": 0,
+    "outlineNone": 1,
     "consoleLog": 0,
     "googleFonts": 0,
-    "innerHTML": 31
+    "innerHTML": 38
   }
 }
