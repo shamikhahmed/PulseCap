@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.44.0",
-  "swCache": "pulsecap-v126",
-  "updated": "2026-10-06",
-  "notes": "1,872-exercise library (curated + open Exercises Library import), Training Guide, iOS exercise sheet, Hevy-style workout library + logger; SW v126"
+  "version": "6.45.0",
+  "swCache": "pulsecap-v127",
+  "updated": "2026-10-14",
+  "notes": "Perfection Loop v3: gate vibrate behind userActivation (PLS-V3-1); SW v127"
 }

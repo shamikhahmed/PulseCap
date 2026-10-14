@@ -1,14 +1,14 @@
 # PulseCap — Perfection v3 STATE
-Updated: 2026-10-14T11:25:44Z · Builder: Builder-PulseCap
+Updated: 2026-10-14T11:26:30Z · Builder: Builder-PulseCap
 
 ## Phase
-**F · Verify (hand-off)** — Wave C P1 ticket PLS-V3-1 FIXED; Auditor re-run required.
+**I · Release** — 6.45.0 — Wave C P1 ticket PLS-V3-1 FIXED; Auditor re-run required.
 
 ## Branch
 `perfection/pulsecap-v3` (from `main` @ `5f46d22` — v6.44.0)
 
 ## Last commit
-`92c735b` · fix `a3fe47c` · branch `perfection/pulsecap-v3` (pushed)
+`a5c4b8f` · fix `a3fe47c` · branch `perfection/pulsecap-v3` (pushed)
 
 ## What's running / done
 - Phase A: branch + baseline device-qa → `qa/perfection/baseline/device-qa.json` (**7/7 hard-clean**; Chromium soft: vibrate-before-activation ×2).
