@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.43.1",
-  "generated": "2026-09-23T06:28:37.736Z",
+  "version": "6.45.0",
+  "generated": "2026-10-14T12:41:02.449Z",
   "shots": [
     {
       "file": "dark-desktop-001-dashboard.png",
@@ -452,6 +452,16 @@
       "label": "Active Workout",
       "route": "startWorkout()",
       "scroll": false
+    },
+    {
+      "file": "dark-mobile-001-dashboard-scroll.png",
+      "theme": "dark",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "dashboard",
+      "label": "Dashboard (scroll)",
+      "route": "go('dashboard')",
+      "scroll": true
     },
     {
       "file": "dark-mobile-001-dashboard.png",
@@ -1332,6 +1342,16 @@
       "label": "Active Workout",
       "route": "startWorkout()",
       "scroll": false
+    },
+    {
+      "file": "light-mobile-028-dashboard-scroll.png",
+      "theme": "light",
+      "viewport": "mobile",
+      "section": "Today",
+      "screenId": "dashboard",
+      "label": "Dashboard (scroll)",
+      "route": "go('dashboard')",
+      "scroll": true
     },
     {
       "file": "light-mobile-028-dashboard.png",
