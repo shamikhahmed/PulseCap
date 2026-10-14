@@ -8,7 +8,7 @@ Updated: 2026-10-14T11:24:00Z · Builder: Builder-PulseCap
 `perfection/pulsecap-v3` (from `main` @ `5f46d22` — v6.44.0)
 
 ## Last commit
-See `git log -1 --oneline` on `perfection/pulsecap-v3` (pushed).
+`a3fe47c` · branch `perfection/pulsecap-v3` (pushed)
 
 ## What's running / done
 - Phase A: branch + baseline device-qa → `qa/perfection/baseline/device-qa.json` (**7/7 hard-clean**; Chromium soft: vibrate-before-activation ×2).
