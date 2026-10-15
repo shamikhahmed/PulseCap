@@ -1,6 +1,10 @@
 // @ts-check
 const { test, expect } = require('@playwright/test');
 
+/* No service worker here: in WebKit the "update ready" banner can appear
+   mid-test and cover the sheet's top controls. SW behaviour has its own specs. */
+test.use({ serviceWorkers: 'block' });
+
 /* v6.44 library expansion: ~1,870 exercises across every training style,
    the Apple-style exercise sheet, the all-exercises browser and the
    Training Guide (methods, splits, goals). */
