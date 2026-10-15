@@ -801,7 +801,7 @@ reg('cardio', function() {
   }).join('');
 
   return '<div class="topbar">' +
-    '<button type="button" class="topbar-icon press" onclick="go(\'workout\')" style="margin-right:8px">←</button>' +
+    '<button type="button" class="topbar-icon press" onclick="go(\'workout\')" style="margin-right:8px" aria-label="Back">←</button>' +
     '<div><div class="topbar-title">Cardio</div>' +
     '<div class="topbar-date">Choose your protocol</div></div></div>' +
 
@@ -2371,7 +2371,7 @@ window.showCardioProtocol = function(key) {
   div.className = 'screen';
   div.innerHTML =
     '<div class="topbar">' +
-    '<button type="button" class="topbar-icon press" onclick="go(\'cardio\')" style="margin-right:8px">←</button>' +
+    '<button type="button" class="topbar-icon press" onclick="go(\'cardio\')" style="margin-right:8px" aria-label="Back">←</button>' +
     '<div><div class="topbar-title">'+esc(p.name)+'</div>' +
     '<div class="topbar-date">'+esc(p.full)+'</div></div></div>' +
 
