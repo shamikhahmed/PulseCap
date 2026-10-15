@@ -91,3 +91,14 @@
 - Root cause: tests still treated `go`/`startQuickWorkout` as sync; leftover `activeWorkoutDraft` blocked re-starts across viewports.
 - Change: `go()` returns Promise + optimistic `currentScreenId`; await chains in e2e; clear draft before quick start; merge main finish-matrix browsers.
 - Verification: chromium subset (a11y/ember/module-smoke/v6/offline/persona) 24/24; full CI pending push.
+
+## 2026-10-15 — v6.46.0 seal (tag + LH)
+
+### §15 mini-plan
+- Problem: annotated tag `v6.46.0` pointed at feature `8bfdc08` while tip `80260e4` held SI/webdriver polish + SW v129; agent LH flaked NO_FCP under headless_shell.
+- Change: moved annotated tag `v6.46.0` → `80260e4` (force-push tag only). Re-ran live LH via system Chrome + puppeteer-core; Playwright paint/version check on live Pages.
+- Verification:
+  - Live `VERSION.json` 6.46.0 / `pulsecap-v129`; Playwright `__APP_READY__`, splash skipped, Dashboard paints.
+  - LH mobile `/?demo=1`: perf **91** / a11y 98 / bp 100 · FCP ~1.95s · LCP ~2.03s · TBT 0 · CLS 0 · **no NO_FCP/NO_LCP**.
+  - LH desktop: perf **74** (Speed Index ~5.4–5.6s inflates under agent Chrome; FCP/LCP/TBT match mobile) — logged as L / env, gate was mobile ≥90.
+  - Evidence: `qa/finish-loop/lighthouse/home-demo-{mobile,desktop}.json` (fetchTime 2026-10-15T13:09Z).
