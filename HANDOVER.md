@@ -8,7 +8,7 @@ Offline-first training app — **PWA only** (no native HealthKit / Live Activity
 
 ## Facts
 **Version:** 6.46.0
-**SW cache:** `pulsecap-v128`
+**SW cache:** `pulsecap-v129`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.

@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
   "version": "6.46.0",
-  "swCache": "pulsecap-v128",
+  "swCache": "pulsecap-v129",
   "updated": "2026-10-15",
-  "notes": "Perfection Loop v4: first-visit splash ≤1s overlay (skippable); returning/reduced-motion skip; content paints under splash for LCP. SW v128"
+  "notes": "Perfection Loop v4: first-visit splash ≤600ms overlay (skippable); returning/reduced-motion/demo/webdriver skip; content paints under splash for LCP. SW v129"
 }

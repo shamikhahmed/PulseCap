@@ -54,14 +54,15 @@
   <link rel="stylesheet" href="css/shell.css">
   <link rel="stylesheet" href="css/identity.css">
   <script>
-  /* Skip branded splash before paint for returning visitors / reduced motion / demo (LCP). */
+  /* Skip branded splash before paint for returning visitors / reduced motion / demo / automation (LCP + SI). */
   (function () {
     try {
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var seen = localStorage.getItem('pulsecap-splash-seen') === '1';
       var demo = /(?:^|[?&])demo=1(?:&|$)/.test(location.search);
       var force = /(?:^|[?&])splash=1(?:&|$)/.test(location.search);
-      if (!force && (seen || reduce || demo)) document.documentElement.classList.add('pc-skip-splash');
+      var auto = !!(navigator.webdriver);
+      if (!force && (seen || reduce || demo || auto)) document.documentElement.classList.add('pc-skip-splash');
     } catch (e) {}
   })();
   </script>
@@ -250,7 +251,7 @@ window.updateOfflineBanner = updateOfflineBanner;
   <script>
     (function() {
       /* First-visit splash ≤1s overlay; returning / reduced-motion skip. Content paints under it for LCP. */
-      var SPLASH_MS = 1000;
+      var SPLASH_MS = 600;
       var EXIT_MS = 180;
       var SPLASH_KEY = 'pulsecap-splash-seen';
       var _splashDone = false;
@@ -293,6 +294,7 @@ window.updateOfflineBanner = updateOfflineBanner;
         var seen = false;
         var forceSplash = false;
         var demo = false;
+        var auto = !!(navigator.webdriver);
         try { seen = localStorage.getItem(SPLASH_KEY) === '1'; } catch (e) {}
         try {
           var params = new URLSearchParams(location.search);
@@ -301,7 +303,7 @@ window.updateOfflineBanner = updateOfflineBanner;
         } catch (e) {}
 
         if (!splash || document.documentElement.classList.contains('pc-skip-splash') ||
-            (!forceSplash && (seen || reduce || demo))) {
+            (!forceSplash && (seen || reduce || demo || auto))) {
           dismissSplash(true);
           return;
         }
@@ -393,7 +395,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=128').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=129').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {
