@@ -3,8 +3,9 @@ const { defineConfig, devices } = require('@playwright/test');
 module.exports = defineConfig({
   testDir: './tests',
   timeout: 60000,
-  retries: process.env.CI ? 1 : 0,
-  workers: process.env.CI ? 2 : undefined,
+  retries: process.env.CI ? 2 : 0,
+  /* WebKit on ubuntu CI OOMs under parallel workers (page closed mid-evaluate). */
+  workers: process.env.CI ? 1 : undefined,
   projects: [
     /* PW_CHANNEL=chrome runs on installed Google Chrome when the bundled
        browser build is missing (another Playwright version can swap the cache). */
