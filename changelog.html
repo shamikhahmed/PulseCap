@@ -31,6 +31,12 @@ footer{margin-top:40px;padding-top:20px;border-top:1px solid rgba(255,255,255,.0
   <a href="pitch.html">Pitch</a>
 </nav>
 <article><h1>Changelog — PulseCap</h1>
+<h2>6.46.0 (2026-10-15) — Splash overlay / LCP</h2>
+<ul>
+<li>Boot splash is a fixed overlay so app content paints underneath (Lighthouse LCP).</li>
+<li>Returning visitors and <code>prefers-reduced-motion</code> skip splash; first visit ≤ 1 s, tap to skip.</li>
+<li>SW <code>pulsecap-v128</code>.</li>
+</ul>
 <h2>6.45.0 (2026-10-14) — Perfection Loop v3</h2>
 <ul>
 <li>Gate vibrate/haptics behind user activation (PLS-V3-1) so silent demo boot stays quiet in Chromium.</li>

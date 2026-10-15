@@ -1,3 +1,8 @@
+## 6.46.0 — 2026-10-15 — Splash overlay / LCP (Perfection v4)
+- Boot splash is a fixed overlay: real screen paints immediately underneath so LCP lands on app content (fixes Lighthouse NO_LCP).
+- Returning visitors skip splash (`pulsecap-splash-seen`); `prefers-reduced-motion` and `?demo=1` skip splash; first visit ≤ 1 s and skippable by tap (`?splash=1` forces show).
+- Shortened clipboard entrance (no infinite bounce). SW `pulsecap-v128` · register `sw.js?v=128`.
+
 ## 6.45.0 — 2026-10-14 — Perfection Loop v3 (PLS-V3-1)
 - PLS-V3-1: gate `navigator.vibrate` / `haptic` / `celebrate` behind `navigator.userActivation.hasBeenActive` (no Chromium vibrate-before-activation on silent `?demo=1` boot).
 - QA: `qa/perfection/{STATE,INVENTORY,MATRIX,ITEMS}` + baseline/post-fix device-qa (7/7 hard-clean, vibrate console 0).

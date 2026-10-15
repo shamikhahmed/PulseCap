@@ -43,10 +43,11 @@ h1, .topbar-title, .sh-t, .ob-title, .splash-word {
   font-weight: 700;
 }
 
-/* ── Boot splash — gym clipboard on rubber mat ── */
+/* ── Boot splash — fixed overlay (content paints underneath for LCP) ── */
 .clipboard-splash {
-  height: 100%;
-  min-height: 100dvh;
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -65,7 +66,8 @@ h1, .topbar-title, .sh-t, .ob-title, .splash-word {
 }
 
 .clipboard-splash--out {
-  animation: clipboardSplashOut 0.28s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
+  animation: clipboardSplashOut 0.18s var(--ease, cubic-bezier(0.22, 1, 0.36, 1)) both;
+  pointer-events: none;
 }
 
 @keyframes clipboardSplashOut {
@@ -75,18 +77,13 @@ h1, .topbar-title, .sh-t, .ob-title, .splash-word {
 .clipboard-board {
   position: relative;
   width: min(268px, 74vw);
-  animation: clipboardBoardIn 0.62s cubic-bezier(0.34, 1.45, 0.64, 1) both,
-             clipboardBounce 2.4s 0.7s ease-in-out infinite;
+  /* Single short entrance — no infinite bounce (kept first-visit ≤1s). */
+  animation: clipboardBoardIn 0.4s cubic-bezier(0.34, 1.45, 0.64, 1) both;
 }
 
 @keyframes clipboardBoardIn {
   from { opacity: 0; transform: scale(0.82) translateY(18px); }
   to   { opacity: 1; transform: scale(1) translateY(0); }
-}
-
-@keyframes clipboardBounce {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-5px); }
 }
 
 .clipboard-clip {
@@ -191,12 +188,12 @@ h1, .topbar-title, .sh-t, .ob-title, .splash-word {
 .clipboard-pulse__line {
   stroke-dasharray: 140;
   stroke-dashoffset: 140;
-  animation: clipboardPulseDraw 0.9s 0.45s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: clipboardPulseDraw 0.45s 0.12s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .clipboard-pulse__dot {
   opacity: 0;
-  animation: clipboardPulseDot 0.35s 1.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  animation: clipboardPulseDot 0.25s 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 }
 
 @keyframes clipboardPulseDraw {
@@ -213,7 +210,7 @@ h1, .topbar-title, .sh-t, .ob-title, .splash-word {
   font-weight: 800;
   color: var(--txt);
   letter-spacing: -0.04em;
-  animation: splashFade 0.5s 1s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: splashFade 0.35s 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 #boot-splash .splash-tag {
@@ -223,7 +220,17 @@ h1, .topbar-title, .sh-t, .ob-title, .splash-word {
   text-align: center;
   line-height: 1.45;
   max-width: 220px;
-  animation: splashFade 0.5s 1.15s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: splashFade 0.35s 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+#boot-splash .splash-skip-hint {
+  font-size: 11px;
+  color: var(--txt3);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.7;
+  animation: splashFade 0.3s 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 @keyframes splashFade {
@@ -365,9 +372,13 @@ h1, .topbar-title, .sh-t, .ob-title, .splash-word {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .clipboard-board { animation: clipboardBoardIn 0.01ms both; }
+  #boot-splash { display: none !important; }
+  .clipboard-board { animation: none; }
   .clipboard-pulse__line { stroke-dashoffset: 0; animation: none; }
   .clipboard-pulse__dot { opacity: 1; animation: none; }
+  #boot-splash .splash-word,
+  #boot-splash .splash-tag,
+  #boot-splash .splash-skip-hint { animation: none; opacity: 1; transform: none; }
 }
 
 /* ── Today clipboard layout: mobile stack · desktop 3-pane ── */

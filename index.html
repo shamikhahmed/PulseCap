@@ -53,7 +53,20 @@
   <link rel="stylesheet" href="css/ember-components.css">
   <link rel="stylesheet" href="css/shell.css">
   <link rel="stylesheet" href="css/identity.css">
+  <script>
+  /* Skip branded splash before paint for returning visitors / reduced motion / demo (LCP). */
+  (function () {
+    try {
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var seen = localStorage.getItem('pulsecap-splash-seen') === '1';
+      var demo = /(?:^|[?&])demo=1(?:&|$)/.test(location.search);
+      var force = /(?:^|[?&])splash=1(?:&|$)/.test(location.search);
+      if (!force && (seen || reduce || demo)) document.documentElement.classList.add('pc-skip-splash');
+    } catch (e) {}
+  })();
+  </script>
   <style>
+    html.pc-skip-splash #boot-splash { display: none !important; }
     html,body{height:100%;overflow:hidden;}
     @media (max-width: 374px) {
       :root { --fs-body: 13px; --fs-hero: 28px; --fs-title: 18px; --card-pad: 12px; --nav-h: 60px; }
@@ -166,35 +179,35 @@ window.addEventListener('offline', updateOfflineBanner);
 updateOfflineBanner();
 window.updateOfflineBanner = updateOfflineBanner;
 </script>
+  <div id="boot-splash" class="clipboard-splash" role="status" aria-label="PulseCap" aria-hidden="true">
+    <div class="clipboard-board">
+      <div class="clipboard-clip" aria-hidden="true"></div>
+      <div class="clipboard-paper">
+        <div class="clipboard-chalk" aria-hidden="true">
+          <span class="clipboard-chalk__mark clipboard-chalk__mark--1"></span>
+          <span class="clipboard-chalk__mark clipboard-chalk__mark--2"></span>
+          <span class="clipboard-chalk__mark clipboard-chalk__mark--3"></span>
+        </div>
+        <svg class="clipboard-pulse" width="120" height="48" viewBox="0 0 120 48" fill="none" aria-hidden="true">
+          <defs>
+            <linearGradient id="clipboard-pulse-grad" x1="0" y1="0" x2="120" y2="0" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#FF7A1A"/>
+              <stop offset="55%" stop-color="#E86A0E"/>
+              <stop offset="100%" stop-color="#FF9F0A"/>
+            </linearGradient>
+          </defs>
+          <path class="clipboard-pulse__line" d="M4 24 H28 L38 14 L52 34 L66 10 L80 24 H116" stroke="url(#clipboard-pulse-grad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle class="clipboard-pulse__dot" cx="60" cy="24" r="4" fill="currentColor"/>
+        </svg>
+        <div class="splash-word">PulseCap</div>
+        <div class="splash-tag">Today’s session — log fast, stay honest.</div>
+        <div class="splash-skip-hint">Tap to continue</div>
+      </div>
+    </div>
+  </div>
   <div id="app-shell" class="app-shell">
     <div id="app">
-      <div id="view" class="cap-scroll-y">
-      <div id="boot-splash" class="screen clipboard-splash" aria-hidden="true">
-        <div class="clipboard-board">
-          <div class="clipboard-clip" aria-hidden="true"></div>
-          <div class="clipboard-paper">
-            <div class="clipboard-chalk" aria-hidden="true">
-              <span class="clipboard-chalk__mark clipboard-chalk__mark--1"></span>
-              <span class="clipboard-chalk__mark clipboard-chalk__mark--2"></span>
-              <span class="clipboard-chalk__mark clipboard-chalk__mark--3"></span>
-            </div>
-            <svg class="clipboard-pulse" width="120" height="48" viewBox="0 0 120 48" fill="none" aria-hidden="true">
-              <defs>
-                <linearGradient id="clipboard-pulse-grad" x1="0" y1="0" x2="120" y2="0" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#FF7A1A"/>
-                  <stop offset="55%" stop-color="#E86A0E"/>
-                  <stop offset="100%" stop-color="#FF9F0A"/>
-                </linearGradient>
-              </defs>
-              <path class="clipboard-pulse__line" d="M4 24 H28 L38 14 L52 34 L66 10 L80 24 H116" stroke="url(#clipboard-pulse-grad)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-              <circle class="clipboard-pulse__dot" cx="60" cy="24" r="4" fill="currentColor"/>
-            </svg>
-            <div class="splash-word">PulseCap</div>
-            <div class="splash-tag">Today’s session — log fast, stay honest.</div>
-          </div>
-        </div>
-      </div>
-      </div>
+      <div id="view" class="cap-scroll-y"></div>
     <nav id="nav" aria-label="Main navigation" style="display:none"></nav>
     </div>
   </div>
@@ -236,23 +249,80 @@ window.updateOfflineBanner = updateOfflineBanner;
 
   <script>
     (function() {
-      var SPLASH_MS = 0;
-      var t0 = performance.now();
+      /* First-visit splash ≤1s overlay; returning / reduced-motion skip. Content paints under it for LCP. */
+      var SPLASH_MS = 1000;
+      var EXIT_MS = 180;
+      var SPLASH_KEY = 'pulsecap-splash-seen';
+      var _splashDone = false;
+
+      function markAppReady() {
+        document.documentElement.setAttribute('data-boot-ready', 'true');
+        try {
+          window.__APP_READY__ = true;
+          document.documentElement.dataset.appReady = 'true';
+        } catch (e) {}
+        window.dispatchEvent(new CustomEvent('pulsecap:ready'));
+      }
+
+      function removeSplash() {
+        var splash = document.getElementById('boot-splash');
+        if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
+      }
+
+      function dismissSplash(immediate) {
+        if (_splashDone) return;
+        _splashDone = true;
+        var splash = document.getElementById('boot-splash');
+        if (!splash) return;
+        if (immediate) {
+          removeSplash();
+          return;
+        }
+        splash.classList.add('clipboard-splash--out');
+        splash.setAttribute('aria-hidden', 'true');
+        setTimeout(removeSplash, EXIT_MS);
+      }
+
       window._bootAfterSplash = function(fn) {
-        var wait = Math.max(0, SPLASH_MS - (performance.now() - t0));
-        setTimeout(function() {
-          var splash = document.getElementById('boot-splash');
-          if (splash) splash.classList.add('clipboard-splash--out');
-          setTimeout(function() {
-            fn();
-            document.documentElement.setAttribute('data-boot-ready', 'true');
-            try {
-              window.__APP_READY__ = true;
-              document.documentElement.dataset.appReady = 'true';
-            } catch (e) {}
-            window.dispatchEvent(new CustomEvent('pulsecap:ready'));
-          }, 180);
-        }, wait);
+        /* Paint real screen first — splash is a fixed overlay, not a content gate. */
+        try { fn(); } catch (e) { console.error('boot', e); }
+        markAppReady();
+
+        var splash = document.getElementById('boot-splash');
+        var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var seen = false;
+        var forceSplash = false;
+        var demo = false;
+        try { seen = localStorage.getItem(SPLASH_KEY) === '1'; } catch (e) {}
+        try {
+          var params = new URLSearchParams(location.search);
+          forceSplash = params.get('splash') === '1';
+          demo = params.get('demo') === '1';
+        } catch (e) {}
+
+        if (!splash || document.documentElement.classList.contains('pc-skip-splash') ||
+            (!forceSplash && (seen || reduce || demo))) {
+          dismissSplash(true);
+          return;
+        }
+
+        try { localStorage.setItem(SPLASH_KEY, '1'); } catch (e) {}
+
+        splash.setAttribute('aria-hidden', 'false');
+        splash.setAttribute('role', 'button');
+        splash.setAttribute('aria-label', 'Skip intro');
+        splash.tabIndex = 0;
+        splash.style.cursor = 'pointer';
+
+        function skip() { dismissSplash(false); }
+        splash.addEventListener('click', skip, { once: true });
+        splash.addEventListener('keydown', function(e) {
+          if (e.key === 'Enter' || e.key === ' ' || e.key === 'Escape') {
+            e.preventDefault();
+            skip();
+          }
+        }, { once: true });
+        setTimeout(skip, SPLASH_MS);
       };
     })();
     S.init();
@@ -323,7 +393,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=127').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=128').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {

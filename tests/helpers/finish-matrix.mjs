@@ -44,7 +44,9 @@ export function matrixViewports() {
 /** Wait until the app signals the first real screen (not splash). */
 export async function waitForAppReady(page, { timeout = 15000 } = {}) {
   await page.waitForFunction(
-    () => window.__APP_READY__ === true || document.documentElement.dataset.appReady === 'true',
+    () =>
+      (window.__APP_READY__ === true || document.documentElement.dataset.appReady === 'true') &&
+      !document.getElementById('boot-splash'),
     null,
     { timeout },
   );

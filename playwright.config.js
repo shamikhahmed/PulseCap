@@ -12,7 +12,19 @@ module.exports = defineConfig({
     { name: 'webkit', use: { ...devices['Desktop Safari'] } },
     { name: 'firefox', use: { ...devices['Desktop Firefox'] } },
   ],
-  use: { baseURL: 'http://127.0.0.1:8766' },
+  use: {
+    baseURL: 'http://127.0.0.1:8766',
+    /* Returning-visitor splash skip so e2e clicks hit app chrome, not the overlay. */
+    storageState: {
+      cookies: [],
+      origins: [
+        {
+          origin: 'http://127.0.0.1:8766',
+          localStorage: [{ name: 'pulsecap-splash-seen', value: '1' }],
+        },
+      ],
+    },
+  },
   webServer: {
     command: 'node scripts/static-server.mjs 8766',
     url: 'http://127.0.0.1:8766',
