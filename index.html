@@ -54,20 +54,22 @@
   <link rel="stylesheet" href="css/shell.css">
   <link rel="stylesheet" href="css/identity.css">
   <script>
-  /* Skip branded splash before paint for returning visitors / reduced motion / demo / automation (LCP + SI). */
+  /* Skip branded splash before paint for returning visitors / reduced motion / demo.
+     pc-booting: the first screen paints without its entry fade so it counts as contentful (LCP). */
   (function () {
     try {
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var seen = localStorage.getItem('pulsecap-splash-seen') === '1';
       var demo = /(?:^|[?&])demo=1(?:&|$)/.test(location.search);
       var force = /(?:^|[?&])splash=1(?:&|$)/.test(location.search);
-      var auto = !!(navigator.webdriver);
-      if (!force && (seen || reduce || demo || auto)) document.documentElement.classList.add('pc-skip-splash');
+      document.documentElement.classList.add('pc-booting');
+      if (!force && (seen || reduce || demo)) document.documentElement.classList.add('pc-skip-splash');
     } catch (e) {}
   })();
   </script>
   <style>
     html.pc-skip-splash #boot-splash { display: none !important; }
+    html.pc-booting .screen { animation: none; }
     html,body{height:100%;overflow:hidden;}
     @media (max-width: 374px) {
       :root { --fs-body: 13px; --fs-hero: 28px; --fs-title: 18px; --card-pad: 12px; --nav-h: 60px; }
@@ -288,13 +290,14 @@ window.updateOfflineBanner = updateOfflineBanner;
         /* Paint real screen first — splash is a fixed overlay, not a content gate. */
         try { fn(); } catch (e) { console.error('boot', e); }
         markAppReady();
+        /* Later screen changes keep their entry fade. */
+        requestAnimationFrame(function() { requestAnimationFrame(function() { document.documentElement.classList.remove('pc-booting'); }); });
 
         var splash = document.getElementById('boot-splash');
         var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var seen = false;
         var forceSplash = false;
         var demo = false;
-        var auto = !!(navigator.webdriver);
         try { seen = localStorage.getItem(SPLASH_KEY) === '1'; } catch (e) {}
         try {
           var params = new URLSearchParams(location.search);
@@ -303,7 +306,7 @@ window.updateOfflineBanner = updateOfflineBanner;
         } catch (e) {}
 
         if (!splash || document.documentElement.classList.contains('pc-skip-splash') ||
-            (!forceSplash && (seen || reduce || demo || auto))) {
+            (!forceSplash && (seen || reduce || demo))) {
           dismissSplash(true);
           return;
         }
@@ -395,7 +398,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=129').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=130').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {

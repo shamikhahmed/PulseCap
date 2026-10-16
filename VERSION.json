@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.46.0",
-  "swCache": "pulsecap-v129",
-  "updated": "2026-10-15",
-  "notes": "Perfection Loop v4: first-visit splash ≤600ms overlay (skippable); returning/reduced-motion/demo/webdriver skip; content paints under splash for LCP. SW v129"
+  "version": "6.46.1",
+  "swCache": "pulsecap-v130",
+  "updated": "2026-10-16",
+  "notes": "First screen paints without its entry fade so Chrome records LCP; automation no longer skips the splash, so Lighthouse measures what first-time visitors get. SW v130"
 }

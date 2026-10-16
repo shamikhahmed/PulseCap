@@ -1,3 +1,8 @@
+## 6.46.1 — 2026-10-16 — Honest first paint
+- First screen paints without its 180 ms entry fade (`html.pc-booting`), so Chrome records a contentful paint and Lighthouse can score it. Later screen changes keep the fade.
+- Automation (`navigator.webdriver`) no longer skips the splash — Lighthouse now measures what a first-time visitor sees.
+- SW `pulsecap-v130` · register `sw.js?v=130`.
+
 ## 6.46.0 — 2026-10-15 — Splash overlay / LCP (Perfection v4)
 - Boot splash is a fixed overlay: real screen paints immediately underneath so LCP lands on app content (fixes Lighthouse NO_LCP).
 - Returning visitors skip splash (`pulsecap-splash-seen`); `prefers-reduced-motion`, `?demo=1`, and `navigator.webdriver` skip splash; first visit ≤ 600 ms and skippable by tap (`?splash=1` forces show).
