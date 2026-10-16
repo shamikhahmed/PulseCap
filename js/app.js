@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.46.3';
+window.APP_VERSION = '6.46.4';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -252,6 +252,7 @@ window.prettyMuscles = function(arr, max) {
 
 /* Route-only modules + DBs — kept off first paint (mobile TBT/LCP). */
 const WORKOUT_CHAIN = [
+  'js/gym-tools.js',
   'js/data/exercise-db.js',
   'js/data/form-loops.js',
   'js/data/workout-library.js',
@@ -269,7 +270,13 @@ const MODULE_CHAIN = {
   guide: WORKOUT_CHAIN,
   nutrition: ['js/data/foods-db.js', 'js/modules/nutrition.js'],
   rehab: ['js/modules/rehab.js'],
-  photos: ['js/modules/photos.js']
+  photos: ['js/modules/photos.js'],
+  /* Idle-loaded in index.html — still must be sync-loadable via go() (v5 §3 CI). */
+  recovery: ['js/gym-tools.js', 'js/modules/recovery.js'],
+  coach: ['js/modules/coach.js'],
+  profiles: ['js/modules/profiles.js'],
+  programs: ['js/modules/coach.js'],
+  assistant: ['js/modules/coach.js']
 };
 /* Back-compat: last script in each chain (tests / docs mention MODULE_SRC). */
 const MODULE_SRC = {};

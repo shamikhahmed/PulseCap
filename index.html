@@ -46,17 +46,15 @@
 <meta name="twitter:image" content="https://shamikhahmed.github.io/assets/screenshots/pulsecap.png">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
-  <!-- Critical shell tokens; defer heavier sheets (v5 §3 render-blocking). -->
+  <!-- Blocking shell CSS — async sheets delayed LCP to ~2.1s (v5 §3c). -->
   <link rel="stylesheet" href="css/tokens.base.css">
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/shell.css">
-  <link rel="stylesheet" href="css/layout.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="css/components.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/ember-components.css" media="print" onload="this.media='all'">
   <link rel="stylesheet" href="css/identity.css" media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/ember-components.css">
     <link rel="stylesheet" href="css/identity.css">
   </noscript>
@@ -426,7 +424,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=132').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=133').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {

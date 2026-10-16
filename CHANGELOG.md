@@ -1,3 +1,9 @@
+## 6.46.4 — 2026-10-16
+- Blocking layout/components CSS (async delayed LCP)
+- MODULE_CHAIN for recovery/coach/profiles so idle-load screens stay reachable via `go()`
+- Soft-guard WakeLock.request when gym-tools not yet loaded (Firefox CI)
+- SW `pulsecap-v133`
+
 ## 6.46.3 — 2026-10-16 — V5 §3 Performance
 - Async-load layout/components/ember/identity CSS (tokens+shell stay blocking)
 - Idle-load Train/Coach/Recovery/photos modules after Home paints

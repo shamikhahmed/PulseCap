@@ -500,7 +500,7 @@ window.resumeWorkoutDraft = function() {
     toast('Workout draft could not be restored', 'warn');
     return;
   }
-  if (typeof WakeLock !== 'undefined') WakeLock.request();
+  if (typeof WakeLock !== 'undefined' && typeof WakeLock.request === 'function') WakeLock.request();
   go('active');
 };
 window.discardWorkoutDraft = function() {
@@ -1323,7 +1323,7 @@ window.saveWorkout = function() {
     const recap = SessionRecap.build(workout);
     SessionRecap.store(recap);
   }
-  if (typeof WakeLock !== 'undefined') WakeLock.release();
+  if (typeof WakeLock !== 'undefined' && typeof WakeLock.release === 'function') WakeLock.release();
   if (typeof VoiceLogger !== 'undefined') VoiceLogger.stop();
   if (!isLibrary) SplitEngine.nextDay();
   AchEngine.check();
@@ -1439,7 +1439,7 @@ window.__pcStartWorkout = function(templateName) {
     _wktNotes = {}; _supersetMode = false; _quickMode = false; _focusMode = false;
     _startWktTimer();
     _checkpointWorkout(true);
-    if (typeof WakeLock !== 'undefined') WakeLock.request();
+    if (typeof WakeLock !== 'undefined' && typeof WakeLock.request === 'function') WakeLock.request();
     if (typeof GymFloor !== 'undefined') GymFloor.apply();
     closeModal();
     return go('active');
@@ -1497,7 +1497,7 @@ window.__pcStartWorkout = function(templateName) {
   _focusMode = false;
   _startWktTimer();
   _checkpointWorkout(true);
-  if (typeof WakeLock !== 'undefined') WakeLock.request();
+  if (typeof WakeLock !== 'undefined' && typeof WakeLock.request === 'function') WakeLock.request();
   if (typeof GymFloor !== 'undefined') GymFloor.apply();
   return go('active');
 };
@@ -1530,7 +1530,7 @@ window.__pcStartQuickWorkout = function() {
   _quickMode = true;
   _startWktTimer();
   _checkpointWorkout(true);
-  if (typeof WakeLock !== 'undefined') WakeLock.request();
+  if (typeof WakeLock !== 'undefined' && typeof WakeLock.request === 'function') WakeLock.request();
   return go('active');
 };
 
@@ -1539,7 +1539,7 @@ if (typeof registerRouteCleanup === 'function') {
     clearInterval(_wktTimer);
     clearInterval(_restInterval);
     if (typeof RestNotify !== 'undefined') RestNotify.stop();
-    if (typeof WakeLock !== 'undefined') WakeLock.release();
+    if (typeof WakeLock !== 'undefined' && typeof WakeLock.release === 'function') WakeLock.release();
     if (typeof VoiceLogger !== 'undefined') VoiceLogger.stop();
     _checkpointWorkout(true);
   });

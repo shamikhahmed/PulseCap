@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.46.3",
-  "swCache": "pulsecap-v132",
+  "version": "6.46.4",
+  "swCache": "pulsecap-v133",
   "updated": "2026-10-16",
-  "notes": "V5 §3: async non-critical CSS; idle-load Train/Coach extras"
+  "notes": "V5 §3c: blocking layout/components CSS for LCP; idle Train extras"
 }
