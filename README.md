@@ -1,6 +1,6 @@
 # PulseCap
 
-**Version:** 6.46.5
+**Version:** 6.46.6
 
 **Run today’s session, log it in two taps, and see honest progress — offline, on your device.**
 

@@ -1,3 +1,7 @@
+## 6.46.6 — 2026-10-16
+- Kill first-paint `.screen-enter` translateY (mobile CLS 0.128 → honest LH)
+- SW `pulsecap-v135`
+
 ## 6.46.5 — 2026-10-16
 - Restore eager coach/recovery/photos/plan scripts (idle-load broke PhotoStore + owner-seed CI)
 - SW `pulsecap-v134`

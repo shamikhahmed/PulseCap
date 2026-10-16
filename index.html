@@ -75,6 +75,13 @@
   <style>
     html.pc-skip-splash #boot-splash { display: none !important; }
     html.pc-booting .screen { animation: none; }
+    /* First paint: no entry slide — translateY was CLS 0.128 on mobile LH (v5 §3). */
+    html.pc-booting .screen-enter,
+    html.pc-booting .screen-enter-active {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
     html,body{height:100%;overflow:hidden;}
     @media (max-width: 374px) {
       :root { --fs-body: 13px; --fs-hero: 28px; --fs-title: 18px; --card-pad: 12px; --nav-h: 60px; }
@@ -403,7 +410,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=134').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=135').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {
