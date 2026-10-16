@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.46.4",
-  "swCache": "pulsecap-v133",
+  "version": "6.46.5",
+  "swCache": "pulsecap-v134",
   "updated": "2026-10-16",
-  "notes": "V5 §3c: blocking layout/components CSS for LCP; idle Train extras"
+  "notes": "V5 \u00a73: restore eager coach/recovery/photos (idle broke CI)"
 }

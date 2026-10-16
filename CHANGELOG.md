@@ -1,3 +1,7 @@
+## 6.46.5 — 2026-10-16
+- Restore eager coach/recovery/photos/plan scripts (idle-load broke PhotoStore + owner-seed CI)
+- SW `pulsecap-v134`
+
 ## 6.46.4 — 2026-10-16
 - Blocking layout/components CSS (async delayed LCP)
 - MODULE_CHAIN for recovery/coach/profiles so idle-load screens stay reachable via `go()`

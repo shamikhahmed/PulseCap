@@ -238,42 +238,21 @@ window.updateOfflineBanner = updateOfflineBanner;
   <script src="js/coach-kernel.js"></script>
   <script src="js/core/profile.js"></script>
   <script src="js/core/engine.js"></script>
-  <!-- Eager: Today shell · Progress · Me. -->
+  <!-- Eager: shell + screens tests/owner seed need (idle-load broke PhotoStore / my-plan CI). -->
   <script src="js/modules/onboarding.js"></script>
   <script src="js/modules/dashboard.js"></script>
   <script src="js/modules/progress.js"></script>
   <script src="js/modules/settings.js"></script>
-  <!-- Idle-load Train/Coach/Recovery extras after Home paints (v5 §3). -->
-  <script>
-  (function () {
-    var files = [
-      'js/data/training-plan-schema.js',
-      'js/data/plans/machine-ppl.js',
-      'js/data/plans/catalog.js',
-      'js/training-plan.js',
-      'js/plan-import.js',
-      'js/gym-tools.js',
-      'js/modules/coach.js',
-      'js/modules/recovery.js',
-      'js/modules/profiles.js',
-      'js/modules/photos.js'
-    ];
-    function loadNext(i) {
-      if (i >= files.length) return;
-      var s = document.createElement('script');
-      s.src = files[i];
-      s.onload = function () { loadNext(i + 1); };
-      s.onerror = function () { loadNext(i + 1); };
-      document.head.appendChild(s);
-    }
-    function kick() {
-      if ('requestIdleCallback' in window) requestIdleCallback(function () { loadNext(0); }, { timeout: 2500 });
-      else setTimeout(function () { loadNext(0); }, 800);
-    }
-    if (document.readyState === 'complete') kick();
-    else window.addEventListener('load', kick);
-  })();
-  </script>
+  <script src="js/data/training-plan-schema.js"></script>
+  <script src="js/data/plans/machine-ppl.js"></script>
+  <script src="js/data/plans/catalog.js"></script>
+  <script src="js/training-plan.js"></script>
+  <script src="js/plan-import.js"></script>
+  <script src="js/gym-tools.js"></script>
+  <script src="js/modules/coach.js"></script>
+  <script src="js/modules/recovery.js"></script>
+  <script src="js/modules/profiles.js"></script>
+  <script src="js/modules/photos.js"></script>
   <!-- Ember survivors only — quarantined modules were deleted in Phase 9 -->
 
   <script>
@@ -424,7 +403,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=133').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=134').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {
