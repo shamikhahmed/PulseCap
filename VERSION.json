@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.46.1",
-  "swCache": "pulsecap-v130",
+  "version": "6.46.2",
+  "swCache": "pulsecap-v131",
   "updated": "2026-10-16",
-  "notes": "First screen paints without its entry fade so Chrome records LCP; automation no longer skips the splash, so Lighthouse measures what first-time visitors get. SW v130"
+  "notes": "Ember brand parity on decks + leftover cyan apple-touch/icons; hub already Ember in theme-color. SW v131"
 }

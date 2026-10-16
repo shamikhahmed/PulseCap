@@ -1,3 +1,8 @@
+## 6.46.2 — 2026-10-16 — Ember decks + icon parity (V5-2)
+- Pitch and presentation decks: every cyan / leftover red accent remapped to Ember `#FF7A1A` / `#E86A0E`.
+- Leftover cyan `apple-touch-icon` / `icons/` / `assets/apple-touch-icon-*` replaced with Ember app icons (root `icon-*.png` were already Ember).
+- SW `pulsecap-v131` · register `sw.js?v=131`.
+
 ## 6.46.1 — 2026-10-16 — Honest first paint
 - First screen paints without its 180 ms entry fade (`html.pc-booting`), so Chrome records a contentful paint and Lighthouse can score it. Later screen changes keep the fade.
 - Automation (`navigator.webdriver`) no longer skips the splash — Lighthouse now measures what a first-time visitor sees.
