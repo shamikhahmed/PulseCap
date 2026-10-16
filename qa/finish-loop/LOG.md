@@ -102,3 +102,9 @@
   - LH mobile `/?demo=1`: perf **91** / a11y 98 / bp 100 · FCP ~1.95s · LCP ~2.03s · TBT 0 · CLS 0 · **no NO_FCP/NO_LCP**.
   - LH desktop: perf **74** (Speed Index ~5.4–5.6s inflates under agent Chrome; FCP/LCP/TBT match mobile) — logged as L / env, gate was mobile ≥90.
   - Evidence: `qa/finish-loop/lighthouse/home-demo-{mobile,desktop}.json` (fetchTime 2026-10-15T13:09Z).
+
+## 2026-10-16 — v6.46.1 verification (Claude)
+
+- Correction to the 6.46.0 seal: that run measured `/?demo=1` with the `navigator.webdriver` splash bypass, so it never saw the first-visit splash. On plain `/` Chrome still recorded **no LCP at all**: every `.screen` starts at opacity 0 (`fadeUp … both`).
+- 6.46.1: first screen paints without the entry fade (`html.pc-booting`), webdriver bypass removed. Live `/` (first visit, splash shown, automation flag hidden): **mobile perf 89**, LCP 2.1 s, TBT 30 ms, CLS 0; desktop FCP 0.5 s / LCP 0.6 s.
+- Remaining to reach ≥90 mobile honestly: render-blocking CSS (7 separate stylesheets), unused JS (~200 KiB: engines.js, settings.js, progress.js).
