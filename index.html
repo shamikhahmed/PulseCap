@@ -271,11 +271,9 @@ window.updateOfflineBanner = updateOfflineBanner;
   <script src="js/data/plans/catalog.js"></script>
   <script src="js/training-plan.js"></script>
   <script src="js/plan-import.js"></script>
-  <script src="js/gym-tools.js"></script>
   <script src="js/modules/coach.js"></script>
-  <script src="js/modules/recovery.js"></script>
-  <script src="js/modules/profiles.js"></script>
   <script src="js/modules/photos.js"></script>
+  <!-- gym-tools / recovery / profiles idle after Home — go() still sync-loads via MODULE_CHAIN -->
   <!-- Ember survivors only — quarantined modules were deleted in Phase 9 -->
 
   <script>
@@ -362,6 +360,20 @@ window.updateOfflineBanner = updateOfflineBanner;
     S.init();
     const _isDemo = bootDemoIfRequested();
     if (typeof bootOwnerSeed === 'function') bootOwnerSeed();
+    (function deferMeTabScripts() {
+      var srcs = ['js/gym-tools.js', 'js/modules/recovery.js', 'js/modules/profiles.js'];
+      function load() {
+        srcs.forEach(function(src) {
+          if (document.querySelector('script[src="' + src + '"]')) return;
+          var s = document.createElement('script');
+          s.src = src;
+          s.async = true;
+          document.head.appendChild(s);
+        });
+      }
+      if (typeof requestIdleCallback === 'function') requestIdleCallback(load, { timeout: 3500 });
+      else setTimeout(load, 2000);
+    })();
     const _savedTheme = S.g('user.theme') || S.g('user.mode');
     if (_savedTheme) applyTheme(_savedTheme);
     else applySystemTheme();
@@ -428,7 +440,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=135').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=136').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {

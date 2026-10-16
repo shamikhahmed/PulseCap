@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.46.6",
-  "swCache": "pulsecap-v135",
+  "version": "6.46.7",
+  "swCache": "pulsecap-v136",
   "updated": "2026-10-16",
-  "notes": "V5 \u00a73: reserve nav slot; kill screen fadeUp CLS; no install on demo"
+  "notes": "V5 \u00a73: idle gym-tools/recovery/profiles; keep coach/plan/photos eager"
 }

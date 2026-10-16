@@ -1,3 +1,7 @@
+## 6.46.7 — 2026-10-16
+- Idle-load gym-tools, recovery, profiles after owner seed (coach/plan/photos stay eager for CI)
+- SW `pulsecap-v136`
+
 ## 6.46.6 — 2026-10-16
 - Kill first-paint `.screen-enter` translateY (mobile CLS 0.128 → honest LH)
 - SW `pulsecap-v135`
