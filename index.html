@@ -46,13 +46,20 @@
 <meta name="twitter:image" content="https://shamikhahmed.github.io/assets/screenshots/pulsecap.png">
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <!-- Critical shell tokens; defer heavier sheets (v5 §3 render-blocking). -->
   <link rel="stylesheet" href="css/tokens.base.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/tokens.css">
-  <link rel="stylesheet" href="css/ember-components.css">
   <link rel="stylesheet" href="css/shell.css">
-  <link rel="stylesheet" href="css/identity.css">
+  <link rel="stylesheet" href="css/layout.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/components.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/ember-components.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="css/identity.css" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/ember-components.css">
+    <link rel="stylesheet" href="css/identity.css">
+  </noscript>
   <script>
   /* Skip branded splash before paint for returning visitors / reduced motion / demo.
      pc-booting: the first screen paints without its entry fade so it counts as contentful (LCP). */
@@ -231,23 +238,44 @@ window.updateOfflineBanner = updateOfflineBanner;
   <script src="js/engines.js"></script>
   <script src="js/core/daily-decision.js"></script>
   <script src="js/coach-kernel.js"></script>
-  <script src="js/data/training-plan-schema.js"></script>
-  <script src="js/data/plans/machine-ppl.js"></script>
-  <script src="js/data/plans/catalog.js"></script>
-  <script src="js/training-plan.js"></script>
   <script src="js/core/profile.js"></script>
   <script src="js/core/engine.js"></script>
-  <script src="js/plan-import.js"></script>
-  <script src="js/gym-tools.js"></script>
-  <!-- Eager: Today shell · Progress · Me. Route DBs/modules load via MODULE_CHAIN. -->
+  <!-- Eager: Today shell · Progress · Me. -->
   <script src="js/modules/onboarding.js"></script>
   <script src="js/modules/dashboard.js"></script>
-  <script src="js/modules/coach.js"></script>
   <script src="js/modules/progress.js"></script>
-  <script src="js/modules/recovery.js"></script>
   <script src="js/modules/settings.js"></script>
-  <script src="js/modules/profiles.js"></script>
-  <script src="js/modules/photos.js"></script>
+  <!-- Idle-load Train/Coach/Recovery extras after Home paints (v5 §3). -->
+  <script>
+  (function () {
+    var files = [
+      'js/data/training-plan-schema.js',
+      'js/data/plans/machine-ppl.js',
+      'js/data/plans/catalog.js',
+      'js/training-plan.js',
+      'js/plan-import.js',
+      'js/gym-tools.js',
+      'js/modules/coach.js',
+      'js/modules/recovery.js',
+      'js/modules/profiles.js',
+      'js/modules/photos.js'
+    ];
+    function loadNext(i) {
+      if (i >= files.length) return;
+      var s = document.createElement('script');
+      s.src = files[i];
+      s.onload = function () { loadNext(i + 1); };
+      s.onerror = function () { loadNext(i + 1); };
+      document.head.appendChild(s);
+    }
+    function kick() {
+      if ('requestIdleCallback' in window) requestIdleCallback(function () { loadNext(0); }, { timeout: 2500 });
+      else setTimeout(function () { loadNext(0); }, 800);
+    }
+    if (document.readyState === 'complete') kick();
+    else window.addEventListener('load', kick);
+  })();
+  </script>
   <!-- Ember survivors only — quarantined modules were deleted in Phase 9 -->
 
   <script>
@@ -398,7 +426,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=131').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=132').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {

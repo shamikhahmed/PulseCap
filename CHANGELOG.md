@@ -1,3 +1,8 @@
+## 6.46.3 — 2026-10-16 — V5 §3 Performance
+- Async-load layout/components/ember/identity CSS (tokens+shell stay blocking)
+- Idle-load Train/Coach/Recovery/photos modules after Home paints
+- SW `pulsecap-v132` · register `sw.js?v=132`.
+
 ## 6.46.2 — 2026-10-16 — Ember decks + icon parity (V5-2)
 - Pitch and presentation decks: every cyan / leftover red accent remapped to Ember `#FF7A1A` / `#E86A0E`.
 - Leftover cyan `apple-touch-icon` / `icons/` / `assets/apple-touch-icon-*` replaced with Ember app icons (root `icon-*.png` were already Ember).

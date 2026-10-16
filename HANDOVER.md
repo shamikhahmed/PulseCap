@@ -7,8 +7,8 @@
 Offline-first training app — **PWA only** (no native HealthKit / Live Activity / widgets planned). Ember IA: Today · Train · Progress · Programs · Me.
 
 ## Facts
-**Version:** 6.46.2
-**SW cache:** `pulsecap-v131`
+**Version:** 6.46.3
+**SW cache:** `pulsecap-v132`
 **Live:** https://shamikhahmed.github.io/PulseCap
 **Repo:** https://github.com/shamikhahmed/PulseCap
 **Stack:** Vanilla JS PWA. Module registry (`reg()` pattern). Playwright viewport QA.

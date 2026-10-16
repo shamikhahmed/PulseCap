@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.46.2",
-  "swCache": "pulsecap-v131",
+  "version": "6.46.3",
+  "swCache": "pulsecap-v132",
   "updated": "2026-10-16",
-  "notes": "Ember brand parity on decks + leftover cyan apple-touch/icons; hub already Ember in theme-color. SW v131"
+  "notes": "V5 §3: async non-critical CSS; idle-load Train/Coach extras"
 }
