@@ -3,5 +3,5 @@
   "version": "6.46.6",
   "swCache": "pulsecap-v135",
   "updated": "2026-10-16",
-  "notes": "V5 \u00a73: kill first-paint screen-enter CLS"
+  "notes": "V5 \u00a73: reserve nav slot; kill screen fadeUp CLS; no install on demo"
 }

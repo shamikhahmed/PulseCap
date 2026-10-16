@@ -473,7 +473,7 @@ function _renderScreen(id, data) {
   }
   const nav = document.getElementById('nav');
   const noNav = ['onboarding', 'intro', 'briefing'];
-  if (nav) nav.style.display = noNav.includes(id) ? 'none' : 'flex';
+  if (nav) { if (noNav.includes(id)) nav.setAttribute('hidden',''); else nav.removeAttribute('hidden'); }
   const navId = NAV_PARENT[id] || id;
   document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
   const nb = document.getElementById('nb-' + navId);
@@ -509,7 +509,7 @@ function go(id, data) {
           v.innerHTML = '<div class="screen pad" style="padding:var(--space-6,24px);color:var(--txt2);font-size:var(--type-body,14px)">Loading…</div>';
         }
         const nav = document.getElementById('nav');
-        if (nav) nav.style.display = 'flex';
+        if (nav) nav.removeAttribute('hidden');
         const navId = NAV_PARENT[id] || id;
         document.querySelectorAll('.nb').forEach(b => b.classList.remove('on'));
         const nb = document.getElementById('nb-' + navId);

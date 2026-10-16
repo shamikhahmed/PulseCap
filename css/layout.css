@@ -23,7 +23,7 @@
   overscroll-behavior: contain;
   position: relative;
 }
-.screen { animation: fadeUp 0.18s var(--ease) both; position: relative; }
+.screen { animation:none; position: relative; }
 @media (prefers-reduced-motion: reduce) {
   .screen, .anim-fade-up, .stagger > * { animation: none !important; }
 }
@@ -811,7 +811,7 @@ body.gym-floor #nav.cap-premium-nav .nav-label { font-size: 0.6875rem; }
   font-size: 14px; font-weight: 800; color: var(--pc-ffffff);
   cursor: pointer; touch-action: manipulation; flex-shrink: 0;
 }
-.dash-demo-banner {
+.dash-demo-banner{min-height:44px;
   background: linear-gradient(135deg, rgba(255,69,58,0.15), rgba(255,69,58,0.08));
   border-bottom: 1px solid rgba(255,69,58,0.2);
   padding: 10px 16px;

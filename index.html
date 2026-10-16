@@ -67,16 +67,32 @@
       var seen = localStorage.getItem('pulsecap-splash-seen') === '1';
       var demo = /(?:^|[?&])demo=1(?:&|$)/.test(location.search);
       var force = /(?:^|[?&])splash=1(?:&|$)/.test(location.search);
-      document.documentElement.classList.add('pc-booting');
+      document.documentElement.classList.add('pc-booting'); document.documentElement.classList.add('pc-first-paint');
       if (!force && (seen || reduce || demo)) document.documentElement.classList.add('pc-skip-splash');
     } catch (e) {}
   })();
   </script>
   <style>
     html.pc-skip-splash #boot-splash { display: none !important; }
-    html.pc-booting .screen { animation: none; }
+    html.pc-booting .screen { animation: none !important; }
+    html.pc-booting .screen,
+    html.pc-booting #view > * { animation: none !important; transform: none !important; }
+    /* Reserve tab bar — toggling display caused CLS (v5 §3). */
+    #nav.pc-nav-slot, #nav {
+      min-height: calc(var(--nav-h, 64px) + env(safe-area-inset-bottom, 0px));
+      box-sizing: border-box;
+    }
+    #nav[hidden] {
+      display: flex !important;
+      visibility: hidden;
+      pointer-events: none;
+    }
+    /* Demo banner slot — content fills without shifting (v5 §3). */
+    #view .dash-demo-banner { min-height: 44px; box-sizing: border-box; }
     /* First paint: no entry slide — translateY was CLS 0.128 on mobile LH (v5 §3). */
     html.pc-booting .screen-enter,
+    html.pc-first-paint .screen-enter,
+    html.pc-first-paint .screen-enter-active,
     html.pc-booting .screen-enter-active {
       opacity: 1 !important;
       transform: none !important;
@@ -223,7 +239,7 @@ window.updateOfflineBanner = updateOfflineBanner;
   <div id="app-shell" class="app-shell">
     <div id="app">
       <div id="view" class="cap-scroll-y"></div>
-    <nav id="nav" aria-label="Main navigation" style="display:none"></nav>
+    <nav id="nav" aria-label="Main navigation" class="pc-nav-slot" hidden></nav>
     </div>
   </div>
   <div id="toast" role="status" aria-live="polite" aria-atomic="true" style="display:flex;opacity:0">
@@ -303,7 +319,8 @@ window.updateOfflineBanner = updateOfflineBanner;
         try { fn(); } catch (e) { console.error('boot', e); }
         markAppReady();
         /* Later screen changes keep their entry fade. */
-        requestAnimationFrame(function() { requestAnimationFrame(function() { document.documentElement.classList.remove('pc-booting'); }); });
+        requestAnimationFrame(function() { requestAnimationFrame(function() { document.documentElement.classList.remove('pc-booting');
+          setTimeout(function(){ try{ document.documentElement.classList.remove('pc-first-paint'); }catch(e){} }, 2500); }); });
 
         var splash = document.getElementById('boot-splash');
         var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -362,6 +379,7 @@ window.updateOfflineBanner = updateOfflineBanner;
     window.addEventListener('beforeinstallprompt', function(e) {
       e.preventDefault();
       _deferredInstallPrompt = e;
+      if (_isDemo || /[?&]demo=1(?:&|$)/.test(location.search)) return;
       var visits = parseInt(localStorage.getItem('fos_visits')||'0') + 1;
       localStorage.setItem('fos_visits', visits);
       if (visits >= 3 && !localStorage.getItem('fos_installed')) {
