@@ -3,7 +3,6 @@ const { test, expect } = require('@playwright/test');
 const {
   resize,
   assertCapSharedMobile,
-  assertCapSharedDesktop,
 } = require('./helpers/viewport-helpers');
 
 test.describe('PulseCap viewport contract', () => {
@@ -99,5 +98,34 @@ test.describe('PulseCap viewport contract', () => {
     await page.waitForTimeout(200);
     await expect(page.locator('#nav')).toBeVisible();
     await expect(page.locator('body')).not.toHaveClass(/cap-desktop-nav/);
+  });
+
+  // PulseCap Ember shell keeps #nav on all widths (no Cap sidebar in the live DOM).
+  test('1280px — phone tab bar still visible (no Cap desktop sidebar)', async ({ page }) => {
+    await page.setViewportSize({ width: 1280, height: 800 });
+    await page.waitForTimeout(200);
+    await expect(page.locator('#nav')).toBeVisible();
+    await expect(page.locator('#cap-nav-sidebar')).toHaveCount(0);
+  });
+
+  test('375px — no content clipped behind bottom nav on primary tabs', async ({ page }) => {
+    await resize(page, 'mobile');
+    for (const tab of ['dashboard', 'workout', 'progress', 'programs', 'settings']) {
+      await page.evaluate(async (t) => { await window.go(t); }, tab);
+      await page.waitForTimeout(400);
+      const ok = await page.evaluate(() => {
+        const view = document.getElementById('view');
+        const nav = document.getElementById('nav');
+        if (!view || !nav) return false;
+        view.scrollTop = view.scrollHeight;
+        // shell.css: padding-bottom = nav-h + max(safe, 12)
+        const pad = parseFloat(getComputedStyle(view).paddingBottom) || 0;
+        const navH = nav.getBoundingClientRect().height;
+        if (pad + 1 < navH) return false;
+        const contentBottom = view.getBoundingClientRect().bottom - pad;
+        return contentBottom <= nav.getBoundingClientRect().top + 2;
+      });
+      expect(ok, `tab ${tab}: content clear of bottom nav`).toBe(true);
+    }
   });
 });
