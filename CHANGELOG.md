@@ -1,3 +1,9 @@
+## 6.46.8 — 2026-10-19
+- Sync `APP_VERSION` with `VERSION.json` (CI was expecting 6.46.7 / got 6.46.6)
+- Eager gym-tools / recovery / profiles again; `loadScript*` skips existing `script[src]` so MODULE_CHAIN cannot redeclare (`_AVATAR_COLORS`)
+- CLS: `#view` paint shell, `.ob-screen` fills `#view`, `#app` uses `100svh` (not `100dvh`)
+- SW `pulsecap-v137`
+
 ## 6.46.7 — 2026-10-16
 - Idle-load gym-tools, recovery, profiles after owner seed (coach/plan/photos stay eager for CI)
 - SW `pulsecap-v136`

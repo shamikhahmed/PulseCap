@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.46.6';
+window.APP_VERSION = '6.46.8';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -271,7 +271,7 @@ const MODULE_CHAIN = {
   nutrition: ['js/data/foods-db.js', 'js/modules/nutrition.js'],
   rehab: ['js/modules/rehab.js'],
   photos: ['js/modules/photos.js'],
-  /* Idle-loaded in index.html — still must be sync-loadable via go() (v5 §3 CI). */
+  /* Eager in index.html; loadScript* no-ops when script[src] already present. */
   recovery: ['js/gym-tools.js', 'js/modules/recovery.js'],
   coach: ['js/modules/coach.js'],
   profiles: ['js/modules/profiles.js'],
@@ -288,12 +288,17 @@ window.MODULE_SRC = MODULE_SRC;
 window.MODULE_CHAIN = MODULE_CHAIN;
 
 const _loadingScripts = {};
+function _scriptAlreadyPresent(src) {
+  return !!(
+    document.querySelector('script[data-pc-mod="' + src + '"]') ||
+    document.querySelector('script[src="' + src + '"]')
+  );
+}
 function loadScript(src) {
   if (!src) return Promise.resolve();
   if (_loadingScripts[src]) return _loadingScripts[src];
   _loadingScripts[src] = new Promise(function(resolve, reject) {
-    const existing = document.querySelector('script[data-pc-mod="' + src + '"]');
-    if (existing) { resolve(); return; }
+    if (_scriptAlreadyPresent(src)) { resolve(); return; }
     const s = document.createElement('script');
     s.src = src;
     s.async = false;
@@ -309,7 +314,7 @@ window.loadScript = loadScript;
 /** Same-origin sync load for callers that expect ExDB/workout APIs immediately (tests). Not used on Today first paint. */
 function loadScriptSync(src) {
   if (!src) return;
-  if (document.querySelector('script[data-pc-mod="' + src + '"]')) {
+  if (_scriptAlreadyPresent(src)) {
     _loadingScripts[src] = _loadingScripts[src] || Promise.resolve();
     return;
   }

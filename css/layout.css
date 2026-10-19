@@ -9,7 +9,8 @@
 /* ── App shell ──────────────────────────────── */
 #app {
   position: relative; z-index: 1;
-  height: 100vh; height: 100dvh;
+  /* svh — dvh grew when mobile chrome settled and shifted #app (CLS ~0.12). */
+  height: 100vh; height: 100svh;
   display: flex; flex-direction: column;
   overflow: hidden; background: transparent;
   width: 100%;
@@ -328,7 +329,8 @@ button.back-chip {
 
 /* ── Onboarding ─────────────────────────────── */
 .ob-screen {
-  min-height: 100vh; min-height: 100dvh;
+  /* Fill #view, not the visual viewport — 100dvh shifted when chrome settled (CLS). */
+  min-height: 100%;
   display: flex; flex-direction: column;
   padding: 0 24px;
   padding-top: calc(20px + var(--top-safe));

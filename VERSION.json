@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.46.7",
-  "swCache": "pulsecap-v136",
-  "updated": "2026-10-16",
-  "notes": "V5 \u00a73: idle gym-tools/recovery/profiles; keep coach/plan/photos eager"
+  "version": "6.46.8",
+  "swCache": "pulsecap-v137",
+  "updated": "2026-10-19",
+  "notes": "V5 \u00a73: APP_VERSION sync; no MODULE_CHAIN re-exec of eager scripts; CLS shell + svh"
 }

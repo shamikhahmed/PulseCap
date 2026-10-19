@@ -1,7 +1,8 @@
 'use strict';
 /* ── PulseCap v4 — Profile Switcher ── */
 
-const _AVATAR_COLORS = ['c1','c2','c3','c4','c5','c6','c3','c4'];
+/* var — may load via idle + MODULE_CHAIN sync; const redeclare throws (v5 §3 CI). */
+var _AVATAR_COLORS = _AVATAR_COLORS || ['c1','c2','c3','c4','c5','c6','c3','c4'];
 
 function _profileAvatarHtml(p) {
   const letter = (p.name || 'A').charAt(0).toUpperCase();

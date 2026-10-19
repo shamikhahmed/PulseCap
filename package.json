@@ -1,6 +1,6 @@
 {
   "name": "pulsecap",
-  "version": "6.46.7",
+  "version": "6.46.8",
   "private": true,
   "scripts": {
     "test": "playwright test",
