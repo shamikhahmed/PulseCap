@@ -74,6 +74,12 @@
   </script>
   <style>
     html.pc-skip-splash #boot-splash { display: none !important; }
+    /* Critical: identity.css is async — without this, splash is in-flow → CLS ~0.12 (v5 §3). */
+    .clipboard-splash {
+      position: fixed; inset: 0; z-index: 9000;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden; background: #121212;
+    }
     html.pc-booting .screen { animation: none !important; }
     html.pc-booting .screen,
     html.pc-booting #view > * { animation: none !important; transform: none !important; }
@@ -429,7 +435,7 @@ window.updateOfflineBanner = updateOfflineBanner;
       }, 1200);
     })();
     if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('sw.js?v=137').then(function(reg) {
+      navigator.serviceWorker.register('sw.js?v=138').then(function(reg) {
         var updateReloadRequested = false;
         reg.update();
         function showUpdate() {

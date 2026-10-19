@@ -17,7 +17,8 @@ const INTRO_SLIDES = [
 
 function _renderIntro(idx) {
   const slide = INTRO_SLIDES[Math.min(idx, INTRO_SLIDES.length - 1)];
-  return '<div class="ob-screen" style="min-height:100dvh;display:flex;flex-direction:column;padding:calc(16px + var(--top-safe)) 24px calc(24px + var(--safe))">' +
+  /* Fill #view — 100dvh shifted when mobile chrome settled (CLS ~0.12). */
+  return '<div class="ob-screen" style="min-height:100%;display:flex;flex-direction:column;padding:calc(16px + var(--top-safe)) 24px calc(24px + var(--safe))">' +
     '<div style="display:flex;justify-content:flex-end"><button type="button" class="btn btn-ghost btn-sm" onclick="introQuickStart()">Skip</button></div>' +
     '<div style="flex:1;display:flex;flex-direction:column;justify-content:center;text-align:center">' +
     '<div style="width:88px;height:88px;border-radius:24px;margin:0 auto 24px;background:var(--grad);display:flex;align-items:center;justify-content:center">' +

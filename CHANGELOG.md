@@ -1,3 +1,8 @@
+## 6.46.9 — 2026-10-19
+- CLS root fix: inline `position:fixed` for `.clipboard-splash` (identity.css is async — splash was in-flow ~0.12)
+- Intro shell `min-height:100%` (was inline `100dvh`); `body` uses `100svh`
+- SW `pulsecap-v138`
+
 ## 6.46.8 — 2026-10-19
 - Sync `APP_VERSION` with `VERSION.json` (CI was expecting 6.46.7 / got 6.46.6)
 - Eager gym-tools / recovery / profiles again; `loadScript*` skips existing `script[src]` so MODULE_CHAIN cannot redeclare (`_AVATAR_COLORS`)

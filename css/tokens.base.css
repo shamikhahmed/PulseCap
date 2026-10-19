@@ -176,7 +176,7 @@ body {
   color: var(--txt);
   overflow: hidden;
   height: 100vh;
-  height: 100dvh;
+  height: 100svh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;

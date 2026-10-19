@@ -1,7 +1,13 @@
+### 2026-10-19 PulseCap 6.46.9 V5 §3 splash CLS root
+- Live 6.46.8 still mobile CLS 0.128 / perf 83; demo=1 CLS 0 / perf 89
+- Root: `.clipboard-splash` styles in async `identity.css` → splash in-flow until load; intro inline `100dvh`
+- Fix: inline fixed splash in index.html; intro `100%`; body `100svh`; local LH CLS 0
+- Next: push 6.46.9 → remesure live ≥90
+
 ### 2026-10-19 PulseCap 6.46.8 V5 §3 CLS + MODULE_CHAIN
 - Root: APP_VERSION 6.46.6 vs VERSION 6.46.7 CI fail; MODULE_CHAIN sync re-exec of eager `profiles.js` → `_AVATAR_COLORS` redeclare; empty `#view` + `100dvh` → mobile CLS ~0.12
 - Fix: APP_VERSION 6.46.8 / pulsecap-v137; eager gym-tools/recovery/profiles; `loadScript*` skips `script[src]`; `#view` paint shell; `.ob-screen` min-height 100%; `#app` 100svh
-- Next: push → CI → Pages → honest LH remesure ≥90
+- Shipped 716780f; CI green; live VERSION 6.46.8; LH still CLS 0.128 → 6.46.9
 
 ### 2026-09-15 PulseCap 6.43.1 TIER1 PASS
 - CI green: https://github.com/shamikhahmed/PulseCap/actions/runs/34964626101
