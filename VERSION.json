@@ -1,7 +1,7 @@
 {
   "app": "PulseCap",
-  "version": "6.46.9",
-  "swCache": "pulsecap-v138",
-  "updated": "2026-10-19",
-  "notes": "V5 \u00a73: inline fixed splash (async identity.css was in-flow CLS); intro 100%; body svh"
+  "version": "6.46.10",
+  "swCache": "pulsecap-v64610",
+  "updated": "2026-10-21",
+  "notes": "V5 \u00a73: inline fixed splash (async identity.css was in-flow CLS); intro 100%; body svh \u00b7 v7 HIG ios-tokens scaffold"
 }
