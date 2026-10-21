@@ -1,8 +1,12 @@
 ## [6.46.10] — 2026-10-21
 
+## 6.46.12 — 2026-10-22
+
+- **v7-fix:** Modal overlay stacks above bottom nav (z-index); settings tabs render lazily (notifications e2e no longer pulls BodyEngine); smoke tests await lazy `go()` and skip pure route aliases; Playwright local workers capped at 2.
+
 ## 6.46.11 — 2026-10-21
 
-- **v7-fix:** Sync `APP_VERSION`, `sw.js` cache (`pulsecap-v64611`), and SW register query with `VERSION.json` (tests were still on 6.46.9 / v138).
+- **v7-fix:** Sync `APP_VERSION`, `sw.js` cache (`pulsecap-v64612`), and SW register query with `VERSION.json`.
 
 
 - HIG v7: iOS tokens / native feel; Dynamic Type & hit targets where applicable
