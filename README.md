@@ -1,13 +1,21 @@
 # PulseCap
 
-**Version:** 6.46.9
-
+**Version:** 6.46.10
 **Run today’s session, log it in two taps, and see honest progress — offline, on your device.**
 
 🔗 **Live:** https://shamikhahmed.github.io/PulseCap  
 📁 **Repo:** https://github.com/shamikhahmed/PulseCap
 
 ---
+
+
+## Real stories
+
+Illustrative day-in-the-life stories (fictional personas) with screenshots and captions:
+
+- App stories: https://shamikhahmed.github.io/apps/pulsecap/
+- All Cap stories: https://shamikhahmed.github.io/stories/
+
 
 ## What it is
 

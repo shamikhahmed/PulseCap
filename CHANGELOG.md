@@ -1,3 +1,9 @@
+## [6.46.10] — 2026-10-21
+
+- HIG v7: iOS tokens / native feel; Dynamic Type & hit targets where applicable
+- Real-people stories live on hub (`/apps/<slug>/` + `/stories/`)
+- Pitch/presentation/README synced to 6.46.10
+
 ## 6.46.9 — 2026-10-19
 - CLS root fix: inline `position:fixed` for `.clipboard-splash` (identity.css is async — splash was in-flow ~0.12)
 - Intro shell `min-height:100%` (was inline `100dvh`); `body` uses `100svh`

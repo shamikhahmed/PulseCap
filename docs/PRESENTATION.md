@@ -7,7 +7,7 @@
 # PulseCap
 ### Personalized Program Intelligence
 
-*290 exercises · My Plan · Smart Coach (rules) · Offline PWA · v6.41.0*
+*290 exercises · My Plan · Smart Coach (rules) · Offline PWA · v6.46.10*
 
 **Live:** shamikhahmed.github.io/PulseCap
 
@@ -27,7 +27,7 @@ Serious lifters need **depth** — not generic 10-exercise libraries.
 
 ## Slide 3 — Solution
 
-**PulseCap** — production-grade offline-first PWA (v6.41.0):
+**PulseCap** — production-grade offline-first PWA (v6.46.10):
 
 - 290-exercise database with coaching cues
 - Personalized **My Plan**: built-in machine-only **shoulder-safe PPL**; local text-PDF / JSON / paste import with review (**no upload, no OCR**; scanned PDFs unsupported); prescribed gym-floor logger
@@ -115,7 +115,7 @@ foods-db.js         — Offline macros
 sw.js               — cache-first PWA (pulsecap-v121)
 ```
 
-Vanilla JS. Zero framework. Core tracking works offline. **v6.41.0**.
+Vanilla JS. Zero framework. Core tracking works offline. **v6.46.10**.
 
 ---
 
@@ -141,3 +141,15 @@ shamikhahmed.github.io/PulseCap
 2. Complete onboarding → install My Plan or import a text program → log your first set
 
 *Built by Shamikh Ahmed · Capricorn Systems*
+
+---
+
+## Slide — Real people (illustrative)
+
+Three fictional personas show how people use PulseCap day to day — before/after numbers, timeline screenshots, and a short silent video with captions.
+
+**Stories:** https://shamikhahmed.github.io/apps/pulsecap/  
+**Index:** https://shamikhahmed.github.io/stories/
+
+*Illustrative story. People and data are fictional.*
+
