@@ -1,5 +1,10 @@
 ## [6.46.10] — 2026-10-21
 
+## 6.46.11 — 2026-10-21
+
+- **v7-fix:** Sync `APP_VERSION`, `sw.js` cache (`pulsecap-v64611`), and SW register query with `VERSION.json` (tests were still on 6.46.9 / v138).
+
+
 - HIG v7: iOS tokens / native feel; Dynamic Type & hit targets where applicable
 - Real-people stories live on hub (`/apps/<slug>/` + `/stories/`)
 - Pitch/presentation/README synced to 6.46.10
