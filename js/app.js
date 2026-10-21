@@ -1,7 +1,7 @@
 'use strict';
 
 /* Keep in sync with VERSION.json — settings/footer read this. */
-window.APP_VERSION = '6.46.11';
+window.APP_VERSION = '6.46.12';
 
 /* ══════════════════════════════════════════════════════
    ROUTER
@@ -175,7 +175,12 @@ window.reg = reg;
 window.listScreens = function() {
   const set = {};
   Object.keys(_screens).forEach(function(k) { set[k] = 1; });
-  Object.keys(MODULE_SRC || {}).forEach(function(k) { set[k] = 1; });
+  Object.keys(MODULE_SRC || {}).forEach(function(k) {
+    /* Pure string aliases (assistant→dashboard) are not separate routes for smoke tests. */
+    const a = SCREEN_ALIASES[k];
+    if (typeof a === 'string') return;
+    set[k] = 1;
+  });
   return Object.keys(set).sort();
 };
 window.currentScreenId = function() { return _currentScreen; };

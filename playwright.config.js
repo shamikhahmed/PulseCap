@@ -4,8 +4,9 @@ module.exports = defineConfig({
   testDir: './tests',
   timeout: 60000,
   retries: process.env.CI ? 2 : 0,
-  /* WebKit on ubuntu CI OOMs under parallel workers (page closed mid-evaluate). */
-  workers: process.env.CI ? 1 : undefined,
+  /* WebKit on ubuntu CI OOMs under parallel workers (page closed mid-evaluate).
+     Locally cap workers — parallel bursts caused ERR_CONNECTION_RESET on the static server. */
+  workers: 1,
   projects: [
     /* PW_CHANNEL=chrome runs on installed Google Chrome when the bundled
        browser build is missing (another Playwright version can swap the cache). */

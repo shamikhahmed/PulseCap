@@ -49,7 +49,7 @@ test.describe('Offline + update', () => {
   });
 
   test('SW cache name matches VERSION.json', async ({ page }) => {
-    const ver = require('../VERSION.json');
+    const ver = JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname, '../VERSION.json'), 'utf8'));
     const sw = await page.request.get('/sw.js');
     const text = await sw.text();
     expect(text).toContain(ver.swCache);
@@ -57,7 +57,7 @@ test.describe('Offline + update', () => {
   });
 
   test('APP_VERSION matches VERSION.json', async ({ page }) => {
-    const ver = require('../VERSION.json');
+    const ver = JSON.parse(require('node:fs').readFileSync(require('node:path').join(__dirname, '../VERSION.json'), 'utf8'));
     await page.goto('/');
     await page.waitForFunction(() => typeof window.APP_VERSION === 'string');
     const appV = await page.evaluate(() => window.APP_VERSION);

@@ -2,7 +2,9 @@
 const { test, expect } = require('@playwright/test');
 const fs = require('node:fs');
 const path = require('node:path');
-const version = require('../VERSION.json');
+function readVersionJson() {
+  return JSON.parse(fs.readFileSync(path.join(__dirname, '../VERSION.json'), 'utf8'));
+}
 
 test.describe('PulseCap smoke', () => {
   test('loads shell without fatal errors', async ({ page }) => {
@@ -29,6 +31,7 @@ test.describe('PulseCap smoke', () => {
   });
 
   test('service worker cache is allowlisted', async ({ page }) => {
+    const version = readVersionJson();
     const res = await page.goto('/sw.js');
     expect(res && res.ok()).toBeTruthy();
     const text = await page.textContent('body');
@@ -221,7 +224,7 @@ test.describe('PulseCap smoke', () => {
         ver: window.APP_VERSION
       };
     });
-    expect(out.ver).toBe(version.version);
+    expect(out.ver).toBe(readVersionJson().version);
     expect(out.tabs).toEqual(['Account', 'Training', 'Fuel', 'Appearance', 'Access', 'Alerts', 'Privacy', 'About']);
     expect(out.accountOn).toBeTruthy();
     expect(out.alias).toBe('privacy');

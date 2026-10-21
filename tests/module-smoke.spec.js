@@ -17,7 +17,7 @@ test.describe('PulseCap per-module smoke', () => {
     const failed = [];
     for (const id of ids) {
       errors.length = 0;
-      await page.evaluate((screenId) => { window.go(screenId); }, id);
+      await page.evaluate(async (screenId) => { await window.go(screenId); }, id);
       await page.waitForFunction((screenId) => {
         const scr = document.querySelector('#view .screen');
         if (!scr) return false;

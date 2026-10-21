@@ -2,7 +2,7 @@
 
 ## 6.46.12 — 2026-10-22
 
-- **v7-fix:** Modal overlay stacks above bottom nav (z-index); settings tabs render lazily (notifications e2e no longer pulls BodyEngine); smoke tests await lazy `go()` and skip pure route aliases; Playwright local workers capped at 2.
+- **v7-fix:** Modal overlay stacks above bottom nav (z-index); settings tabs render lazily; smoke/offline read VERSION.json fresh; module smoke awaits lazy `go()` and skips pure route aliases; Playwright workers=1 for stable verify.
 
 ## 6.46.11 — 2026-10-21
 

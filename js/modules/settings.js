@@ -24,15 +24,15 @@ reg('settings', function(opts) {
   _activeSettingsTab = _settingsTab;
   const user = S.g('user') || {};
 
-  const tabContent = {
-    account: _tabAccount(user),
-    training: _tabTraining(user),
-    fuel: _tabFuel(user),
-    appearance: _tabAppearance(user),
-    accessibility: _tabAccessibility(user),
-    notifications: _tabNotifications(user),
-    privacy: _tabPrivacy(),
-    about: _tabAbout()
+  const tabBuilders = {
+    account: function() { return _tabAccount(user); },
+    training: function() { return _tabTraining(user); },
+    fuel: function() { return _tabFuel(user); },
+    appearance: function() { return _tabAppearance(user); },
+    accessibility: function() { return _tabAccessibility(user); },
+    notifications: function() { return _tabNotifications(user); },
+    privacy: function() { return _tabPrivacy(); },
+    about: function() { return _tabAbout(); }
   };
 
   const tabList = ['account','training','fuel','appearance','accessibility','notifications','privacy','about'];
@@ -57,7 +57,7 @@ reg('settings', function(opts) {
   return '<div class="topbar"><div class="topbar-title">Settings</div></div>' +
     tabBar +
     '<div id="settings-panel" role="tabpanel" aria-labelledby="settings-tab-' + _settingsTab + '">' +
-    (tabContent[_settingsTab] || _tabAccount(user)) +
+    ((tabBuilders[_settingsTab] || tabBuilders.account)()) +
     '</div>' +
     '<div class="spacer-bottom"></div>';
 });

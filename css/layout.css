@@ -289,7 +289,8 @@ button.back-chip {
 
 /* ── Modal / Bottom Sheet ───────────────────── */
 .modal-overlay {
-  position: fixed; inset: 0; z-index: 500;
+  /* Above #nav (shell.css z-index 500) — finish/sheet buttons were unclickable in e2e. */
+  position: fixed; inset: 0; z-index: 10050;
   background: rgba(0,0,0,0.6);
   backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
   animation: fadeIn 0.2s ease both;
