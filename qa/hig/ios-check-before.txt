@@ -1,0 +1,22 @@
+PASS  tab bar + header controls tappable
+PASS  hit areas ≥44pt (tabs)
+FAIL  tab bar floats ≥14px above bottom  ({"gap":0,"pad":76,"h":64})
+FAIL  content padding clears tab bar  ({"gap":0,"pad":76,"h":64})
+PASS  no sideways overflow · dashboard
+FAIL  document scrolls (no inner scroller) · dashboard  ({"sw":393,"iw":393,"docScroll":false,"view":"auto","body":"hidden"})
+PASS  no sideways overflow · workout
+FAIL  document scrolls (no inner scroller) · workout  ({"sw":393,"iw":393,"docScroll":false,"view":"auto","body":"hidden"})
+PASS  no sideways overflow · progress
+FAIL  document scrolls (no inner scroller) · progress  ({"sw":393,"iw":393,"docScroll":false,"view":"auto","body":"hidden"})
+PASS  no sideways overflow · programs
+FAIL  document scrolls (no inner scroller) · programs  ({"sw":393,"iw":393,"docScroll":false,"view":"auto","body":"hidden"})
+PASS  no sideways overflow · settings
+FAIL  document scrolls (no inner scroller) · settings  ({"sw":393,"iw":393,"docScroll":false,"view":"auto","body":"hidden"})
+FAIL  programmatic scroll lands instantly
+PASS  tab tap keeps shell (no reload)
+PASS  new screen opens at top
+FAIL  page locked behind sheet  (body position "")
+PASS  sheet keeps scroll position
+PASS  inputs ≥16px (no zoom-on-focus)
+PASS  no reload during session
+PASS  SW: skipWaiting only on user request

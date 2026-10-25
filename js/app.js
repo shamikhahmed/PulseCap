@@ -447,7 +447,7 @@ function _renderScreen(id, data) {
   const html = _screens[id](data) || '';
   const v = document.getElementById('view');
   if (!v) return;
-  const scrollY = preserveScroll ? v.scrollTop : 0;
+  const scrollY = preserveScroll ? _pageScrollY() : 0;
   window.__pcRenderMeta.intendedScroll = scrollY;
   const focusSnap = preserveScroll ? _captureFocus(v) : null;
   const fastApp = document.body && document.body.getAttribute('data-cap-app') === '1';
@@ -460,23 +460,23 @@ function _renderScreen(id, data) {
   if (prev) prev.remove();
   v.appendChild(div);
   if (sameScreen) {
-    v.scrollTop = scrollY;
+    _setPageScroll(scrollY);
     if (preserveScroll) {
       _restoreFocus(div, focusSnap);
-      v.scrollTop = scrollY;
+      _setPageScroll(scrollY);
       requestAnimationFrame(function() {
-        if (document.getElementById('view') === v) v.scrollTop = scrollY;
+        if (document.getElementById('view') === v) _setPageScroll(scrollY);
       });
     } else if (tabChanged) {
       const tabBtn = div.querySelector('.cap-tab.on, [role="tab"][aria-selected="true"]');
       if (tabBtn && typeof tabBtn.focus === 'function') {
         try { tabBtn.focus({ preventScroll: true }); } catch (e) { tabBtn.focus(); }
       }
-      v.scrollTop = 0;
+      _setPageScroll(0);
     }
-    window.__pcRenderMeta.appliedScroll = v.scrollTop;
+    window.__pcRenderMeta.appliedScroll = _pageScrollY();
   } else {
-    v.scrollTop = 0;
+    _setPageScroll(0);
     if (!fastApp) {
       requestAnimationFrame(function() { div.classList.add('screen-enter-active'); });
     }
@@ -784,6 +784,13 @@ window.moduleChip = moduleChip;
 window.uiCard = uiCard;
 window.uiSection = uiSection;
 window.uiSpacer = uiSpacer;
+/* 6.47: the document scrolls (iOS) — #view is no longer a scroll container. ScrollLock owns the position while a
+   sheet is open, so navigation from a sheet lands where intended instead of where the sheet opened. */
+function _pageScrollY() { return window.ScrollLock ? ScrollLock.currentY() : window.scrollY; }
+function _setPageScroll(y) { if (window.ScrollLock) ScrollLock.scrollTo(y); else window.scrollTo(0, y); }
+window._pageScrollY = _pageScrollY;
+window._setPageScroll = _setPageScroll;
+
 function modal(title, bodyHtml, footerHtml, options) {
   closeModal();
   const d = document.createElement('div');
@@ -826,8 +833,7 @@ function modal(title, bodyHtml, footerHtml, options) {
   });
   document.body.appendChild(d);
   /* Lock the page behind the sheet so iOS keyboard focus-scroll can't yank it */
-  const v = document.getElementById('view');
-  if (v) { d._viewScroll = v.scrollTop; v.style.overflow = 'hidden'; }
+  /* The page is pinned under the sheet by js/scroll-lock.js (body position:fixed; iOS ignores overflow:hidden) */
   const initialFocus = opt.focusSheet ? null : d.querySelector('button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),a[href]');
   (initialFocus || d.querySelector('.modal-sheet')).focus({ preventScroll: true });
 }
@@ -840,8 +846,6 @@ function closeModal() {
     if (cleanup) {
       try { cleanup(); } catch (e) { console.error('modal cleanup', e); }
     }
-    const v = document.getElementById('view');
-    if (v) { v.style.overflow = ''; if (m._viewScroll != null) v.scrollTop = m._viewScroll; }
     const sheet = m.querySelector('.modal-sheet');
     const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     if (sheet && sheet.classList.contains('sheet-animated-exit') && !reduce) {

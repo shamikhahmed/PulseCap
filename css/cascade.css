@@ -1,0 +1,16 @@
+/*
+ * PulseCap — cascade order: Ember 6.x CSS < HIG components (system.css primitives + pulse.css reskin).
+ * css/design/tokens.css loads unlayered (render-blocking), so it always wins; the Ember token files carry a reset
+ * as well as variables, so they sit in the legacy layer with the rest.
+ * css/cascade-deferred.css carries the async half (ember-components, identity) into the same layer. Docs: DESIGN.md.
+ */
+@layer legacy, components;
+
+@import url("tokens.base.css") layer(legacy);
+@import url("tokens.css") layer(legacy);
+@import url("ios-tokens.css") layer(legacy);
+@import url("shell.css") layer(legacy);
+@import url("layout.css") layer(legacy);
+@import url("components.css") layer(legacy);
+@import url("design/system.css");
+@import url("design/pulse.css");

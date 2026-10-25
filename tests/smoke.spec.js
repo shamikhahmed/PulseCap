@@ -179,14 +179,14 @@ test.describe('PulseCap smoke', () => {
       const cs = getComputedStyle(probe);
       const hasPad = cs.paddingTop !== '' && cs.paddingTop !== '0px' || true;
       probe.remove();
-      return !!document.querySelector('link[href*="layout.css"]') && hasPad;
+      // HIG 3: layout.css is imported into @layer legacy by css/cascade.css
+      return !!document.querySelector('link[href*="cascade.css"]') && hasPad;
     });
     expect(ok).toBeTruthy();
     const css = await page.evaluate(async () => {
-      const link = [...document.querySelectorAll('link[rel=stylesheet]')].find(l => /layout\.css/.test(l.href));
-      if (!link) return '';
-      const res = await fetch(link.href);
-      return await res.text();
+      const cascade = await (await fetch('css/cascade.css')).text();
+      if (!/layout\.css/.test(cascade)) return '';
+      return await (await fetch('css/layout.css')).text();
     });
     expect(css).toContain('.card-block');
     expect(css).toContain('.back-chip');

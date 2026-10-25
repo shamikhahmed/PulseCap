@@ -47,19 +47,16 @@
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="icon.svg" type="image/svg+xml">
   <!-- Blocking shell CSS — async sheets delayed LCP to ~2.1s (v5 §3c). -->
-  <link rel="stylesheet" href="css/tokens.base.css">
-  <link rel="stylesheet" href="css/tokens.css">
-<link rel="stylesheet" href="css/ios-tokens.css">
-  <link rel="stylesheet" href="css/shell.css">
-  <link rel="stylesheet" href="css/layout.css">
-  <link rel="stylesheet" href="css/components.css">
-  <link rel="stylesheet" href="css/ember-components.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="css/identity.css" media="print" onload="this.media='all'">
+  <!-- HIG design: Ember CSS sits in @layer legacy under the HIG components (css/cascade*.css, DESIGN.md). -->
+  <link rel="preload" href="css/layout.css" as="style">
+  <link rel="preload" href="css/components.css" as="style">
+  <link rel="preload" href="css/design/system.css" as="style">
+  <link rel="preload" href="css/design/pulse.css" as="style">
+  <link rel="stylesheet" href="css/design/tokens.css">
+  <link rel="stylesheet" href="css/cascade.css">
+  <link rel="stylesheet" href="css/cascade-deferred.css" media="print" onload="this.media='all'">
   <noscript>
-
-    <link rel="stylesheet" href="css/ember-components.css">
-    <link rel="stylesheet" href="css/ios-tokens.css" />
-    <link rel="stylesheet" href="css/identity.css">
+    <link rel="stylesheet" href="css/cascade-deferred.css">
   </noscript>
   <script>
   /* Skip branded splash before paint for returning visitors / reduced motion / demo.
@@ -107,7 +104,7 @@
       transform: none !important;
       transition: none !important;
     }
-    html,body{height:100%;overflow:hidden;}
+    html,body{min-height:100%}
     @media (max-width: 374px) {
       :root { --fs-body: 13px; --fs-hero: 28px; --fs-title: 18px; --card-pad: 12px; --nav-h: 60px; }
     }
@@ -265,6 +262,7 @@ window.updateOfflineBanner = updateOfflineBanner;
   <script src="js/data/equipment-db.js"></script>
   <script src="js/data/splits-db.js"></script>
   <script src="js/data/injuries-db.js"></script>
+  <script src="js/scroll-lock.js"></script>
   <script src="js/app.js"></script>
   <script src="js/engines.js"></script>
   <script src="js/core/daily-decision.js"></script>

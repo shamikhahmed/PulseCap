@@ -1,0 +1,458 @@
+/**
+ * PulseCap — HIG reskin of the Ember 6.x shell and shared components.
+ * Sits in `@layer components` (above `legacy`). Docs: DESIGN.md.
+ */
+
+@layer components {
+
+/* ---------- Canvas + document scrolling (iOS) ---------- */
+/* Ember pinned html/body (overflow:hidden) and scrolled #view — iOS showed an inner scroller, lost
+   rubber-banding and fought the Safari toolbar. The document scrolls now; #view is a plain block. */
+
+html,
+body {
+  height: auto;
+  min-height: 100%;
+  overflow-y: visible;
+  overscroll-behavior-x: none;
+  overscroll-behavior-y: auto;
+  background: var(--bg);
+  color: var(--label);
+  font-family: var(--font-ui);
+}
+
+#app-shell,
+.app-shell,
+#app {
+  height: auto;
+  min-height: 100dvh;
+  overflow: visible;
+  max-width: none;
+  box-shadow: none;
+}
+
+#view {
+  height: auto;
+  flex: none;
+  min-height: 0;
+  overflow: visible;
+  -webkit-overflow-scrolling: auto;
+  overscroll-behavior: auto;
+  padding-bottom: calc(var(--tabbar-h) + 48px + env(safe-area-inset-bottom));
+}
+
+#view > .screen {
+  min-height: 0;
+  max-width: 1100px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+/* ---------- Large titles ---------- */
+
+.topbar {
+  position: static;
+  padding: calc(env(safe-area-inset-top) + 12px) var(--gutter) 8px;
+  border: 0;
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  box-shadow: none;
+}
+
+.topbar-title {
+  font-family: var(--font-ui);
+  font-size: var(--t-large);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: var(--label);
+}
+
+.topbar-greeting,
+.row-title {
+  font-family: var(--font-ui);
+  font-size: var(--t-large);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--label);
+}
+
+.topbar-sub,
+.micro-label {
+  font-size: var(--t-subhead);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--label-2);
+}
+
+.sh-t,
+.settings-section-title {
+  font-family: var(--font-ui);
+  font-size: var(--t-title3);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  text-transform: none;
+  color: var(--label);
+}
+
+/* ---------- Floating glass tab bar (<700px) ---------- */
+
+#nav,
+#nav.pc-nav-slot,
+#nav.cap-premium-nav,
+#nav:not(.cap-premium-nav) {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: max(14px, calc(env(safe-area-inset-bottom) + 6px));
+  top: auto;
+  z-index: 60;
+  min-height: 0;
+  height: var(--tabbar-h);
+  padding: 0 6px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  align-items: center;
+  max-width: 560px;
+  margin: 0 auto;
+  transform: none;
+  border: 0;
+  border-radius: 999px;
+  background: var(--glass-material);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+  box-shadow: 0 0 0 0.5px var(--glass-border), 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+#nav .nb,
+.nb {
+  height: calc(var(--tabbar-h) - 10px);
+  min-height: 48px;
+  padding: 0 2px;
+  gap: 2px;
+  justify-content: center;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--label-2);
+}
+
+#nav .nb::before,
+.nb::before,
+.nb.on::before,
+.cap-tab-indicator {
+  display: none;
+}
+
+#nav .nb.on,
+.nb.on {
+  color: var(--tint-text);
+  background: var(--fill);
+}
+
+#nav .nb svg,
+.nb svg,
+.nb.on svg {
+  width: 24px;
+  height: 24px;
+  transform: none;
+  filter: none;
+}
+
+#nav .nb span,
+.nb span {
+  font-family: var(--font-ui);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0;
+}
+
+/* ---------- Glass sidebar (≥700px): the same nav, vertical ---------- */
+
+@media (min-width: 700px) {
+  #nav,
+  #nav.pc-nav-slot,
+  #nav.cap-premium-nav,
+  #nav:not(.cap-premium-nav) {
+    left: 0;
+    right: auto;
+    top: 0;
+    bottom: 0;
+    width: 248px;
+    height: 100dvh;
+    max-width: none;
+    margin: 0;
+    padding: max(56px, calc(env(safe-area-inset-top) + 40px)) 12px 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 2px;
+    border-radius: 0;
+    border-right: 0.5px solid var(--separator);
+    box-shadow: none;
+  }
+  #nav::before {
+    content: "PulseCap";
+    position: absolute;
+    top: max(18px, env(safe-area-inset-top));
+    left: 24px;
+    font-family: var(--font-ui);
+    font-size: var(--t-title3);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--label);
+  }
+  #nav .nb,
+  .nb {
+    flex: none;
+    width: 100%;
+    max-width: none;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 12px;
+    height: var(--hit);
+    min-height: var(--hit);
+    padding: 0 12px;
+    border-radius: var(--r-sm);
+    color: var(--label);
+  }
+  #nav .nb svg {
+    color: var(--tint-text);
+    width: 20px;
+    height: 20px;
+  }
+  #nav .nb span {
+    width: auto;
+    max-width: none;
+    overflow: visible;
+    text-overflow: clip;
+    font-size: var(--t-body);
+    font-weight: 400;
+    text-align: left;
+  }
+  #nav .nb.on {
+    background: var(--tint);
+    color: var(--on-tint);
+  }
+  #nav .nb.on svg {
+    color: var(--on-tint);
+  }
+  #nav .nb.on span {
+    font-weight: 600;
+  }
+  #app-shell,
+  .app-shell,
+  body.cap-desktop-nav #app-shell {
+    padding-left: 248px;
+    max-width: none;
+  }
+  #view {
+    padding: 0 24px 64px;
+  }
+}
+
+/* ---------- Surfaces ---------- */
+
+.card-block,
+.card,
+.dash-card,
+.stat,
+.list-card {
+  border: 0;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
+  color: var(--label);
+}
+
+.dash-demo-banner {
+  border: 0;
+  border-radius: var(--r-md);
+  margin: 8px var(--gutter) 0;
+  padding: 6px 6px 6px 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow-1);
+  color: var(--label-2);
+}
+
+.dash-demo-label {
+  color: var(--label-2);
+  font-size: var(--t-footnote);
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.dash-demo-switch {
+  min-height: 34px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--fill);
+  color: var(--tint-text);
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  min-height: var(--hit);
+  border-radius: var(--r-md);
+  font-family: var(--font-ui);
+  font-size: var(--t-headline);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  box-shadow: none;
+  text-shadow: none;
+}
+
+.btn-primary,
+.btn-primary:active {
+  min-height: 50px;
+  background: var(--tint);
+  color: var(--on-tint);
+  border: 0;
+  box-shadow: none;
+}
+
+.btn-secondary,
+.btn-ghost {
+  background: var(--fill);
+  color: var(--label);
+  border: 0;
+  box-shadow: none;
+}
+
+.btn-danger {
+  background: transparent;
+  color: var(--danger-sys);
+  border: 0;
+}
+
+.btn-sm {
+  min-height: var(--hit);
+  border-radius: 999px;
+}
+
+/* Settings tabs, filters → chips */
+.cap-tab-bar {
+  gap: 8px;
+  padding: 2px var(--gutter) 10px;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.cap-tab {
+  flex-shrink: 0;
+  min-height: 34px;
+  padding: 0 14px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--fill);
+  color: var(--label);
+  font-family: var(--font-ui);
+  font-size: var(--t-subhead);
+  font-weight: 500;
+  position: relative;
+}
+
+.cap-tab::after {
+  content: "";
+  position: absolute;
+  inset: -5px 0;
+}
+
+.cap-tab.on,
+.cap-tab.active {
+  background: var(--label);
+  color: var(--bg);
+  box-shadow: none;
+}
+
+/* ---------- Fields ---------- */
+
+.field-label {
+  font-size: var(--t-footnote);
+  font-weight: 400;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--label-2);
+}
+
+#view input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+#view select,
+#view textarea,
+.modal-sheet input:not([type="checkbox"]):not([type="radio"]):not([type="range"]),
+.modal-sheet select {
+  min-height: var(--hit);
+  border: 0;
+  border-radius: var(--r-sm);
+  background: var(--fill);
+  color: var(--label);
+  font-family: var(--font-ui);
+  box-shadow: none;
+}
+
+/* ---------- Sheets ---------- */
+
+.modal-overlay {
+  background: var(--scrim);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.modal-sheet {
+  max-width: 560px;
+  margin: 0 auto;
+  border: 0;
+  border-radius: 16px 16px 0 0;
+  background: var(--bg);
+  box-shadow: var(--shadow-3);
+  overscroll-behavior: contain;
+}
+
+.modal-handle {
+  width: 36px;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--label-4);
+}
+
+.modal-title {
+  font-family: var(--font-ui);
+  font-size: var(--t-headline);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--label);
+}
+
+.modal-close {
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 999px;
+  background: var(--fill);
+  color: var(--label-2);
+  box-shadow: none;
+  position: relative;
+}
+
+.modal-close::after {
+  content: "";
+  position: absolute;
+  inset: -7px;
+}
+
+/* Hover only where a pointer can hover */
+@media (hover: none) {
+  .btn:hover,
+  .nb:hover,
+  .card-block:hover {
+    transform: none;
+  }
+}
+
+} /* @layer components */
