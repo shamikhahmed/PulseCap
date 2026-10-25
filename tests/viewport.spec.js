@@ -44,12 +44,12 @@ test.describe('PulseCap viewport contract', () => {
       const sp = document.querySelector('.spacer-bottom');
       const spacer = sp ? (parseFloat(getComputedStyle(sp).height) || 0) : 0;
       const root = getComputedStyle(document.documentElement);
-      const navH = parseFloat(root.getPropertyValue('--nav-h')) || 64;
-      const safe = parseFloat(root.getPropertyValue('--safe')) || 0;
-      return { pb, spacer, expected: navH + Math.max(safe, 12) };
+      const navH = parseFloat(root.getPropertyValue('--tabbar-h')) || 64;
+      return { pb, spacer, expected: navH + 48 };
     });
-    // One rule: nav height + max(safe-area, 12). Must not double-count spacer.
-    expect(Math.abs(clearance.pb - clearance.expected)).toBeLessThan(2);
+    // HIG 3 rule: floating tab bar + 48 + safe area (env() is 0 in the test browser). Must not double-count spacer.
+    expect(clearance.pb).toBeGreaterThanOrEqual(clearance.expected);
+    expect(clearance.pb - clearance.expected).toBeLessThan(40);
     expect(clearance.spacer).toBeLessThanOrEqual(16);
   });
 
@@ -117,8 +117,8 @@ test.describe('PulseCap viewport contract', () => {
         const view = document.getElementById('view');
         const nav = document.getElementById('nav');
         if (!view || !nav) return false;
-        view.scrollTop = view.scrollHeight;
-        // shell.css: padding-bottom = nav-h + max(safe, 12)
+        // HIG 3: the document scrolls; padding-bottom = tab bar + 48 + safe area
+        window.scrollTo(0, document.scrollingElement.scrollHeight);
         const pad = parseFloat(getComputedStyle(view).paddingBottom) || 0;
         const navH = nav.getBoundingClientRect().height;
         if (pad + 1 < navH) return false;

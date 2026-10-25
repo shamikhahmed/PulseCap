@@ -1,5 +1,14 @@
 ## [6.46.10] — 2026-10-21
 
+## Unreleased — HIG 3 design system
+
+- ScentCap 3.0 Apple-HIG system: `css/design/tokens.css` (ember tint, light/dark/increased contrast), `system.css`, `pulse.css`;
+  Ember CSS demoted to `@layer legacy` via `css/cascade.css` / `css/cascade-deferred.css`.
+- Floating glass tab bar on phone; glass sidebar ≥700px; large titles; flat ember buttons; chip tabs; HIG sheets.
+- iPhone: the document scrolls (no `#view` inner scroller); sheets lock scroll and restore position (`js/scroll-lock.js`);
+  scroll restore in `_renderScreen` uses the window; instant programmatic scroll.
+- `npm run ios:check` (WebKit iPhone 15 Pro): 22/22 (main: 13/22). `DESIGN.md` added.
+
 ## 6.46.12 — 2026-10-22
 
 - **v7-fix:** Modal overlay stacks above bottom nav (z-index); settings tabs render lazily; smoke/offline read VERSION.json fresh; module smoke awaits lazy `go()` and skips pure route aliases; Playwright workers=1 for stable verify.

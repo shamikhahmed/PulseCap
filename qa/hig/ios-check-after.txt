@@ -1,0 +1,22 @@
+PASS  tab bar + header controls tappable
+PASS  hit areas ≥44pt (tabs)
+PASS  tab bar floats ≥14px above bottom
+PASS  content padding clears tab bar
+PASS  no sideways overflow · dashboard
+PASS  document scrolls (no inner scroller) · dashboard
+PASS  no sideways overflow · workout
+PASS  document scrolls (no inner scroller) · workout
+PASS  no sideways overflow · progress
+PASS  document scrolls (no inner scroller) · progress
+PASS  no sideways overflow · programs
+PASS  document scrolls (no inner scroller) · programs
+PASS  no sideways overflow · settings
+PASS  document scrolls (no inner scroller) · settings
+PASS  programmatic scroll lands instantly
+PASS  tab tap keeps shell (no reload)
+PASS  new screen opens at top
+PASS  page locked behind sheet
+PASS  sheet keeps scroll position
+PASS  inputs ≥16px (no zoom-on-focus)
+PASS  no reload during session
+PASS  SW: skipWaiting only on user request

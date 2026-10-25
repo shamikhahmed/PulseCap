@@ -22,9 +22,9 @@ async function goScreen(page, id, data) {
 
 async function padAndScroll(page, y) {
   return page.evaluate((y) => {
-    const v = document.getElementById('view');
-    if (v) v.scrollTop = y;
-    return v ? v.scrollTop : -1;
+    // HIG 3: the document scrolls (no #view inner scroller on iPhone)
+    window.scrollTo(0, y);
+    return window.scrollY;
   }, y);
 }
 
@@ -44,7 +44,7 @@ test.describe('UX integrity — re-render contract', () => {
       const ae = document.activeElement;
       return {
         missing: false,
-        after: v ? v.scrollTop : -1,
+        after: window.scrollY,
         key: ae && ae.getAttribute && ae.getAttribute('data-focus-key'),
         tag: ae && ae.tagName,
         dumped: ae === document.body
@@ -72,7 +72,7 @@ test.describe('UX integrity — re-render contract', () => {
       const ae = document.activeElement;
       return {
         missing: false,
-        after: v ? v.scrollTop : -1,
+        after: window.scrollY,
         key: ae && ae.getAttribute && ae.getAttribute('data-focus-key'),
         dumped: ae === document.body,
         meta: window.__pcRenderMeta || null
@@ -133,9 +133,9 @@ test.describe('UX integrity — re-render contract', () => {
         window.go(id);
         const v = document.getElementById('view');
         return {
-          scroll: v ? v.scrollTop : -1,
+          scroll: window.scrollY,
           meta: window.__pcRenderMeta || null,
-          max: v ? (v.scrollHeight - v.clientHeight) : 0
+          max: document.scrollingElement.scrollHeight - innerHeight
         };
       });
       expect(after.meta && after.meta.preserveScroll).toBeTruthy();
@@ -152,7 +152,7 @@ test.describe('UX integrity — re-render contract', () => {
     await goScreen(page, 'settings', { tab: 'training' });
     await padAndScroll(page, 400);
     await page.evaluate(() => window.go('dashboard'));
-    const after = await page.evaluate(() => document.getElementById('view').scrollTop);
+    const after = await page.evaluate(() => window.scrollY);
     expect(after).toBeLessThan(20);
   });
 });
@@ -434,7 +434,7 @@ test.describe('Phase 27 — QA sweep', () => {
       await padAndScroll(page, 120);
       const after = await page.evaluate(() => {
         const btn = document.querySelector('#settings-panel [role="switch"], #settings-panel [data-focus-key^="toggle-"], #settings-panel button.seg, #settings-panel .toggle');
-        const before = document.getElementById('view').scrollTop;
+        const before = window.scrollY;
         if (btn) {
           btn.focus({ preventScroll: true });
           btn.click();
@@ -443,7 +443,7 @@ test.describe('Phase 27 — QA sweep', () => {
         }
         return {
           before: before,
-          after: document.getElementById('view').scrollTop
+          after: window.scrollY
         };
       });
       expect(Math.abs(after.after - after.before), tab).toBeLessThan(50);
@@ -692,14 +692,16 @@ test.describe('Phase 28 — accent contrast + computed audit', () => {
           appearance: cs.appearance || cs.webkitAppearance,
           minH: el.getBoundingClientRect().height,
           border: cs.borderWidth,
+          bg: cs.backgroundColor,
           hasChevron: after && after !== 'none' && after !== 'normal'
         };
       });
       expect(style.fs).toBeGreaterThanOrEqual(16);
-      expect(style.radius).toBeGreaterThanOrEqual(11);
+      // HIG 3 filled field: 10pt radius, no stroke, visible fill (or a stroke)
+      expect(style.radius).toBeGreaterThanOrEqual(10);
       expect(String(style.appearance)).toMatch(/none/);
       expect(style.minH).toBeGreaterThanOrEqual(44);
-      expect(parseFloat(style.border)).toBeGreaterThan(0);
+      expect(parseFloat(style.border) > 0 || !/rgba\(0, 0, 0, 0\)|transparent/.test(style.bg)).toBeTruthy();
       expect(style.hasChevron).toBeTruthy();
     }
   });

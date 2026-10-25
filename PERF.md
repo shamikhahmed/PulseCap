@@ -1,19 +1,19 @@
 # PulseCap — PERF
 
-> 2026-10-21 · chromium · `/?demo=1` · local :8766
+> 2026-10-25 · chromium · `/?demo=1` · local :8766
 
 ## Budgets
 
 | Metric | Budget | Measured | Pass |
 |--------|-------:|---------:|:----:|
-| DOMContentLoaded | ≤8000ms | 84ms | yes |
-| Wall-clock ready (go/S) | ≤20000ms | 161ms | yes |
-| Critical CSS+JS bytes | ≤921600 | 628003 | yes |
-| Max route go() | ≤800ms | 40ms (avg 33) | yes |
+| DOMContentLoaded | ≤8000ms | 150ms | yes |
+| Wall-clock ready (go/S) | ≤20000ms | 167ms | yes |
+| Critical CSS+JS bytes | ≤921600 | 628375 | yes |
+| Max route go() | ≤800ms | 34ms (avg 33) | yes |
 
 ## Route samples
 
-`29, 35, 33, 40, 27` ms for workout→progress→my-plan→settings→dashboard
+`31, 32, 34, 33, 34` ms for workout→progress→my-plan→settings→dashboard
 
 ## Critical assets
 
@@ -24,7 +24,7 @@
 - `css/ember-components.css`: 28850 B
 - `css/shell.css`: 4824 B
 - `css/identity.css`: 14913 B
-- `js/app.js`: 47816 B
+- `js/app.js`: 48188 B
 - `js/storage.js`: 26127 B
 - `js/engines.js`: 118030 B
 - `js/coach-kernel.js`: 20017 B

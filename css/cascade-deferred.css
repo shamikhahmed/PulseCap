@@ -1,0 +1,5 @@
+/* PulseCap — async half of the cascade (see css/cascade.css). */
+@layer legacy, components;
+
+@import url("ember-components.css") layer(legacy);
+@import url("identity.css") layer(legacy);
